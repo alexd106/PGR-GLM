@@ -1,7 +1,7 @@
 name: "PGR-GLM"
 output_dir: "."
 navbar:
-  title: "PGR-LM"
+  title: "PGR-GLM"
   icon: fa-home
   left:
     - text: "Home"
@@ -48,7 +48,7 @@ navbar:
           href: "resources.html"
         - text: "Feedback"
           icon: fa-commenting
-          href: https://forms.gle/uKLPEof845wfPekh9
+          href: 
         - text: "Contact"
           icon: fa-envelope fa-lg
           href: People.html
@@ -56,9 +56,6 @@ navbar:
         - text: "Source code"
           icon: fa-github fa-lg
           href: https://github.com/alexd106/PGR-GLM
-        - text: "Twitter"
-          icon: fa-twitter fa-lg
-          href: https://twitter.com/Scedacity
 
 output:
   html_document:
