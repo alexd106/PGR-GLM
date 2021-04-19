@@ -54,13 +54,13 @@ rmarkdown::render("GLM_3_BinomialProportions_exercise.Rmd", output_format = "pdf
  
 ### Day 2
 
- - [GLM - binomial (0/1) exercise](GLM_2_Binomial_exercise_v2.html)
+ - [GLM - binomial (0/1 data) exercise](GLM_2_Binomial_exercise_v2.html)
  
 \  
 
 ### Day 3
  
- - [GLM - binomial (proportions) exercise](GLM_3_BinomialProportions_exercise.html)
+ - [GLM - binomial (proportion data) exercise](GLM_3_BinomialProportions_exercise.html)
  
 \  
 

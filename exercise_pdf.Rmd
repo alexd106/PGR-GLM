@@ -28,7 +28,7 @@ cat("Exercises will be released as the course progresses")
 
 \  
 
- - [Graphical data exploration exercise](./exercises/graphical_data_exploration_exercise.pdf)
+ - [GLM - Poisson exercise](./exercises/GLM_1_Poisson_exercise_v2.pdf)
 
 \  
 
@@ -36,9 +36,8 @@ cat("Exercises will be released as the course progresses")
 
 \  
 
- - [Linear model with single continuous explanatory variable exercise](./exercises/linear_model_1_exercise.pdf)
+ - [GLM - binomial (0/1 data) exercise](./exercises/GLM_2_Binomial_exercise_v2.pdf)
  
- - [Linear model with single categorical explanatory variable exercise](./exercises/linear_model_2_exercise.pdf)
  
 \  
 
@@ -46,5 +45,5 @@ cat("Exercises will be released as the course progresses")
 
 \  
 
-- [Linear model with continuous and categorical explanatory variables exercise](./exercises/linear_model_3_exercise.pdf)
+- [GLM - binomial (proportion data) exercise](./exercises/GLM_3_BinomialProportions_exercise.pdf)
 

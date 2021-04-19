@@ -50,12 +50,3 @@ file_name <- "GLM_2_Binomial_exercise_solutions_v2.R"
 paste0("- [", link_name, "](", file_name, ")") %>%
 cat(sep="\n\n")
 ```
-
-### Day 4
-
-```{r sol_lm3, results='asis', eval = isTRUE(show_text_lm3)}
-link_name <- "Linear model with continuous and categorical explanatory variables exercise"
-file_name <- "exercise_solutions/GLM_3_BinomialProportions_exercise_solutions.R"
-paste0("- [", link_name, "](", file_name, ")") %>%
-cat(sep="\n\n")
-```
