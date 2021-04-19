@@ -1,0 +1,77 @@
+---
+title: "Exercise Solutions"
+output: 
+  html_document:
+    toc: false
+---
+
+```{r setup-alex, include=FALSE}
+library(knitr)
+library(stringr)
+knitr::opts_chunk$set(message=FALSE, warning=FALSE, eval=TRUE, echo=FALSE)
+suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(stringr))
+source('reveal.R')
+```
+
+\  
+
+Follow the links below for solutions to each of the exercises you have completed on this course. Click on the 'code' buttons to reveal the R code associated with each question. If you would prefer these solutions as R scripts for later offline use then you can [find these here](course_code.html).
+
+\  
+
+### Day 1
+
+```{r sol_GDE, results='asis', eval = isTRUE(show_text_GDE)}
+link_name <- "GLM - Poisson exercise"
+file_name <- "GLM_1_Poisson_exercise_solutions_v2.html"
+paste0("- [", link_name, "](", file_name, ")") %>%
+cat(sep="\n\n")
+```
+
+\  
+
+### Day 2
+
+```{r sol_lm1, results='asis', eval = isTRUE(show_text_lm1)}
+link_name <- "GLM - binomial (0/1 data) exercise"
+file_name <- "GLM_2_Binomial_exercise_solutions_v2.html"
+paste0("- [", link_name, "](", file_name, ")") %>%
+cat(sep="\n\n")
+```
+
+\  
+
+### Day 3
+
+```{r sol_lm2, results='asis', eval = isTRUE(show_text_lm2)}
+link_name <- "GLM - binomial (proportion data) exercise"
+file_name <- "GLM_3_BinomialProportions_exercise_solutions.html"
+paste0("- [", link_name, "](", file_name, ")") %>%
+cat(sep="\n\n")
+```
+
+\  
+
+
+
+\  
+
+#### PDF versions of exercise solutions
+
+\  
+
+[Offline R scripts](course_code.html)
+
+```{r code-out, include = FALSE}
+# TODO: generate list automagically
+
+knitr::purl('./GLM_1_Poisson_exercise_solutions_v2.Rmd', output = './exercise_solutions/GLM_1_Poisson_exercise_solutions_v2.R', quiet = TRUE)
+knitr::purl('./GLM_2_Binomial_exercise_solutions_v2.Rmd', output = './exercise_solutions/GLM_2_Binomial_exercise_solutions_v2.R', quiet = TRUE)
+knitr::purl('./GLM_3_BinomialProportions_exercise_solutions.Rmd', output = './exercise_solutions/GLM_3_BinomialProportions_exercise_solutions.R', quiet = TRUE)
+
+```
+
+
+
+

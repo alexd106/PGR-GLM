@@ -1,0 +1,61 @@
+---
+title: "Offline exercise solutions"
+output: 
+  html_document:
+    toc: false
+---
+
+```{r, include=FALSE}
+library(knitr)
+library(stringr)
+knitr::opts_chunk$set(message=FALSE, warning=FALSE, eval=TRUE, echo=FALSE)
+suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(stringr))
+source('reveal.R')
+```
+
+\  
+
+To download the solutions for each of the exercises as individual R scripts click the relevant links below. If the code opens in a browser window then right click on the link and select 'save link as' (or similar). 
+
+\  
+
+### Day 1
+
+```{r sol_GDE, results='asis', eval = isTRUE(show_text_GDE)}
+link_name <- "GLM - Poisson exercise"
+file_name <- "exercise_solutions/GLM_1_Poisson_exercise_solutions_v2.R"
+paste0("- [", link_name, "](", file_name, ")") %>%
+cat(sep="\n\n")
+```
+
+\  
+
+### Day 2
+
+```{r sol_lm1, results='asis', eval = isTRUE(show_text_lm1)}
+link_name <- "GLM - binomial (0/1 data) exercise"
+file_name <- "exercise_solutions/linear_model_1_exercise_solutions.R"
+paste0("- [", link_name, "](", file_name, ")") %>%
+cat(sep="\n\n")
+```
+
+\  
+
+### Day 3
+
+```{r sol_lm2, results='asis', eval = isTRUE(show_text_lm2)}
+link_name <- "GLM - binomial (proportion data) exercise"
+file_name <- "GLM_2_Binomial_exercise_solutions_v2.R"
+paste0("- [", link_name, "](", file_name, ")") %>%
+cat(sep="\n\n")
+```
+
+### Day 4
+
+```{r sol_lm3, results='asis', eval = isTRUE(show_text_lm3)}
+link_name <- "Linear model with continuous and categorical explanatory variables exercise"
+file_name <- "exercise_solutions/GLM_3_BinomialProportions_exercise_solutions.R"
+paste0("- [", link_name, "](", file_name, ")") %>%
+cat(sep="\n\n")
+```
