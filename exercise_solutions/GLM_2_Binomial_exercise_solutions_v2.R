@@ -157,6 +157,10 @@ legend(x= "topright", legend= c("RestOfYear", "MayJun"), col= c(1, 2), lty= 1, p
 
 
 
+
+
+
+
 ## ----Appendix, eval=FALSE, echo=TRUE, results=FALSE, collapse=FALSE-----------
 ## fulldat<- read.delim("./data/FineScale_Dataset_GAMM_OFB2019.txt")
 ## 
