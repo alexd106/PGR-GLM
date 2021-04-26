@@ -1206,72 +1206,113 @@ $(document).ready(function () {
 <span id="cb32-152"><a href="#cb32-152" aria-hidden="true" tabindex="-1"></a><span class="co"># Adding AIC differences with respect to best model:</span></span>
 <span id="cb32-153"><a href="#cb32-153" aria-hidden="true" tabindex="-1"></a>summary.table<span class="sc">$</span>deltaAIC<span class="ot">&lt;-</span> summary.table<span class="sc">$</span>AIC <span class="sc">-</span> summary.table<span class="sc">$</span>AIC[<span class="dv">1</span>]</span>
 <span id="cb32-154"><a href="#cb32-154" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-155"><a href="#cb32-155" aria-hidden="true" tabindex="-1"></a>summary.table</span>
-<span id="cb32-156"><a href="#cb32-156" aria-hidden="true" tabindex="-1"></a><span class="do">##                                                                   Model     AIC</span></span>
-<span id="cb32-157"><a href="#cb32-157" aria-hidden="true" tabindex="-1"></a><span class="do">## 6                                fTide4 + fMonth + Time6 + fMonth:Time6 5310.09</span></span>
-<span id="cb32-158"><a href="#cb32-158" aria-hidden="true" tabindex="-1"></a><span class="do">## 5                fTide4 + fMonth + Time6 + fTide4:fMonth + fMonth:Time6 5326.56</span></span>
-<span id="cb32-159"><a href="#cb32-159" aria-hidden="true" tabindex="-1"></a><span class="do">## 4 fTide4 + fMonth + Time6 + fTide4:fMonth + fTide4:Time6 + fMonth:Time6 5343.08</span></span>
-<span id="cb32-160"><a href="#cb32-160" aria-hidden="true" tabindex="-1"></a><span class="do">## 3                                    fTide4 + Per2 + Time6 + Per2:Time6 5584.83</span></span>
-<span id="cb32-161"><a href="#cb32-161" aria-hidden="true" tabindex="-1"></a><span class="do">## 2                      fTide4 + Per2 + Time6 + fTide4:Per2 + Per2:Time6 5587.89</span></span>
-<span id="cb32-162"><a href="#cb32-162" aria-hidden="true" tabindex="-1"></a><span class="do">## 1       fTide4 + Per2 + Time6 + fTide4:Per2 + fTide4:Time6 + Per2:Time6 5606.86</span></span>
-<span id="cb32-163"><a href="#cb32-163" aria-hidden="true" tabindex="-1"></a><span class="do">##   deltaAIC</span></span>
-<span id="cb32-164"><a href="#cb32-164" aria-hidden="true" tabindex="-1"></a><span class="do">## 6     0.00</span></span>
-<span id="cb32-165"><a href="#cb32-165" aria-hidden="true" tabindex="-1"></a><span class="do">## 5    16.47</span></span>
-<span id="cb32-166"><a href="#cb32-166" aria-hidden="true" tabindex="-1"></a><span class="do">## 4    32.99</span></span>
-<span id="cb32-167"><a href="#cb32-167" aria-hidden="true" tabindex="-1"></a><span class="do">## 3   274.74</span></span>
-<span id="cb32-168"><a href="#cb32-168" aria-hidden="true" tabindex="-1"></a><span class="do">## 2   277.80</span></span>
-<span id="cb32-169"><a href="#cb32-169" aria-hidden="true" tabindex="-1"></a><span class="do">## 1   296.77</span></span>
-<span id="cb32-170"><a href="#cb32-170" aria-hidden="true" tabindex="-1"></a><span class="co"># All the models including fMonth are preferred to any model that doesn&#39;t</span></span>
-<span id="cb32-171"><a href="#cb32-171" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-172"><a href="#cb32-172" aria-hidden="true" tabindex="-1"></a><span class="co"># residual analysis:</span></span>
-<span id="cb32-173"><a href="#cb32-173" aria-hidden="true" tabindex="-1"></a>res20.d<span class="ot">&lt;-</span> <span class="fu">resid</span>(PA20.MAM.stepAIC, <span class="at">type=</span> <span class="st">&quot;pearson&quot;</span>)</span>
-<span id="cb32-174"><a href="#cb32-174" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(arm)</span>
-<span id="cb32-175"><a href="#cb32-175" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
-<span id="cb32-176"><a href="#cb32-176" aria-hidden="true" tabindex="-1"></a><span class="fu">binnedplot</span>(<span class="at">x=</span> dat<span class="sc">$</span>tideangle_deg, <span class="at">y=</span>   res20.d, <span class="at">xlab=</span> <span class="st">&quot;Tide angle&quot;</span>, <span class="at">nclass=</span> <span class="dv">100</span>)</span>
-<span id="cb32-177"><a href="#cb32-177" aria-hidden="true" tabindex="-1"></a><span class="fu">binnedplot</span>(<span class="at">x=</span> dat<span class="sc">$</span>mh, <span class="at">y=</span>   res20.d, <span class="at">xlab=</span> <span class="st">&quot;hour&quot;</span>)</span>
-<span id="cb32-178"><a href="#cb32-178" aria-hidden="true" tabindex="-1"></a><span class="fu">binnedplot</span>(<span class="at">x=</span> dat<span class="sc">$</span>julianday, <span class="at">y=</span>   res20.d, <span class="at">xlab=</span> <span class="st">&quot;Day of the year&quot;</span>, <span class="at">nclass=</span> <span class="dv">100</span>)</span>
-<span id="cb32-179"><a href="#cb32-179" aria-hidden="true" tabindex="-1"></a><span class="co"># Check seasonal variation in diel pattern again (&quot;time by season&quot; interaction):</span></span>
-<span id="cb32-180"><a href="#cb32-180" aria-hidden="true" tabindex="-1"></a><span class="fu">matplot</span>(<span class="fu">tapply</span>( res20.d, <span class="fu">list</span>(dat<span class="sc">$</span>mon, dat<span class="sc">$</span>Time6), mean), <span class="at">type=</span> <span class="st">&quot;l&quot;</span>,</span>
-<span id="cb32-181"><a href="#cb32-181" aria-hidden="true" tabindex="-1"></a>        <span class="at">xlab=</span> <span class="st">&quot;month&quot;</span>, </span>
-<span id="cb32-182"><a href="#cb32-182" aria-hidden="true" tabindex="-1"></a>                <span class="at">ylab=</span> <span class="st">&quot;proportion of hours present&quot;</span>, <span class="at">lty=</span> <span class="dv">1</span>)</span></code></pre></div>
-<p><img src="GLM_2_Binomial_exercise_solutions_v2_files/figure-html/QA1-1.png" width="672" /></p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># much improved</span></span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="co"># More detail on the variation of the daily pattern along the year</span></span>
-<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="co"># could be obtained by plotting the predicted hour of day effect per month</span></span>
-<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a><span class="co"># from PA20.MAM.stepAIC), like this:</span></span>
-<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">4</span>))</span>
-<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(month <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>){</span>
-<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>    dat4pred<span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">Time6=</span> <span class="fu">levels</span>(dat<span class="sc">$</span>Time6),</span>
-<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>                                <span class="at">fMonth=</span> <span class="fu">as.character</span>(month),</span>
-<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>                                <span class="at">fTide4=</span> <span class="st">&quot;1&quot;</span>)</span>
-<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>    PA20.pred<span class="ot">&lt;-</span> <span class="fu">predict</span>(PA20.MAM.stepAIC, dat4pred, <span class="at">type=</span> <span class="st">&quot;link&quot;</span>, <span class="at">se.fit=</span> T)</span>
-<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>    dat4pred<span class="sc">$</span>fit.resp<span class="ot">&lt;-</span> <span class="fu">plogis</span>(PA20.pred<span class="sc">$</span>fit)</span>
-<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a>    dat4pred<span class="sc">$</span>LCI<span class="ot">&lt;-</span> <span class="fu">plogis</span>(PA20.pred<span class="sc">$</span>fit <span class="sc">-</span> <span class="fl">1.96</span><span class="sc">*</span>PA20.pred<span class="sc">$</span>se.fit)</span>
-<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a>    dat4pred<span class="sc">$</span>UCI<span class="ot">&lt;-</span> <span class="fu">plogis</span>(PA20.pred<span class="sc">$</span>fit <span class="sc">+</span> <span class="fl">1.96</span><span class="sc">*</span>PA20.pred<span class="sc">$</span>se.fit)</span>
-<span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">plot</span>(<span class="fu">as.numeric</span>(dat4pred<span class="sc">$</span>Time6), dat4pred<span class="sc">$</span>fit.resp, <span class="at">pch=</span> <span class="dv">16</span>, </span>
-<span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a>          <span class="at">cex=</span> <span class="fl">1.4</span>, <span class="at">main=</span> <span class="fu">paste</span>(<span class="st">&quot;Month =&quot;</span>, month),</span>
-<span id="cb33-19"><a href="#cb33-19" aria-hidden="true" tabindex="-1"></a>          <span class="at">col=</span> <span class="dv">1</span>, <span class="at">xlab=</span> <span class="st">&quot;Section of day&quot;</span>,</span>
-<span id="cb33-20"><a href="#cb33-20" aria-hidden="true" tabindex="-1"></a>          <span class="at">ylab=</span> <span class="st">&quot;Fitted probability (assuming Tide = 1)&quot;</span>, <span class="at">ylim=</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>))</span>
-<span id="cb33-21"><a href="#cb33-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrows</span>(<span class="at">x0=</span> <span class="fu">as.numeric</span>(dat4pred<span class="sc">$</span>Time6), <span class="at">x1=</span> <span class="fu">as.numeric</span>(dat4pred<span class="sc">$</span>Time6),</span>
-<span id="cb33-22"><a href="#cb33-22" aria-hidden="true" tabindex="-1"></a>          <span class="at">y0=</span> dat4pred<span class="sc">$</span>LCI, <span class="at">y1=</span> dat4pred<span class="sc">$</span>UCI,</span>
-<span id="cb33-23"><a href="#cb33-23" aria-hidden="true" tabindex="-1"></a>          <span class="at">col=</span> <span class="fu">grey</span>(<span class="fl">0.5</span>), <span class="at">length=</span> <span class="fl">0.02</span>, <span class="at">angle=</span> <span class="dv">90</span>, <span class="at">code=</span> <span class="dv">3</span>)</span>
-<span id="cb33-24"><a href="#cb33-24" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
-<p><img src="GLM_2_Binomial_exercise_solutions_v2_files/figure-html/QA1-2.png" width="672" /></p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="co"># According to this better supported model, they tend to use the site more</span></span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="co">#  in May, June and </span></span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="co"># July day and night, visit mostly by night from October to December,</span></span>
-<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a><span class="co">#  and seldom from Jan to March.</span></span>
-<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Of note is the low proportion of deviance explained by the model,</span></span>
-<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a><span class="co"># despite its complexity (75 parameters):</span></span>
-<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>(PA20.MAM.stepAIC<span class="sc">$</span>null.deviance <span class="sc">-</span> PA20.MAM.stepAIC<span class="sc">$</span>deviance) <span class="sc">/</span></span>
-<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>    PA20.MAM.stepAIC<span class="sc">$</span>null.deviance </span>
-<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 0.1008604</span></span>
-<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 10%. This is quite normal with Bernoulli data.</span></span></code></pre></div>
+<span id="cb32-155"><a href="#cb32-155" aria-hidden="true" tabindex="-1"></a><span class="co"># summary.table</span></span>
+<span id="cb32-156"><a href="#cb32-156" aria-hidden="true" tabindex="-1"></a><span class="co"># All the models including fMonth are preferred to any model that doesn&#39;t</span></span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(knitr)</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(summary.table)</span></code></pre></div>
+<table>
+<colgroup>
+<col width="3%" />
+<col width="77%" />
+<col width="8%" />
+<col width="10%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="left">Model</th>
+<th align="right">AIC</th>
+<th align="right">deltaAIC</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">6</td>
+<td align="left">fTide4 + fMonth + Time6 + fMonth:Time6</td>
+<td align="right">5310.09</td>
+<td align="right">0.00</td>
+</tr>
+<tr class="even">
+<td align="left">5</td>
+<td align="left">fTide4 + fMonth + Time6 + fTide4:fMonth + fMonth:Time6</td>
+<td align="right">5326.56</td>
+<td align="right">16.47</td>
+</tr>
+<tr class="odd">
+<td align="left">4</td>
+<td align="left">fTide4 + fMonth + Time6 + fTide4:fMonth + fTide4:Time6 + fMonth:Time6</td>
+<td align="right">5343.08</td>
+<td align="right">32.99</td>
+</tr>
+<tr class="even">
+<td align="left">3</td>
+<td align="left">fTide4 + Per2 + Time6 + Per2:Time6</td>
+<td align="right">5584.83</td>
+<td align="right">274.74</td>
+</tr>
+<tr class="odd">
+<td align="left">2</td>
+<td align="left">fTide4 + Per2 + Time6 + fTide4:Per2 + Per2:Time6</td>
+<td align="right">5587.89</td>
+<td align="right">277.80</td>
+</tr>
+<tr class="even">
+<td align="left">1</td>
+<td align="left">fTide4 + Per2 + Time6 + fTide4:Per2 + fTide4:Time6 + Per2:Time6</td>
+<td align="right">5606.86</td>
+<td align="right">296.77</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># residual analysis:</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>res20.d<span class="ot">&lt;-</span> <span class="fu">resid</span>(PA20.MAM.stepAIC, <span class="at">type=</span> <span class="st">&quot;pearson&quot;</span>)</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(arm)</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a><span class="fu">binnedplot</span>(<span class="at">x=</span> dat<span class="sc">$</span>tideangle_deg, <span class="at">y=</span>   res20.d, <span class="at">xlab=</span> <span class="st">&quot;Tide angle&quot;</span>, <span class="at">nclass=</span> <span class="dv">100</span>)</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a><span class="fu">binnedplot</span>(<span class="at">x=</span> dat<span class="sc">$</span>mh, <span class="at">y=</span>   res20.d, <span class="at">xlab=</span> <span class="st">&quot;hour&quot;</span>)</span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a><span class="fu">binnedplot</span>(<span class="at">x=</span> dat<span class="sc">$</span>julianday, <span class="at">y=</span>   res20.d, <span class="at">xlab=</span> <span class="st">&quot;Day of the year&quot;</span>, <span class="at">nclass=</span> <span class="dv">100</span>)</span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Check seasonal variation in diel pattern again (&quot;time by season&quot; interaction):</span></span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a><span class="fu">matplot</span>(<span class="fu">tapply</span>( res20.d, <span class="fu">list</span>(dat<span class="sc">$</span>mon, dat<span class="sc">$</span>Time6), mean), <span class="at">type=</span> <span class="st">&quot;l&quot;</span>,</span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">xlab=</span> <span class="st">&quot;month&quot;</span>, </span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>                <span class="at">ylab=</span> <span class="st">&quot;proportion of hours present&quot;</span>, <span class="at">lty=</span> <span class="dv">1</span>)</span></code></pre></div>
+<p><img src="GLM_2_Binomial_exercise_solutions_v2_files/figure-html/QA1c-1.png" width="672" /></p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># much improved</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="co"># More detail on the variation of the daily pattern along the year</span></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="co"># could be obtained by plotting the predicted hour of day effect per month</span></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a><span class="co"># from PA20.MAM.stepAIC), like this:</span></span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">4</span>))</span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(month <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>){</span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>    dat4pred<span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">Time6=</span> <span class="fu">levels</span>(dat<span class="sc">$</span>Time6),</span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>                                <span class="at">fMonth=</span> <span class="fu">as.character</span>(month),</span>
+<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a>                                <span class="at">fTide4=</span> <span class="st">&quot;1&quot;</span>)</span>
+<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a>    PA20.pred<span class="ot">&lt;-</span> <span class="fu">predict</span>(PA20.MAM.stepAIC, dat4pred, <span class="at">type=</span> <span class="st">&quot;link&quot;</span>, <span class="at">se.fit=</span> T)</span>
+<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a>    dat4pred<span class="sc">$</span>fit.resp<span class="ot">&lt;-</span> <span class="fu">plogis</span>(PA20.pred<span class="sc">$</span>fit)</span>
+<span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a>    dat4pred<span class="sc">$</span>LCI<span class="ot">&lt;-</span> <span class="fu">plogis</span>(PA20.pred<span class="sc">$</span>fit <span class="sc">-</span> <span class="fl">1.96</span><span class="sc">*</span>PA20.pred<span class="sc">$</span>se.fit)</span>
+<span id="cb35-16"><a href="#cb35-16" aria-hidden="true" tabindex="-1"></a>    dat4pred<span class="sc">$</span>UCI<span class="ot">&lt;-</span> <span class="fu">plogis</span>(PA20.pred<span class="sc">$</span>fit <span class="sc">+</span> <span class="fl">1.96</span><span class="sc">*</span>PA20.pred<span class="sc">$</span>se.fit)</span>
+<span id="cb35-17"><a href="#cb35-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">plot</span>(<span class="fu">as.numeric</span>(dat4pred<span class="sc">$</span>Time6), dat4pred<span class="sc">$</span>fit.resp, <span class="at">pch=</span> <span class="dv">16</span>, </span>
+<span id="cb35-18"><a href="#cb35-18" aria-hidden="true" tabindex="-1"></a>          <span class="at">cex=</span> <span class="fl">1.4</span>, <span class="at">main=</span> <span class="fu">paste</span>(<span class="st">&quot;Month =&quot;</span>, month),</span>
+<span id="cb35-19"><a href="#cb35-19" aria-hidden="true" tabindex="-1"></a>          <span class="at">col=</span> <span class="dv">1</span>, <span class="at">xlab=</span> <span class="st">&quot;Section of day&quot;</span>,</span>
+<span id="cb35-20"><a href="#cb35-20" aria-hidden="true" tabindex="-1"></a>          <span class="at">ylab=</span> <span class="st">&quot;Fitted probability (assuming Tide = 1)&quot;</span>, <span class="at">ylim=</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>))</span>
+<span id="cb35-21"><a href="#cb35-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrows</span>(<span class="at">x0=</span> <span class="fu">as.numeric</span>(dat4pred<span class="sc">$</span>Time6), <span class="at">x1=</span> <span class="fu">as.numeric</span>(dat4pred<span class="sc">$</span>Time6),</span>
+<span id="cb35-22"><a href="#cb35-22" aria-hidden="true" tabindex="-1"></a>          <span class="at">y0=</span> dat4pred<span class="sc">$</span>LCI, <span class="at">y1=</span> dat4pred<span class="sc">$</span>UCI,</span>
+<span id="cb35-23"><a href="#cb35-23" aria-hidden="true" tabindex="-1"></a>          <span class="at">col=</span> <span class="fu">grey</span>(<span class="fl">0.5</span>), <span class="at">length=</span> <span class="fl">0.02</span>, <span class="at">angle=</span> <span class="dv">90</span>, <span class="at">code=</span> <span class="dv">3</span>)</span>
+<span id="cb35-24"><a href="#cb35-24" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p><img src="GLM_2_Binomial_exercise_solutions_v2_files/figure-html/QA1c-2.png" width="672" /></p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="co"># According to this better supported model, they tend to use the site more</span></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="co">#  in May, June and </span></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a><span class="co"># July day and night, visit mostly by night from October to December,</span></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a><span class="co">#  and seldom from Jan to March.</span></span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Of note is the low proportion of deviance explained by the model,</span></span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a><span class="co"># despite its complexity (75 parameters):</span></span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>(PA20.MAM.stepAIC<span class="sc">$</span>null.deviance <span class="sc">-</span> PA20.MAM.stepAIC<span class="sc">$</span>deviance) <span class="sc">/</span></span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>    PA20.MAM.stepAIC<span class="sc">$</span>null.deviance </span>
+<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 0.1008604</span></span>
+<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 10%. This is quite normal with Bernoulli data.</span></span></code></pre></div>
 <p> </p>
 </div>
 <div id="appendix" class="section level1">
@@ -1279,64 +1320,64 @@ $(document).ready(function () {
 <p> </p>
 <p>Code for converting the original publicly available data (10 Mb) [<a href="https://datadryad.org/stash/dataset/doi:10.5061/dryad.k378542" class="uri">https://datadryad.org/stash/dataset/doi:10.5061/dryad.k378542</a>] into the ‘dolphin.csv’ file. Includes converting numeric variables into categories that you can define to suit your needs (binning), including making more bins if you wish. Binning is done easily using the <code>cut()</code> function. For example, creating 5 regular bins is done using <code>cut(MyVector, breaks= 5)</code>. Note here that <code>cut</code> is used in a non-standard way to make the beginning and end of a cyclic variable belong to the same bin, which may be more biologically meaningful (you can decide, you are the expert!).</p>
 <p> </p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>fulldat<span class="ot">&lt;-</span> <span class="fu">read.delim</span>(<span class="st">&quot;./data/FineScale_Dataset_GAMM_OFB2019.txt&quot;</span>)</span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(fulldat)</span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>dat<span class="ot">&lt;-</span> fulldat[fulldat<span class="sc">$</span>site <span class="sc">==</span> <span class="st">&quot;Sutors&quot;</span>, <span class="fu">c</span>(<span class="st">&quot;presence&quot;</span>, <span class="st">&quot;year&quot;</span>, <span class="st">&quot;julianday&quot;</span>, <span class="st">&quot;tideangle_deg&quot;</span>, <span class="st">&quot;mh&quot;</span>)]</span>
-<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>mon<span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">cut</span>(dat<span class="sc">$</span>julianday, <span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">370</span>, <span class="at">by=</span> <span class="fl">30.5</span>)))</span>
-<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>tideangle_deg<span class="ot">&lt;-</span> <span class="fu">round</span>(dat<span class="sc">$</span>tideangle_deg)</span>
-<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a><span class="co"># count number of data per year/month combination and represent as mosaicplot</span></span>
-<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">table</span>(dat<span class="sc">$</span>year, dat<span class="sc">$</span>mon))</span>
-<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a><span class="co"># remove 2016</span></span>
-<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a>dat<span class="ot">&lt;-</span> dat[dat<span class="sc">$</span>year <span class="sc">!=</span> <span class="dv">2016</span>, ]</span>
-<span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-16"><a href="#cb35-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Bin year into two periods (May+June vs rest of year)</span></span>
-<span id="cb35-17"><a href="#cb35-17" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>Per2<span class="ot">&lt;-</span> <span class="fu">cut</span>(dat<span class="sc">$</span>julianday, <span class="at">breaks=</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">120</span>, <span class="dv">180</span>, <span class="dv">400</span>), </span>
-<span id="cb35-18"><a href="#cb35-18" aria-hidden="true" tabindex="-1"></a>            <span class="at">labels=</span> <span class="fu">c</span>(<span class="st">&quot;RestOfYear&quot;</span>, <span class="st">&quot;MayJun&quot;</span>, <span class="st">&quot;RestOfYear&quot;</span>))</span>
-<span id="cb35-19"><a href="#cb35-19" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>Per2<span class="ot">&lt;-</span> <span class="fu">factor</span>(dat<span class="sc">$</span>Per2, <span class="at">levels=</span> <span class="fu">c</span>(<span class="st">&quot;RestOfYear&quot;</span>, <span class="st">&quot;MayJun&quot;</span>))</span>
-<span id="cb35-20"><a href="#cb35-20" aria-hidden="true" tabindex="-1"></a><span class="co"># (making &quot;RestOfYear&quot; the reference level)</span></span>
-<span id="cb35-21"><a href="#cb35-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-22"><a href="#cb35-22" aria-hidden="true" tabindex="-1"></a><span class="co"># check this is working as intended:</span></span>
-<span id="cb35-23"><a href="#cb35-23" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">as.numeric</span>(dat<span class="sc">$</span>Per2) <span class="sc">~</span> dat<span class="sc">$</span>julianday)</span>
-<span id="cb35-24"><a href="#cb35-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-25"><a href="#cb35-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Bin year into 4 periods:</span></span>
-<span id="cb35-26"><a href="#cb35-26" aria-hidden="true" tabindex="-1"></a><span class="co"># 3 periods of 20 days from early May to end of June vs rest of the year</span></span>
-<span id="cb35-27"><a href="#cb35-27" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>Per4<span class="ot">&lt;-</span> <span class="fu">cut</span>(dat<span class="sc">$</span>julianday, <span class="at">breaks=</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">120</span>, <span class="dv">140</span>, <span class="dv">160</span>, <span class="dv">180</span>, <span class="dv">400</span>), </span>
-<span id="cb35-28"><a href="#cb35-28" aria-hidden="true" tabindex="-1"></a>            <span class="at">labels=</span> <span class="fu">c</span>(<span class="st">&quot;RestOfYear&quot;</span>, <span class="st">&quot;MayJun1&quot;</span>, <span class="st">&quot;MayJun2&quot;</span>, <span class="st">&quot;MayJun3&quot;</span>, <span class="st">&quot;RestOfYear&quot;</span>))</span>
-<span id="cb35-29"><a href="#cb35-29" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>Per4<span class="ot">&lt;-</span> <span class="fu">factor</span>(dat<span class="sc">$</span>Per4, <span class="at">levels=</span> <span class="fu">c</span>(<span class="st">&quot;RestOfYear&quot;</span>, <span class="st">&quot;MayJun1&quot;</span>, <span class="st">&quot;MayJun2&quot;</span>, <span class="st">&quot;MayJun3&quot;</span>))</span>
-<span id="cb35-30"><a href="#cb35-30" aria-hidden="true" tabindex="-1"></a><span class="co"># (reordering levels)</span></span>
-<span id="cb35-31"><a href="#cb35-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-32"><a href="#cb35-32" aria-hidden="true" tabindex="-1"></a><span class="co"># check this is working as intended:</span></span>
-<span id="cb35-33"><a href="#cb35-33" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">as.numeric</span>(dat<span class="sc">$</span>Per4) <span class="sc">~</span> dat<span class="sc">$</span>julianday)</span>
-<span id="cb35-34"><a href="#cb35-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-35"><a href="#cb35-35" aria-hidden="true" tabindex="-1"></a><span class="co"># Bin time of day into 6 4h periods (first centered on midnight)</span></span>
-<span id="cb35-36"><a href="#cb35-36" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>Time6<span class="ot">&lt;-</span> <span class="fu">cut</span>(dat<span class="sc">$</span>mh, <span class="at">breaks=</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="fu">seq</span>(<span class="dv">2</span>, <span class="dv">22</span>, <span class="at">by=</span> <span class="dv">4</span>), <span class="dv">24</span>), </span>
-<span id="cb35-37"><a href="#cb35-37" aria-hidden="true" tabindex="-1"></a>            <span class="at">labels=</span> <span class="fu">c</span>(<span class="st">&quot;MNight&quot;</span>, <span class="st">&quot;AM1&quot;</span>, <span class="st">&quot;AM2&quot;</span>, <span class="st">&quot;MDay&quot;</span>, <span class="st">&quot;PM1&quot;</span>, <span class="st">&quot;PM2&quot;</span>, <span class="st">&quot;MNight&quot;</span>))</span>
-<span id="cb35-38"><a href="#cb35-38" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>Time6<span class="ot">&lt;-</span> <span class="fu">factor</span>(dat<span class="sc">$</span>Time6, <span class="at">levels=</span> <span class="fu">c</span>(<span class="st">&quot;MNight&quot;</span>, <span class="st">&quot;AM1&quot;</span>, <span class="st">&quot;AM2&quot;</span>, <span class="st">&quot;MDay&quot;</span>, <span class="st">&quot;PM1&quot;</span>, <span class="st">&quot;PM2&quot;</span>))</span>
-<span id="cb35-39"><a href="#cb35-39" aria-hidden="true" tabindex="-1"></a><span class="co"># reordering chronologically</span></span>
-<span id="cb35-40"><a href="#cb35-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-41"><a href="#cb35-41" aria-hidden="true" tabindex="-1"></a><span class="co"># check this is working as intended:</span></span>
-<span id="cb35-42"><a href="#cb35-42" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(dat<span class="sc">$</span>Time6, dat<span class="sc">$</span>mh)</span>
-<span id="cb35-43"><a href="#cb35-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-44"><a href="#cb35-44" aria-hidden="true" tabindex="-1"></a><span class="co"># Bin tide angle into 4 quadrants with peaks in middle of respective bin</span></span>
-<span id="cb35-45"><a href="#cb35-45" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>Tide4<span class="ot">&lt;-</span> <span class="fu">cut</span>(dat<span class="sc">$</span>tideangle_deg, <span class="at">breaks=</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">45</span>, <span class="dv">135</span>, <span class="dv">225</span>, <span class="dv">315</span>, <span class="dv">360</span>), </span>
-<span id="cb35-46"><a href="#cb35-46" aria-hidden="true" tabindex="-1"></a>            <span class="at">labels=</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, <span class="dv">1</span>))</span>
-<span id="cb35-47"><a href="#cb35-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-48"><a href="#cb35-48" aria-hidden="true" tabindex="-1"></a><span class="co"># check this is working as intended:</span></span>
-<span id="cb35-49"><a href="#cb35-49" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">as.numeric</span>(dat<span class="sc">$</span>Tide4) <span class="sc">~</span> dat<span class="sc">$</span>tideangle_deg)</span>
-<span id="cb35-50"><a href="#cb35-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-51"><a href="#cb35-51" aria-hidden="true" tabindex="-1"></a><span class="co"># unless you desperately want to test the performance of your computer, </span></span>
-<span id="cb35-52"><a href="#cb35-52" aria-hidden="true" tabindex="-1"></a><span class="co"># play safe and reduce the size of the data set from 50000 to 5000:</span></span>
-<span id="cb35-53"><a href="#cb35-53" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">74</span>) <span class="co"># makes the random sampling reproducible</span></span>
-<span id="cb35-54"><a href="#cb35-54" aria-hidden="true" tabindex="-1"></a><span class="co"># This means you will get the same random sample as the solutions to</span></span>
-<span id="cb35-55"><a href="#cb35-55" aria-hidden="true" tabindex="-1"></a><span class="co"># the exercises and the same results.</span></span>
-<span id="cb35-56"><a href="#cb35-56" aria-hidden="true" tabindex="-1"></a>dat<span class="ot">&lt;-</span> dat[<span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(dat), <span class="at">size=</span> <span class="dv">5000</span>), ] <span class="co"># random subset or rows</span></span>
-<span id="cb35-57"><a href="#cb35-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-58"><a href="#cb35-58" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(dat, <span class="st">&quot;dolphin.csv&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>fulldat<span class="ot">&lt;-</span> <span class="fu">read.delim</span>(<span class="st">&quot;./data/FineScale_Dataset_GAMM_OFB2019.txt&quot;</span>)</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(fulldat)</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>dat<span class="ot">&lt;-</span> fulldat[fulldat<span class="sc">$</span>site <span class="sc">==</span> <span class="st">&quot;Sutors&quot;</span>, <span class="fu">c</span>(<span class="st">&quot;presence&quot;</span>, <span class="st">&quot;year&quot;</span>, <span class="st">&quot;julianday&quot;</span>, <span class="st">&quot;tideangle_deg&quot;</span>, <span class="st">&quot;mh&quot;</span>)]</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>mon<span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">cut</span>(dat<span class="sc">$</span>julianday, <span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">370</span>, <span class="at">by=</span> <span class="fl">30.5</span>)))</span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>tideangle_deg<span class="ot">&lt;-</span> <span class="fu">round</span>(dat<span class="sc">$</span>tideangle_deg)</span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a><span class="co"># count number of data per year/month combination and represent as mosaicplot</span></span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">table</span>(dat<span class="sc">$</span>year, dat<span class="sc">$</span>mon))</span>
+<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a><span class="co"># remove 2016</span></span>
+<span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a>dat<span class="ot">&lt;-</span> dat[dat<span class="sc">$</span>year <span class="sc">!=</span> <span class="dv">2016</span>, ]</span>
+<span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-16"><a href="#cb37-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Bin year into two periods (May+June vs rest of year)</span></span>
+<span id="cb37-17"><a href="#cb37-17" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>Per2<span class="ot">&lt;-</span> <span class="fu">cut</span>(dat<span class="sc">$</span>julianday, <span class="at">breaks=</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">120</span>, <span class="dv">180</span>, <span class="dv">400</span>), </span>
+<span id="cb37-18"><a href="#cb37-18" aria-hidden="true" tabindex="-1"></a>            <span class="at">labels=</span> <span class="fu">c</span>(<span class="st">&quot;RestOfYear&quot;</span>, <span class="st">&quot;MayJun&quot;</span>, <span class="st">&quot;RestOfYear&quot;</span>))</span>
+<span id="cb37-19"><a href="#cb37-19" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>Per2<span class="ot">&lt;-</span> <span class="fu">factor</span>(dat<span class="sc">$</span>Per2, <span class="at">levels=</span> <span class="fu">c</span>(<span class="st">&quot;RestOfYear&quot;</span>, <span class="st">&quot;MayJun&quot;</span>))</span>
+<span id="cb37-20"><a href="#cb37-20" aria-hidden="true" tabindex="-1"></a><span class="co"># (making &quot;RestOfYear&quot; the reference level)</span></span>
+<span id="cb37-21"><a href="#cb37-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-22"><a href="#cb37-22" aria-hidden="true" tabindex="-1"></a><span class="co"># check this is working as intended:</span></span>
+<span id="cb37-23"><a href="#cb37-23" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">as.numeric</span>(dat<span class="sc">$</span>Per2) <span class="sc">~</span> dat<span class="sc">$</span>julianday)</span>
+<span id="cb37-24"><a href="#cb37-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-25"><a href="#cb37-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Bin year into 4 periods:</span></span>
+<span id="cb37-26"><a href="#cb37-26" aria-hidden="true" tabindex="-1"></a><span class="co"># 3 periods of 20 days from early May to end of June vs rest of the year</span></span>
+<span id="cb37-27"><a href="#cb37-27" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>Per4<span class="ot">&lt;-</span> <span class="fu">cut</span>(dat<span class="sc">$</span>julianday, <span class="at">breaks=</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">120</span>, <span class="dv">140</span>, <span class="dv">160</span>, <span class="dv">180</span>, <span class="dv">400</span>), </span>
+<span id="cb37-28"><a href="#cb37-28" aria-hidden="true" tabindex="-1"></a>            <span class="at">labels=</span> <span class="fu">c</span>(<span class="st">&quot;RestOfYear&quot;</span>, <span class="st">&quot;MayJun1&quot;</span>, <span class="st">&quot;MayJun2&quot;</span>, <span class="st">&quot;MayJun3&quot;</span>, <span class="st">&quot;RestOfYear&quot;</span>))</span>
+<span id="cb37-29"><a href="#cb37-29" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>Per4<span class="ot">&lt;-</span> <span class="fu">factor</span>(dat<span class="sc">$</span>Per4, <span class="at">levels=</span> <span class="fu">c</span>(<span class="st">&quot;RestOfYear&quot;</span>, <span class="st">&quot;MayJun1&quot;</span>, <span class="st">&quot;MayJun2&quot;</span>, <span class="st">&quot;MayJun3&quot;</span>))</span>
+<span id="cb37-30"><a href="#cb37-30" aria-hidden="true" tabindex="-1"></a><span class="co"># (reordering levels)</span></span>
+<span id="cb37-31"><a href="#cb37-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-32"><a href="#cb37-32" aria-hidden="true" tabindex="-1"></a><span class="co"># check this is working as intended:</span></span>
+<span id="cb37-33"><a href="#cb37-33" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">as.numeric</span>(dat<span class="sc">$</span>Per4) <span class="sc">~</span> dat<span class="sc">$</span>julianday)</span>
+<span id="cb37-34"><a href="#cb37-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-35"><a href="#cb37-35" aria-hidden="true" tabindex="-1"></a><span class="co"># Bin time of day into 6 4h periods (first centered on midnight)</span></span>
+<span id="cb37-36"><a href="#cb37-36" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>Time6<span class="ot">&lt;-</span> <span class="fu">cut</span>(dat<span class="sc">$</span>mh, <span class="at">breaks=</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="fu">seq</span>(<span class="dv">2</span>, <span class="dv">22</span>, <span class="at">by=</span> <span class="dv">4</span>), <span class="dv">24</span>), </span>
+<span id="cb37-37"><a href="#cb37-37" aria-hidden="true" tabindex="-1"></a>            <span class="at">labels=</span> <span class="fu">c</span>(<span class="st">&quot;MNight&quot;</span>, <span class="st">&quot;AM1&quot;</span>, <span class="st">&quot;AM2&quot;</span>, <span class="st">&quot;MDay&quot;</span>, <span class="st">&quot;PM1&quot;</span>, <span class="st">&quot;PM2&quot;</span>, <span class="st">&quot;MNight&quot;</span>))</span>
+<span id="cb37-38"><a href="#cb37-38" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>Time6<span class="ot">&lt;-</span> <span class="fu">factor</span>(dat<span class="sc">$</span>Time6, <span class="at">levels=</span> <span class="fu">c</span>(<span class="st">&quot;MNight&quot;</span>, <span class="st">&quot;AM1&quot;</span>, <span class="st">&quot;AM2&quot;</span>, <span class="st">&quot;MDay&quot;</span>, <span class="st">&quot;PM1&quot;</span>, <span class="st">&quot;PM2&quot;</span>))</span>
+<span id="cb37-39"><a href="#cb37-39" aria-hidden="true" tabindex="-1"></a><span class="co"># reordering chronologically</span></span>
+<span id="cb37-40"><a href="#cb37-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-41"><a href="#cb37-41" aria-hidden="true" tabindex="-1"></a><span class="co"># check this is working as intended:</span></span>
+<span id="cb37-42"><a href="#cb37-42" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(dat<span class="sc">$</span>Time6, dat<span class="sc">$</span>mh)</span>
+<span id="cb37-43"><a href="#cb37-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-44"><a href="#cb37-44" aria-hidden="true" tabindex="-1"></a><span class="co"># Bin tide angle into 4 quadrants with peaks in middle of respective bin</span></span>
+<span id="cb37-45"><a href="#cb37-45" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>Tide4<span class="ot">&lt;-</span> <span class="fu">cut</span>(dat<span class="sc">$</span>tideangle_deg, <span class="at">breaks=</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">45</span>, <span class="dv">135</span>, <span class="dv">225</span>, <span class="dv">315</span>, <span class="dv">360</span>), </span>
+<span id="cb37-46"><a href="#cb37-46" aria-hidden="true" tabindex="-1"></a>            <span class="at">labels=</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, <span class="dv">1</span>))</span>
+<span id="cb37-47"><a href="#cb37-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-48"><a href="#cb37-48" aria-hidden="true" tabindex="-1"></a><span class="co"># check this is working as intended:</span></span>
+<span id="cb37-49"><a href="#cb37-49" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">as.numeric</span>(dat<span class="sc">$</span>Tide4) <span class="sc">~</span> dat<span class="sc">$</span>tideangle_deg)</span>
+<span id="cb37-50"><a href="#cb37-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-51"><a href="#cb37-51" aria-hidden="true" tabindex="-1"></a><span class="co"># unless you desperately want to test the performance of your computer, </span></span>
+<span id="cb37-52"><a href="#cb37-52" aria-hidden="true" tabindex="-1"></a><span class="co"># play safe and reduce the size of the data set from 50000 to 5000:</span></span>
+<span id="cb37-53"><a href="#cb37-53" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">74</span>) <span class="co"># makes the random sampling reproducible</span></span>
+<span id="cb37-54"><a href="#cb37-54" aria-hidden="true" tabindex="-1"></a><span class="co"># This means you will get the same random sample as the solutions to</span></span>
+<span id="cb37-55"><a href="#cb37-55" aria-hidden="true" tabindex="-1"></a><span class="co"># the exercises and the same results.</span></span>
+<span id="cb37-56"><a href="#cb37-56" aria-hidden="true" tabindex="-1"></a>dat<span class="ot">&lt;-</span> dat[<span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(dat), <span class="at">size=</span> <span class="dv">5000</span>), ] <span class="co"># random subset or rows</span></span>
+<span id="cb37-57"><a href="#cb37-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-58"><a href="#cb37-58" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(dat, <span class="st">&quot;dolphin.csv&quot;</span>)</span></code></pre></div>
 </div>
 
 
