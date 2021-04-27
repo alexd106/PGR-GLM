@@ -5,8 +5,6 @@ output:
   html_document:
     toc: no
     code_folding: hide
-  pdf_document:
-    toc: no
 editor_options:
   chunk_output_type: console
 ---
@@ -557,9 +555,16 @@ summary.table<- summary.table[order(summary.table$AIC), ]
 # Adding AIC differences with respect to best model:
 summary.table$deltaAIC<- summary.table$AIC - summary.table$AIC[1]
 
-summary.table
+# summary.table
 # All the models including fMonth are preferred to any model that doesn't
+```
 
+```{r QA1b, eval=SOLUTIONS, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
+require(knitr)
+kable(summary.table)
+```
+
+```{r QA1c, eval=SOLUTIONS, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
 # residual analysis:
 res20.d<- resid(PA20.MAM.stepAIC, type= "pearson")
 library(arm)

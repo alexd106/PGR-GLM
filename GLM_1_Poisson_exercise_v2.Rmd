@@ -2,8 +2,7 @@
 title: 'Exercise'
 # author: TCornulier
 output: 
-  html_document:
-    toc: false
+  html_document: 
     code_folding: hide
 editor_options: 
   chunk_output_type: console
@@ -214,16 +213,11 @@ abline(h= 0, col= 2, lty= 2)
 
 \  
 
-12\. Use `predict()` with the argument `type= "response"` to obtain the fitted values on the original (response) scale. Plot a fitted line for the relationship between number of species and biomass for each level of pH. Why are the lines not straight?
+12\. Let's plot the model predictions over the raw data, using `predict()` with the argument `type= "response"` to obtain the fitted values on the original (response) scale. Plot a fitted line for the relationship between number of species and biomass for each level of pH. For the sake of this exercise and to better illustrate the assumptions of the model, use the whole range of biomass(0 to 10) for every pH level. Why are the lines not straight?
 
 \  
 
 ```{r Q12, eval=SOLUTIONS, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.height=8}
-coplot(logSp ~ Biomass | pH, data= sp)
-coplot(Species ~ Biomass | pH, data= sp)
-
-sp.glm2<- glm(Species ~ Biomass * pH, family= poisson, data= sp)
-
 par(mfrow= c(1, 1))
 # create a sequence of increasing Biomass
 Biomass.seq<- seq(from= min(sp$Biomass), to= max(sp$Biomass), l= 25)
@@ -258,93 +252,11 @@ legend("topright",
 
 \  
 
-13\. (Optional) Use `predict` again, but this time obtain the fitted values on the scale of the linear predictor `type= "link"`. Plot again and compare with the previous graph: what is happening? How would you back-transform these values predicted on the link scale to plot them on the response scale again?
+13\. Looking at the data and model fits, any idea why the expected species richness for the largest values of biomass tends to be biased high? How satisfied are you with the model? Have we learned anything from it, about species diversity in relation to pH and biomass? 
 
 \  
 
-```{r Q13, eval=SOLUTIONS, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.height=8}
-P.low<- predict(sp.glm2, newdata= MyData1, type= "link")
-P.mid<- predict(sp.glm2, newdata= MyData2, type= "link")
-P.high<- predict(sp.glm2, newdata= MyData3, type= "link")
-
-plot(sp$Biomass, sp$Species, col= sp$pH, xlab= "Biomass", ylab= "Number of species")
-
-lines(MyData1$Biomass, P.low, lty= 1, col= 1)
-lines(MyData2$Biomass, P.mid, lty= 1, col= 2)
-lines(MyData3$Biomass, P.high, lty= 1, col= 3)
-# lines are straight and appear in the wrong place!
-# Because they are on the link scale (observations are on the response scale)
-
-# back-transform the predictions to make them on the response scale
-# (note the 'exp')
-lines(MyData1$Biomass, exp(P.low ), lty= 1, col= 1)
-lines(MyData2$Biomass, exp(P.mid ), lty= 1, col= 2)
-lines(MyData3$Biomass, exp(P.high), lty= 1, col= 3)
-# Better?
-
-legend("topright", 
- legend= c("high", "mid", "low"), 
- col= c(3:1), 
- lty= c(1, 1, 1), 
- lwd= c(1, 1, 1))
-```
-
-\  
-
-14\. (Optional but recommended) Use `predict` again, but this time obtain the fitted values and their standard errors on the scale of the linear predictor. From these, calculate confidence intervals for the fitted values, and plot them together with the data, after back-transforming the fitted values and intervals on the response scale.
-
-* Suggested approach:
-  + plot the raw data (one colour per pH)
-  + create a `data.frame` called `X` containing the data to predict for: as sequence of increasing Biomass and the pH of your choice
-  + use `predict()` with the appropriate options `type= "link", se.fit= TRUE` to obtain the fitted values on the link scale and for being able to calculate the confidence intervals later. Store in object `Z`.
-  + plot fitted values, extracted using `Z$fit`, against the Biomass sequence. Do not forget to back-transform on the response scale.
-  + plot the upper bound of the 95% CI (fitted values + 1.96*se), extracted using `Z$fit` and `Z$se.fit`, against the Biomass sequence. Do not forget to back-transform on the response scale.
-  + plot the lower bound of the 95% CI (fitted values - 1.96*se), extracted using `Z$fit` and `Z$se.fit`, against the Biomass sequence. Do not forget to back-transform on the response scale.
-  + repeat for other pH values.
-
-\  
-
-```{r Q14, eval=SOLUTIONS, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.height=8}
-coplot(logSp ~ Biomass | pH, data= sp)
-
-sp.glm2<- glm(Species ~ Biomass * pH, family= poisson, data= sp)
-
-P.low<- predict(sp.glm2, newdata= MyData1, type= "link", se.fit= T)
-P.mid<- predict(sp.glm2, newdata= MyData2, type= "link", se.fit= T)
-P.high<- predict(sp.glm2, newdata= MyData3, type= "link", se.fit= T)
-
-plot(sp$Biomass, sp$Species, col= sp$pH, xlab= "Biomass", ylab= "Number of species")
-
-# back-transform the predictions to make them on the response scale
-# (note the 'exp')
-lines(MyData1$Biomass, exp(P.low$fit ), lty= 1, col= 1)
-lines(MyData2$Biomass, exp(P.mid$fit ), lty= 1, col= 2)
-lines(MyData3$Biomass, exp(P.high$fit), lty= 1, col= 3)
-
-# same for the lower bound of the 95% CI
-lines(MyData1$Biomass, exp(P.low$fit  - 1.96*P.low$se.fit ), lty= 3, col= 1)
-lines(MyData2$Biomass, exp(P.mid$fit  - 1.96*P.mid$se.fit ), lty= 3, col= 2)
-lines(MyData3$Biomass, exp(P.high$fit - 1.96*P.high$se.fit), lty= 3, col= 3)
-
-# now the upper bound of the 95% CI
-lines(MyData1$Biomass, exp(P.low$fit  + 1.96*P.low$se.fit ), lty= 3, col= 1)
-lines(MyData2$Biomass, exp(P.mid$fit  + 1.96*P.mid$se.fit ), lty= 3, col= 2)
-lines(MyData3$Biomass, exp(P.high$fit + 1.96*P.high$se.fit), lty= 3, col= 3)
-
-legend("topright", 
- legend= c("high", "mid", "low"), 
- col= c(3:1), 
- lty= c(1, 1, 1), 
- lwd= c(1, 1, 1))
-```
-
-\  
-
-15\. Looking at the data and model fits, any idea why expected species richness for the largest values of biomass tends to be biased high? How satisfied are you with the model? Have we learned anything from it, about species diversity in relation to pH and biomass? 
-
-\  
-
-```{r Q15, eval=SOLUTIONS, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
+```{r Q13, eval=SOLUTIONS, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
 # The data show a very steep decline in species richness towards zero, 
 # as biomass increases.
 
@@ -370,6 +282,133 @@ legend("topright",
 
 ```
 
+\  
+
+14\. (Optional) Use `predict` again, but this time,
+* obtain the fitted values on the scale of the linear predictor `type= "link"`
+* only predict for the range of observed biomass for each pH level. 
+Plot again and compare with the previous graph: what is happening? How would you back-transform these values predicted on the link scale to plot them on the response scale again?
+
+\  
+
+```{r Q14, eval=SOLUTIONS, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.height=8}
+Biomass.seq1<- seq(from= min(sp$Biomass[sp$pH== "low"]), 
+                    to= max(sp$Biomass[sp$pH== "low"]), 
+                    l= 25)
+Biomass.seq2<- seq(from= min(sp$Biomass[sp$pH== "mid"]), 
+                    to= max(sp$Biomass[sp$pH== "mid"]), 
+                    l= 25)
+Biomass.seq3<- seq(from= min(sp$Biomass[sp$pH== "high"]), 
+                    to= max(sp$Biomass[sp$pH== "high"]), 
+                    l= 25)
+
+# predict for a range of biomass values and a low pH
+MyData1<- data.frame(Biomass= Biomass.seq1, pH= "low")
+# predict for a range of biomass values and a mid pH
+MyData2<- data.frame(Biomass= Biomass.seq2, pH= "mid")
+# predict for a range of biomass values and a high pH
+MyData3<- data.frame(Biomass= Biomass.seq3, pH= "high")
+
+P.low<- predict(sp.glm2, newdata= MyData1, type= "link")
+P.mid<- predict(sp.glm2, newdata= MyData2, type= "link")
+P.high<- predict(sp.glm2, newdata= MyData3, type= "link")
+
+plot(sp$Biomass, sp$Species, col= sp$pH, xlab= "Biomass", ylab= "Number of species")
+
+lines(MyData1$Biomass, P.low, lty= 1, col= 1)
+lines(MyData2$Biomass, P.mid, lty= 1, col= 2)
+lines(MyData3$Biomass, P.high, lty= 1, col= 3)
+# lines are straight and appear in the wrong place!
+# Because they are on the link scale (observations are on the response scale)
+
+# Now, re-plot after back-transforming the predictions to make them on the response scale
+plot(sp$Biomass, sp$Species, col= sp$pH, xlab= "Biomass", ylab= "Number of species")
+
+# (note the 'exp')
+lines(MyData1$Biomass, exp(P.low ), lty= 1, col= 1)
+lines(MyData2$Biomass, exp(P.mid ), lty= 1, col= 2)
+lines(MyData3$Biomass, exp(P.high), lty= 1, col= 3)
+# Better?
+
+legend("topright", 
+ legend= c("high", "mid", "low"), 
+ col= c(3:1), 
+ lty= c(1, 1, 1), 
+ lwd= c(1, 1, 1))
+```
+
+\  
+
+15\. (Optional but recommended) Use `predict` again, but this time obtain the fitted values and their standard errors on the scale of the linear predictor. From these, calculate confidence intervals for the fitted values, and plot them together with the data, after back-transforming the fitted values and intervals on the response scale.
+
+* Suggested approach:
+  + plot the raw data (one colour per pH)
+  + create a `data.frame` called `X` containing the data to predict for: as sequence of increasing Biomass and the pH of your choice
+  + use `predict()` with the appropriate options `type= "link", se.fit= TRUE` to obtain the fitted values on the link scale and for being able to calculate the confidence intervals later. Store in object `Z`.
+  + plot fitted values, extracted using `Z$fit`, against the Biomass sequence. Do not forget to back-transform on the response scale.
+  + plot the upper bound of the 95% CI (fitted values + 1.96*se), extracted using `Z$fit` and `Z$se.fit`, against the Biomass sequence. Do not forget to back-transform on the response scale.
+  + plot the lower bound of the 95% CI (fitted values - 1.96*se), extracted using `Z$fit` and `Z$se.fit`, against the Biomass sequence. Do not forget to back-transform on the response scale.
+  + repeat for other pH values.
+
+\  
+
+```{r Q15, eval=SOLUTIONS, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.height=8}
+P.low<- predict(sp.glm2, newdata= MyData1, type= "link", se.fit= T)
+P.mid<- predict(sp.glm2, newdata= MyData2, type= "link", se.fit= T)
+P.high<- predict(sp.glm2, newdata= MyData3, type= "link", se.fit= T)
+
+plot(sp$Biomass, sp$Species, col= sp$pH, xlab= "Biomass", ylab= "Number of species")
+
+# back-transform the predictions to make them on the response scale
+# (note the 'exp')
+lines(MyData1$Biomass, exp(P.low$fit ), lty= 1, col= 1)
+lines(MyData2$Biomass, exp(P.mid$fit ), lty= 1, col= 2)
+lines(MyData3$Biomass, exp(P.high$fit), lty= 1, col= 3)
+
+legend("topright", 
+ legend= c("high", "mid", "low"), 
+ col= c(3:1), 
+ lty= c(1, 1, 1), 
+ lwd= c(1, 1, 1))
+
+# (optional: overlay predictions for the full range of biomass, in dashed lines)
+# create a sequence of increasing Biomass again
+Biomass.seq<- seq(from= min(sp$Biomass), to= max(sp$Biomass), l= 25)
+MyData1<- data.frame(Biomass= Biomass.seq, pH= "low")
+MyData2<- data.frame(Biomass= Biomass.seq, pH= "mid")
+MyData3<- data.frame(Biomass= Biomass.seq, pH= "high")
+
+P.low<- predict(sp.glm2, newdata= MyData1, type= "link", se.fit= T)
+P.mid<- predict(sp.glm2, newdata= MyData2, type= "link", se.fit= T)
+P.high<- predict(sp.glm2, newdata= MyData3, type= "link", se.fit= T)
+
+# back-transform the predictions to make them on the response scale
+# (note the 'exp' and new line type 'lty= 2')
+lines(MyData1$Biomass, exp(P.low$fit ), lty= 2, col= 1)
+lines(MyData2$Biomass, exp(P.mid$fit ), lty= 2, col= 2)
+lines(MyData3$Biomass, exp(P.high$fit), lty= 2, col= 3)
+
+
+# Now add the lower bound of the 95% CI
+lines(MyData1$Biomass, exp(P.low$fit  - 1.96*P.low$se.fit ), lty= 3, col= 1)
+lines(MyData2$Biomass, exp(P.mid$fit  - 1.96*P.mid$se.fit ), lty= 3, col= 2)
+lines(MyData3$Biomass, exp(P.high$fit - 1.96*P.high$se.fit), lty= 3, col= 3)
+
+# and the upper bound of the 95% CI
+lines(MyData1$Biomass, exp(P.low$fit  + 1.96*P.low$se.fit ), lty= 3, col= 1)
+lines(MyData2$Biomass, exp(P.mid$fit  + 1.96*P.mid$se.fit ), lty= 3, col= 2)
+lines(MyData3$Biomass, exp(P.high$fit + 1.96*P.high$se.fit), lty= 3, col= 3)
+
+# The confidence intervals demonstrate clearly the difference between all pH levels.
+# Note the variable width, with more uncertainty at the extremes of the biomass data range.
+# If you have used the full extent of biomass for the 'low' pH level like in my code here,
+# you will also notice that the confidence interval shrinks again,
+# as the predicted values approach zero. 
+# This is the back-transformation doing its job, 
+# forcing fitted values to remain positive!
+```
+
+\  
 \  
 
 End of the Poisson GLM - predicting species richness exercise
