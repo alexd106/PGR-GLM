@@ -575,42 +575,97 @@ $(document).ready(function () {
 <p><img src="GLM_2_Binomial_exercise_solutions_v2_files/figure-html/Q3-4.png" width="672" /></p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># are seasonal patterns similar between years?</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">matplot</span>(<span class="fu">tapply</span>(dat<span class="sc">$</span>presence, <span class="fu">list</span>(dat<span class="sc">$</span>mon, dat<span class="sc">$</span>year), mean), <span class="at">type=</span> <span class="st">&quot;l&quot;</span>,</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">ylim=</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">xlab=</span> <span class="st">&quot;month&quot;</span>, <span class="at">ylab=</span> <span class="st">&quot;proportion of hours present&quot;</span>)</span></code></pre></div>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># let&#39;s calculate the mean per month for each year,</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># and plot the seasonal pattern lines for individual years together</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>mean.per.month.year<span class="ot">&lt;-</span> <span class="fu">tapply</span>(dat<span class="sc">$</span>presence, <span class="fu">list</span>(dat<span class="sc">$</span>mon, dat<span class="sc">$</span>year), mean)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co"># (month in rows, years in columns)</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co"># matplot draws one line per column (year)</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="fu">matplot</span>(mean.per.month.year, <span class="at">type=</span> <span class="st">&quot;l&quot;</span>,</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>                <span class="at">ylim=</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">xlab=</span> <span class="st">&quot;month&quot;</span>, <span class="at">ylab=</span> <span class="st">&quot;proportion of hours present&quot;</span>)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="at">x=</span> <span class="st">&quot;topleft&quot;</span>, <span class="at">legend=</span> <span class="fu">colnames</span>(mean.per.month.year),</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">bty=</span> <span class="st">&quot;n&quot;</span>, <span class="co"># no bounding box for the legend</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">col=</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">ncol</span>(mean.per.month.year),</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">lty=</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">ncol</span>(mean.per.month.year),</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>       <span class="at">title=</span> <span class="st">&quot;Year&quot;</span>)</span></code></pre></div>
 <p><img src="GLM_2_Binomial_exercise_solutions_v2_files/figure-html/Q3-5.png" width="672" /></p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Presence in relation to tide</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">tapply</span>(dat<span class="sc">$</span>presence, <span class="fu">list</span>(dat<span class="sc">$</span>Tide4), mean), <span class="at">type=</span> <span class="st">&quot;b&quot;</span>, <span class="at">ylim=</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>),</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span> <span class="st">&quot;tidal phase&quot;</span>,</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">ylab=</span> <span class="st">&quot;proportion of hours present&quot;</span>)</span></code></pre></div>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># This suggests similar seasonal patterns of variation across years</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Presence in relation to tide</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>mean.per.Tide4<span class="ot">&lt;-</span> <span class="fu">tapply</span>(dat<span class="sc">$</span>presence, <span class="fu">list</span>(dat<span class="sc">$</span>Tide4), mean)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mean.per.Tide4, <span class="at">type=</span> <span class="st">&quot;b&quot;</span>, <span class="at">ylim=</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>),</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span> <span class="st">&quot;tidal phase&quot;</span>,</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">ylab=</span> <span class="st">&quot;proportion of hours present&quot;</span>)</span></code></pre></div>
 <p><img src="GLM_2_Binomial_exercise_solutions_v2_files/figure-html/Q3-6.png" width="672" /></p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">matplot</span>(<span class="fu">tapply</span>(dat<span class="sc">$</span>presence, <span class="fu">list</span>(dat<span class="sc">$</span>mon, dat<span class="sc">$</span>Tide4), mean), <span class="at">type=</span> <span class="st">&quot;l&quot;</span>,</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">ylim=</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>),</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">xlab=</span> <span class="st">&quot;month&quot;</span>, <span class="at">ylab=</span> <span class="st">&quot;proportion of hours present&quot;</span>, <span class="at">lty=</span> <span class="dv">1</span>)</span></code></pre></div>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># are seasonal patterns similar between Tide4 levels?</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># let&#39;s calculate the mean per month for each tidal stage,</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>mean.per.month.Tide4<span class="ot">&lt;-</span> <span class="fu">tapply</span>(dat<span class="sc">$</span>presence, <span class="fu">list</span>(dat<span class="sc">$</span>mon, dat<span class="sc">$</span>Tide4), mean)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="fu">matplot</span>(mean.per.month.Tide4, <span class="at">type=</span> <span class="st">&quot;l&quot;</span>,</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">ylim=</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>),</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">xlab=</span> <span class="st">&quot;month&quot;</span>, <span class="at">ylab=</span> <span class="st">&quot;proportion of hours present&quot;</span>, <span class="at">lty=</span> <span class="dv">1</span>)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="at">x=</span> <span class="st">&quot;topleft&quot;</span>, <span class="at">legend=</span> <span class="fu">colnames</span>(mean.per.month.Tide4),</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">bty=</span> <span class="st">&quot;n&quot;</span>, <span class="co"># no bounding box for the legend</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">col=</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">ncol</span>(mean.per.month.Tide4),</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">lty=</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">ncol</span>(mean.per.month.Tide4),</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">title=</span> <span class="st">&quot;Tide4&quot;</span>)</span></code></pre></div>
 <p><img src="GLM_2_Binomial_exercise_solutions_v2_files/figure-html/Q3-7.png" width="672" /></p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># no change in pattern of tide use across seasons</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Seasonal variation in diel pattern</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">matplot</span>(<span class="fu">tapply</span>(dat<span class="sc">$</span>presence, <span class="fu">list</span>(dat<span class="sc">$</span>mon, dat<span class="sc">$</span>Time6), mean), <span class="at">type=</span> <span class="st">&quot;l&quot;</span>, </span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">ylim=</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), </span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">xlab=</span> <span class="st">&quot;month&quot;</span>, <span class="at">ylab=</span> <span class="st">&quot;proportion of hours present&quot;</span>, <span class="at">lty=</span> <span class="dv">1</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># no dramatic change in pattern of tide use across seasons, </span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># as all the lines follow a broadly similar trajectory:</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># the probability of sighting is mostly affected by season.</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co"># There are variations among tide levels but more subtle.</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Would such an interaction turn out to be significant in a model?</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Seasonal variation in diel pattern</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>mean.per.month.Time6<span class="ot">&lt;-</span> <span class="fu">tapply</span>(dat<span class="sc">$</span>presence, <span class="fu">list</span>(dat<span class="sc">$</span>mon, dat<span class="sc">$</span>Time6), mean)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="fu">matplot</span>(mean.per.month.Time6, <span class="at">type=</span> <span class="st">&quot;l&quot;</span>, </span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">ylim=</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), </span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>                <span class="at">xlab=</span> <span class="st">&quot;month&quot;</span>, <span class="at">ylab=</span> <span class="st">&quot;proportion of hours present&quot;</span>, <span class="at">lty=</span> <span class="dv">1</span>)</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="at">x=</span> <span class="st">&quot;topleft&quot;</span>, <span class="at">legend=</span> <span class="fu">colnames</span>(mean.per.month.Time6),</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">bty=</span> <span class="st">&quot;n&quot;</span>, <span class="co"># no bounding box for the legend</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>       <span class="at">col=</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">ncol</span>(mean.per.month.Time6),</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>       <span class="at">lty=</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">ncol</span>(mean.per.month.Time6),</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>       <span class="at">title=</span> <span class="st">&quot;Time6&quot;</span>)</span></code></pre></div>
 <p><img src="GLM_2_Binomial_exercise_solutions_v2_files/figure-html/Q3-8.png" width="672" /></p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># stronger diel pattern in later part of the year</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Variation in diel pattern between May-June (red) and the rest of the year</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="fu">matplot</span>(<span class="fu">tapply</span>(dat<span class="sc">$</span>presence, <span class="fu">list</span>(dat<span class="sc">$</span>mh, dat<span class="sc">$</span>Per2), mean), <span class="at">type=</span> <span class="st">&quot;l&quot;</span>,</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">ylim=</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), </span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">xlab=</span> <span class="st">&quot;time of day&quot;</span>, <span class="at">ylab=</span> <span class="st">&quot;proportion of hours present&quot;</span>, <span class="at">lty=</span> <span class="dv">1</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># stronger diel pattern in later part of the year:</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># the lines for different parts of the day diverge quite</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># strongly from Sept to Jan.</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Variation in diel pattern between May-June (red) and the rest of the year</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>mean.mh.Per2<span class="ot">&lt;-</span> <span class="fu">tapply</span>(dat<span class="sc">$</span>presence, <span class="fu">list</span>(dat<span class="sc">$</span>mh, dat<span class="sc">$</span>Per2), mean)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="fu">matplot</span>(mean.mh.Per2, <span class="at">type=</span> <span class="st">&quot;l&quot;</span>,</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">ylim=</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), </span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>                <span class="at">xlab=</span> <span class="st">&quot;time of day&quot;</span>, <span class="at">ylab=</span> <span class="st">&quot;proportion of hours present&quot;</span>, <span class="at">lty=</span> <span class="dv">1</span>)</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="at">x=</span> <span class="st">&quot;topleft&quot;</span>, <span class="at">legend=</span> <span class="fu">colnames</span>(mean.mh.Per2),</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">bty=</span> <span class="st">&quot;n&quot;</span>, <span class="co"># no bounding box for the legend</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">col=</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">ncol</span>(mean.mh.Per2),</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>       <span class="at">lty=</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">ncol</span>(mean.mh.Per2))</span></code></pre></div>
 <p><img src="GLM_2_Binomial_exercise_solutions_v2_files/figure-html/Q3-9.png" width="672" /></p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># less nocturnal in spring?</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># with more categories in spring</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">matplot</span>(<span class="fu">tapply</span>(dat<span class="sc">$</span>presence, <span class="fu">list</span>(dat<span class="sc">$</span>mh, dat<span class="sc">$</span>Per4), mean), <span class="at">type=</span> <span class="st">&quot;l&quot;</span>, </span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">ylim=</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), </span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">xlab=</span> <span class="st">&quot;time of day&quot;</span>, <span class="at">ylab=</span> <span class="st">&quot;proportion of hours present&quot;</span>, <span class="at">lty=</span> <span class="dv">1</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># less nocturnal in spring?</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># with more categories in spring</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>mean.mh.Per4<span class="ot">&lt;-</span> <span class="fu">tapply</span>(dat<span class="sc">$</span>presence, <span class="fu">list</span>(dat<span class="sc">$</span>mh, dat<span class="sc">$</span>Per4), mean)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="fu">matplot</span>(mean.mh.Per4, <span class="at">type=</span> <span class="st">&quot;l&quot;</span>, </span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">ylim=</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), </span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>                <span class="at">xlab=</span> <span class="st">&quot;time of day&quot;</span>, <span class="at">ylab=</span> <span class="st">&quot;proportion of hours present&quot;</span>, <span class="at">lty=</span> <span class="dv">1</span>)</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="at">x=</span> <span class="st">&quot;topleft&quot;</span>, <span class="at">legend=</span> <span class="fu">colnames</span>(mean.mh.Per4),</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">bty=</span> <span class="st">&quot;n&quot;</span>, <span class="co"># no bounding box for the legend</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">col=</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">ncol</span>(mean.mh.Per4),</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">lty=</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">ncol</span>(mean.mh.Per4))</span></code></pre></div>
 <p><img src="GLM_2_Binomial_exercise_solutions_v2_files/figure-html/Q3-10.png" width="672" /></p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># no obvious systematic difference between the 3 portions of May-June</span></span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># no obvious systematic difference between the 3 portions of May-June,</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># so Per2 is probably enough of a dichotomy</span></span></code></pre></div>
 <p> </p>
 <p>4. Let’s warm-up with a Binomial (Bernoulli) GLM (using <code>glm()</code> and the appropriate <code>family</code> argument) with numerical time of day, tide angle and day of the year as predictors: <code>tideangle_deg + mh + julianday</code>. This model doesn’t fully address the study goals stated above, but is easier to get our head around and looks at what may or may not work as a modelling approach.</p>
 <p> </p>
@@ -749,7 +804,7 @@ $(document).ready(function () {
 <span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a><span class="co"># definitions, too. Example code for this is given in the appendix at</span></span>
 <span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a><span class="co"># the end of the practical</span></span></code></pre></div>
 <p> </p>
-<p>8. Let’s move on to a Binomial (Bernoulli) GLM with some interactions of interest between numerical time of day, tide angle and day of the year as predictors: <code>tideangle_deg + mh + julianday + tideangle_deg:mh + mh:julianday + tideangle_deg:julianday</code>. Which individual interactions are implied in this formula? (Hint: if unsure, the summary of the model at the next question will list them).</p>
+<p>8. Let’s move on to a richer Binomial (Bernoulli) GLM, with some interactions of interest between numerical time of day, tide angle and day of the year as predictors: <code>tideangle_deg + mh + julianday + tideangle_deg:mh + mh:julianday + tideangle_deg:julianday</code>. Which individual interactions are implied in this formula? (Hint: if unsure, the summary of the model at the next question will list them).</p>
 <p> </p>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># convert numerically coded categorical variables into factors:</span></span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>fTide4<span class="ot">&lt;-</span> <span class="fu">factor</span>(dat<span class="sc">$</span>Tide4)</span>

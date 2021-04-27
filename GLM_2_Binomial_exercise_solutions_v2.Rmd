@@ -88,7 +88,7 @@ str(dat)
 
 \  
 
-```{r Q3, eval=SOLUTIONS, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
+```{r Q3, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.show= ifelse(SOLUTIONS, "asis", "hide")}
 # count observations per year/month combination and represent as mosaicplot
 plot(table(dat$year, dat$mon))
 # CPOD failure in Feb-April 2012 and Dec 2012-March 2013
@@ -106,36 +106,91 @@ plot(tapply(dat$presence, list(dat$mh), mean), type= "l", ylim= c(0, 1),
 		 xlab= "time of day", ylab= "proportion of hours present")
 
 # are seasonal patterns similar between years?
-matplot(tapply(dat$presence, list(dat$mon, dat$year), mean), type= "l",
+# let's calculate the mean per month for each year,
+# and plot the seasonal pattern lines for individual years together
+mean.per.month.year<- tapply(dat$presence, list(dat$mon, dat$year), mean)
+# (month in rows, years in columns)
+
+# matplot draws one line per column (year)
+matplot(mean.per.month.year, type= "l",
 				ylim= c(0, 1), xlab= "month", ylab= "proportion of hours present")
 
+legend(x= "topleft", legend= colnames(mean.per.month.year),
+       bty= "n", # no bounding box for the legend
+       col= 1:ncol(mean.per.month.year),
+       lty= 1:ncol(mean.per.month.year),
+       title= "Year")
+
+# This suggests similar seasonal patterns of variation across years
+
 # Presence in relation to tide
-plot(tapply(dat$presence, list(dat$Tide4), mean), type= "b", ylim= c(0, 1),
+mean.per.Tide4<- tapply(dat$presence, list(dat$Tide4), mean)
+plot(mean.per.Tide4, type= "b", ylim= c(0, 1),
      xlab= "tidal phase",
 		 ylab= "proportion of hours present")
 
-matplot(tapply(dat$presence, list(dat$mon, dat$Tide4), mean), type= "l",
+# are seasonal patterns similar between Tide4 levels?
+# let's calculate the mean per month for each tidal stage,
+mean.per.month.Tide4<- tapply(dat$presence, list(dat$mon, dat$Tide4), mean)
+matplot(mean.per.month.Tide4, type= "l",
        ylim= c(0, 1),
 			 xlab= "month", ylab= "proportion of hours present", lty= 1)
-# no change in pattern of tide use across seasons
+
+legend(x= "topleft", legend= colnames(mean.per.month.Tide4),
+       bty= "n", # no bounding box for the legend
+       col= 1:ncol(mean.per.month.Tide4),
+       lty= 1:ncol(mean.per.month.Tide4),
+       title= "Tide4")
+
+# no dramatic change in pattern of tide use across seasons, 
+# as all the lines follow a broadly similar trajectory:
+# the probability of sighting is mostly affected by season.
+# There are variations among tide levels but more subtle.
+# Would such an interaction turn out to be significant in a model?
 
 # Seasonal variation in diel pattern
-matplot(tapply(dat$presence, list(dat$mon, dat$Time6), mean), type= "l", 
+mean.per.month.Time6<- tapply(dat$presence, list(dat$mon, dat$Time6), mean)
+matplot(mean.per.month.Time6, type= "l", 
         ylim= c(0, 1), 
 				xlab= "month", ylab= "proportion of hours present", lty= 1)
-# stronger diel pattern in later part of the year
+
+legend(x= "topleft", legend= colnames(mean.per.month.Time6),
+       bty= "n", # no bounding box for the legend
+       col= 1:ncol(mean.per.month.Time6),
+       lty= 1:ncol(mean.per.month.Time6),
+       title= "Time6")
+
+# stronger diel pattern in later part of the year:
+# the lines for different parts of the day diverge quite
+# strongly from Sept to Jan.
 
 # Variation in diel pattern between May-June (red) and the rest of the year
-matplot(tapply(dat$presence, list(dat$mh, dat$Per2), mean), type= "l",
+mean.mh.Per2<- tapply(dat$presence, list(dat$mh, dat$Per2), mean)
+
+matplot(mean.mh.Per2, type= "l",
         ylim= c(0, 1), 
 				xlab= "time of day", ylab= "proportion of hours present", lty= 1)
+
+legend(x= "topleft", legend= colnames(mean.mh.Per2),
+       bty= "n", # no bounding box for the legend
+       col= 1:ncol(mean.mh.Per2),
+       lty= 1:ncol(mean.mh.Per2))
+
 # less nocturnal in spring?
 
 # with more categories in spring
-matplot(tapply(dat$presence, list(dat$mh, dat$Per4), mean), type= "l", 
+mean.mh.Per4<- tapply(dat$presence, list(dat$mh, dat$Per4), mean)
+matplot(mean.mh.Per4, type= "l", 
         ylim= c(0, 1), 
 				xlab= "time of day", ylab= "proportion of hours present", lty= 1)
-# no obvious systematic difference between the 3 portions of May-June
+
+legend(x= "topleft", legend= colnames(mean.mh.Per4),
+       bty= "n", # no bounding box for the legend
+       col= 1:ncol(mean.mh.Per4),
+       lty= 1:ncol(mean.mh.Per4))
+
+# no obvious systematic difference between the 3 portions of May-June,
+# so Per2 is probably enough of a dichotomy
 
 ```
 
@@ -181,7 +236,7 @@ summary(PA1)
 
 \  
 
-```{r Q6, eval=SOLUTIONS, echo=TRUE, results=SOLUTIONS, collapse=TRUE}
+```{r Q6, eval=TRUE, echo=TRUE, results=SOLUTIONS, collapse=TRUE, fig.show= ifelse(SOLUTIONS, "asis", "hide")}
 library(car)
 vif(PA1)
 # No concern.
@@ -212,7 +267,7 @@ binnedplot(x= dat$julianday, y= res.PA1.p, xlab= "Day of the year", nclass= 100)
 
 \  
 
-```{r Q6b, eval=SOLUTIONS, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
+```{r Q6b, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
 # clearly some unwanted patterns, especially in mh and julianday
 # but possibly in tide angle, too
 # all pointing at non-linear effects of the predictors on the response
@@ -225,7 +280,7 @@ In case needed, a home-made alternative to the `binnedplot` function:
 
 \  
 
-```{r Q6c, eval=SOLUTIONS, echo=TRUE, results=SOLUTIONS, collapse=TRUE}
+```{r Q6c, eval=TRUE, echo=TRUE, results=SOLUTIONS, collapse=TRUE, fig.show= ifelse(SOLUTIONS, "asis", "hide")}
 par(mfrow= c(2, 2))
 # plot the residuals against tideangle_deg
 plot(res.PA1.p ~ dat$tideangle_deg, col= dat$presence + 1)
@@ -289,7 +344,7 @@ abline(h= 0, lty= 3, col= grey(0.5))
 
 \  
 
-8\. Let's move on to a Binomial (Bernoulli) GLM with some interactions of interest between numerical time of day, tide angle and day of the year as predictors: `tideangle_deg + mh + julianday + tideangle_deg:mh + mh:julianday + tideangle_deg:julianday`. Which individual interactions are implied in this formula? (Hint: if unsure, the summary of the model at the next question will list them). 
+8\. Let's move on to a richer Binomial (Bernoulli) GLM, with some interactions of interest between numerical time of day, tide angle and day of the year as predictors: `tideangle_deg + mh + julianday + tideangle_deg:mh + mh:julianday + tideangle_deg:julianday`. Which individual interactions are implied in this formula? (Hint: if unsure, the summary of the model at the next question will list them). 
 
 \  
 
@@ -361,7 +416,7 @@ anova(PA12, test= "Chisq")
 
 \  
 
-```{r Q11, eval=SOLUTIONS, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
+```{r Q11, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.show= ifelse(SOLUTIONS, "asis", "hide")}
 # plot against predictors:
  res.PA12.p<- resid(PA12, type= "pearson")
 
@@ -450,7 +505,7 @@ legend(x= "topright", legend= c("RestOfYear", "MayJun"), col= c(1, 2), lty= 1, p
 
 \  
 
-```{r Q13, eval=SOLUTIONS, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.height=8, , fig.width=8}
+```{r Q13, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.height=8, , fig.width=8}
 # dolphins have a weak but apparently stable preference for certain tidal states in Sutors.
 
 # According to model PA12, they are more likely to be seen during the day in
@@ -495,7 +550,7 @@ A1\. Repeat the model selection this time using AIC, with `step()`. Do you obtai
 
 \  
 
-```{r QA1, eval=SOLUTIONS, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
+```{r QA1, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
 PA10.MAM.stepAIC<- step(PA10)
 
 anova(PA10.MAM.stepAIC, test= "Chisq")
@@ -559,12 +614,12 @@ summary.table$deltaAIC<- summary.table$AIC - summary.table$AIC[1]
 # All the models including fMonth are preferred to any model that doesn't
 ```
 
-```{r QA1b, eval=SOLUTIONS, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
+```{r QA1b, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
 require(knitr)
 kable(summary.table)
 ```
 
-```{r QA1c, eval=SOLUTIONS, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
+```{r QA1c, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.show= ifelse(SOLUTIONS, "asis", "hide")}
 # residual analysis:
 res20.d<- resid(PA20.MAM.stepAIC, type= "pearson")
 library(arm)

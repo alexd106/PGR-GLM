@@ -174,7 +174,7 @@ vif(sp.glm2)
 
 \  
 
-```{r Q11, eval=SOLUTIONS, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
+```{r Q11, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.show= ifelse(SOLUTIONS, "asis", "hide")}
 par(mfrow= c(2, 2))
 plot(sp.glm2)
 
@@ -217,7 +217,7 @@ abline(h= 0, col= 2, lty= 2)
 
 \  
 
-```{r Q12, eval=SOLUTIONS, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.height=8}
+```{r Q12, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.height=8, fig.show= ifelse(SOLUTIONS, "asis", "hide")}
 par(mfrow= c(1, 1))
 # create a sequence of increasing Biomass
 Biomass.seq<- seq(from= min(sp$Biomass), to= max(sp$Biomass), l= 25)
@@ -256,7 +256,7 @@ legend("topright",
 
 \  
 
-```{r Q13, eval=SOLUTIONS, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
+```{r Q13, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
 # The data show a very steep decline in species richness towards zero, 
 # as biomass increases.
 
@@ -291,7 +291,7 @@ Plot again and compare with the previous graph: what is happening? How would you
 
 \  
 
-```{r Q14, eval=SOLUTIONS, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.height=8}
+```{r Q14, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.height=8, fig.show= ifelse(SOLUTIONS, "asis", "hide")}
 Biomass.seq1<- seq(from= min(sp$Biomass[sp$pH== "low"]), 
                     to= max(sp$Biomass[sp$pH== "low"]), 
                     l= 25)
@@ -352,7 +352,7 @@ legend("topright",
 
 \  
 
-```{r Q15, eval=SOLUTIONS, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.height=8}
+```{r Q15, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.height=8, fig.show= ifelse(SOLUTIONS, "asis", "hide")}
 P.low<- predict(sp.glm2, newdata= MyData1, type= "link", se.fit= T)
 P.mid<- predict(sp.glm2, newdata= MyData2, type= "link", se.fit= T)
 P.high<- predict(sp.glm2, newdata= MyData3, type= "link", se.fit= T)
