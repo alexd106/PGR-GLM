@@ -57,7 +57,7 @@ str(Mites)
 
 \  
 
-```{r Q2, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
+```{r Q2, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.show= ifelse(SOLUTIONS, "asis", "hide")}
 # Outliers Y
 boxplot(Mites$Proportion) # not very useful for this data set
 dotchart(Mites$Proportion)
@@ -199,8 +199,7 @@ drop1(M1, test= "Chi")
 
 \  
 
-
-```{r Q8, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.height=8}
+```{r Q8, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.height=8, fig.show= ifelse(SOLUTIONS, "asis", "hide")}
 library(car)
 vif(M1)
 
@@ -252,7 +251,7 @@ abline(h= 0, col= grey(0.5), lty= 2)
 
 \  
 
-```{r Q9, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
+```{r Q9, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.show= ifelse(SOLUTIONS, "asis", "hide")}
 MyData1<- data.frame(Concentration= seq(0, 2.16, length= 50), fToxic= "1")
 MyData2<- data.frame(Concentration= seq(0, 2.16, length= 50), fToxic= "2")
 MyData3<- data.frame(Concentration= seq(0, 2.16, length= 50), fToxic= "3")
@@ -305,7 +304,7 @@ summary(M2)
 
 \  
 
-```{r Q10, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
+```{r Q10, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.show= ifelse(SOLUTIONS, "asis", "hide")}
 # Sketch model fit with 95% confidence bands for Toxic 1
 MyData1<- data.frame(Concentration= seq(0, 2.16, length= 50), fToxic= "1")
 MyData2<- data.frame(Concentration= seq(0, 2.16, length= 50), fToxic= "2")

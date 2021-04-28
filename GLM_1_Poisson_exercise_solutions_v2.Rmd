@@ -120,7 +120,7 @@ sp.glm2<- glm(Species ~ Biomass * pH, family= poisson, data= sp)
 
 \  
 
-```{r Q7-9, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
+```{r Q7, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
 summary(sp.glm2)
 anova(sp.glm2, test= "Chisq")
 
@@ -147,7 +147,42 @@ drop1(sp.glm2, test= "Chisq")
 
 \  
 
+```{r Q8, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
+
+# We could write the model as:
+# Species ~ Poisson(mu)
+# log(mu) = 2.95*Intercept - 0.26*Biomass + 0.48*pHmid + 0.82*pHhigh
+#   + 0.12*pHmid*Biomass + 0.16*pHhigh*Biomass
+# where:
+# Intercept=1
+# pHmid is 1 for medium pH and zero otherwise
+# pHhigh is 1 for high pH and zero otherwise
+
+# The summary gives a residual deviance of 83 on 84 degrees of freedom,
+# so the ratio is about 1, hence no indication of under- or over-dispersion
+
+```
+
+\  
+
 9\. Is everything significant? Which of the summaries above do you prefer to use, if you would like to explain the predictions, or test hypotheses, or perform model selection?
+
+\  
+
+```{r Q9, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
+
+# to explain patterns in the data, we need to look at the coefficient
+# estimates from the summary of the model.
+
+# To test hyoptheses on the coefficient value being different from zero,
+# look at the Z-test in the summary table
+
+# To test hyoptheses on a predictor explaining a significant porportion of 
+# variation in the data, look at the Chi-sq-test in the anova table
+
+# To perform model selection, you might want to use drop1
+
+```
 
 \  
 
@@ -172,7 +207,7 @@ vif(sp.glm2)
 
 \  
 
-```{r Q11, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
+```{r Q11, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.show= ifelse(SOLUTIONS, "asis", "hide")}
 par(mfrow= c(2, 2))
 plot(sp.glm2)
 
@@ -215,7 +250,7 @@ abline(h= 0, col= 2, lty= 2)
 
 \  
 
-```{r Q12, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.height=8}
+```{r Q12, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.height=8, fig.show= ifelse(SOLUTIONS, "asis", "hide")}
 par(mfrow= c(1, 1))
 # create a sequence of increasing Biomass
 Biomass.seq<- seq(from= min(sp$Biomass), to= max(sp$Biomass), l= 25)
@@ -289,7 +324,7 @@ Plot again and compare with the previous graph: what is happening? How would you
 
 \  
 
-```{r Q14, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.height=8}
+```{r Q14, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.height=8, fig.show= ifelse(SOLUTIONS, "asis", "hide")}
 Biomass.seq1<- seq(from= min(sp$Biomass[sp$pH== "low"]), 
                     to= max(sp$Biomass[sp$pH== "low"]), 
                     l= 25)
@@ -350,7 +385,8 @@ legend("topright",
 
 \  
 
-```{r Q15, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.height=8}
+```{r Q15, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.height=8, fig.show= ifelse(SOLUTIONS, "asis", "hide")}
+
 P.low<- predict(sp.glm2, newdata= MyData1, type= "link", se.fit= T)
 P.mid<- predict(sp.glm2, newdata= MyData2, type= "link", se.fit= T)
 P.high<- predict(sp.glm2, newdata= MyData3, type= "link", se.fit= T)
