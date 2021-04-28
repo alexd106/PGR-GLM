@@ -65,11 +65,11 @@ cat(sep="\n\n")
 
 ```{r code-out, include = FALSE}
 # TODO: generate list automagically
-
-knitr::purl('./GLM_1_Poisson_exercise_solutions_v2.Rmd', output = './exercise_solutions/GLM_1_Poisson_exercise_solutions_v2.R', quiet = TRUE)
-knitr::purl('./GLM_2_Binomial_exercise_solutions_v2.Rmd', output = './exercise_solutions/GLM_2_Binomial_exercise_solutions_v2.R', quiet = TRUE)
-knitr::purl('./GLM_3_BinomialProportions_exercise_solutions.Rmd', output = './exercise_solutions/GLM_3_BinomialProportions_exercise_solutions.R', quiet = TRUE)
-
+setwd('./exercise_solutions')
+knitr::purl('../GLM_1_Poisson_exercise_solutions_v2.Rmd', output = 'GLM_1_Poisson_exercise_solutions_v2.R', quiet = TRUE)
+knitr::purl('../GLM_2_Binomial_exercise_solutions_v2.Rmd', output = 'GLM_2_Binomial_exercise_solutions_v2.R', quiet = TRUE)
+knitr::purl('../GLM_3_BinomialProportions_exercise_solutions.Rmd', output = 'GLM_3_BinomialProportions_exercise_solutions.R', quiet = TRUE)
+setwd('..')
 ```
 
 

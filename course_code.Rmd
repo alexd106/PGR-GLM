@@ -35,7 +35,7 @@ cat(sep="\n\n")
 
 ```{r sol_lm1, results='asis', eval = isTRUE(show_text_lm1)}
 link_name <- "GLM - binomial (0/1 data) exercise"
-file_name <- "exercise_solutions/linear_model_1_exercise_solutions.R"
+file_name <- "exercise_solutions/GLM_2_Binomial_exercise_solutions_v2.R"
 paste0("- [", link_name, "](", file_name, ")") %>%
 cat(sep="\n\n")
 ```
@@ -46,7 +46,7 @@ cat(sep="\n\n")
 
 ```{r sol_lm2, results='asis', eval = isTRUE(show_text_lm2)}
 link_name <- "GLM - binomial (proportion data) exercise"
-file_name <- "GLM_2_Binomial_exercise_solutions_v2.R"
+file_name <- "GLM_3_BinomialProportions_exercise_solutions.R"
 paste0("- [", link_name, "](", file_name, ")") %>%
 cat(sep="\n\n")
 ```
