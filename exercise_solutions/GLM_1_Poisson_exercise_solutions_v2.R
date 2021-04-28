@@ -42,7 +42,7 @@ exp(3.18 - 0.064*5) # 17.46
 sp.glm2<- glm(Species ~ Biomass * pH, family= poisson, data= sp)
 
 
-## ----Q7-9, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE--------
+## ----Q7, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE----------
 summary(sp.glm2)
 anova(sp.glm2, test= "Chisq")
 
@@ -61,6 +61,37 @@ drop1(sp.glm2, test= "Chisq")
 # from the summary table, in this case, although the null hypothesis
 # is different (coefficient different from zero in the latter 
 # vs. significant proportion of variation explained in the former).
+
+
+
+## ----Q8, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE----------
+
+# We could write the model as:
+# Species ~ Poisson(mu)
+# log(mu) = 2.95*Intercept - 0.26*Biomass + 0.48*pHmid + 0.82*pHhigh
+#   + 0.12*pHmid*Biomass + 0.16*pHhigh*Biomass
+# where:
+# Intercept=1
+# pHmid is 1 for medium pH and zero otherwise
+# pHhigh is 1 for high pH and zero otherwise
+
+# The summary gives a residual deviance of 83 on 84 degrees of freedom,
+# so the ratio is about 1, hence no indication of under- or over-dispersion
+
+
+
+## ----Q9, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE----------
+
+# to explain patterns in the data, we need to look at the coefficient
+# estimates from the summary of the model.
+
+# To test hyoptheses on the coefficient value being different from zero,
+# look at the Z-test in the summary table
+
+# To test hyoptheses on a predictor explaining a significant porportion of 
+# variation in the data, look at the Chi-sq-test in the anova table
+
+# To perform model selection, you might want to use drop1
 
 
 
