@@ -545,10 +545,10 @@ $(document).ready(function () {
 <li>Hints:
 <ul>
 <li>Presence/absence data (Bernoulli) are more difficult to explore than other types.</li>
-<li>One approach is to count observations per categories of interest.</li>
-<li><code>table()</code> is a useful way to count the number of observations per category or combinations of categories, e.g. <code>ObsPerMonthYear&lt;- table(dat$year, dat$mon)</code></li>
+<li>One approach to find out if there are categories with very few data, is to count observations per categories of interest.</li>
+<li><code>table()</code> is a useful way to count the number of observations per category or combinations of categories, e.g. <code>ObsPerMonthYear&lt;- table(dat$year, dat$mon)</code> for all combinations of year and month.</li>
 <li><code>plot(ObsPerMonthYear)</code> returns a “mosaic plot” where the area of each rectangle is proportional to the count.</li>
-<li>For proportion of time present, you could calculate mean presence per category <code>bla&lt;- tapply(dat$presence, list(dat$GroupOfInterest), mean)</code></li>
+<li>For proportion of time present (the parameter that we’re ultimately trying to estimate with the binomial GLM), you could calculate mean presence per category <code>bla&lt;- tapply(dat$presence, list(dat$GroupOfInterest), mean)</code></li>
 <li>and plot this using <code>plot(bla, type= "b", ylim= c(0, 1), xlab= "GroupOfInterest", ylab= "presence")</code></li>
 <li>In more than one dimension, <code>matplot(tapply(dat$presence, list(dat$Group1, dat$Group2), mean), type= "l", ylim= c(0, 1), xlab= "Group1", ylab= "presence", lty= 1)</code> produces one line per category in Group2.</li>
 </ul></li>
@@ -623,25 +623,28 @@ $(document).ready(function () {
 <p> </p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Please take the time to think before unfolding the next code chunk</span></span></code></pre></div>
 <p> </p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># there are several ways the non-linearity could be addressed. </span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># one of the most straightforward with glm() is to discretize</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># continuous predictors into bins and to treat them as factors.</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># In this way, a mean is estimated per category of the variable,</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># and no assumption is made about the shape of the relationship.</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Each of the predictors we started with already has one or more </span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co"># categorical counterpart in the data set.</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co"># I suggest you try fTide4 + Per2 + Time6, </span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co"># with fTide4 being the factor version of Tide4 (needs creating).</span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Then, we are also interested in interactions between these predictors.</span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Some of the more biologically relevant interactions could include</span></span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="co">#  + fTide4:Per2 + fTide4:Time6 + Per2:Time6</span></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="co"># You can choose something else or cut the predictors into different bin </span></span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="co"># definitions, too. Example code for this is given in the appendix at</span></span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="co"># the end of the practical</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The issue is that the effects of these predictors are not linear</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># on the logit (link) scale.</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># There are several ways the non-linearity could be addressed. </span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># one of the most straightforward with glm() is to discretize</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co"># continuous predictors into bins and to treat them as factors.</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co"># In this way, a mean is estimated per category of the variable,</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co"># and no assumption is made about the shape of the relationship.</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Each of the predictors we started with already has one or more </span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co"># categorical counterpart in the data set.</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co"># I suggest you try fTide4 + Per2 + Time6, </span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co"># with fTide4 being the factor version of Tide4 (needs creating).</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Then, we are also interested in interactions between these predictors.</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Some of the more biologically relevant interactions could include</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="co">#  + fTide4:Per2 + fTide4:Time6 + Per2:Time6</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="co"># You can choose something else or cut the predictors into different bin </span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="co"># definitions, too. Example code for this is given in the appendix at</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="co"># the end of the practical</span></span></code></pre></div>
 <p> </p>
-<p>8. Let’s move on to a richer Binomial (Bernoulli) GLM, with some interactions of interest between numerical time of day, tide angle and day of the year as predictors: <code>tideangle_deg + mh + julianday + tideangle_deg:mh + mh:julianday + tideangle_deg:julianday</code>. Which individual interactions are implied in this formula? (Hint: if unsure, the summary of the model at the next question will list them).</p>
+<p>8. Let’s move on to a richer Binomial (Bernoulli) GLM, with some interactions of interest between categorical time of day, tide angle and day of the year as predictors: <code>fTide4 + Per2 + Time6 + fTide4:Per2 + fTide4:Time6 + Per2:Time6</code>. Which individual interactions are implied in this formula? (Hint: if unsure, the summary of the model at the next question will list them).</p>
 <p> </p>
 <p> </p>
 <p>9. Obtain summaries of the model output using the <code>summary()</code> function. Make sure you understand the biological hypothesis implied by each term, qualitatively.</p>

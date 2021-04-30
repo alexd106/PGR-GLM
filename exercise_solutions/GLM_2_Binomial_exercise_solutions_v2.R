@@ -20,14 +20,19 @@ plot(table(dat$year, dat$mon))
 plot(table(dat$mh))
 # fairly even representation of hours
 # (that's on the random sample; Almost perfectly balanced on the full dataset)
+# we should have no problem using 'mh' as a predictor in the model
 
 plot(table(dat$Tide4, dat$mh))
 # even representation of tides
 # time of day and tidal phase not independent (but not a linear correlation)
+# This is balanced enough that we should have no problem using 'mh', Tide4
+# or their interaction as predictors in the model.
 
+#### Now, investigating variation in probability of encounter:
 # presence in relation to time of day
 plot(tapply(dat$presence, list(dat$mh), mean), type= "l", ylim= c(0, 1),
 		 xlab= "time of day", ylab= "proportion of hours present")
+# Probability slightly lower in the middle of the day
 
 # are seasonal patterns similar between years?
 # let's calculate the mean per month for each year,
@@ -45,13 +50,15 @@ legend(x= "topleft", legend= colnames(mean.per.month.year),
        lty= 1:ncol(mean.per.month.year),
        title= "Year")
 
-# This suggests similar seasonal patterns of variation across years
+# This suggests similar seasonal patterns of variation across years,
+# with very low probability of presence from Jan to March
 
 # Presence in relation to tide
 mean.per.Tide4<- tapply(dat$presence, list(dat$Tide4), mean)
 plot(mean.per.Tide4, type= "b", ylim= c(0, 1),
      xlab= "tidal phase",
 		 ylab= "proportion of hours present")
+# No obvious effect of tidal phase on average?
 
 # are seasonal patterns similar between Tide4 levels?
 # let's calculate the mean per month for each tidal stage,
@@ -101,20 +108,6 @@ legend(x= "topleft", legend= colnames(mean.mh.Per2),
        lty= 1:ncol(mean.mh.Per2))
 
 # less nocturnal in spring?
-
-# with more categories in spring
-mean.mh.Per4<- tapply(dat$presence, list(dat$mh, dat$Per4), mean)
-matplot(mean.mh.Per4, type= "l", 
-        ylim= c(0, 1), 
-				xlab= "time of day", ylab= "proportion of hours present", lty= 1)
-
-legend(x= "topleft", legend= colnames(mean.mh.Per4),
-       bty= "n", # no bounding box for the legend
-       col= 1:ncol(mean.mh.Per4),
-       lty= 1:ncol(mean.mh.Per4))
-
-# no obvious systematic difference between the 3 portions of May-June,
-# so Per2 is probably enough of a dichotomy
 
 
 
@@ -212,7 +205,10 @@ abline(h= 0, lty= 3, col= grey(0.5))
 
 
 ## ----Q7b, eval=TRUE, echo=TRUE, results=SOLUTIONS, collapse=TRUE--------------
-# there are several ways the non-linearity could be addressed. 
+# The issue is that the effects of these predictors are not linear
+# on the logit (link) scale.
+
+# There are several ways the non-linearity could be addressed. 
 # one of the most straightforward with glm() is to discretize
 # continuous predictors into bins and to treat them as factors.
 # In this way, a mean is estimated per category of the variable,
@@ -294,8 +290,12 @@ binnedplot(x= dat$mh, y=  res.PA12.p, xlab= "hour")
 # okay
 binnedplot(x= dat$julianday, y=  res.PA12.p, xlab= "Day of the year", nclass= 100)
 # julianday is not strictly a predictor in the model, 
-# but is a more informative version of Per2
-# residuals look less than good. Not too surprising, because the
+# but is a more informative version of Per2:
+# while Per 2 is the predictor used, there is no certainty that it's a good way
+# to describe temporal variation (the cut is quite arbitrary). 
+# Plotting against julian day allows to check this further.
+
+# Residuals look less than good. Not too surprising, because the
 # model only allows for difference between May-June
 # and rest of the year, since predictor 'Per2' lumps everything
 # from July to April in the same category)
