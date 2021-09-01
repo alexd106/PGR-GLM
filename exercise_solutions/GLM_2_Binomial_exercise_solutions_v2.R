@@ -1,4 +1,4 @@
-## ----Q2, eval=TRUE, echo=TRUE, results=TRUE, collapse=FALSE-----------------------------------------------------
+## ----Q2, eval=TRUE, echo=TRUE, results=TRUE, collapse=FALSE------------------------------------------------------------------
 
 dat<- read.csv("./data/dolphin.csv", stringsAsFactors= T)
 
@@ -12,7 +12,7 @@ dat$Time6<- factor(dat$Time6, levels= c("MNight", "AM1", "AM2", "MDay", "PM1", "
 str(dat)
 
 
-## ----Q3, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.show= ifelse(SOLUTIONS, "asis", "hide")----
+## ----Q3, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.show= ifelse(SOLUTIONS, "asis", "hide")------------
 
 # count observations per year/month combination and represent as mosaicplot
 plot(table(dat$year, dat$mon))
@@ -21,14 +21,19 @@ plot(table(dat$year, dat$mon))
 plot(table(dat$mh))
 # fairly even representation of hours
 # (that's on the random sample; Almost perfectly balanced on the full dataset)
+# we should have no problem using 'mh' as a predictor in the model
 
 plot(table(dat$Tide4, dat$mh))
 # even representation of tides
 # time of day and tidal phase not independent (but not a linear correlation)
+# This is balanced enough that we should have no problem using 'mh', Tide4
+# or their interaction as predictors in the model.
 
+#### Now, investigating variation in probability of encounter:
 # presence in relation to time of day
 plot(tapply(dat$presence, list(dat$mh), mean), type= "l", ylim= c(0, 1),
 		 xlab= "time of day", ylab= "proportion of hours present")
+# Probability slightly lower in the middle of the day
 
 # are seasonal patterns similar between years?
 # let's calculate the mean per month for each year,
@@ -46,13 +51,15 @@ legend(x= "topleft", legend= colnames(mean.per.month.year),
        lty= 1:ncol(mean.per.month.year),
        title= "Year")
 
-# This suggests similar seasonal patterns of variation across years
+# This suggests similar seasonal patterns of variation across years,
+# with very low probability of presence from Jan to March
 
 # Presence in relation to tide
 mean.per.Tide4<- tapply(dat$presence, list(dat$Tide4), mean)
 plot(mean.per.Tide4, type= "b", ylim= c(0, 1),
      xlab= "tidal phase",
 		 ylab= "proportion of hours present")
+# No obvious effect of tidal phase on average?
 
 # are seasonal patterns similar between Tide4 levels?
 # let's calculate the mean per month for each tidal stage,
@@ -103,27 +110,13 @@ legend(x= "topleft", legend= colnames(mean.mh.Per2),
 
 # less nocturnal in spring?
 
-# with more categories in spring
-mean.mh.Per4<- tapply(dat$presence, list(dat$mh, dat$Per4), mean)
-matplot(mean.mh.Per4, type= "l", 
-        ylim= c(0, 1), 
-				xlab= "time of day", ylab= "proportion of hours present", lty= 1)
-
-legend(x= "topleft", legend= colnames(mean.mh.Per4),
-       bty= "n", # no bounding box for the legend
-       col= 1:ncol(mean.mh.Per4),
-       lty= 1:ncol(mean.mh.Per4))
-
-# no obvious systematic difference between the 3 portions of May-June,
-# so Per2 is probably enough of a dichotomy
 
 
-
-## ----Q4, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE--------------------------------------------
+## ----Q4, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE---------------------------------------------------------
 PA1<- glm(presence ~ tideangle_deg + mh + julianday, family= binomial, data= dat)
 
 
-## ----Q5, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE--------------------------------------------
+## ----Q5, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE---------------------------------------------------------
 summary(PA1)
 
 # Model description:
@@ -143,7 +136,7 @@ summary(PA1)
 
 
 
-## ----Q6, eval=TRUE, echo=TRUE, results=SOLUTIONS, collapse=TRUE, fig.show= ifelse(SOLUTIONS, "asis", "hide")----
+## ----Q6, eval=TRUE, echo=TRUE, results=SOLUTIONS, collapse=TRUE, fig.show= ifelse(SOLUTIONS, "asis", "hide")-----------------
 
 library(car)
 vif(PA1)
@@ -173,14 +166,14 @@ binnedplot(x= dat$mh, y= res.PA1.p, xlab= "hour")
 binnedplot(x= dat$julianday, y= res.PA1.p, xlab= "Day of the year", nclass= 100)
 
 
-## ----Q6b, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE-------------------------------------------
+## ----Q6b, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE--------------------------------------------------------
 # clearly some unwanted patterns, especially in mh and julianday
 # but possibly in tide angle, too
 # all pointing at non-linear effects of the predictors on the response
 
 
 
-## ----Q6c, eval=TRUE, echo=TRUE, results=SOLUTIONS, collapse=TRUE, fig.show= ifelse(SOLUTIONS, "asis", "hide")----
+## ----Q6c, eval=TRUE, echo=TRUE, results=SOLUTIONS, collapse=TRUE, fig.show= ifelse(SOLUTIONS, "asis", "hide")----------------
 par(mfrow= c(2, 2))
 # plot the residuals against tideangle_deg
 plot(res.PA1.p ~ dat$tideangle_deg, col= dat$presence + 1)
@@ -208,13 +201,16 @@ abline(h= 0, lty= 3, col= grey(0.5))
 # Same story.
 
 
-## ----Q7a, eval=TRUE, echo=TRUE, results=SOLUTIONS, collapse=TRUE------------------------------------------------
+## ----Q7a, eval=TRUE, echo=TRUE, results=SOLUTIONS, collapse=TRUE-------------------------------------------------------------
 # Please take the time to think before unfolding the next code chunk
 
 
 
-## ----Q7b, eval=TRUE, echo=TRUE, results=SOLUTIONS, collapse=TRUE------------------------------------------------
-# there are several ways the non-linearity could be addressed. 
+## ----Q7b, eval=TRUE, echo=TRUE, results=SOLUTIONS, collapse=TRUE-------------------------------------------------------------
+# The issue is that the effects of these predictors are not linear
+# on the logit (link) scale.
+
+# There are several ways the non-linearity could be addressed. 
 # one of the most straightforward with glm() is to discretize
 # continuous predictors into bins and to treat them as factors.
 # In this way, a mean is estimated per category of the variable,
@@ -234,7 +230,7 @@ abline(h= 0, lty= 3, col= grey(0.5))
 
 
 
-## ----Q8, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE--------------------------------------------
+## ----Q8, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE---------------------------------------------------------
 # convert numerically coded categorical variables into factors:
 dat$fTide4<- factor(dat$Tide4)
 
@@ -247,7 +243,7 @@ vif(PA10)
 
 
 
-## ----Q9, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE--------------------------------------------
+## ----Q9, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE---------------------------------------------------------
 summary(PA10)
 
 # "(Intercept)" general intercept
@@ -260,7 +256,7 @@ summary(PA10)
 
 
 
-## ----Q10, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE-------------------------------------------
+## ----Q10, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE--------------------------------------------------------
 drop1(PA10, test= "Chisq")
 # drop fTide4:Time6
 
@@ -284,7 +280,7 @@ anova(PA12, test= "Chisq")
 (PA12$null.deviance - PA12$deviance) / PA12$null.deviance # 3%
 
 
-## ----Q11, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.show= ifelse(SOLUTIONS, "asis", "hide")----
+## ----Q11, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.show= ifelse(SOLUTIONS, "asis", "hide")-----------
 # plot against predictors:
  res.PA12.p<- resid(PA12, type= "pearson")
 
@@ -296,8 +292,12 @@ binnedplot(x= dat$mh, y=  res.PA12.p, xlab= "hour")
 # okay
 binnedplot(x= dat$julianday, y=  res.PA12.p, xlab= "Day of the year", nclass= 100)
 # julianday is not strictly a predictor in the model, 
-# but is a more informative version of Per2
-# residuals look less than good. Not too surprising, because the
+# but is a more informative version of Per2:
+# while Per 2 is the predictor used, there is no certainty that it's a good way
+# to describe temporal variation (the cut is quite arbitrary). 
+# Plotting against julian day allows to check this further.
+
+# Residuals look less than good. Not too surprising, because the
 # model only allows for difference between May-June
 # and rest of the year, since predictor 'Per2' lumps everything
 # from July to April in the same category)
@@ -316,13 +316,13 @@ matplot(tapply(res.PA12.p, list(dat$mon, dat$Time6), mean), type= "l",
 
 
 
-## ----Q12a, eval=TRUE, echo=TRUE, results=SOLUTIONS, collapse=TRUE-----------------------------------------------
+## ----Q12a, eval=TRUE, echo=TRUE, results=SOLUTIONS, collapse=TRUE------------------------------------------------------------
 PA12.dat4pred<- expand.grid(Time6= levels(dat$Time6),
                                 Per2= levels(dat$Per2),
 								fTide4= "1")
 
 
-## ----Q12b, eval=TRUE, echo=TRUE, results=SOLUTIONS, collapse=TRUE-----------------------------------------------
+## ----Q12b, eval=TRUE, echo=TRUE, results=SOLUTIONS, collapse=TRUE------------------------------------------------------------
 PA12.pred<- predict(PA12, PA12.dat4pred, type= "link", se.fit= T)
 
 PA12.dat4pred$fit.resp<- plogis(PA12.pred$fit)
@@ -334,7 +334,7 @@ PA12.dat4pred$LCI<- plogis(PA12.pred$fit - 1.96*PA12.pred$se.fit)
 PA12.dat4pred$UCI<- plogis(PA12.pred$fit + 1.96*PA12.pred$se.fit)
 
 
-## ----Q12c, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.height=5----------------------------
+## ----Q12c, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.height=5-----------------------------------------
 par(mfrow= c(1, 1))
 plot(as.numeric(PA12.dat4pred$Time6), PA12.dat4pred$fit.resp, pch= 16, cex= 1.4,
       col= PA12.dat4pred$Per2, xlab= "Section of day",
@@ -347,7 +347,7 @@ arrows(x0= as.numeric(PA12.dat4pred$Time6), x1= as.numeric(PA12.dat4pred$Time6),
 legend(x= "topright", legend= c("RestOfYear", "MayJun"), col= c(1, 2), lty= 1, pch= 16)
 
 
-## ----Q13, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.height=8, , fig.width=8--------------
+## ----Q13, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.height=8, , fig.width=8---------------------------
 # dolphins have a weak but apparently stable preference for certain tidal states in Sutors.
 
 # According to model PA12, they are more likely to be seen during the day in
@@ -376,7 +376,7 @@ legend(x= "topright", legend= c("RestOfYear", "MayJun"), col= c(1, 2), lty= 1, p
 
 
 
-## ----QA1, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE-------------------------------------------
+## ----QA1, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE--------------------------------------------------------
 PA10.MAM.stepAIC<- step(PA10)
 
 anova(PA10.MAM.stepAIC, test= "Chisq")
@@ -440,12 +440,12 @@ summary.table$deltaAIC<- summary.table$AIC - summary.table$AIC[1]
 # All the models including fMonth are preferred to any model that doesn't
 
 
-## ----QA1b, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE------------------------------------------
+## ----QA1b, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE-------------------------------------------------------
 require(knitr)
 kable(summary.table)
 
 
-## ----QA1c, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.show= ifelse(SOLUTIONS, "asis", "hide")----
+## ----QA1c, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.show= ifelse(SOLUTIONS, "asis", "hide")----------
 # residual analysis:
 res20.d<- resid(PA20.MAM.stepAIC, type= "pearson")
 library(arm)
@@ -495,7 +495,7 @@ for(month in 1:12){
 
 
 
-## ----Appendix, eval=FALSE, echo=TRUE, results=FALSE, collapse=FALSE---------------------------------------------
+## ----Appendix, eval=FALSE, echo=TRUE, results=FALSE, collapse=FALSE----------------------------------------------------------
 ## fulldat<- read.delim("./data/FineScale_Dataset_GAMM_OFB2019.txt")
 ## 
 ## str(fulldat)

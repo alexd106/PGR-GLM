@@ -1,4 +1,4 @@
-## ----Q2, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE--------------------------------------------
+## ----Q2, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE---------------------------------------------------------
 sp<- read.table(file= "./data/species.txt", header= TRUE)
 str(sp)
 
@@ -18,11 +18,11 @@ coplot(logSp ~ Biomass | pH, data= sp)
 # looking promising.
 
 
-## ----Q3, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE--------------------------------------------
+## ----Q3, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE---------------------------------------------------------
 sp.glm1<- glm(Species ~ Biomass, family= poisson, data= sp)
 
 
-## ----Q4, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE--------------------------------------------
+## ----Q4, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE---------------------------------------------------------
 summary(sp.glm1)
 
 # Model description:
@@ -31,18 +31,18 @@ summary(sp.glm1)
 
 
 
-## ----Q5, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE--------------------------------------------
+## ----Q5, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE---------------------------------------------------------
 # On the link scale:
 3.18 - 0.064*5 # 2.86
 # On the response scale (species count):
 exp(3.18 - 0.064*5) # 17.46
 
 
-## ----Q6, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE--------------------------------------------
+## ----Q6, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE---------------------------------------------------------
 sp.glm2<- glm(Species ~ Biomass * pH, family= poisson, data= sp)
 
 
-## ----Q7, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE--------------------------------------------
+## ----Q7, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE---------------------------------------------------------
 summary(sp.glm2)
 anova(sp.glm2, test= "Chisq")
 
@@ -63,7 +63,7 @@ drop1(sp.glm2, test= "Chisq")
 # vs. significant proportion of variation explained in the former).
 
 
-## ----Q8, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE--------------------------------------------
+## ----Q8, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE---------------------------------------------------------
 
 # We could write the model as:
 # Species ~ Poisson(mu)
@@ -79,7 +79,7 @@ drop1(sp.glm2, test= "Chisq")
 
 
 
-## ----Q9, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE--------------------------------------------
+## ----Q9, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE---------------------------------------------------------
 
 # to explain patterns in the data, we need to look at the coefficient
 # estimates from the summary of the model.
@@ -94,7 +94,7 @@ drop1(sp.glm2, test= "Chisq")
 
 
 
-## ----Q10, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE-------------------------------------------
+## ----Q10, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE--------------------------------------------------------
 library(car)
 vif(sp.glm2)
 
@@ -105,7 +105,7 @@ vif(sp.glm2)
 # the predictors. But all components are very clearly needed here.
 
 
-## ----Q11, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.show= ifelse(SOLUTIONS, "asis", "hide")----
+## ----Q11, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.show= ifelse(SOLUTIONS, "asis", "hide")-----------
 par(mfrow= c(2, 2))
 plot(sp.glm2)
 
@@ -175,7 +175,7 @@ legend("topright",
  lwd= c(1, 1, 1))
 
 
-## ----Q13, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE-------------------------------------------
+## ----Q13, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE--------------------------------------------------------
 # The data show a very steep decline in species richness towards zero, 
 # as biomass increases.
 

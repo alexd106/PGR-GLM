@@ -13,18 +13,24 @@
 
 <title>Exercise</title>
 
-<script src="site_libs/header-attrs-2.5/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.10/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <script src="site_libs/navigation-1.1/codefolding.js"></script>
-<script src="site_libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
-<link href="site_libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
-<script src="site_libs/anchor-sections-1.0/anchor-sections.js"></script>
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
@@ -38,11 +44,19 @@
     </style>
 
 
-<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
 <style type="text/css" data-origin="pandoc">
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
@@ -133,39 +147,9 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
   }
 })();
 </script>
-<style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
+
 
 
 
@@ -175,10 +159,6 @@ h6 {
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 img {
   max-width:100%;
@@ -195,40 +175,13 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+pre code {
+  padding: 0;
+}
 </style>
 
 
 <style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 60px;
-  padding-bottom: 40px;
-}
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 65px;
-  margin-top: -65px;
-}
-.section h2 {
-  padding-top: 65px;
-  margin-top: -65px;
-}
-.section h3 {
-  padding-top: 65px;
-  margin-top: -65px;
-}
-.section h4 {
-  padding-top: 65px;
-  margin-top: -65px;
-}
-.section h5 {
-  padding-top: 65px;
-  margin-top: -65px;
-}
-.section h6 {
-  padding-top: 65px;
-  margin-top: -65px;
-}
 .dropdown-submenu {
   position: relative;
 }
@@ -256,7 +209,7 @@ body {
   margin-right: -10px;
 }
 .dropdown-submenu:hover>a:after {
-  border-left-color: #ffffff;
+  border-left-color: #adb5bd;
 }
 .dropdown-submenu.pull-left {
   float: none;
@@ -268,7 +221,7 @@ body {
 }
 </style>
 
-<script>
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -279,10 +232,23 @@ $(document).ready(function () {
   var menuAnchor = $('a[href="' + href + '"]');
 
   // mark it active
-  menuAnchor.parent().addClass('active');
+  menuAnchor.tab('show');
 
   // if it's got a parent navbar menu mark it active as well
   menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
 });
 </script>
 
@@ -294,7 +260,6 @@ $(document).ready(function () {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -503,11 +468,11 @@ $(document).ready(function () {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div class="fluid-row" id="header">
+<div id="header">
 
-<div class="btn-group pull-right">
-<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
-<ul class="dropdown-menu" style="min-width: 50px;">
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
 <li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
 <li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
 </ul>
@@ -552,16 +517,16 @@ $(document).ready(function () {
 <p> </p>
 <p>2. Import the data file ‘dolphin.csv’ into R by running the following chunk of code (please unfold the code chunk and copy/paste).</p>
 <p> </p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>dat&lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;./data/dolphin.csv&quot;</span>, <span class="dt">stringsAsFactors=</span> T)</span>
-<span id="cb1-2"><a href="#cb1-2"></a></span>
-<span id="cb1-3"><a href="#cb1-3"></a><span class="co"># re-ordering factor levels for convenience:</span></span>
-<span id="cb1-4"><a href="#cb1-4"></a>dat<span class="op">$</span>Per2&lt;-<span class="st"> </span><span class="kw">factor</span>(dat<span class="op">$</span>Per2, <span class="dt">levels=</span> <span class="kw">c</span>(<span class="st">&quot;RestOfYear&quot;</span>, <span class="st">&quot;MayJun&quot;</span>))</span>
-<span id="cb1-5"><a href="#cb1-5"></a><span class="co"># (making &quot;RestOfYear&quot; the reference level)</span></span>
-<span id="cb1-6"><a href="#cb1-6"></a>dat<span class="op">$</span>Per4&lt;-<span class="st"> </span><span class="kw">factor</span>(dat<span class="op">$</span>Per4, <span class="dt">levels=</span> <span class="kw">c</span>(<span class="st">&quot;RestOfYear&quot;</span>, <span class="st">&quot;MayJun1&quot;</span>, <span class="st">&quot;MayJun2&quot;</span>, <span class="st">&quot;MayJun3&quot;</span>))</span>
-<span id="cb1-7"><a href="#cb1-7"></a>dat<span class="op">$</span>Time6&lt;-<span class="st"> </span><span class="kw">factor</span>(dat<span class="op">$</span>Time6, <span class="dt">levels=</span> <span class="kw">c</span>(<span class="st">&quot;MNight&quot;</span>, <span class="st">&quot;AM1&quot;</span>, <span class="st">&quot;AM2&quot;</span>, <span class="st">&quot;MDay&quot;</span>, <span class="st">&quot;PM1&quot;</span>, <span class="st">&quot;PM2&quot;</span>))</span>
-<span id="cb1-8"><a href="#cb1-8"></a><span class="co"># reordering chronologically</span></span>
-<span id="cb1-9"><a href="#cb1-9"></a></span>
-<span id="cb1-10"><a href="#cb1-10"></a><span class="kw">str</span>(dat)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>dat<span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;./data/dolphin.csv&quot;</span>, <span class="at">stringsAsFactors=</span> T)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># re-ordering factor levels for convenience:</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>Per2<span class="ot">&lt;-</span> <span class="fu">factor</span>(dat<span class="sc">$</span>Per2, <span class="at">levels=</span> <span class="fu">c</span>(<span class="st">&quot;RestOfYear&quot;</span>, <span class="st">&quot;MayJun&quot;</span>))</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># (making &quot;RestOfYear&quot; the reference level)</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>Per4<span class="ot">&lt;-</span> <span class="fu">factor</span>(dat<span class="sc">$</span>Per4, <span class="at">levels=</span> <span class="fu">c</span>(<span class="st">&quot;RestOfYear&quot;</span>, <span class="st">&quot;MayJun1&quot;</span>, <span class="st">&quot;MayJun2&quot;</span>, <span class="st">&quot;MayJun3&quot;</span>))</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>Time6<span class="ot">&lt;-</span> <span class="fu">factor</span>(dat<span class="sc">$</span>Time6, <span class="at">levels=</span> <span class="fu">c</span>(<span class="st">&quot;MNight&quot;</span>, <span class="st">&quot;AM1&quot;</span>, <span class="st">&quot;AM2&quot;</span>, <span class="st">&quot;MDay&quot;</span>, <span class="st">&quot;PM1&quot;</span>, <span class="st">&quot;PM2&quot;</span>))</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># reordering chronologically</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(dat)</span></code></pre></div>
 <pre><code>## &#39;data.frame&#39;:    5000 obs. of  11 variables:
 ##  $ X            : int  31458 14027 40551 40456 15894 13109 23797 6053 23445 34584 ...
 ##  $ presence     : int  0 1 0 0 1 0 0 0 0 0 ...
@@ -580,10 +545,10 @@ $(document).ready(function () {
 <li>Hints:
 <ul>
 <li>Presence/absence data (Bernoulli) are more difficult to explore than other types.</li>
-<li>One approach is to count observations per categories of interest.</li>
-<li><code>table()</code> is a useful way to count the number of observations per category or combinations of categories, e.g. <code>ObsPerMonthYear&lt;- table(dat$year, dat$mon)</code></li>
+<li>One approach to find out if there are categories with very few data, is to count observations per categories of interest.</li>
+<li><code>table()</code> is a useful way to count the number of observations per category or combinations of categories, e.g. <code>ObsPerMonthYear&lt;- table(dat$year, dat$mon)</code> for all combinations of year and month.</li>
 <li><code>plot(ObsPerMonthYear)</code> returns a “mosaic plot” where the area of each rectangle is proportional to the count.</li>
-<li>For proportion of time present, you could calculate mean presence per category <code>bla&lt;- tapply(dat$presence, list(dat$GroupOfInterest), mean)</code></li>
+<li>For proportion of time present (the parameter that we’re ultimately trying to estimate with the binomial GLM), you could calculate mean presence per category <code>bla&lt;- tapply(dat$presence, list(dat$GroupOfInterest), mean)</code></li>
 <li>and plot this using <code>plot(bla, type= "b", ylim= c(0, 1), xlab= "GroupOfInterest", ylab= "presence")</code></li>
 <li>In more than one dimension, <code>matplot(tapply(dat$presence, list(dat$Group1, dat$Group2), mean), type= "l", ylim= c(0, 1), xlab= "Group1", ylab= "presence", lty= 1)</code> produces one line per category in Group2.</li>
 </ul></li>
@@ -598,85 +563,88 @@ $(document).ready(function () {
 <p> </p>
 <p>6. Let’s now validate the model, using deviance residuals. The easiest tool is the <code>binnedplot()</code> in the <code>arm</code> package, if you can. If you are unable to install the <code>arm</code> package, use the “DIY” code chunk further down for an alternative to <code>binnedplot()</code>.</p>
 <p> </p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">library</span>(car)</span>
-<span id="cb3-2"><a href="#cb3-2"></a><span class="kw">vif</span>(PA1)</span>
-<span id="cb3-3"><a href="#cb3-3"></a><span class="co"># No concern.</span></span>
-<span id="cb3-4"><a href="#cb3-4"></a></span>
-<span id="cb3-5"><a href="#cb3-5"></a><span class="kw">par</span>(<span class="dt">mfrow=</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
-<span id="cb3-6"><a href="#cb3-6"></a><span class="kw">plot</span>(PA1, <span class="dt">col=</span> dat<span class="op">$</span>presence <span class="op">+</span><span class="st"> </span><span class="dv">1</span>) <span class="co"># red is presence, black is absence</span></span>
-<span id="cb3-7"><a href="#cb3-7"></a><span class="co"># Not very useful or pretty statistical art. Not worth framing.</span></span>
-<span id="cb3-8"><a href="#cb3-8"></a></span>
-<span id="cb3-9"><a href="#cb3-9"></a><span class="co"># plot against predictors:</span></span>
-<span id="cb3-10"><a href="#cb3-10"></a>res.PA1.p&lt;-<span class="st"> </span><span class="kw">resid</span>(PA1, <span class="dt">type=</span> <span class="st">&quot;pearson&quot;</span>)</span>
-<span id="cb3-11"><a href="#cb3-11"></a></span>
-<span id="cb3-12"><a href="#cb3-12"></a><span class="kw">par</span>(<span class="dt">mfrow=</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
-<span id="cb3-13"><a href="#cb3-13"></a><span class="kw">plot</span>(res.PA1.p <span class="op">~</span><span class="st"> </span>dat<span class="op">$</span>tideangle_deg, <span class="dt">col=</span> dat<span class="op">$</span>presence <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)</span>
-<span id="cb3-14"><a href="#cb3-14"></a></span>
-<span id="cb3-15"><a href="#cb3-15"></a><span class="kw">plot</span>(res.PA1.p <span class="op">~</span><span class="st"> </span>dat<span class="op">$</span>mh, <span class="dt">col=</span> dat<span class="op">$</span>presence <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)</span>
-<span id="cb3-16"><a href="#cb3-16"></a></span>
-<span id="cb3-17"><a href="#cb3-17"></a><span class="kw">plot</span>(res.PA1.p <span class="op">~</span><span class="st"> </span>dat<span class="op">$</span>julianday, <span class="dt">col=</span> dat<span class="op">$</span>presence <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)</span>
-<span id="cb3-18"><a href="#cb3-18"></a></span>
-<span id="cb3-19"><a href="#cb3-19"></a><span class="co"># Can&#39;t see anything useful.</span></span>
-<span id="cb3-20"><a href="#cb3-20"></a></span>
-<span id="cb3-21"><a href="#cb3-21"></a><span class="co"># Use arm if you can:</span></span>
-<span id="cb3-22"><a href="#cb3-22"></a><span class="kw">library</span>(arm)</span>
-<span id="cb3-23"><a href="#cb3-23"></a><span class="kw">par</span>(<span class="dt">mfrow=</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
-<span id="cb3-24"><a href="#cb3-24"></a><span class="kw">binnedplot</span>(<span class="dt">x=</span> dat<span class="op">$</span>tideangle_deg, <span class="dt">y=</span> res.PA1.p, <span class="dt">xlab=</span> <span class="st">&quot;Tide angle&quot;</span>, <span class="dt">nclass=</span> <span class="dv">100</span>)</span>
-<span id="cb3-25"><a href="#cb3-25"></a><span class="kw">binnedplot</span>(<span class="dt">x=</span> dat<span class="op">$</span>mh, <span class="dt">y=</span> res.PA1.p, <span class="dt">xlab=</span> <span class="st">&quot;hour&quot;</span>)</span>
-<span id="cb3-26"><a href="#cb3-26"></a><span class="kw">binnedplot</span>(<span class="dt">x=</span> dat<span class="op">$</span>julianday, <span class="dt">y=</span> res.PA1.p, <span class="dt">xlab=</span> <span class="st">&quot;Day of the year&quot;</span>, <span class="dt">nclass=</span> <span class="dv">100</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">vif</span>(PA1)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># No concern.</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(PA1, <span class="at">col=</span> dat<span class="sc">$</span>presence <span class="sc">+</span> <span class="dv">1</span>) <span class="co"># red is presence, black is absence</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Not very useful or pretty statistical art. Not worth framing.</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co"># plot against predictors:</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>res.PA1.p<span class="ot">&lt;-</span> <span class="fu">resid</span>(PA1, <span class="at">type=</span> <span class="st">&quot;pearson&quot;</span>)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(res.PA1.p <span class="sc">~</span> dat<span class="sc">$</span>tideangle_deg, <span class="at">col=</span> dat<span class="sc">$</span>presence <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(res.PA1.p <span class="sc">~</span> dat<span class="sc">$</span>mh, <span class="at">col=</span> dat<span class="sc">$</span>presence <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(res.PA1.p <span class="sc">~</span> dat<span class="sc">$</span>julianday, <span class="at">col=</span> dat<span class="sc">$</span>presence <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Can&#39;t see anything useful.</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Use arm if you can:</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(arm)</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="fu">binnedplot</span>(<span class="at">x=</span> dat<span class="sc">$</span>tideangle_deg, <span class="at">y=</span> res.PA1.p, <span class="at">xlab=</span> <span class="st">&quot;Tide angle&quot;</span>, <span class="at">nclass=</span> <span class="dv">100</span>)</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="fu">binnedplot</span>(<span class="at">x=</span> dat<span class="sc">$</span>mh, <span class="at">y=</span> res.PA1.p, <span class="at">xlab=</span> <span class="st">&quot;hour&quot;</span>)</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="fu">binnedplot</span>(<span class="at">x=</span> dat<span class="sc">$</span>julianday, <span class="at">y=</span> res.PA1.p, <span class="at">xlab=</span> <span class="st">&quot;Day of the year&quot;</span>, <span class="at">nclass=</span> <span class="dv">100</span>)</span></code></pre></div>
 <p> </p>
 <p> </p>
 <p>In case needed, a home-made alternative to the <code>binnedplot</code> function:</p>
 <p> </p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">par</span>(<span class="dt">mfrow=</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
-<span id="cb4-2"><a href="#cb4-2"></a><span class="co"># plot the residuals against tideangle_deg</span></span>
-<span id="cb4-3"><a href="#cb4-3"></a><span class="kw">plot</span>(res.PA1.p <span class="op">~</span><span class="st"> </span>dat<span class="op">$</span>tideangle_deg, <span class="dt">col=</span> dat<span class="op">$</span>presence <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)</span>
-<span id="cb4-4"><a href="#cb4-4"></a><span class="co"># get the mean of the residuals for each 1 degree bin of tideangle_deg</span></span>
-<span id="cb4-5"><a href="#cb4-5"></a>tide.means&lt;-<span class="st"> </span><span class="kw">tapply</span>(res.PA1.p, <span class="kw">list</span>(dat<span class="op">$</span>tideangle_deg), mean)</span>
-<span id="cb4-6"><a href="#cb4-6"></a><span class="co"># convert ordered bin labels into numbers (1 to 360)</span></span>
-<span id="cb4-7"><a href="#cb4-7"></a>tide.vals&lt;-<span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">names</span>(tide.means))</span>
-<span id="cb4-8"><a href="#cb4-8"></a><span class="co"># plot residual means against bin number</span></span>
-<span id="cb4-9"><a href="#cb4-9"></a><span class="kw">lines</span>(tide.means <span class="op">~</span><span class="st"> </span>tide.vals, <span class="dt">col=</span> <span class="dv">3</span>)</span>
-<span id="cb4-10"><a href="#cb4-10"></a><span class="co"># add horizontal line at y= 0 for reference</span></span>
-<span id="cb4-11"><a href="#cb4-11"></a><span class="kw">abline</span>(<span class="dt">h=</span> <span class="dv">0</span>, <span class="dt">lty=</span> <span class="dv">3</span>, <span class="dt">col=</span> <span class="kw">grey</span>(<span class="fl">0.5</span>))</span>
-<span id="cb4-12"><a href="#cb4-12"></a></span>
-<span id="cb4-13"><a href="#cb4-13"></a><span class="co"># same idea for hour of the day:</span></span>
-<span id="cb4-14"><a href="#cb4-14"></a><span class="kw">plot</span>(res.PA1.p <span class="op">~</span><span class="st"> </span>dat<span class="op">$</span>mh, <span class="dt">col=</span> dat<span class="op">$</span>presence <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)</span>
-<span id="cb4-15"><a href="#cb4-15"></a>hour.means&lt;-<span class="st"> </span><span class="kw">tapply</span>(res.PA1.p, <span class="kw">list</span>(dat<span class="op">$</span>mh), mean)</span>
-<span id="cb4-16"><a href="#cb4-16"></a><span class="kw">lines</span>(hour.means <span class="op">~</span><span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">names</span>(hour.means)), <span class="dt">col=</span> <span class="dv">3</span>)</span>
-<span id="cb4-17"><a href="#cb4-17"></a><span class="kw">abline</span>(<span class="dt">h=</span> <span class="dv">0</span>, <span class="dt">lty=</span> <span class="dv">3</span>, <span class="dt">col=</span> <span class="kw">grey</span>(<span class="fl">0.5</span>))</span>
-<span id="cb4-18"><a href="#cb4-18"></a></span>
-<span id="cb4-19"><a href="#cb4-19"></a><span class="co"># same for julianday:</span></span>
-<span id="cb4-20"><a href="#cb4-20"></a><span class="kw">plot</span>(res.PA1.p <span class="op">~</span><span class="st"> </span>dat<span class="op">$</span>julianday, <span class="dt">col=</span> dat<span class="op">$</span>presence <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)</span>
-<span id="cb4-21"><a href="#cb4-21"></a>day.means&lt;-<span class="st"> </span><span class="kw">tapply</span>(res.PA1.p, <span class="kw">list</span>(dat<span class="op">$</span>julianday), mean)</span>
-<span id="cb4-22"><a href="#cb4-22"></a><span class="kw">lines</span>(day.means <span class="op">~</span><span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">names</span>(day.means)), <span class="dt">col=</span> <span class="dv">3</span>)</span>
-<span id="cb4-23"><a href="#cb4-23"></a><span class="kw">abline</span>(<span class="dt">h=</span> <span class="dv">0</span>, <span class="dt">lty=</span> <span class="dv">3</span>, <span class="dt">col=</span> <span class="kw">grey</span>(<span class="fl">0.5</span>))</span>
-<span id="cb4-24"><a href="#cb4-24"></a></span>
-<span id="cb4-25"><a href="#cb4-25"></a><span class="co"># Same story.</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the residuals against tideangle_deg</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(res.PA1.p <span class="sc">~</span> dat<span class="sc">$</span>tideangle_deg, <span class="at">col=</span> dat<span class="sc">$</span>presence <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># get the mean of the residuals for each 1 degree bin of tideangle_deg</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>tide.means<span class="ot">&lt;-</span> <span class="fu">tapply</span>(res.PA1.p, <span class="fu">list</span>(dat<span class="sc">$</span>tideangle_deg), mean)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co"># convert ordered bin labels into numbers (1 to 360)</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>tide.vals<span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">names</span>(tide.means))</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co"># plot residual means against bin number</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(tide.means <span class="sc">~</span> tide.vals, <span class="at">col=</span> <span class="dv">3</span>)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co"># add horizontal line at y= 0 for reference</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span> <span class="dv">0</span>, <span class="at">lty=</span> <span class="dv">3</span>, <span class="at">col=</span> <span class="fu">grey</span>(<span class="fl">0.5</span>))</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co"># same idea for hour of the day:</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(res.PA1.p <span class="sc">~</span> dat<span class="sc">$</span>mh, <span class="at">col=</span> dat<span class="sc">$</span>presence <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>hour.means<span class="ot">&lt;-</span> <span class="fu">tapply</span>(res.PA1.p, <span class="fu">list</span>(dat<span class="sc">$</span>mh), mean)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(hour.means <span class="sc">~</span> <span class="fu">as.numeric</span>(<span class="fu">names</span>(hour.means)), <span class="at">col=</span> <span class="dv">3</span>)</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span> <span class="dv">0</span>, <span class="at">lty=</span> <span class="dv">3</span>, <span class="at">col=</span> <span class="fu">grey</span>(<span class="fl">0.5</span>))</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="co"># same for julianday:</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(res.PA1.p <span class="sc">~</span> dat<span class="sc">$</span>julianday, <span class="at">col=</span> dat<span class="sc">$</span>presence <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>day.means<span class="ot">&lt;-</span> <span class="fu">tapply</span>(res.PA1.p, <span class="fu">list</span>(dat<span class="sc">$</span>julianday), mean)</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(day.means <span class="sc">~</span> <span class="fu">as.numeric</span>(<span class="fu">names</span>(day.means)), <span class="at">col=</span> <span class="dv">3</span>)</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span> <span class="dv">0</span>, <span class="at">lty=</span> <span class="dv">3</span>, <span class="at">col=</span> <span class="fu">grey</span>(<span class="fl">0.5</span>))</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Same story.</span></span></code></pre></div>
 <p> </p>
 <p>7. Are you happy with the diagnostic plots? Is there something you could do to improve the model while addressing the initial question(s)? Spend some time looking at the available predictors, and working out a solution, before unfolding the hints in the code chunk below. If you have relevant biological information, or insight from your data exploration that suggests a better approach than what is indicated below, feel free to try it for comparison.</p>
 <p> </p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co"># Please take the time to think before unfolding the next code chunk</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Please take the time to think before unfolding the next code chunk</span></span></code></pre></div>
 <p> </p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># there are several ways the non-linearity could be addressed. </span></span>
-<span id="cb6-2"><a href="#cb6-2"></a><span class="co"># one of the most straightforward with glm() is to discretize</span></span>
-<span id="cb6-3"><a href="#cb6-3"></a><span class="co"># continuous predictors into bins and to treat them as factors.</span></span>
-<span id="cb6-4"><a href="#cb6-4"></a><span class="co"># In this way, a mean is estimated per category of the variable,</span></span>
-<span id="cb6-5"><a href="#cb6-5"></a><span class="co"># and no assumption is made about the shape of the relationship.</span></span>
-<span id="cb6-6"><a href="#cb6-6"></a></span>
-<span id="cb6-7"><a href="#cb6-7"></a><span class="co"># Each of the predictors we started with already has one or more </span></span>
-<span id="cb6-8"><a href="#cb6-8"></a><span class="co"># categorical counterpart in the data set.</span></span>
-<span id="cb6-9"><a href="#cb6-9"></a><span class="co"># I suggest you try fTide4 + Per2 + Time6, </span></span>
-<span id="cb6-10"><a href="#cb6-10"></a><span class="co"># with fTide4 being the factor version of Tide4 (needs creating).</span></span>
-<span id="cb6-11"><a href="#cb6-11"></a></span>
-<span id="cb6-12"><a href="#cb6-12"></a><span class="co"># Then, we are also interested in interactions between these predictors.</span></span>
-<span id="cb6-13"><a href="#cb6-13"></a><span class="co"># Some of the more biologically relevant interactions could include</span></span>
-<span id="cb6-14"><a href="#cb6-14"></a><span class="co">#  + fTide4:Per2 + fTide4:Time6 + Per2:Time6</span></span>
-<span id="cb6-15"><a href="#cb6-15"></a><span class="co"># You can choose something else or cut the predictors into different bin </span></span>
-<span id="cb6-16"><a href="#cb6-16"></a><span class="co"># definitions, too. Example code for this is given in the appendix at</span></span>
-<span id="cb6-17"><a href="#cb6-17"></a><span class="co"># the end of the practical</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The issue is that the effects of these predictors are not linear</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># on the logit (link) scale.</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># There are several ways the non-linearity could be addressed. </span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># one of the most straightforward with glm() is to discretize</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co"># continuous predictors into bins and to treat them as factors.</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co"># In this way, a mean is estimated per category of the variable,</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co"># and no assumption is made about the shape of the relationship.</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Each of the predictors we started with already has one or more </span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co"># categorical counterpart in the data set.</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co"># I suggest you try fTide4 + Per2 + Time6, </span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co"># with fTide4 being the factor version of Tide4 (needs creating).</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Then, we are also interested in interactions between these predictors.</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Some of the more biologically relevant interactions could include</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="co">#  + fTide4:Per2 + fTide4:Time6 + Per2:Time6</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="co"># You can choose something else or cut the predictors into different bin </span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="co"># definitions, too. Example code for this is given in the appendix at</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="co"># the end of the practical</span></span></code></pre></div>
 <p> </p>
-<p>8. Let’s move on to a richer Binomial (Bernoulli) GLM, with some interactions of interest between numerical time of day, tide angle and day of the year as predictors: <code>tideangle_deg + mh + julianday + tideangle_deg:mh + mh:julianday + tideangle_deg:julianday</code>. Which individual interactions are implied in this formula? (Hint: if unsure, the summary of the model at the next question will list them).</p>
+<p>8. Let’s move on to a richer Binomial (Bernoulli) GLM, with some interactions of interest between categorical time of day, tide angle and day of the year as predictors: <code>fTide4 + Per2 + Time6 + fTide4:Per2 + fTide4:Time6 + Per2:Time6</code>. Which individual interactions are implied in this formula? (Hint: if unsure, the summary of the model at the next question will list them).</p>
 <p> </p>
 <p> </p>
 <p>9. Obtain summaries of the model output using the <code>summary()</code> function. Make sure you understand the biological hypothesis implied by each term, qualitatively.</p>
@@ -701,19 +669,19 @@ $(document).ready(function () {
 </ul>
 <p>The code is available below for you to unfold, if you don’t want to try yourself (you are always welcome to ask demonstrators for help).</p>
 <p> </p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>PA12.dat4pred&lt;-<span class="st"> </span><span class="kw">expand.grid</span>(<span class="dt">Time6=</span> <span class="kw">levels</span>(dat<span class="op">$</span>Time6),</span>
-<span id="cb7-2"><a href="#cb7-2"></a>                                <span class="dt">Per2=</span> <span class="kw">levels</span>(dat<span class="op">$</span>Per2),</span>
-<span id="cb7-3"><a href="#cb7-3"></a>                                <span class="dt">fTide4=</span> <span class="st">&quot;1&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>PA12.dat4pred<span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">Time6=</span> <span class="fu">levels</span>(dat<span class="sc">$</span>Time6),</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>                                <span class="at">Per2=</span> <span class="fu">levels</span>(dat<span class="sc">$</span>Per2),</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>                                <span class="at">fTide4=</span> <span class="st">&quot;1&quot;</span>)</span></code></pre></div>
 <p> </p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>PA12.pred&lt;-<span class="st"> </span><span class="kw">predict</span>(PA12, PA12.dat4pred, <span class="dt">type=</span> <span class="st">&quot;link&quot;</span>, <span class="dt">se.fit=</span> T)</span>
-<span id="cb8-2"><a href="#cb8-2"></a></span>
-<span id="cb8-3"><a href="#cb8-3"></a>PA12.dat4pred<span class="op">$</span>fit.resp&lt;-<span class="st"> </span><span class="kw">plogis</span>(PA12.pred<span class="op">$</span>fit)</span>
-<span id="cb8-4"><a href="#cb8-4"></a><span class="co"># or exp(PA12.pred$fit)/(1+exp(PA12.pred$fit)) for the long version</span></span>
-<span id="cb8-5"><a href="#cb8-5"></a></span>
-<span id="cb8-6"><a href="#cb8-6"></a><span class="co"># lower 95% CI</span></span>
-<span id="cb8-7"><a href="#cb8-7"></a>PA12.dat4pred<span class="op">$</span>LCI&lt;-<span class="st"> </span><span class="kw">plogis</span>(PA12.pred<span class="op">$</span>fit <span class="op">-</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span>PA12.pred<span class="op">$</span>se.fit)</span>
-<span id="cb8-8"><a href="#cb8-8"></a><span class="co"># upper 95% CI</span></span>
-<span id="cb8-9"><a href="#cb8-9"></a>PA12.dat4pred<span class="op">$</span>UCI&lt;-<span class="st"> </span><span class="kw">plogis</span>(PA12.pred<span class="op">$</span>fit <span class="op">+</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span>PA12.pred<span class="op">$</span>se.fit)</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>PA12.pred<span class="ot">&lt;-</span> <span class="fu">predict</span>(PA12, PA12.dat4pred, <span class="at">type=</span> <span class="st">&quot;link&quot;</span>, <span class="at">se.fit=</span> T)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>PA12.dat4pred<span class="sc">$</span>fit.resp<span class="ot">&lt;-</span> <span class="fu">plogis</span>(PA12.pred<span class="sc">$</span>fit)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># or exp(PA12.pred$fit)/(1+exp(PA12.pred$fit)) for the long version</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co"># lower 95% CI</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>PA12.dat4pred<span class="sc">$</span>LCI<span class="ot">&lt;-</span> <span class="fu">plogis</span>(PA12.pred<span class="sc">$</span>fit <span class="sc">-</span> <span class="fl">1.96</span><span class="sc">*</span>PA12.pred<span class="sc">$</span>se.fit)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co"># upper 95% CI</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>PA12.dat4pred<span class="sc">$</span>UCI<span class="ot">&lt;-</span> <span class="fu">plogis</span>(PA12.pred<span class="sc">$</span>fit <span class="sc">+</span> <span class="fl">1.96</span><span class="sc">*</span>PA12.pred<span class="sc">$</span>se.fit)</span></code></pre></div>
 <p> </p>
 <p><img src="GLM_2_Binomial_exercise_v2_files/figure-html/Q12c-1.png" width="672" /></p>
 <p> </p>
@@ -735,64 +703,64 @@ $(document).ready(function () {
 <p> </p>
 <p>Code for converting the original publicly available data (10 Mb) [<a href="https://datadryad.org/stash/dataset/doi:10.5061/dryad.k378542" class="uri">https://datadryad.org/stash/dataset/doi:10.5061/dryad.k378542</a>] into the ‘dolphin.csv’ file. Includes converting numeric variables into categories that you can define to suit your needs (binning), including making more bins if you wish. Binning is done easily using the <code>cut()</code> function. For example, creating 5 regular bins is done using <code>cut(MyVector, breaks= 5)</code>. Note here that <code>cut</code> is used in a non-standard way to make the beginning and end of a cyclic variable belong to the same bin, which may be more biologically meaningful (you can decide, you are the expert!).</p>
 <p> </p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>fulldat&lt;-<span class="st"> </span><span class="kw">read.delim</span>(<span class="st">&quot;./data/FineScale_Dataset_GAMM_OFB2019.txt&quot;</span>)</span>
-<span id="cb9-2"><a href="#cb9-2"></a></span>
-<span id="cb9-3"><a href="#cb9-3"></a><span class="kw">str</span>(fulldat)</span>
-<span id="cb9-4"><a href="#cb9-4"></a></span>
-<span id="cb9-5"><a href="#cb9-5"></a>dat&lt;-<span class="st"> </span>fulldat[fulldat<span class="op">$</span>site <span class="op">==</span><span class="st"> &quot;Sutors&quot;</span>, <span class="kw">c</span>(<span class="st">&quot;presence&quot;</span>, <span class="st">&quot;year&quot;</span>, <span class="st">&quot;julianday&quot;</span>, <span class="st">&quot;tideangle_deg&quot;</span>, <span class="st">&quot;mh&quot;</span>)]</span>
-<span id="cb9-6"><a href="#cb9-6"></a></span>
-<span id="cb9-7"><a href="#cb9-7"></a>dat<span class="op">$</span>mon&lt;-<span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">cut</span>(dat<span class="op">$</span>julianday, <span class="kw">seq</span>(<span class="dv">1</span>, <span class="dv">370</span>, <span class="dt">by=</span> <span class="fl">30.5</span>)))</span>
-<span id="cb9-8"><a href="#cb9-8"></a></span>
-<span id="cb9-9"><a href="#cb9-9"></a>dat<span class="op">$</span>tideangle_deg&lt;-<span class="st"> </span><span class="kw">round</span>(dat<span class="op">$</span>tideangle_deg)</span>
-<span id="cb9-10"><a href="#cb9-10"></a><span class="co"># count number of data per year/month combination and represent as mosaicplot</span></span>
-<span id="cb9-11"><a href="#cb9-11"></a><span class="kw">plot</span>(<span class="kw">table</span>(dat<span class="op">$</span>year, dat<span class="op">$</span>mon))</span>
-<span id="cb9-12"><a href="#cb9-12"></a></span>
-<span id="cb9-13"><a href="#cb9-13"></a><span class="co"># remove 2016</span></span>
-<span id="cb9-14"><a href="#cb9-14"></a>dat&lt;-<span class="st"> </span>dat[dat<span class="op">$</span>year <span class="op">!=</span><span class="st"> </span><span class="dv">2016</span>, ]</span>
-<span id="cb9-15"><a href="#cb9-15"></a></span>
-<span id="cb9-16"><a href="#cb9-16"></a><span class="co"># Bin year into two periods (May+June vs rest of year)</span></span>
-<span id="cb9-17"><a href="#cb9-17"></a>dat<span class="op">$</span>Per2&lt;-<span class="st"> </span><span class="kw">cut</span>(dat<span class="op">$</span>julianday, <span class="dt">breaks=</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">120</span>, <span class="dv">180</span>, <span class="dv">400</span>), </span>
-<span id="cb9-18"><a href="#cb9-18"></a>            <span class="dt">labels=</span> <span class="kw">c</span>(<span class="st">&quot;RestOfYear&quot;</span>, <span class="st">&quot;MayJun&quot;</span>, <span class="st">&quot;RestOfYear&quot;</span>))</span>
-<span id="cb9-19"><a href="#cb9-19"></a>dat<span class="op">$</span>Per2&lt;-<span class="st"> </span><span class="kw">factor</span>(dat<span class="op">$</span>Per2, <span class="dt">levels=</span> <span class="kw">c</span>(<span class="st">&quot;RestOfYear&quot;</span>, <span class="st">&quot;MayJun&quot;</span>))</span>
-<span id="cb9-20"><a href="#cb9-20"></a><span class="co"># (making &quot;RestOfYear&quot; the reference level)</span></span>
-<span id="cb9-21"><a href="#cb9-21"></a></span>
-<span id="cb9-22"><a href="#cb9-22"></a><span class="co"># check this is working as intended:</span></span>
-<span id="cb9-23"><a href="#cb9-23"></a><span class="kw">plot</span>(<span class="kw">as.numeric</span>(dat<span class="op">$</span>Per2) <span class="op">~</span><span class="st"> </span>dat<span class="op">$</span>julianday)</span>
-<span id="cb9-24"><a href="#cb9-24"></a></span>
-<span id="cb9-25"><a href="#cb9-25"></a><span class="co"># Bin year into 4 periods:</span></span>
-<span id="cb9-26"><a href="#cb9-26"></a><span class="co"># 3 periods of 20 days from early May to end of June vs rest of the year</span></span>
-<span id="cb9-27"><a href="#cb9-27"></a>dat<span class="op">$</span>Per4&lt;-<span class="st"> </span><span class="kw">cut</span>(dat<span class="op">$</span>julianday, <span class="dt">breaks=</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">120</span>, <span class="dv">140</span>, <span class="dv">160</span>, <span class="dv">180</span>, <span class="dv">400</span>), </span>
-<span id="cb9-28"><a href="#cb9-28"></a>            <span class="dt">labels=</span> <span class="kw">c</span>(<span class="st">&quot;RestOfYear&quot;</span>, <span class="st">&quot;MayJun1&quot;</span>, <span class="st">&quot;MayJun2&quot;</span>, <span class="st">&quot;MayJun3&quot;</span>, <span class="st">&quot;RestOfYear&quot;</span>))</span>
-<span id="cb9-29"><a href="#cb9-29"></a>dat<span class="op">$</span>Per4&lt;-<span class="st"> </span><span class="kw">factor</span>(dat<span class="op">$</span>Per4, <span class="dt">levels=</span> <span class="kw">c</span>(<span class="st">&quot;RestOfYear&quot;</span>, <span class="st">&quot;MayJun1&quot;</span>, <span class="st">&quot;MayJun2&quot;</span>, <span class="st">&quot;MayJun3&quot;</span>))</span>
-<span id="cb9-30"><a href="#cb9-30"></a><span class="co"># (reordering levels)</span></span>
-<span id="cb9-31"><a href="#cb9-31"></a></span>
-<span id="cb9-32"><a href="#cb9-32"></a><span class="co"># check this is working as intended:</span></span>
-<span id="cb9-33"><a href="#cb9-33"></a><span class="kw">plot</span>(<span class="kw">as.numeric</span>(dat<span class="op">$</span>Per4) <span class="op">~</span><span class="st"> </span>dat<span class="op">$</span>julianday)</span>
-<span id="cb9-34"><a href="#cb9-34"></a></span>
-<span id="cb9-35"><a href="#cb9-35"></a><span class="co"># Bin time of day into 6 4h periods (first centered on midnight)</span></span>
-<span id="cb9-36"><a href="#cb9-36"></a>dat<span class="op">$</span>Time6&lt;-<span class="st"> </span><span class="kw">cut</span>(dat<span class="op">$</span>mh, <span class="dt">breaks=</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>, <span class="kw">seq</span>(<span class="dv">2</span>, <span class="dv">22</span>, <span class="dt">by=</span> <span class="dv">4</span>), <span class="dv">24</span>), </span>
-<span id="cb9-37"><a href="#cb9-37"></a>            <span class="dt">labels=</span> <span class="kw">c</span>(<span class="st">&quot;MNight&quot;</span>, <span class="st">&quot;AM1&quot;</span>, <span class="st">&quot;AM2&quot;</span>, <span class="st">&quot;MDay&quot;</span>, <span class="st">&quot;PM1&quot;</span>, <span class="st">&quot;PM2&quot;</span>, <span class="st">&quot;MNight&quot;</span>))</span>
-<span id="cb9-38"><a href="#cb9-38"></a>dat<span class="op">$</span>Time6&lt;-<span class="st"> </span><span class="kw">factor</span>(dat<span class="op">$</span>Time6, <span class="dt">levels=</span> <span class="kw">c</span>(<span class="st">&quot;MNight&quot;</span>, <span class="st">&quot;AM1&quot;</span>, <span class="st">&quot;AM2&quot;</span>, <span class="st">&quot;MDay&quot;</span>, <span class="st">&quot;PM1&quot;</span>, <span class="st">&quot;PM2&quot;</span>))</span>
-<span id="cb9-39"><a href="#cb9-39"></a><span class="co"># reordering chronologically</span></span>
-<span id="cb9-40"><a href="#cb9-40"></a></span>
-<span id="cb9-41"><a href="#cb9-41"></a><span class="co"># check this is working as intended:</span></span>
-<span id="cb9-42"><a href="#cb9-42"></a><span class="kw">table</span>(dat<span class="op">$</span>Time6, dat<span class="op">$</span>mh)</span>
-<span id="cb9-43"><a href="#cb9-43"></a></span>
-<span id="cb9-44"><a href="#cb9-44"></a><span class="co"># Bin tide angle into 4 quadrants with peaks in middle of respective bin</span></span>
-<span id="cb9-45"><a href="#cb9-45"></a>dat<span class="op">$</span>Tide4&lt;-<span class="st"> </span><span class="kw">cut</span>(dat<span class="op">$</span>tideangle_deg, <span class="dt">breaks=</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">45</span>, <span class="dv">135</span>, <span class="dv">225</span>, <span class="dv">315</span>, <span class="dv">360</span>), </span>
-<span id="cb9-46"><a href="#cb9-46"></a>            <span class="dt">labels=</span> <span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>, <span class="dv">1</span>))</span>
-<span id="cb9-47"><a href="#cb9-47"></a></span>
-<span id="cb9-48"><a href="#cb9-48"></a><span class="co"># check this is working as intended:</span></span>
-<span id="cb9-49"><a href="#cb9-49"></a><span class="kw">plot</span>(<span class="kw">as.numeric</span>(dat<span class="op">$</span>Tide4) <span class="op">~</span><span class="st"> </span>dat<span class="op">$</span>tideangle_deg)</span>
-<span id="cb9-50"><a href="#cb9-50"></a></span>
-<span id="cb9-51"><a href="#cb9-51"></a><span class="co"># unless you desperately want to test the performance of your computer, </span></span>
-<span id="cb9-52"><a href="#cb9-52"></a><span class="co"># play safe and reduce the size of the data set from 50000 to 5000:</span></span>
-<span id="cb9-53"><a href="#cb9-53"></a><span class="kw">set.seed</span>(<span class="dv">74</span>) <span class="co"># makes the random sampling reproducible</span></span>
-<span id="cb9-54"><a href="#cb9-54"></a><span class="co"># This means you will get the same random sample as the solutions to</span></span>
-<span id="cb9-55"><a href="#cb9-55"></a><span class="co"># the exercises and the same results.</span></span>
-<span id="cb9-56"><a href="#cb9-56"></a>dat&lt;-<span class="st"> </span>dat[<span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(dat), <span class="dt">size=</span> <span class="dv">5000</span>), ] <span class="co"># random subset or rows</span></span>
-<span id="cb9-57"><a href="#cb9-57"></a></span>
-<span id="cb9-58"><a href="#cb9-58"></a><span class="kw">write.csv</span>(dat, <span class="st">&quot;dolphin.csv&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>fulldat<span class="ot">&lt;-</span> <span class="fu">read.delim</span>(<span class="st">&quot;./data/FineScale_Dataset_GAMM_OFB2019.txt&quot;</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(fulldat)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>dat<span class="ot">&lt;-</span> fulldat[fulldat<span class="sc">$</span>site <span class="sc">==</span> <span class="st">&quot;Sutors&quot;</span>, <span class="fu">c</span>(<span class="st">&quot;presence&quot;</span>, <span class="st">&quot;year&quot;</span>, <span class="st">&quot;julianday&quot;</span>, <span class="st">&quot;tideangle_deg&quot;</span>, <span class="st">&quot;mh&quot;</span>)]</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>mon<span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">cut</span>(dat<span class="sc">$</span>julianday, <span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">370</span>, <span class="at">by=</span> <span class="fl">30.5</span>)))</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>tideangle_deg<span class="ot">&lt;-</span> <span class="fu">round</span>(dat<span class="sc">$</span>tideangle_deg)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co"># count number of data per year/month combination and represent as mosaicplot</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">table</span>(dat<span class="sc">$</span>year, dat<span class="sc">$</span>mon))</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co"># remove 2016</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>dat<span class="ot">&lt;-</span> dat[dat<span class="sc">$</span>year <span class="sc">!=</span> <span class="dv">2016</span>, ]</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Bin year into two periods (May+June vs rest of year)</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>Per2<span class="ot">&lt;-</span> <span class="fu">cut</span>(dat<span class="sc">$</span>julianday, <span class="at">breaks=</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">120</span>, <span class="dv">180</span>, <span class="dv">400</span>), </span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>            <span class="at">labels=</span> <span class="fu">c</span>(<span class="st">&quot;RestOfYear&quot;</span>, <span class="st">&quot;MayJun&quot;</span>, <span class="st">&quot;RestOfYear&quot;</span>))</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>Per2<span class="ot">&lt;-</span> <span class="fu">factor</span>(dat<span class="sc">$</span>Per2, <span class="at">levels=</span> <span class="fu">c</span>(<span class="st">&quot;RestOfYear&quot;</span>, <span class="st">&quot;MayJun&quot;</span>))</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="co"># (making &quot;RestOfYear&quot; the reference level)</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="co"># check this is working as intended:</span></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">as.numeric</span>(dat<span class="sc">$</span>Per2) <span class="sc">~</span> dat<span class="sc">$</span>julianday)</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Bin year into 4 periods:</span></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a><span class="co"># 3 periods of 20 days from early May to end of June vs rest of the year</span></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>Per4<span class="ot">&lt;-</span> <span class="fu">cut</span>(dat<span class="sc">$</span>julianday, <span class="at">breaks=</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">120</span>, <span class="dv">140</span>, <span class="dv">160</span>, <span class="dv">180</span>, <span class="dv">400</span>), </span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>            <span class="at">labels=</span> <span class="fu">c</span>(<span class="st">&quot;RestOfYear&quot;</span>, <span class="st">&quot;MayJun1&quot;</span>, <span class="st">&quot;MayJun2&quot;</span>, <span class="st">&quot;MayJun3&quot;</span>, <span class="st">&quot;RestOfYear&quot;</span>))</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>Per4<span class="ot">&lt;-</span> <span class="fu">factor</span>(dat<span class="sc">$</span>Per4, <span class="at">levels=</span> <span class="fu">c</span>(<span class="st">&quot;RestOfYear&quot;</span>, <span class="st">&quot;MayJun1&quot;</span>, <span class="st">&quot;MayJun2&quot;</span>, <span class="st">&quot;MayJun3&quot;</span>))</span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a><span class="co"># (reordering levels)</span></span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a><span class="co"># check this is working as intended:</span></span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">as.numeric</span>(dat<span class="sc">$</span>Per4) <span class="sc">~</span> dat<span class="sc">$</span>julianday)</span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a><span class="co"># Bin time of day into 6 4h periods (first centered on midnight)</span></span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>Time6<span class="ot">&lt;-</span> <span class="fu">cut</span>(dat<span class="sc">$</span>mh, <span class="at">breaks=</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="fu">seq</span>(<span class="dv">2</span>, <span class="dv">22</span>, <span class="at">by=</span> <span class="dv">4</span>), <span class="dv">24</span>), </span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a>            <span class="at">labels=</span> <span class="fu">c</span>(<span class="st">&quot;MNight&quot;</span>, <span class="st">&quot;AM1&quot;</span>, <span class="st">&quot;AM2&quot;</span>, <span class="st">&quot;MDay&quot;</span>, <span class="st">&quot;PM1&quot;</span>, <span class="st">&quot;PM2&quot;</span>, <span class="st">&quot;MNight&quot;</span>))</span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>Time6<span class="ot">&lt;-</span> <span class="fu">factor</span>(dat<span class="sc">$</span>Time6, <span class="at">levels=</span> <span class="fu">c</span>(<span class="st">&quot;MNight&quot;</span>, <span class="st">&quot;AM1&quot;</span>, <span class="st">&quot;AM2&quot;</span>, <span class="st">&quot;MDay&quot;</span>, <span class="st">&quot;PM1&quot;</span>, <span class="st">&quot;PM2&quot;</span>))</span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a><span class="co"># reordering chronologically</span></span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a><span class="co"># check this is working as intended:</span></span>
+<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(dat<span class="sc">$</span>Time6, dat<span class="sc">$</span>mh)</span>
+<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a><span class="co"># Bin tide angle into 4 quadrants with peaks in middle of respective bin</span></span>
+<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>Tide4<span class="ot">&lt;-</span> <span class="fu">cut</span>(dat<span class="sc">$</span>tideangle_deg, <span class="at">breaks=</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">45</span>, <span class="dv">135</span>, <span class="dv">225</span>, <span class="dv">315</span>, <span class="dv">360</span>), </span>
+<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a>            <span class="at">labels=</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, <span class="dv">1</span>))</span>
+<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a><span class="co"># check this is working as intended:</span></span>
+<span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">as.numeric</span>(dat<span class="sc">$</span>Tide4) <span class="sc">~</span> dat<span class="sc">$</span>tideangle_deg)</span>
+<span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-51"><a href="#cb9-51" aria-hidden="true" tabindex="-1"></a><span class="co"># unless you desperately want to test the performance of your computer, </span></span>
+<span id="cb9-52"><a href="#cb9-52" aria-hidden="true" tabindex="-1"></a><span class="co"># play safe and reduce the size of the data set from 50000 to 5000:</span></span>
+<span id="cb9-53"><a href="#cb9-53" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">74</span>) <span class="co"># makes the random sampling reproducible</span></span>
+<span id="cb9-54"><a href="#cb9-54" aria-hidden="true" tabindex="-1"></a><span class="co"># This means you will get the same random sample as the solutions to</span></span>
+<span id="cb9-55"><a href="#cb9-55" aria-hidden="true" tabindex="-1"></a><span class="co"># the exercises and the same results.</span></span>
+<span id="cb9-56"><a href="#cb9-56" aria-hidden="true" tabindex="-1"></a>dat<span class="ot">&lt;-</span> dat[<span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(dat), <span class="at">size=</span> <span class="dv">5000</span>), ] <span class="co"># random subset or rows</span></span>
+<span id="cb9-57"><a href="#cb9-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-58"><a href="#cb9-58" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(dat, <span class="st">&quot;dolphin.csv&quot;</span>)</span></code></pre></div>
 </div>
 
 
@@ -822,7 +790,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>
