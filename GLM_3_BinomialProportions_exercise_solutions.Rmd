@@ -199,7 +199,6 @@ drop1(M1, test= "Chi")
 
 \  
 
-
 ```{r Q8, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.height=8, fig.show= ifelse(SOLUTIONS, "asis", "hide")}
 library(car)
 vif(M1)

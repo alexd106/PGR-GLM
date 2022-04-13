@@ -162,7 +162,6 @@ drop1(sp.glm2, test= "Chisq")
 # from the summary table, in this case, although the null hypothesis
 # is different (coefficient different from zero in the latter 
 # vs. significant proportion of variation explained in the former).
-
 ```
 
 \  
@@ -280,7 +279,6 @@ vif(sp.glm2)
 # Any change in one coefficient will have a strong impact on the others
 # This might be exacerbated by the pre-existing correlation between 
 # the predictors. But all components are very clearly needed here.
-
 ```
 
 \  
@@ -468,6 +466,7 @@ legend("topright",
 \  
 
 ```{r Q15, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.height=8, fig.show= ifelse(SOLUTIONS, "asis", "hide")}
+
 P.low<- predict(sp.glm2, newdata= MyData1, type= "link", se.fit= T)
 P.mid<- predict(sp.glm2, newdata= MyData2, type= "link", se.fit= T)
 P.high<- predict(sp.glm2, newdata= MyData3, type= "link", se.fit= T)
