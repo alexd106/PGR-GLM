@@ -13,11 +13,7 @@
 
 <title>Exercise Solutions</title>
 
-<<<<<<< HEAD
 <script src="site_libs/header-attrs-2.8/header-attrs.js"></script>
-=======
-<script src="site_libs/header-attrs-2.10/header-attrs.js"></script>
->>>>>>> e9d0d088b8e4193ad8dcc3d94c263a53cadf511a
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
@@ -344,21 +340,21 @@ $(document).ready(function () {
       <ul class="nav navbar-nav">
         <li>
   <a href="index.html">
-    <span class="fa fa-home"></span>
+    <span class="fas fa-home"></span>
      
     Home
   </a>
 </li>
 <li>
   <a href="setup.html">
-    <span class="fa fa-cog"></span>
+    <span class="fas fa-cog"></span>
      
     Setup
   </a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    <span class="fa fa-book"></span>
+    <span class="fas fa-book"></span>
      
     R Book
      
@@ -367,7 +363,7 @@ $(document).ready(function () {
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="https://intro2r.com">
-        <span class="fa fa-firefox"></span>
+        <span class="fas fa-firefox"></span>
          
         Web book
       </a>
@@ -375,7 +371,7 @@ $(document).ready(function () {
     <li class="divider"></li>
     <li>
       <a href="https://github.com/alexd106/Rbook/raw/master/docs/Rbook.pdf">
-        <span class="fa fa-file-pdf"></span>
+        <span class="fas fa-file-pdf"></span>
          
         PDF book
       </a>
@@ -384,7 +380,7 @@ $(document).ready(function () {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    <span class="fa fa-book"></span>
+    <span class="fas fa-book"></span>
      
     Exercises
      
@@ -393,7 +389,7 @@ $(document).ready(function () {
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="exercises.html">
-        <span class="fa fa-book"></span>
+        <span class="fas fa-book"></span>
          
         Exercises
       </a>
@@ -401,7 +397,7 @@ $(document).ready(function () {
     <li class="divider"></li>
     <li>
       <a href="exercise_solutions.html">
-        <span class="fa fa-book"></span>
+        <span class="fas fa-book"></span>
          
         Exercise Solutions
       </a>
@@ -410,14 +406,14 @@ $(document).ready(function () {
 </li>
 <li>
   <a href="data.html">
-    <span class="fa fa-download"></span>
+    <span class="fas fa-download"></span>
      
     Data
   </a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    <span class="fa fa-question-circle"></span>
+    <span class="fas fa-question-circle"></span>
      
     Info
      
@@ -426,14 +422,14 @@ $(document).ready(function () {
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="syllabus.html">
-        <span class="fa fa-graduation-cap"></span>
+        <span class="fas fa-graduation-cap"></span>
          
         Syllabus
       </a>
     </li>
     <li>
       <a href="People.html">
-        <span class="fa fa-user-friends"></span>
+        <span class="fas fa-user-friends"></span>
          
         People
       </a>
@@ -441,7 +437,7 @@ $(document).ready(function () {
     <li class="divider"></li>
     <li>
       <a href="resources.html">
-        <span class="fa fa-book"></span>
+        <span class="fas fa-book"></span>
          
         Resources
       </a>
@@ -449,7 +445,7 @@ $(document).ready(function () {
     <li class="dropdown-header">Feedback</li>
     <li>
       <a href="People.html">
-        <span class="fa fa-envelope fa-lg"></span>
+        <span class="fas fa-envelope fa-lg"></span>
          
         Contact
       </a>
@@ -457,7 +453,7 @@ $(document).ready(function () {
     <li class="divider"></li>
     <li>
       <a href="https://github.com/alexd106/PGR-GLM">
-        <span class="fa fa-github fa-lg"></span>
+        <span class="fas fa-github fa-lg"></span>
          
         Source code
       </a>
@@ -617,191 +613,330 @@ $(document).ready(function () {
 <span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a><span class="do">## Number of Fisher Scoring iterations: 6</span></span>
 <span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(M1)</span>
-<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a><span class="do">##           (Intercept)         Concentration               fToxic2               fToxic3               fToxic4 </span></span>
-<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a><span class="do">##           1.434827258          -3.801011714           0.008599625           0.014191002           0.273864642 </span></span>
-<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a><span class="do">## Concentration:fToxic2 Concentration:fToxic3 Concentration:fToxic4 </span></span>
-<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a><span class="do">##          -6.176473370          -1.899832702           1.482751939</span></span>
-<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a><span class="fu">model.matrix</span>(M1)</span>
-<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a><span class="do">##     (Intercept) Concentration fToxic2 fToxic3 fToxic4 Concentration:fToxic2 Concentration:fToxic3 Concentration:fToxic4</span></span>
-<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a><span class="do">## 1             1          0.00       0       0       0                  0.00                  0.00                  0.00</span></span>
-<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a><span class="do">## 2             1          0.00       0       0       0                  0.00                  0.00                  0.00</span></span>
-<span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a><span class="do">## 3             1          0.00       0       0       0                  0.00                  0.00                  0.00</span></span>
-<span id="cb13-43"><a href="#cb13-43" aria-hidden="true" tabindex="-1"></a><span class="do">## 4             1          0.00       0       0       0                  0.00                  0.00                  0.00</span></span>
-<span id="cb13-44"><a href="#cb13-44" aria-hidden="true" tabindex="-1"></a><span class="do">## 5             1          0.00       0       0       0                  0.00                  0.00                  0.00</span></span>
-<span id="cb13-45"><a href="#cb13-45" aria-hidden="true" tabindex="-1"></a><span class="do">## 6             1          0.25       0       0       0                  0.00                  0.00                  0.00</span></span>
-<span id="cb13-46"><a href="#cb13-46" aria-hidden="true" tabindex="-1"></a><span class="do">## 7             1          0.25       0       0       0                  0.00                  0.00                  0.00</span></span>
-<span id="cb13-47"><a href="#cb13-47" aria-hidden="true" tabindex="-1"></a><span class="do">## 8             1          0.25       0       0       0                  0.00                  0.00                  0.00</span></span>
-<span id="cb13-48"><a href="#cb13-48" aria-hidden="true" tabindex="-1"></a><span class="do">## 9             1          0.25       0       0       0                  0.00                  0.00                  0.00</span></span>
-<span id="cb13-49"><a href="#cb13-49" aria-hidden="true" tabindex="-1"></a><span class="do">## 10            1          0.25       0       0       0                  0.00                  0.00                  0.00</span></span>
-<span id="cb13-50"><a href="#cb13-50" aria-hidden="true" tabindex="-1"></a><span class="do">## 11            1          0.50       0       0       0                  0.00                  0.00                  0.00</span></span>
-<span id="cb13-51"><a href="#cb13-51" aria-hidden="true" tabindex="-1"></a><span class="do">## 12            1          0.50       0       0       0                  0.00                  0.00                  0.00</span></span>
-<span id="cb13-52"><a href="#cb13-52" aria-hidden="true" tabindex="-1"></a><span class="do">## 13            1          0.50       0       0       0                  0.00                  0.00                  0.00</span></span>
-<span id="cb13-53"><a href="#cb13-53" aria-hidden="true" tabindex="-1"></a><span class="do">## 14            1          0.50       0       0       0                  0.00                  0.00                  0.00</span></span>
-<span id="cb13-54"><a href="#cb13-54" aria-hidden="true" tabindex="-1"></a><span class="do">## 15            1          0.50       0       0       0                  0.00                  0.00                  0.00</span></span>
-<span id="cb13-55"><a href="#cb13-55" aria-hidden="true" tabindex="-1"></a><span class="do">## 16            1          1.00       0       0       0                  0.00                  0.00                  0.00</span></span>
-<span id="cb13-56"><a href="#cb13-56" aria-hidden="true" tabindex="-1"></a><span class="do">## 17            1          1.00       0       0       0                  0.00                  0.00                  0.00</span></span>
-<span id="cb13-57"><a href="#cb13-57" aria-hidden="true" tabindex="-1"></a><span class="do">## 18            1          1.00       0       0       0                  0.00                  0.00                  0.00</span></span>
-<span id="cb13-58"><a href="#cb13-58" aria-hidden="true" tabindex="-1"></a><span class="do">## 19            1          1.00       0       0       0                  0.00                  0.00                  0.00</span></span>
-<span id="cb13-59"><a href="#cb13-59" aria-hidden="true" tabindex="-1"></a><span class="do">## 20            1          1.00       0       0       0                  0.00                  0.00                  0.00</span></span>
-<span id="cb13-60"><a href="#cb13-60" aria-hidden="true" tabindex="-1"></a><span class="do">## 21            1          2.00       0       0       0                  0.00                  0.00                  0.00</span></span>
-<span id="cb13-61"><a href="#cb13-61" aria-hidden="true" tabindex="-1"></a><span class="do">## 22            1          2.00       0       0       0                  0.00                  0.00                  0.00</span></span>
-<span id="cb13-62"><a href="#cb13-62" aria-hidden="true" tabindex="-1"></a><span class="do">## 23            1          2.00       0       0       0                  0.00                  0.00                  0.00</span></span>
-<span id="cb13-63"><a href="#cb13-63" aria-hidden="true" tabindex="-1"></a><span class="do">## 24            1          2.00       0       0       0                  0.00                  0.00                  0.00</span></span>
-<span id="cb13-64"><a href="#cb13-64" aria-hidden="true" tabindex="-1"></a><span class="do">## 25            1          2.00       0       0       0                  0.00                  0.00                  0.00</span></span>
-<span id="cb13-65"><a href="#cb13-65" aria-hidden="true" tabindex="-1"></a><span class="do">## 26            1          0.00       1       0       0                  0.00                  0.00                  0.00</span></span>
-<span id="cb13-66"><a href="#cb13-66" aria-hidden="true" tabindex="-1"></a><span class="do">## 27            1          0.00       1       0       0                  0.00                  0.00                  0.00</span></span>
-<span id="cb13-67"><a href="#cb13-67" aria-hidden="true" tabindex="-1"></a><span class="do">## 28            1          0.00       1       0       0                  0.00                  0.00                  0.00</span></span>
-<span id="cb13-68"><a href="#cb13-68" aria-hidden="true" tabindex="-1"></a><span class="do">## 29            1          0.00       1       0       0                  0.00                  0.00                  0.00</span></span>
-<span id="cb13-69"><a href="#cb13-69" aria-hidden="true" tabindex="-1"></a><span class="do">## 30            1          0.00       1       0       0                  0.00                  0.00                  0.00</span></span>
-<span id="cb13-70"><a href="#cb13-70" aria-hidden="true" tabindex="-1"></a><span class="do">## 31            1          0.12       1       0       0                  0.12                  0.00                  0.00</span></span>
-<span id="cb13-71"><a href="#cb13-71" aria-hidden="true" tabindex="-1"></a><span class="do">## 32            1          0.12       1       0       0                  0.12                  0.00                  0.00</span></span>
-<span id="cb13-72"><a href="#cb13-72" aria-hidden="true" tabindex="-1"></a><span class="do">## 33            1          0.12       1       0       0                  0.12                  0.00                  0.00</span></span>
-<span id="cb13-73"><a href="#cb13-73" aria-hidden="true" tabindex="-1"></a><span class="do">## 34            1          0.12       1       0       0                  0.12                  0.00                  0.00</span></span>
-<span id="cb13-74"><a href="#cb13-74" aria-hidden="true" tabindex="-1"></a><span class="do">## 35            1          0.12       1       0       0                  0.12                  0.00                  0.00</span></span>
-<span id="cb13-75"><a href="#cb13-75" aria-hidden="true" tabindex="-1"></a><span class="do">## 36            1          0.24       1       0       0                  0.24                  0.00                  0.00</span></span>
-<span id="cb13-76"><a href="#cb13-76" aria-hidden="true" tabindex="-1"></a><span class="do">## 37            1          0.24       1       0       0                  0.24                  0.00                  0.00</span></span>
-<span id="cb13-77"><a href="#cb13-77" aria-hidden="true" tabindex="-1"></a><span class="do">## 38            1          0.24       1       0       0                  0.24                  0.00                  0.00</span></span>
-<span id="cb13-78"><a href="#cb13-78" aria-hidden="true" tabindex="-1"></a><span class="do">## 39            1          0.24       1       0       0                  0.24                  0.00                  0.00</span></span>
-<span id="cb13-79"><a href="#cb13-79" aria-hidden="true" tabindex="-1"></a><span class="do">## 40            1          0.24       1       0       0                  0.24                  0.00                  0.00</span></span>
-<span id="cb13-80"><a href="#cb13-80" aria-hidden="true" tabindex="-1"></a><span class="do">## 41            1          0.49       1       0       0                  0.49                  0.00                  0.00</span></span>
-<span id="cb13-81"><a href="#cb13-81" aria-hidden="true" tabindex="-1"></a><span class="do">## 42            1          0.49       1       0       0                  0.49                  0.00                  0.00</span></span>
-<span id="cb13-82"><a href="#cb13-82" aria-hidden="true" tabindex="-1"></a><span class="do">## 43            1          0.49       1       0       0                  0.49                  0.00                  0.00</span></span>
-<span id="cb13-83"><a href="#cb13-83" aria-hidden="true" tabindex="-1"></a><span class="do">## 44            1          0.49       1       0       0                  0.49                  0.00                  0.00</span></span>
-<span id="cb13-84"><a href="#cb13-84" aria-hidden="true" tabindex="-1"></a><span class="do">## 45            1          0.49       1       0       0                  0.49                  0.00                  0.00</span></span>
-<span id="cb13-85"><a href="#cb13-85" aria-hidden="true" tabindex="-1"></a><span class="do">## 46            1          0.98       1       0       0                  0.98                  0.00                  0.00</span></span>
-<span id="cb13-86"><a href="#cb13-86" aria-hidden="true" tabindex="-1"></a><span class="do">## 47            1          0.98       1       0       0                  0.98                  0.00                  0.00</span></span>
-<span id="cb13-87"><a href="#cb13-87" aria-hidden="true" tabindex="-1"></a><span class="do">## 48            1          0.98       1       0       0                  0.98                  0.00                  0.00</span></span>
-<span id="cb13-88"><a href="#cb13-88" aria-hidden="true" tabindex="-1"></a><span class="do">## 49            1          0.98       1       0       0                  0.98                  0.00                  0.00</span></span>
-<span id="cb13-89"><a href="#cb13-89" aria-hidden="true" tabindex="-1"></a><span class="do">## 50            1          0.98       1       0       0                  0.98                  0.00                  0.00</span></span>
-<span id="cb13-90"><a href="#cb13-90" aria-hidden="true" tabindex="-1"></a><span class="do">## 51            1          0.00       0       1       0                  0.00                  0.00                  0.00</span></span>
-<span id="cb13-91"><a href="#cb13-91" aria-hidden="true" tabindex="-1"></a><span class="do">## 52            1          0.00       0       1       0                  0.00                  0.00                  0.00</span></span>
-<span id="cb13-92"><a href="#cb13-92" aria-hidden="true" tabindex="-1"></a><span class="do">## 53            1          0.00       0       1       0                  0.00                  0.00                  0.00</span></span>
-<span id="cb13-93"><a href="#cb13-93" aria-hidden="true" tabindex="-1"></a><span class="do">## 54            1          0.00       0       1       0                  0.00                  0.00                  0.00</span></span>
-<span id="cb13-94"><a href="#cb13-94" aria-hidden="true" tabindex="-1"></a><span class="do">## 55            1          0.00       0       1       0                  0.00                  0.00                  0.00</span></span>
-<span id="cb13-95"><a href="#cb13-95" aria-hidden="true" tabindex="-1"></a><span class="do">## 56            1          0.00       0       1       0                  0.00                  0.00                  0.00</span></span>
-<span id="cb13-96"><a href="#cb13-96" aria-hidden="true" tabindex="-1"></a><span class="do">## 57            1          0.00       0       1       0                  0.00                  0.00                  0.00</span></span>
-<span id="cb13-97"><a href="#cb13-97" aria-hidden="true" tabindex="-1"></a><span class="do">## 58            1          0.00       0       1       0                  0.00                  0.00                  0.00</span></span>
-<span id="cb13-98"><a href="#cb13-98" aria-hidden="true" tabindex="-1"></a><span class="do">## 59            1          0.25       0       1       0                  0.00                  0.25                  0.00</span></span>
-<span id="cb13-99"><a href="#cb13-99" aria-hidden="true" tabindex="-1"></a><span class="do">## 60            1          0.25       0       1       0                  0.00                  0.25                  0.00</span></span>
-<span id="cb13-100"><a href="#cb13-100" aria-hidden="true" tabindex="-1"></a><span class="do">## 61            1          0.25       0       1       0                  0.00                  0.25                  0.00</span></span>
-<span id="cb13-101"><a href="#cb13-101" aria-hidden="true" tabindex="-1"></a><span class="do">## 62            1          0.25       0       1       0                  0.00                  0.25                  0.00</span></span>
-<span id="cb13-102"><a href="#cb13-102" aria-hidden="true" tabindex="-1"></a><span class="do">## 63            1          0.25       0       1       0                  0.00                  0.25                  0.00</span></span>
-<span id="cb13-103"><a href="#cb13-103" aria-hidden="true" tabindex="-1"></a><span class="do">## 64            1          0.25       0       1       0                  0.00                  0.25                  0.00</span></span>
-<span id="cb13-104"><a href="#cb13-104" aria-hidden="true" tabindex="-1"></a><span class="do">## 65            1          0.25       0       1       0                  0.00                  0.25                  0.00</span></span>
-<span id="cb13-105"><a href="#cb13-105" aria-hidden="true" tabindex="-1"></a><span class="do">## 66            1          0.25       0       1       0                  0.00                  0.25                  0.00</span></span>
-<span id="cb13-106"><a href="#cb13-106" aria-hidden="true" tabindex="-1"></a><span class="do">## 67            1          0.50       0       1       0                  0.00                  0.50                  0.00</span></span>
-<span id="cb13-107"><a href="#cb13-107" aria-hidden="true" tabindex="-1"></a><span class="do">## 68            1          0.50       0       1       0                  0.00                  0.50                  0.00</span></span>
-<span id="cb13-108"><a href="#cb13-108" aria-hidden="true" tabindex="-1"></a><span class="do">## 69            1          0.50       0       1       0                  0.00                  0.50                  0.00</span></span>
-<span id="cb13-109"><a href="#cb13-109" aria-hidden="true" tabindex="-1"></a><span class="do">## 70            1          0.50       0       1       0                  0.00                  0.50                  0.00</span></span>
-<span id="cb13-110"><a href="#cb13-110" aria-hidden="true" tabindex="-1"></a><span class="do">## 71            1          0.50       0       1       0                  0.00                  0.50                  0.00</span></span>
-<span id="cb13-111"><a href="#cb13-111" aria-hidden="true" tabindex="-1"></a><span class="do">## 72            1          0.50       0       1       0                  0.00                  0.50                  0.00</span></span>
-<span id="cb13-112"><a href="#cb13-112" aria-hidden="true" tabindex="-1"></a><span class="do">## 73            1          0.50       0       1       0                  0.00                  0.50                  0.00</span></span>
-<span id="cb13-113"><a href="#cb13-113" aria-hidden="true" tabindex="-1"></a><span class="do">## 74            1          0.50       0       1       0                  0.00                  0.50                  0.00</span></span>
-<span id="cb13-114"><a href="#cb13-114" aria-hidden="true" tabindex="-1"></a><span class="do">## 75            1          0.75       0       1       0                  0.00                  0.75                  0.00</span></span>
-<span id="cb13-115"><a href="#cb13-115" aria-hidden="true" tabindex="-1"></a><span class="do">## 76            1          0.75       0       1       0                  0.00                  0.75                  0.00</span></span>
-<span id="cb13-116"><a href="#cb13-116" aria-hidden="true" tabindex="-1"></a><span class="do">## 77            1          0.75       0       1       0                  0.00                  0.75                  0.00</span></span>
-<span id="cb13-117"><a href="#cb13-117" aria-hidden="true" tabindex="-1"></a><span class="do">## 78            1          0.75       0       1       0                  0.00                  0.75                  0.00</span></span>
-<span id="cb13-118"><a href="#cb13-118" aria-hidden="true" tabindex="-1"></a><span class="do">## 79            1          0.75       0       1       0                  0.00                  0.75                  0.00</span></span>
-<span id="cb13-119"><a href="#cb13-119" aria-hidden="true" tabindex="-1"></a><span class="do">## 80            1          0.75       0       1       0                  0.00                  0.75                  0.00</span></span>
-<span id="cb13-120"><a href="#cb13-120" aria-hidden="true" tabindex="-1"></a><span class="do">## 81            1          0.75       0       1       0                  0.00                  0.75                  0.00</span></span>
-<span id="cb13-121"><a href="#cb13-121" aria-hidden="true" tabindex="-1"></a><span class="do">## 82            1          0.75       0       1       0                  0.00                  0.75                  0.00</span></span>
-<span id="cb13-122"><a href="#cb13-122" aria-hidden="true" tabindex="-1"></a><span class="do">## 83            1          1.00       0       1       0                  0.00                  1.00                  0.00</span></span>
-<span id="cb13-123"><a href="#cb13-123" aria-hidden="true" tabindex="-1"></a><span class="do">## 84            1          1.00       0       1       0                  0.00                  1.00                  0.00</span></span>
-<span id="cb13-124"><a href="#cb13-124" aria-hidden="true" tabindex="-1"></a><span class="do">## 85            1          1.00       0       1       0                  0.00                  1.00                  0.00</span></span>
-<span id="cb13-125"><a href="#cb13-125" aria-hidden="true" tabindex="-1"></a><span class="do">## 86            1          1.00       0       1       0                  0.00                  1.00                  0.00</span></span>
-<span id="cb13-126"><a href="#cb13-126" aria-hidden="true" tabindex="-1"></a><span class="do">## 87            1          1.00       0       1       0                  0.00                  1.00                  0.00</span></span>
-<span id="cb13-127"><a href="#cb13-127" aria-hidden="true" tabindex="-1"></a><span class="do">## 88            1          1.00       0       1       0                  0.00                  1.00                  0.00</span></span>
-<span id="cb13-128"><a href="#cb13-128" aria-hidden="true" tabindex="-1"></a><span class="do">## 89            1          1.00       0       1       0                  0.00                  1.00                  0.00</span></span>
-<span id="cb13-129"><a href="#cb13-129" aria-hidden="true" tabindex="-1"></a><span class="do">## 90            1          1.00       0       1       0                  0.00                  1.00                  0.00</span></span>
-<span id="cb13-130"><a href="#cb13-130" aria-hidden="true" tabindex="-1"></a><span class="do">## 91            1          0.00       0       0       1                  0.00                  0.00                  0.00</span></span>
-<span id="cb13-131"><a href="#cb13-131" aria-hidden="true" tabindex="-1"></a><span class="do">## 92            1          0.00       0       0       1                  0.00                  0.00                  0.00</span></span>
-<span id="cb13-132"><a href="#cb13-132" aria-hidden="true" tabindex="-1"></a><span class="do">## 93            1          0.00       0       0       1                  0.00                  0.00                  0.00</span></span>
-<span id="cb13-133"><a href="#cb13-133" aria-hidden="true" tabindex="-1"></a><span class="do">## 94            1          0.00       0       0       1                  0.00                  0.00                  0.00</span></span>
-<span id="cb13-134"><a href="#cb13-134" aria-hidden="true" tabindex="-1"></a><span class="do">## 95            1          0.00       0       0       1                  0.00                  0.00                  0.00</span></span>
-<span id="cb13-135"><a href="#cb13-135" aria-hidden="true" tabindex="-1"></a><span class="do">## 96            1          0.54       0       0       1                  0.00                  0.00                  0.54</span></span>
-<span id="cb13-136"><a href="#cb13-136" aria-hidden="true" tabindex="-1"></a><span class="do">## 97            1          0.54       0       0       1                  0.00                  0.00                  0.54</span></span>
-<span id="cb13-137"><a href="#cb13-137" aria-hidden="true" tabindex="-1"></a><span class="do">## 98            1          0.54       0       0       1                  0.00                  0.00                  0.54</span></span>
-<span id="cb13-138"><a href="#cb13-138" aria-hidden="true" tabindex="-1"></a><span class="do">## 99            1          0.54       0       0       1                  0.00                  0.00                  0.54</span></span>
-<span id="cb13-139"><a href="#cb13-139" aria-hidden="true" tabindex="-1"></a><span class="do">## 100           1          0.54       0       0       1                  0.00                  0.00                  0.54</span></span>
-<span id="cb13-140"><a href="#cb13-140" aria-hidden="true" tabindex="-1"></a><span class="do">## 101           1          1.08       0       0       1                  0.00                  0.00                  1.08</span></span>
-<span id="cb13-141"><a href="#cb13-141" aria-hidden="true" tabindex="-1"></a><span class="do">## 102           1          1.08       0       0       1                  0.00                  0.00                  1.08</span></span>
-<span id="cb13-142"><a href="#cb13-142" aria-hidden="true" tabindex="-1"></a><span class="do">## 103           1          1.08       0       0       1                  0.00                  0.00                  1.08</span></span>
-<span id="cb13-143"><a href="#cb13-143" aria-hidden="true" tabindex="-1"></a><span class="do">## 104           1          1.08       0       0       1                  0.00                  0.00                  1.08</span></span>
-<span id="cb13-144"><a href="#cb13-144" aria-hidden="true" tabindex="-1"></a><span class="do">## 105           1          1.08       0       0       1                  0.00                  0.00                  1.08</span></span>
-<span id="cb13-145"><a href="#cb13-145" aria-hidden="true" tabindex="-1"></a><span class="do">## 106           1          1.62       0       0       1                  0.00                  0.00                  1.62</span></span>
-<span id="cb13-146"><a href="#cb13-146" aria-hidden="true" tabindex="-1"></a><span class="do">## 107           1          1.62       0       0       1                  0.00                  0.00                  1.62</span></span>
-<span id="cb13-147"><a href="#cb13-147" aria-hidden="true" tabindex="-1"></a><span class="do">## 108           1          1.62       0       0       1                  0.00                  0.00                  1.62</span></span>
-<span id="cb13-148"><a href="#cb13-148" aria-hidden="true" tabindex="-1"></a><span class="do">## 109           1          1.62       0       0       1                  0.00                  0.00                  1.62</span></span>
-<span id="cb13-149"><a href="#cb13-149" aria-hidden="true" tabindex="-1"></a><span class="do">## 110           1          1.62       0       0       1                  0.00                  0.00                  1.62</span></span>
-<span id="cb13-150"><a href="#cb13-150" aria-hidden="true" tabindex="-1"></a><span class="do">## 111           1          2.16       0       0       1                  0.00                  0.00                  2.16</span></span>
-<span id="cb13-151"><a href="#cb13-151" aria-hidden="true" tabindex="-1"></a><span class="do">## 112           1          2.16       0       0       1                  0.00                  0.00                  2.16</span></span>
-<span id="cb13-152"><a href="#cb13-152" aria-hidden="true" tabindex="-1"></a><span class="do">## 113           1          2.16       0       0       1                  0.00                  0.00                  2.16</span></span>
-<span id="cb13-153"><a href="#cb13-153" aria-hidden="true" tabindex="-1"></a><span class="do">## 114           1          2.16       0       0       1                  0.00                  0.00                  2.16</span></span>
-<span id="cb13-154"><a href="#cb13-154" aria-hidden="true" tabindex="-1"></a><span class="do">## 115           1          2.16       0       0       1                  0.00                  0.00                  2.16</span></span>
-<span id="cb13-155"><a href="#cb13-155" aria-hidden="true" tabindex="-1"></a><span class="do">## attr(,&quot;assign&quot;)</span></span>
-<span id="cb13-156"><a href="#cb13-156" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 0 1 2 2 2 3 3 3</span></span>
-<span id="cb13-157"><a href="#cb13-157" aria-hidden="true" tabindex="-1"></a><span class="do">## attr(,&quot;contrasts&quot;)</span></span>
-<span id="cb13-158"><a href="#cb13-158" aria-hidden="true" tabindex="-1"></a><span class="do">## attr(,&quot;contrasts&quot;)$fToxic</span></span>
-<span id="cb13-159"><a href="#cb13-159" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] &quot;contr.treatment&quot;</span></span>
-<span id="cb13-160"><a href="#cb13-160" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-161"><a href="#cb13-161" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(<span class="fu">model.matrix</span>(M1))</span>
-<span id="cb13-162"><a href="#cb13-162" aria-hidden="true" tabindex="-1"></a><span class="do">##     (Intercept) Concentration fToxic2 fToxic3 fToxic4 Concentration:fToxic2 Concentration:fToxic3 Concentration:fToxic4</span></span>
-<span id="cb13-163"><a href="#cb13-163" aria-hidden="true" tabindex="-1"></a><span class="do">## 1             1          0.00       0       0       0                  0.00                  0.00                  0.00</span></span>
-<span id="cb13-164"><a href="#cb13-164" aria-hidden="true" tabindex="-1"></a><span class="do">## 6             1          0.25       0       0       0                  0.00                  0.00                  0.00</span></span>
-<span id="cb13-165"><a href="#cb13-165" aria-hidden="true" tabindex="-1"></a><span class="do">## 11            1          0.50       0       0       0                  0.00                  0.00                  0.00</span></span>
-<span id="cb13-166"><a href="#cb13-166" aria-hidden="true" tabindex="-1"></a><span class="do">## 16            1          1.00       0       0       0                  0.00                  0.00                  0.00</span></span>
-<span id="cb13-167"><a href="#cb13-167" aria-hidden="true" tabindex="-1"></a><span class="do">## 21            1          2.00       0       0       0                  0.00                  0.00                  0.00</span></span>
-<span id="cb13-168"><a href="#cb13-168" aria-hidden="true" tabindex="-1"></a><span class="do">## 26            1          0.00       1       0       0                  0.00                  0.00                  0.00</span></span>
-<span id="cb13-169"><a href="#cb13-169" aria-hidden="true" tabindex="-1"></a><span class="do">## 31            1          0.12       1       0       0                  0.12                  0.00                  0.00</span></span>
-<span id="cb13-170"><a href="#cb13-170" aria-hidden="true" tabindex="-1"></a><span class="do">## 36            1          0.24       1       0       0                  0.24                  0.00                  0.00</span></span>
-<span id="cb13-171"><a href="#cb13-171" aria-hidden="true" tabindex="-1"></a><span class="do">## 41            1          0.49       1       0       0                  0.49                  0.00                  0.00</span></span>
-<span id="cb13-172"><a href="#cb13-172" aria-hidden="true" tabindex="-1"></a><span class="do">## 46            1          0.98       1       0       0                  0.98                  0.00                  0.00</span></span>
-<span id="cb13-173"><a href="#cb13-173" aria-hidden="true" tabindex="-1"></a><span class="do">## 51            1          0.00       0       1       0                  0.00                  0.00                  0.00</span></span>
-<span id="cb13-174"><a href="#cb13-174" aria-hidden="true" tabindex="-1"></a><span class="do">## 59            1          0.25       0       1       0                  0.00                  0.25                  0.00</span></span>
-<span id="cb13-175"><a href="#cb13-175" aria-hidden="true" tabindex="-1"></a><span class="do">## 67            1          0.50       0       1       0                  0.00                  0.50                  0.00</span></span>
-<span id="cb13-176"><a href="#cb13-176" aria-hidden="true" tabindex="-1"></a><span class="do">## 75            1          0.75       0       1       0                  0.00                  0.75                  0.00</span></span>
-<span id="cb13-177"><a href="#cb13-177" aria-hidden="true" tabindex="-1"></a><span class="do">## 83            1          1.00       0       1       0                  0.00                  1.00                  0.00</span></span>
-<span id="cb13-178"><a href="#cb13-178" aria-hidden="true" tabindex="-1"></a><span class="do">## 91            1          0.00       0       0       1                  0.00                  0.00                  0.00</span></span>
-<span id="cb13-179"><a href="#cb13-179" aria-hidden="true" tabindex="-1"></a><span class="do">## 96            1          0.54       0       0       1                  0.00                  0.00                  0.54</span></span>
-<span id="cb13-180"><a href="#cb13-180" aria-hidden="true" tabindex="-1"></a><span class="do">## 101           1          1.08       0       0       1                  0.00                  0.00                  1.08</span></span>
-<span id="cb13-181"><a href="#cb13-181" aria-hidden="true" tabindex="-1"></a><span class="do">## 106           1          1.62       0       0       1                  0.00                  0.00                  1.62</span></span>
-<span id="cb13-182"><a href="#cb13-182" aria-hidden="true" tabindex="-1"></a><span class="do">## 111           1          2.16       0       0       1                  0.00                  0.00                  2.16</span></span>
-<span id="cb13-183"><a href="#cb13-183" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-184"><a href="#cb13-184" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-185"><a href="#cb13-185" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-186"><a href="#cb13-186" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-187"><a href="#cb13-187" aria-hidden="true" tabindex="-1"></a><span class="do">## Mathematical model description:</span></span>
-<span id="cb13-188"><a href="#cb13-188" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-189"><a href="#cb13-189" aria-hidden="true" tabindex="-1"></a><span class="co"># Prop_surviving ~ Binomial(Ntot, P) </span></span>
-<span id="cb13-190"><a href="#cb13-190" aria-hidden="true" tabindex="-1"></a><span class="co"># log(P / (1-P)) = </span></span>
-<span id="cb13-191"><a href="#cb13-191" aria-hidden="true" tabindex="-1"></a><span class="co">#         1.43 - 3.80*Concentration </span></span>
-<span id="cb13-192"><a href="#cb13-192" aria-hidden="true" tabindex="-1"></a><span class="co">#         + 0.0085*fToxic2 + 0.014*fToxic3 + 0.27*fToxic4 </span></span>
-<span id="cb13-193"><a href="#cb13-193" aria-hidden="true" tabindex="-1"></a><span class="co">#         - 6.18*Concentration:fToxic2</span></span>
-<span id="cb13-194"><a href="#cb13-194" aria-hidden="true" tabindex="-1"></a><span class="co">#         - 1.90*Concentration*fToxic3 </span></span>
-<span id="cb13-195"><a href="#cb13-195" aria-hidden="true" tabindex="-1"></a><span class="co">#         + 1.48*Concentration*fToxic4</span></span>
-<span id="cb13-196"><a href="#cb13-196" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-197"><a href="#cb13-197" aria-hidden="true" tabindex="-1"></a><span class="do">## &quot;biological&quot; hypotheses:</span></span>
-<span id="cb13-198"><a href="#cb13-198" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-199"><a href="#cb13-199" aria-hidden="true" tabindex="-1"></a><span class="co"># (Intercept):     the mean (on the logit scale) for Toxic 1 when its</span></span>
-<span id="cb13-200"><a href="#cb13-200" aria-hidden="true" tabindex="-1"></a><span class="co"># concentration is 0 (null hypothesis not very useful, however</span></span>
-<span id="cb13-201"><a href="#cb13-201" aria-hidden="true" tabindex="-1"></a><span class="co"># the value is quite interesting, when back-transformed on the proportion</span></span>
-<span id="cb13-202"><a href="#cb13-202" aria-hidden="true" tabindex="-1"></a><span class="co"># scale: this is the proportion that survive the experiment in the absence</span></span>
-<span id="cb13-203"><a href="#cb13-203" aria-hidden="true" tabindex="-1"></a><span class="co"># of toxic chemical. Shouldn&#39;t differ between chemicals, presumably?)</span></span>
-<span id="cb13-204"><a href="#cb13-204" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-205"><a href="#cb13-205" aria-hidden="true" tabindex="-1"></a><span class="co"># Concentration: slope of Concentration, or change in survival per unit</span></span>
-<span id="cb13-206"><a href="#cb13-206" aria-hidden="true" tabindex="-1"></a><span class="co"># increase in Toxic 1 concentration (on logit link), or change in log-odds</span></span>
-<span id="cb13-207"><a href="#cb13-207" aria-hidden="true" tabindex="-1"></a><span class="co"># of survival (on proportion scale)</span></span>
-<span id="cb13-208"><a href="#cb13-208" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-209"><a href="#cb13-209" aria-hidden="true" tabindex="-1"></a><span class="co"># fToxic2:       difference between intercepts of Toxic 2 and Toxic 1</span></span>
-<span id="cb13-210"><a href="#cb13-210" aria-hidden="true" tabindex="-1"></a><span class="co"># fToxic3:       difference between intercepts of Toxic 3 and Toxic 1</span></span>
-<span id="cb13-211"><a href="#cb13-211" aria-hidden="true" tabindex="-1"></a><span class="co"># fToxic4:       difference between intercepts of Toxic 4 and Toxic 1</span></span>
-<span id="cb13-212"><a href="#cb13-212" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-213"><a href="#cb13-213" aria-hidden="true" tabindex="-1"></a><span class="co"># Concentration:fToxic2  difference between Conc. slopes for Toxic 2 and</span></span>
-<span id="cb13-214"><a href="#cb13-214" aria-hidden="true" tabindex="-1"></a><span class="co"># Toxic 1. Negative means a more lethal effect than Toxic 1</span></span>
-<span id="cb13-215"><a href="#cb13-215" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-216"><a href="#cb13-216" aria-hidden="true" tabindex="-1"></a><span class="co"># Concentration:fToxic3  difference between Conc. slopes for Toxic 2 and Toxic 1</span></span>
-<span id="cb13-217"><a href="#cb13-217" aria-hidden="true" tabindex="-1"></a><span class="co"># Concentration:fToxic4  difference between Conc. slopes for Toxic 2 and Toxic 1</span></span></code></pre></div>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a><span class="do">##           (Intercept)         Concentration               fToxic2 </span></span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a><span class="do">##           1.434827258          -3.801011714           0.008599625 </span></span>
+<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a><span class="do">##               fToxic3               fToxic4 Concentration:fToxic2 </span></span>
+<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a><span class="do">##           0.014191002           0.273864642          -6.176473370 </span></span>
+<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a><span class="do">## Concentration:fToxic3 Concentration:fToxic4 </span></span>
+<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a><span class="do">##          -1.899832702           1.482751939</span></span>
+<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a><span class="fu">model.matrix</span>(M1)</span>
+<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a><span class="do">##     (Intercept) Concentration fToxic2 fToxic3 fToxic4 Concentration:fToxic2</span></span>
+<span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a><span class="do">## 1             1          0.00       0       0       0                  0.00</span></span>
+<span id="cb13-43"><a href="#cb13-43" aria-hidden="true" tabindex="-1"></a><span class="do">## 2             1          0.00       0       0       0                  0.00</span></span>
+<span id="cb13-44"><a href="#cb13-44" aria-hidden="true" tabindex="-1"></a><span class="do">## 3             1          0.00       0       0       0                  0.00</span></span>
+<span id="cb13-45"><a href="#cb13-45" aria-hidden="true" tabindex="-1"></a><span class="do">## 4             1          0.00       0       0       0                  0.00</span></span>
+<span id="cb13-46"><a href="#cb13-46" aria-hidden="true" tabindex="-1"></a><span class="do">## 5             1          0.00       0       0       0                  0.00</span></span>
+<span id="cb13-47"><a href="#cb13-47" aria-hidden="true" tabindex="-1"></a><span class="do">## 6             1          0.25       0       0       0                  0.00</span></span>
+<span id="cb13-48"><a href="#cb13-48" aria-hidden="true" tabindex="-1"></a><span class="do">## 7             1          0.25       0       0       0                  0.00</span></span>
+<span id="cb13-49"><a href="#cb13-49" aria-hidden="true" tabindex="-1"></a><span class="do">## 8             1          0.25       0       0       0                  0.00</span></span>
+<span id="cb13-50"><a href="#cb13-50" aria-hidden="true" tabindex="-1"></a><span class="do">## 9             1          0.25       0       0       0                  0.00</span></span>
+<span id="cb13-51"><a href="#cb13-51" aria-hidden="true" tabindex="-1"></a><span class="do">## 10            1          0.25       0       0       0                  0.00</span></span>
+<span id="cb13-52"><a href="#cb13-52" aria-hidden="true" tabindex="-1"></a><span class="do">## 11            1          0.50       0       0       0                  0.00</span></span>
+<span id="cb13-53"><a href="#cb13-53" aria-hidden="true" tabindex="-1"></a><span class="do">## 12            1          0.50       0       0       0                  0.00</span></span>
+<span id="cb13-54"><a href="#cb13-54" aria-hidden="true" tabindex="-1"></a><span class="do">## 13            1          0.50       0       0       0                  0.00</span></span>
+<span id="cb13-55"><a href="#cb13-55" aria-hidden="true" tabindex="-1"></a><span class="do">## 14            1          0.50       0       0       0                  0.00</span></span>
+<span id="cb13-56"><a href="#cb13-56" aria-hidden="true" tabindex="-1"></a><span class="do">## 15            1          0.50       0       0       0                  0.00</span></span>
+<span id="cb13-57"><a href="#cb13-57" aria-hidden="true" tabindex="-1"></a><span class="do">## 16            1          1.00       0       0       0                  0.00</span></span>
+<span id="cb13-58"><a href="#cb13-58" aria-hidden="true" tabindex="-1"></a><span class="do">## 17            1          1.00       0       0       0                  0.00</span></span>
+<span id="cb13-59"><a href="#cb13-59" aria-hidden="true" tabindex="-1"></a><span class="do">## 18            1          1.00       0       0       0                  0.00</span></span>
+<span id="cb13-60"><a href="#cb13-60" aria-hidden="true" tabindex="-1"></a><span class="do">## 19            1          1.00       0       0       0                  0.00</span></span>
+<span id="cb13-61"><a href="#cb13-61" aria-hidden="true" tabindex="-1"></a><span class="do">## 20            1          1.00       0       0       0                  0.00</span></span>
+<span id="cb13-62"><a href="#cb13-62" aria-hidden="true" tabindex="-1"></a><span class="do">## 21            1          2.00       0       0       0                  0.00</span></span>
+<span id="cb13-63"><a href="#cb13-63" aria-hidden="true" tabindex="-1"></a><span class="do">## 22            1          2.00       0       0       0                  0.00</span></span>
+<span id="cb13-64"><a href="#cb13-64" aria-hidden="true" tabindex="-1"></a><span class="do">## 23            1          2.00       0       0       0                  0.00</span></span>
+<span id="cb13-65"><a href="#cb13-65" aria-hidden="true" tabindex="-1"></a><span class="do">## 24            1          2.00       0       0       0                  0.00</span></span>
+<span id="cb13-66"><a href="#cb13-66" aria-hidden="true" tabindex="-1"></a><span class="do">## 25            1          2.00       0       0       0                  0.00</span></span>
+<span id="cb13-67"><a href="#cb13-67" aria-hidden="true" tabindex="-1"></a><span class="do">## 26            1          0.00       1       0       0                  0.00</span></span>
+<span id="cb13-68"><a href="#cb13-68" aria-hidden="true" tabindex="-1"></a><span class="do">## 27            1          0.00       1       0       0                  0.00</span></span>
+<span id="cb13-69"><a href="#cb13-69" aria-hidden="true" tabindex="-1"></a><span class="do">## 28            1          0.00       1       0       0                  0.00</span></span>
+<span id="cb13-70"><a href="#cb13-70" aria-hidden="true" tabindex="-1"></a><span class="do">## 29            1          0.00       1       0       0                  0.00</span></span>
+<span id="cb13-71"><a href="#cb13-71" aria-hidden="true" tabindex="-1"></a><span class="do">## 30            1          0.00       1       0       0                  0.00</span></span>
+<span id="cb13-72"><a href="#cb13-72" aria-hidden="true" tabindex="-1"></a><span class="do">## 31            1          0.12       1       0       0                  0.12</span></span>
+<span id="cb13-73"><a href="#cb13-73" aria-hidden="true" tabindex="-1"></a><span class="do">## 32            1          0.12       1       0       0                  0.12</span></span>
+<span id="cb13-74"><a href="#cb13-74" aria-hidden="true" tabindex="-1"></a><span class="do">## 33            1          0.12       1       0       0                  0.12</span></span>
+<span id="cb13-75"><a href="#cb13-75" aria-hidden="true" tabindex="-1"></a><span class="do">## 34            1          0.12       1       0       0                  0.12</span></span>
+<span id="cb13-76"><a href="#cb13-76" aria-hidden="true" tabindex="-1"></a><span class="do">## 35            1          0.12       1       0       0                  0.12</span></span>
+<span id="cb13-77"><a href="#cb13-77" aria-hidden="true" tabindex="-1"></a><span class="do">## 36            1          0.24       1       0       0                  0.24</span></span>
+<span id="cb13-78"><a href="#cb13-78" aria-hidden="true" tabindex="-1"></a><span class="do">## 37            1          0.24       1       0       0                  0.24</span></span>
+<span id="cb13-79"><a href="#cb13-79" aria-hidden="true" tabindex="-1"></a><span class="do">## 38            1          0.24       1       0       0                  0.24</span></span>
+<span id="cb13-80"><a href="#cb13-80" aria-hidden="true" tabindex="-1"></a><span class="do">## 39            1          0.24       1       0       0                  0.24</span></span>
+<span id="cb13-81"><a href="#cb13-81" aria-hidden="true" tabindex="-1"></a><span class="do">## 40            1          0.24       1       0       0                  0.24</span></span>
+<span id="cb13-82"><a href="#cb13-82" aria-hidden="true" tabindex="-1"></a><span class="do">## 41            1          0.49       1       0       0                  0.49</span></span>
+<span id="cb13-83"><a href="#cb13-83" aria-hidden="true" tabindex="-1"></a><span class="do">## 42            1          0.49       1       0       0                  0.49</span></span>
+<span id="cb13-84"><a href="#cb13-84" aria-hidden="true" tabindex="-1"></a><span class="do">## 43            1          0.49       1       0       0                  0.49</span></span>
+<span id="cb13-85"><a href="#cb13-85" aria-hidden="true" tabindex="-1"></a><span class="do">## 44            1          0.49       1       0       0                  0.49</span></span>
+<span id="cb13-86"><a href="#cb13-86" aria-hidden="true" tabindex="-1"></a><span class="do">## 45            1          0.49       1       0       0                  0.49</span></span>
+<span id="cb13-87"><a href="#cb13-87" aria-hidden="true" tabindex="-1"></a><span class="do">## 46            1          0.98       1       0       0                  0.98</span></span>
+<span id="cb13-88"><a href="#cb13-88" aria-hidden="true" tabindex="-1"></a><span class="do">## 47            1          0.98       1       0       0                  0.98</span></span>
+<span id="cb13-89"><a href="#cb13-89" aria-hidden="true" tabindex="-1"></a><span class="do">## 48            1          0.98       1       0       0                  0.98</span></span>
+<span id="cb13-90"><a href="#cb13-90" aria-hidden="true" tabindex="-1"></a><span class="do">## 49            1          0.98       1       0       0                  0.98</span></span>
+<span id="cb13-91"><a href="#cb13-91" aria-hidden="true" tabindex="-1"></a><span class="do">## 50            1          0.98       1       0       0                  0.98</span></span>
+<span id="cb13-92"><a href="#cb13-92" aria-hidden="true" tabindex="-1"></a><span class="do">## 51            1          0.00       0       1       0                  0.00</span></span>
+<span id="cb13-93"><a href="#cb13-93" aria-hidden="true" tabindex="-1"></a><span class="do">## 52            1          0.00       0       1       0                  0.00</span></span>
+<span id="cb13-94"><a href="#cb13-94" aria-hidden="true" tabindex="-1"></a><span class="do">## 53            1          0.00       0       1       0                  0.00</span></span>
+<span id="cb13-95"><a href="#cb13-95" aria-hidden="true" tabindex="-1"></a><span class="do">## 54            1          0.00       0       1       0                  0.00</span></span>
+<span id="cb13-96"><a href="#cb13-96" aria-hidden="true" tabindex="-1"></a><span class="do">## 55            1          0.00       0       1       0                  0.00</span></span>
+<span id="cb13-97"><a href="#cb13-97" aria-hidden="true" tabindex="-1"></a><span class="do">## 56            1          0.00       0       1       0                  0.00</span></span>
+<span id="cb13-98"><a href="#cb13-98" aria-hidden="true" tabindex="-1"></a><span class="do">## 57            1          0.00       0       1       0                  0.00</span></span>
+<span id="cb13-99"><a href="#cb13-99" aria-hidden="true" tabindex="-1"></a><span class="do">## 58            1          0.00       0       1       0                  0.00</span></span>
+<span id="cb13-100"><a href="#cb13-100" aria-hidden="true" tabindex="-1"></a><span class="do">## 59            1          0.25       0       1       0                  0.00</span></span>
+<span id="cb13-101"><a href="#cb13-101" aria-hidden="true" tabindex="-1"></a><span class="do">## 60            1          0.25       0       1       0                  0.00</span></span>
+<span id="cb13-102"><a href="#cb13-102" aria-hidden="true" tabindex="-1"></a><span class="do">## 61            1          0.25       0       1       0                  0.00</span></span>
+<span id="cb13-103"><a href="#cb13-103" aria-hidden="true" tabindex="-1"></a><span class="do">## 62            1          0.25       0       1       0                  0.00</span></span>
+<span id="cb13-104"><a href="#cb13-104" aria-hidden="true" tabindex="-1"></a><span class="do">## 63            1          0.25       0       1       0                  0.00</span></span>
+<span id="cb13-105"><a href="#cb13-105" aria-hidden="true" tabindex="-1"></a><span class="do">## 64            1          0.25       0       1       0                  0.00</span></span>
+<span id="cb13-106"><a href="#cb13-106" aria-hidden="true" tabindex="-1"></a><span class="do">## 65            1          0.25       0       1       0                  0.00</span></span>
+<span id="cb13-107"><a href="#cb13-107" aria-hidden="true" tabindex="-1"></a><span class="do">## 66            1          0.25       0       1       0                  0.00</span></span>
+<span id="cb13-108"><a href="#cb13-108" aria-hidden="true" tabindex="-1"></a><span class="do">## 67            1          0.50       0       1       0                  0.00</span></span>
+<span id="cb13-109"><a href="#cb13-109" aria-hidden="true" tabindex="-1"></a><span class="do">## 68            1          0.50       0       1       0                  0.00</span></span>
+<span id="cb13-110"><a href="#cb13-110" aria-hidden="true" tabindex="-1"></a><span class="do">## 69            1          0.50       0       1       0                  0.00</span></span>
+<span id="cb13-111"><a href="#cb13-111" aria-hidden="true" tabindex="-1"></a><span class="do">## 70            1          0.50       0       1       0                  0.00</span></span>
+<span id="cb13-112"><a href="#cb13-112" aria-hidden="true" tabindex="-1"></a><span class="do">## 71            1          0.50       0       1       0                  0.00</span></span>
+<span id="cb13-113"><a href="#cb13-113" aria-hidden="true" tabindex="-1"></a><span class="do">## 72            1          0.50       0       1       0                  0.00</span></span>
+<span id="cb13-114"><a href="#cb13-114" aria-hidden="true" tabindex="-1"></a><span class="do">## 73            1          0.50       0       1       0                  0.00</span></span>
+<span id="cb13-115"><a href="#cb13-115" aria-hidden="true" tabindex="-1"></a><span class="do">## 74            1          0.50       0       1       0                  0.00</span></span>
+<span id="cb13-116"><a href="#cb13-116" aria-hidden="true" tabindex="-1"></a><span class="do">## 75            1          0.75       0       1       0                  0.00</span></span>
+<span id="cb13-117"><a href="#cb13-117" aria-hidden="true" tabindex="-1"></a><span class="do">## 76            1          0.75       0       1       0                  0.00</span></span>
+<span id="cb13-118"><a href="#cb13-118" aria-hidden="true" tabindex="-1"></a><span class="do">## 77            1          0.75       0       1       0                  0.00</span></span>
+<span id="cb13-119"><a href="#cb13-119" aria-hidden="true" tabindex="-1"></a><span class="do">## 78            1          0.75       0       1       0                  0.00</span></span>
+<span id="cb13-120"><a href="#cb13-120" aria-hidden="true" tabindex="-1"></a><span class="do">## 79            1          0.75       0       1       0                  0.00</span></span>
+<span id="cb13-121"><a href="#cb13-121" aria-hidden="true" tabindex="-1"></a><span class="do">## 80            1          0.75       0       1       0                  0.00</span></span>
+<span id="cb13-122"><a href="#cb13-122" aria-hidden="true" tabindex="-1"></a><span class="do">## 81            1          0.75       0       1       0                  0.00</span></span>
+<span id="cb13-123"><a href="#cb13-123" aria-hidden="true" tabindex="-1"></a><span class="do">## 82            1          0.75       0       1       0                  0.00</span></span>
+<span id="cb13-124"><a href="#cb13-124" aria-hidden="true" tabindex="-1"></a><span class="do">## 83            1          1.00       0       1       0                  0.00</span></span>
+<span id="cb13-125"><a href="#cb13-125" aria-hidden="true" tabindex="-1"></a><span class="do">## 84            1          1.00       0       1       0                  0.00</span></span>
+<span id="cb13-126"><a href="#cb13-126" aria-hidden="true" tabindex="-1"></a><span class="do">## 85            1          1.00       0       1       0                  0.00</span></span>
+<span id="cb13-127"><a href="#cb13-127" aria-hidden="true" tabindex="-1"></a><span class="do">## 86            1          1.00       0       1       0                  0.00</span></span>
+<span id="cb13-128"><a href="#cb13-128" aria-hidden="true" tabindex="-1"></a><span class="do">## 87            1          1.00       0       1       0                  0.00</span></span>
+<span id="cb13-129"><a href="#cb13-129" aria-hidden="true" tabindex="-1"></a><span class="do">## 88            1          1.00       0       1       0                  0.00</span></span>
+<span id="cb13-130"><a href="#cb13-130" aria-hidden="true" tabindex="-1"></a><span class="do">## 89            1          1.00       0       1       0                  0.00</span></span>
+<span id="cb13-131"><a href="#cb13-131" aria-hidden="true" tabindex="-1"></a><span class="do">## 90            1          1.00       0       1       0                  0.00</span></span>
+<span id="cb13-132"><a href="#cb13-132" aria-hidden="true" tabindex="-1"></a><span class="do">## 91            1          0.00       0       0       1                  0.00</span></span>
+<span id="cb13-133"><a href="#cb13-133" aria-hidden="true" tabindex="-1"></a><span class="do">## 92            1          0.00       0       0       1                  0.00</span></span>
+<span id="cb13-134"><a href="#cb13-134" aria-hidden="true" tabindex="-1"></a><span class="do">## 93            1          0.00       0       0       1                  0.00</span></span>
+<span id="cb13-135"><a href="#cb13-135" aria-hidden="true" tabindex="-1"></a><span class="do">## 94            1          0.00       0       0       1                  0.00</span></span>
+<span id="cb13-136"><a href="#cb13-136" aria-hidden="true" tabindex="-1"></a><span class="do">## 95            1          0.00       0       0       1                  0.00</span></span>
+<span id="cb13-137"><a href="#cb13-137" aria-hidden="true" tabindex="-1"></a><span class="do">## 96            1          0.54       0       0       1                  0.00</span></span>
+<span id="cb13-138"><a href="#cb13-138" aria-hidden="true" tabindex="-1"></a><span class="do">## 97            1          0.54       0       0       1                  0.00</span></span>
+<span id="cb13-139"><a href="#cb13-139" aria-hidden="true" tabindex="-1"></a><span class="do">## 98            1          0.54       0       0       1                  0.00</span></span>
+<span id="cb13-140"><a href="#cb13-140" aria-hidden="true" tabindex="-1"></a><span class="do">## 99            1          0.54       0       0       1                  0.00</span></span>
+<span id="cb13-141"><a href="#cb13-141" aria-hidden="true" tabindex="-1"></a><span class="do">## 100           1          0.54       0       0       1                  0.00</span></span>
+<span id="cb13-142"><a href="#cb13-142" aria-hidden="true" tabindex="-1"></a><span class="do">## 101           1          1.08       0       0       1                  0.00</span></span>
+<span id="cb13-143"><a href="#cb13-143" aria-hidden="true" tabindex="-1"></a><span class="do">## 102           1          1.08       0       0       1                  0.00</span></span>
+<span id="cb13-144"><a href="#cb13-144" aria-hidden="true" tabindex="-1"></a><span class="do">## 103           1          1.08       0       0       1                  0.00</span></span>
+<span id="cb13-145"><a href="#cb13-145" aria-hidden="true" tabindex="-1"></a><span class="do">## 104           1          1.08       0       0       1                  0.00</span></span>
+<span id="cb13-146"><a href="#cb13-146" aria-hidden="true" tabindex="-1"></a><span class="do">## 105           1          1.08       0       0       1                  0.00</span></span>
+<span id="cb13-147"><a href="#cb13-147" aria-hidden="true" tabindex="-1"></a><span class="do">## 106           1          1.62       0       0       1                  0.00</span></span>
+<span id="cb13-148"><a href="#cb13-148" aria-hidden="true" tabindex="-1"></a><span class="do">## 107           1          1.62       0       0       1                  0.00</span></span>
+<span id="cb13-149"><a href="#cb13-149" aria-hidden="true" tabindex="-1"></a><span class="do">## 108           1          1.62       0       0       1                  0.00</span></span>
+<span id="cb13-150"><a href="#cb13-150" aria-hidden="true" tabindex="-1"></a><span class="do">## 109           1          1.62       0       0       1                  0.00</span></span>
+<span id="cb13-151"><a href="#cb13-151" aria-hidden="true" tabindex="-1"></a><span class="do">## 110           1          1.62       0       0       1                  0.00</span></span>
+<span id="cb13-152"><a href="#cb13-152" aria-hidden="true" tabindex="-1"></a><span class="do">## 111           1          2.16       0       0       1                  0.00</span></span>
+<span id="cb13-153"><a href="#cb13-153" aria-hidden="true" tabindex="-1"></a><span class="do">## 112           1          2.16       0       0       1                  0.00</span></span>
+<span id="cb13-154"><a href="#cb13-154" aria-hidden="true" tabindex="-1"></a><span class="do">## 113           1          2.16       0       0       1                  0.00</span></span>
+<span id="cb13-155"><a href="#cb13-155" aria-hidden="true" tabindex="-1"></a><span class="do">## 114           1          2.16       0       0       1                  0.00</span></span>
+<span id="cb13-156"><a href="#cb13-156" aria-hidden="true" tabindex="-1"></a><span class="do">## 115           1          2.16       0       0       1                  0.00</span></span>
+<span id="cb13-157"><a href="#cb13-157" aria-hidden="true" tabindex="-1"></a><span class="do">##     Concentration:fToxic3 Concentration:fToxic4</span></span>
+<span id="cb13-158"><a href="#cb13-158" aria-hidden="true" tabindex="-1"></a><span class="do">## 1                    0.00                  0.00</span></span>
+<span id="cb13-159"><a href="#cb13-159" aria-hidden="true" tabindex="-1"></a><span class="do">## 2                    0.00                  0.00</span></span>
+<span id="cb13-160"><a href="#cb13-160" aria-hidden="true" tabindex="-1"></a><span class="do">## 3                    0.00                  0.00</span></span>
+<span id="cb13-161"><a href="#cb13-161" aria-hidden="true" tabindex="-1"></a><span class="do">## 4                    0.00                  0.00</span></span>
+<span id="cb13-162"><a href="#cb13-162" aria-hidden="true" tabindex="-1"></a><span class="do">## 5                    0.00                  0.00</span></span>
+<span id="cb13-163"><a href="#cb13-163" aria-hidden="true" tabindex="-1"></a><span class="do">## 6                    0.00                  0.00</span></span>
+<span id="cb13-164"><a href="#cb13-164" aria-hidden="true" tabindex="-1"></a><span class="do">## 7                    0.00                  0.00</span></span>
+<span id="cb13-165"><a href="#cb13-165" aria-hidden="true" tabindex="-1"></a><span class="do">## 8                    0.00                  0.00</span></span>
+<span id="cb13-166"><a href="#cb13-166" aria-hidden="true" tabindex="-1"></a><span class="do">## 9                    0.00                  0.00</span></span>
+<span id="cb13-167"><a href="#cb13-167" aria-hidden="true" tabindex="-1"></a><span class="do">## 10                   0.00                  0.00</span></span>
+<span id="cb13-168"><a href="#cb13-168" aria-hidden="true" tabindex="-1"></a><span class="do">## 11                   0.00                  0.00</span></span>
+<span id="cb13-169"><a href="#cb13-169" aria-hidden="true" tabindex="-1"></a><span class="do">## 12                   0.00                  0.00</span></span>
+<span id="cb13-170"><a href="#cb13-170" aria-hidden="true" tabindex="-1"></a><span class="do">## 13                   0.00                  0.00</span></span>
+<span id="cb13-171"><a href="#cb13-171" aria-hidden="true" tabindex="-1"></a><span class="do">## 14                   0.00                  0.00</span></span>
+<span id="cb13-172"><a href="#cb13-172" aria-hidden="true" tabindex="-1"></a><span class="do">## 15                   0.00                  0.00</span></span>
+<span id="cb13-173"><a href="#cb13-173" aria-hidden="true" tabindex="-1"></a><span class="do">## 16                   0.00                  0.00</span></span>
+<span id="cb13-174"><a href="#cb13-174" aria-hidden="true" tabindex="-1"></a><span class="do">## 17                   0.00                  0.00</span></span>
+<span id="cb13-175"><a href="#cb13-175" aria-hidden="true" tabindex="-1"></a><span class="do">## 18                   0.00                  0.00</span></span>
+<span id="cb13-176"><a href="#cb13-176" aria-hidden="true" tabindex="-1"></a><span class="do">## 19                   0.00                  0.00</span></span>
+<span id="cb13-177"><a href="#cb13-177" aria-hidden="true" tabindex="-1"></a><span class="do">## 20                   0.00                  0.00</span></span>
+<span id="cb13-178"><a href="#cb13-178" aria-hidden="true" tabindex="-1"></a><span class="do">## 21                   0.00                  0.00</span></span>
+<span id="cb13-179"><a href="#cb13-179" aria-hidden="true" tabindex="-1"></a><span class="do">## 22                   0.00                  0.00</span></span>
+<span id="cb13-180"><a href="#cb13-180" aria-hidden="true" tabindex="-1"></a><span class="do">## 23                   0.00                  0.00</span></span>
+<span id="cb13-181"><a href="#cb13-181" aria-hidden="true" tabindex="-1"></a><span class="do">## 24                   0.00                  0.00</span></span>
+<span id="cb13-182"><a href="#cb13-182" aria-hidden="true" tabindex="-1"></a><span class="do">## 25                   0.00                  0.00</span></span>
+<span id="cb13-183"><a href="#cb13-183" aria-hidden="true" tabindex="-1"></a><span class="do">## 26                   0.00                  0.00</span></span>
+<span id="cb13-184"><a href="#cb13-184" aria-hidden="true" tabindex="-1"></a><span class="do">## 27                   0.00                  0.00</span></span>
+<span id="cb13-185"><a href="#cb13-185" aria-hidden="true" tabindex="-1"></a><span class="do">## 28                   0.00                  0.00</span></span>
+<span id="cb13-186"><a href="#cb13-186" aria-hidden="true" tabindex="-1"></a><span class="do">## 29                   0.00                  0.00</span></span>
+<span id="cb13-187"><a href="#cb13-187" aria-hidden="true" tabindex="-1"></a><span class="do">## 30                   0.00                  0.00</span></span>
+<span id="cb13-188"><a href="#cb13-188" aria-hidden="true" tabindex="-1"></a><span class="do">## 31                   0.00                  0.00</span></span>
+<span id="cb13-189"><a href="#cb13-189" aria-hidden="true" tabindex="-1"></a><span class="do">## 32                   0.00                  0.00</span></span>
+<span id="cb13-190"><a href="#cb13-190" aria-hidden="true" tabindex="-1"></a><span class="do">## 33                   0.00                  0.00</span></span>
+<span id="cb13-191"><a href="#cb13-191" aria-hidden="true" tabindex="-1"></a><span class="do">## 34                   0.00                  0.00</span></span>
+<span id="cb13-192"><a href="#cb13-192" aria-hidden="true" tabindex="-1"></a><span class="do">## 35                   0.00                  0.00</span></span>
+<span id="cb13-193"><a href="#cb13-193" aria-hidden="true" tabindex="-1"></a><span class="do">## 36                   0.00                  0.00</span></span>
+<span id="cb13-194"><a href="#cb13-194" aria-hidden="true" tabindex="-1"></a><span class="do">## 37                   0.00                  0.00</span></span>
+<span id="cb13-195"><a href="#cb13-195" aria-hidden="true" tabindex="-1"></a><span class="do">## 38                   0.00                  0.00</span></span>
+<span id="cb13-196"><a href="#cb13-196" aria-hidden="true" tabindex="-1"></a><span class="do">## 39                   0.00                  0.00</span></span>
+<span id="cb13-197"><a href="#cb13-197" aria-hidden="true" tabindex="-1"></a><span class="do">## 40                   0.00                  0.00</span></span>
+<span id="cb13-198"><a href="#cb13-198" aria-hidden="true" tabindex="-1"></a><span class="do">## 41                   0.00                  0.00</span></span>
+<span id="cb13-199"><a href="#cb13-199" aria-hidden="true" tabindex="-1"></a><span class="do">## 42                   0.00                  0.00</span></span>
+<span id="cb13-200"><a href="#cb13-200" aria-hidden="true" tabindex="-1"></a><span class="do">## 43                   0.00                  0.00</span></span>
+<span id="cb13-201"><a href="#cb13-201" aria-hidden="true" tabindex="-1"></a><span class="do">## 44                   0.00                  0.00</span></span>
+<span id="cb13-202"><a href="#cb13-202" aria-hidden="true" tabindex="-1"></a><span class="do">## 45                   0.00                  0.00</span></span>
+<span id="cb13-203"><a href="#cb13-203" aria-hidden="true" tabindex="-1"></a><span class="do">## 46                   0.00                  0.00</span></span>
+<span id="cb13-204"><a href="#cb13-204" aria-hidden="true" tabindex="-1"></a><span class="do">## 47                   0.00                  0.00</span></span>
+<span id="cb13-205"><a href="#cb13-205" aria-hidden="true" tabindex="-1"></a><span class="do">## 48                   0.00                  0.00</span></span>
+<span id="cb13-206"><a href="#cb13-206" aria-hidden="true" tabindex="-1"></a><span class="do">## 49                   0.00                  0.00</span></span>
+<span id="cb13-207"><a href="#cb13-207" aria-hidden="true" tabindex="-1"></a><span class="do">## 50                   0.00                  0.00</span></span>
+<span id="cb13-208"><a href="#cb13-208" aria-hidden="true" tabindex="-1"></a><span class="do">## 51                   0.00                  0.00</span></span>
+<span id="cb13-209"><a href="#cb13-209" aria-hidden="true" tabindex="-1"></a><span class="do">## 52                   0.00                  0.00</span></span>
+<span id="cb13-210"><a href="#cb13-210" aria-hidden="true" tabindex="-1"></a><span class="do">## 53                   0.00                  0.00</span></span>
+<span id="cb13-211"><a href="#cb13-211" aria-hidden="true" tabindex="-1"></a><span class="do">## 54                   0.00                  0.00</span></span>
+<span id="cb13-212"><a href="#cb13-212" aria-hidden="true" tabindex="-1"></a><span class="do">## 55                   0.00                  0.00</span></span>
+<span id="cb13-213"><a href="#cb13-213" aria-hidden="true" tabindex="-1"></a><span class="do">## 56                   0.00                  0.00</span></span>
+<span id="cb13-214"><a href="#cb13-214" aria-hidden="true" tabindex="-1"></a><span class="do">## 57                   0.00                  0.00</span></span>
+<span id="cb13-215"><a href="#cb13-215" aria-hidden="true" tabindex="-1"></a><span class="do">## 58                   0.00                  0.00</span></span>
+<span id="cb13-216"><a href="#cb13-216" aria-hidden="true" tabindex="-1"></a><span class="do">## 59                   0.25                  0.00</span></span>
+<span id="cb13-217"><a href="#cb13-217" aria-hidden="true" tabindex="-1"></a><span class="do">## 60                   0.25                  0.00</span></span>
+<span id="cb13-218"><a href="#cb13-218" aria-hidden="true" tabindex="-1"></a><span class="do">## 61                   0.25                  0.00</span></span>
+<span id="cb13-219"><a href="#cb13-219" aria-hidden="true" tabindex="-1"></a><span class="do">## 62                   0.25                  0.00</span></span>
+<span id="cb13-220"><a href="#cb13-220" aria-hidden="true" tabindex="-1"></a><span class="do">## 63                   0.25                  0.00</span></span>
+<span id="cb13-221"><a href="#cb13-221" aria-hidden="true" tabindex="-1"></a><span class="do">## 64                   0.25                  0.00</span></span>
+<span id="cb13-222"><a href="#cb13-222" aria-hidden="true" tabindex="-1"></a><span class="do">## 65                   0.25                  0.00</span></span>
+<span id="cb13-223"><a href="#cb13-223" aria-hidden="true" tabindex="-1"></a><span class="do">## 66                   0.25                  0.00</span></span>
+<span id="cb13-224"><a href="#cb13-224" aria-hidden="true" tabindex="-1"></a><span class="do">## 67                   0.50                  0.00</span></span>
+<span id="cb13-225"><a href="#cb13-225" aria-hidden="true" tabindex="-1"></a><span class="do">## 68                   0.50                  0.00</span></span>
+<span id="cb13-226"><a href="#cb13-226" aria-hidden="true" tabindex="-1"></a><span class="do">## 69                   0.50                  0.00</span></span>
+<span id="cb13-227"><a href="#cb13-227" aria-hidden="true" tabindex="-1"></a><span class="do">## 70                   0.50                  0.00</span></span>
+<span id="cb13-228"><a href="#cb13-228" aria-hidden="true" tabindex="-1"></a><span class="do">## 71                   0.50                  0.00</span></span>
+<span id="cb13-229"><a href="#cb13-229" aria-hidden="true" tabindex="-1"></a><span class="do">## 72                   0.50                  0.00</span></span>
+<span id="cb13-230"><a href="#cb13-230" aria-hidden="true" tabindex="-1"></a><span class="do">## 73                   0.50                  0.00</span></span>
+<span id="cb13-231"><a href="#cb13-231" aria-hidden="true" tabindex="-1"></a><span class="do">## 74                   0.50                  0.00</span></span>
+<span id="cb13-232"><a href="#cb13-232" aria-hidden="true" tabindex="-1"></a><span class="do">## 75                   0.75                  0.00</span></span>
+<span id="cb13-233"><a href="#cb13-233" aria-hidden="true" tabindex="-1"></a><span class="do">## 76                   0.75                  0.00</span></span>
+<span id="cb13-234"><a href="#cb13-234" aria-hidden="true" tabindex="-1"></a><span class="do">## 77                   0.75                  0.00</span></span>
+<span id="cb13-235"><a href="#cb13-235" aria-hidden="true" tabindex="-1"></a><span class="do">## 78                   0.75                  0.00</span></span>
+<span id="cb13-236"><a href="#cb13-236" aria-hidden="true" tabindex="-1"></a><span class="do">## 79                   0.75                  0.00</span></span>
+<span id="cb13-237"><a href="#cb13-237" aria-hidden="true" tabindex="-1"></a><span class="do">## 80                   0.75                  0.00</span></span>
+<span id="cb13-238"><a href="#cb13-238" aria-hidden="true" tabindex="-1"></a><span class="do">## 81                   0.75                  0.00</span></span>
+<span id="cb13-239"><a href="#cb13-239" aria-hidden="true" tabindex="-1"></a><span class="do">## 82                   0.75                  0.00</span></span>
+<span id="cb13-240"><a href="#cb13-240" aria-hidden="true" tabindex="-1"></a><span class="do">## 83                   1.00                  0.00</span></span>
+<span id="cb13-241"><a href="#cb13-241" aria-hidden="true" tabindex="-1"></a><span class="do">## 84                   1.00                  0.00</span></span>
+<span id="cb13-242"><a href="#cb13-242" aria-hidden="true" tabindex="-1"></a><span class="do">## 85                   1.00                  0.00</span></span>
+<span id="cb13-243"><a href="#cb13-243" aria-hidden="true" tabindex="-1"></a><span class="do">## 86                   1.00                  0.00</span></span>
+<span id="cb13-244"><a href="#cb13-244" aria-hidden="true" tabindex="-1"></a><span class="do">## 87                   1.00                  0.00</span></span>
+<span id="cb13-245"><a href="#cb13-245" aria-hidden="true" tabindex="-1"></a><span class="do">## 88                   1.00                  0.00</span></span>
+<span id="cb13-246"><a href="#cb13-246" aria-hidden="true" tabindex="-1"></a><span class="do">## 89                   1.00                  0.00</span></span>
+<span id="cb13-247"><a href="#cb13-247" aria-hidden="true" tabindex="-1"></a><span class="do">## 90                   1.00                  0.00</span></span>
+<span id="cb13-248"><a href="#cb13-248" aria-hidden="true" tabindex="-1"></a><span class="do">## 91                   0.00                  0.00</span></span>
+<span id="cb13-249"><a href="#cb13-249" aria-hidden="true" tabindex="-1"></a><span class="do">## 92                   0.00                  0.00</span></span>
+<span id="cb13-250"><a href="#cb13-250" aria-hidden="true" tabindex="-1"></a><span class="do">## 93                   0.00                  0.00</span></span>
+<span id="cb13-251"><a href="#cb13-251" aria-hidden="true" tabindex="-1"></a><span class="do">## 94                   0.00                  0.00</span></span>
+<span id="cb13-252"><a href="#cb13-252" aria-hidden="true" tabindex="-1"></a><span class="do">## 95                   0.00                  0.00</span></span>
+<span id="cb13-253"><a href="#cb13-253" aria-hidden="true" tabindex="-1"></a><span class="do">## 96                   0.00                  0.54</span></span>
+<span id="cb13-254"><a href="#cb13-254" aria-hidden="true" tabindex="-1"></a><span class="do">## 97                   0.00                  0.54</span></span>
+<span id="cb13-255"><a href="#cb13-255" aria-hidden="true" tabindex="-1"></a><span class="do">## 98                   0.00                  0.54</span></span>
+<span id="cb13-256"><a href="#cb13-256" aria-hidden="true" tabindex="-1"></a><span class="do">## 99                   0.00                  0.54</span></span>
+<span id="cb13-257"><a href="#cb13-257" aria-hidden="true" tabindex="-1"></a><span class="do">## 100                  0.00                  0.54</span></span>
+<span id="cb13-258"><a href="#cb13-258" aria-hidden="true" tabindex="-1"></a><span class="do">## 101                  0.00                  1.08</span></span>
+<span id="cb13-259"><a href="#cb13-259" aria-hidden="true" tabindex="-1"></a><span class="do">## 102                  0.00                  1.08</span></span>
+<span id="cb13-260"><a href="#cb13-260" aria-hidden="true" tabindex="-1"></a><span class="do">## 103                  0.00                  1.08</span></span>
+<span id="cb13-261"><a href="#cb13-261" aria-hidden="true" tabindex="-1"></a><span class="do">## 104                  0.00                  1.08</span></span>
+<span id="cb13-262"><a href="#cb13-262" aria-hidden="true" tabindex="-1"></a><span class="do">## 105                  0.00                  1.08</span></span>
+<span id="cb13-263"><a href="#cb13-263" aria-hidden="true" tabindex="-1"></a><span class="do">## 106                  0.00                  1.62</span></span>
+<span id="cb13-264"><a href="#cb13-264" aria-hidden="true" tabindex="-1"></a><span class="do">## 107                  0.00                  1.62</span></span>
+<span id="cb13-265"><a href="#cb13-265" aria-hidden="true" tabindex="-1"></a><span class="do">## 108                  0.00                  1.62</span></span>
+<span id="cb13-266"><a href="#cb13-266" aria-hidden="true" tabindex="-1"></a><span class="do">## 109                  0.00                  1.62</span></span>
+<span id="cb13-267"><a href="#cb13-267" aria-hidden="true" tabindex="-1"></a><span class="do">## 110                  0.00                  1.62</span></span>
+<span id="cb13-268"><a href="#cb13-268" aria-hidden="true" tabindex="-1"></a><span class="do">## 111                  0.00                  2.16</span></span>
+<span id="cb13-269"><a href="#cb13-269" aria-hidden="true" tabindex="-1"></a><span class="do">## 112                  0.00                  2.16</span></span>
+<span id="cb13-270"><a href="#cb13-270" aria-hidden="true" tabindex="-1"></a><span class="do">## 113                  0.00                  2.16</span></span>
+<span id="cb13-271"><a href="#cb13-271" aria-hidden="true" tabindex="-1"></a><span class="do">## 114                  0.00                  2.16</span></span>
+<span id="cb13-272"><a href="#cb13-272" aria-hidden="true" tabindex="-1"></a><span class="do">## 115                  0.00                  2.16</span></span>
+<span id="cb13-273"><a href="#cb13-273" aria-hidden="true" tabindex="-1"></a><span class="do">## attr(,&quot;assign&quot;)</span></span>
+<span id="cb13-274"><a href="#cb13-274" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 0 1 2 2 2 3 3 3</span></span>
+<span id="cb13-275"><a href="#cb13-275" aria-hidden="true" tabindex="-1"></a><span class="do">## attr(,&quot;contrasts&quot;)</span></span>
+<span id="cb13-276"><a href="#cb13-276" aria-hidden="true" tabindex="-1"></a><span class="do">## attr(,&quot;contrasts&quot;)$fToxic</span></span>
+<span id="cb13-277"><a href="#cb13-277" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] &quot;contr.treatment&quot;</span></span>
+<span id="cb13-278"><a href="#cb13-278" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-279"><a href="#cb13-279" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(<span class="fu">model.matrix</span>(M1))</span>
+<span id="cb13-280"><a href="#cb13-280" aria-hidden="true" tabindex="-1"></a><span class="do">##     (Intercept) Concentration fToxic2 fToxic3 fToxic4 Concentration:fToxic2</span></span>
+<span id="cb13-281"><a href="#cb13-281" aria-hidden="true" tabindex="-1"></a><span class="do">## 1             1          0.00       0       0       0                  0.00</span></span>
+<span id="cb13-282"><a href="#cb13-282" aria-hidden="true" tabindex="-1"></a><span class="do">## 6             1          0.25       0       0       0                  0.00</span></span>
+<span id="cb13-283"><a href="#cb13-283" aria-hidden="true" tabindex="-1"></a><span class="do">## 11            1          0.50       0       0       0                  0.00</span></span>
+<span id="cb13-284"><a href="#cb13-284" aria-hidden="true" tabindex="-1"></a><span class="do">## 16            1          1.00       0       0       0                  0.00</span></span>
+<span id="cb13-285"><a href="#cb13-285" aria-hidden="true" tabindex="-1"></a><span class="do">## 21            1          2.00       0       0       0                  0.00</span></span>
+<span id="cb13-286"><a href="#cb13-286" aria-hidden="true" tabindex="-1"></a><span class="do">## 26            1          0.00       1       0       0                  0.00</span></span>
+<span id="cb13-287"><a href="#cb13-287" aria-hidden="true" tabindex="-1"></a><span class="do">## 31            1          0.12       1       0       0                  0.12</span></span>
+<span id="cb13-288"><a href="#cb13-288" aria-hidden="true" tabindex="-1"></a><span class="do">## 36            1          0.24       1       0       0                  0.24</span></span>
+<span id="cb13-289"><a href="#cb13-289" aria-hidden="true" tabindex="-1"></a><span class="do">## 41            1          0.49       1       0       0                  0.49</span></span>
+<span id="cb13-290"><a href="#cb13-290" aria-hidden="true" tabindex="-1"></a><span class="do">## 46            1          0.98       1       0       0                  0.98</span></span>
+<span id="cb13-291"><a href="#cb13-291" aria-hidden="true" tabindex="-1"></a><span class="do">## 51            1          0.00       0       1       0                  0.00</span></span>
+<span id="cb13-292"><a href="#cb13-292" aria-hidden="true" tabindex="-1"></a><span class="do">## 59            1          0.25       0       1       0                  0.00</span></span>
+<span id="cb13-293"><a href="#cb13-293" aria-hidden="true" tabindex="-1"></a><span class="do">## 67            1          0.50       0       1       0                  0.00</span></span>
+<span id="cb13-294"><a href="#cb13-294" aria-hidden="true" tabindex="-1"></a><span class="do">## 75            1          0.75       0       1       0                  0.00</span></span>
+<span id="cb13-295"><a href="#cb13-295" aria-hidden="true" tabindex="-1"></a><span class="do">## 83            1          1.00       0       1       0                  0.00</span></span>
+<span id="cb13-296"><a href="#cb13-296" aria-hidden="true" tabindex="-1"></a><span class="do">## 91            1          0.00       0       0       1                  0.00</span></span>
+<span id="cb13-297"><a href="#cb13-297" aria-hidden="true" tabindex="-1"></a><span class="do">## 96            1          0.54       0       0       1                  0.00</span></span>
+<span id="cb13-298"><a href="#cb13-298" aria-hidden="true" tabindex="-1"></a><span class="do">## 101           1          1.08       0       0       1                  0.00</span></span>
+<span id="cb13-299"><a href="#cb13-299" aria-hidden="true" tabindex="-1"></a><span class="do">## 106           1          1.62       0       0       1                  0.00</span></span>
+<span id="cb13-300"><a href="#cb13-300" aria-hidden="true" tabindex="-1"></a><span class="do">## 111           1          2.16       0       0       1                  0.00</span></span>
+<span id="cb13-301"><a href="#cb13-301" aria-hidden="true" tabindex="-1"></a><span class="do">##     Concentration:fToxic3 Concentration:fToxic4</span></span>
+<span id="cb13-302"><a href="#cb13-302" aria-hidden="true" tabindex="-1"></a><span class="do">## 1                    0.00                  0.00</span></span>
+<span id="cb13-303"><a href="#cb13-303" aria-hidden="true" tabindex="-1"></a><span class="do">## 6                    0.00                  0.00</span></span>
+<span id="cb13-304"><a href="#cb13-304" aria-hidden="true" tabindex="-1"></a><span class="do">## 11                   0.00                  0.00</span></span>
+<span id="cb13-305"><a href="#cb13-305" aria-hidden="true" tabindex="-1"></a><span class="do">## 16                   0.00                  0.00</span></span>
+<span id="cb13-306"><a href="#cb13-306" aria-hidden="true" tabindex="-1"></a><span class="do">## 21                   0.00                  0.00</span></span>
+<span id="cb13-307"><a href="#cb13-307" aria-hidden="true" tabindex="-1"></a><span class="do">## 26                   0.00                  0.00</span></span>
+<span id="cb13-308"><a href="#cb13-308" aria-hidden="true" tabindex="-1"></a><span class="do">## 31                   0.00                  0.00</span></span>
+<span id="cb13-309"><a href="#cb13-309" aria-hidden="true" tabindex="-1"></a><span class="do">## 36                   0.00                  0.00</span></span>
+<span id="cb13-310"><a href="#cb13-310" aria-hidden="true" tabindex="-1"></a><span class="do">## 41                   0.00                  0.00</span></span>
+<span id="cb13-311"><a href="#cb13-311" aria-hidden="true" tabindex="-1"></a><span class="do">## 46                   0.00                  0.00</span></span>
+<span id="cb13-312"><a href="#cb13-312" aria-hidden="true" tabindex="-1"></a><span class="do">## 51                   0.00                  0.00</span></span>
+<span id="cb13-313"><a href="#cb13-313" aria-hidden="true" tabindex="-1"></a><span class="do">## 59                   0.25                  0.00</span></span>
+<span id="cb13-314"><a href="#cb13-314" aria-hidden="true" tabindex="-1"></a><span class="do">## 67                   0.50                  0.00</span></span>
+<span id="cb13-315"><a href="#cb13-315" aria-hidden="true" tabindex="-1"></a><span class="do">## 75                   0.75                  0.00</span></span>
+<span id="cb13-316"><a href="#cb13-316" aria-hidden="true" tabindex="-1"></a><span class="do">## 83                   1.00                  0.00</span></span>
+<span id="cb13-317"><a href="#cb13-317" aria-hidden="true" tabindex="-1"></a><span class="do">## 91                   0.00                  0.00</span></span>
+<span id="cb13-318"><a href="#cb13-318" aria-hidden="true" tabindex="-1"></a><span class="do">## 96                   0.00                  0.54</span></span>
+<span id="cb13-319"><a href="#cb13-319" aria-hidden="true" tabindex="-1"></a><span class="do">## 101                  0.00                  1.08</span></span>
+<span id="cb13-320"><a href="#cb13-320" aria-hidden="true" tabindex="-1"></a><span class="do">## 106                  0.00                  1.62</span></span>
+<span id="cb13-321"><a href="#cb13-321" aria-hidden="true" tabindex="-1"></a><span class="do">## 111                  0.00                  2.16</span></span>
+<span id="cb13-322"><a href="#cb13-322" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-323"><a href="#cb13-323" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-324"><a href="#cb13-324" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-325"><a href="#cb13-325" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-326"><a href="#cb13-326" aria-hidden="true" tabindex="-1"></a><span class="do">## Mathematical model description:</span></span>
+<span id="cb13-327"><a href="#cb13-327" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-328"><a href="#cb13-328" aria-hidden="true" tabindex="-1"></a><span class="co"># Prop_surviving ~ Binomial(Ntot, P) </span></span>
+<span id="cb13-329"><a href="#cb13-329" aria-hidden="true" tabindex="-1"></a><span class="co"># log(P / (1-P)) = </span></span>
+<span id="cb13-330"><a href="#cb13-330" aria-hidden="true" tabindex="-1"></a><span class="co">#         1.43 - 3.80*Concentration </span></span>
+<span id="cb13-331"><a href="#cb13-331" aria-hidden="true" tabindex="-1"></a><span class="co">#         + 0.0085*fToxic2 + 0.014*fToxic3 + 0.27*fToxic4 </span></span>
+<span id="cb13-332"><a href="#cb13-332" aria-hidden="true" tabindex="-1"></a><span class="co">#         - 6.18*Concentration:fToxic2</span></span>
+<span id="cb13-333"><a href="#cb13-333" aria-hidden="true" tabindex="-1"></a><span class="co">#         - 1.90*Concentration*fToxic3 </span></span>
+<span id="cb13-334"><a href="#cb13-334" aria-hidden="true" tabindex="-1"></a><span class="co">#         + 1.48*Concentration*fToxic4</span></span>
+<span id="cb13-335"><a href="#cb13-335" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-336"><a href="#cb13-336" aria-hidden="true" tabindex="-1"></a><span class="do">## &quot;biological&quot; hypotheses:</span></span>
+<span id="cb13-337"><a href="#cb13-337" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-338"><a href="#cb13-338" aria-hidden="true" tabindex="-1"></a><span class="co"># (Intercept):     the mean (on the logit scale) for Toxic 1 when its</span></span>
+<span id="cb13-339"><a href="#cb13-339" aria-hidden="true" tabindex="-1"></a><span class="co"># concentration is 0 (null hypothesis not very useful, however</span></span>
+<span id="cb13-340"><a href="#cb13-340" aria-hidden="true" tabindex="-1"></a><span class="co"># the value is quite interesting, when back-transformed on the proportion</span></span>
+<span id="cb13-341"><a href="#cb13-341" aria-hidden="true" tabindex="-1"></a><span class="co"># scale: this is the proportion that survive the experiment in the absence</span></span>
+<span id="cb13-342"><a href="#cb13-342" aria-hidden="true" tabindex="-1"></a><span class="co"># of toxic chemical. Shouldn&#39;t differ between chemicals, presumably?)</span></span>
+<span id="cb13-343"><a href="#cb13-343" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-344"><a href="#cb13-344" aria-hidden="true" tabindex="-1"></a><span class="co"># Concentration: slope of Concentration, or change in survival per unit</span></span>
+<span id="cb13-345"><a href="#cb13-345" aria-hidden="true" tabindex="-1"></a><span class="co"># increase in Toxic 1 concentration (on logit link), or change in log-odds</span></span>
+<span id="cb13-346"><a href="#cb13-346" aria-hidden="true" tabindex="-1"></a><span class="co"># of survival (on proportion scale)</span></span>
+<span id="cb13-347"><a href="#cb13-347" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-348"><a href="#cb13-348" aria-hidden="true" tabindex="-1"></a><span class="co"># fToxic2:       difference between intercepts of Toxic 2 and Toxic 1</span></span>
+<span id="cb13-349"><a href="#cb13-349" aria-hidden="true" tabindex="-1"></a><span class="co"># fToxic3:       difference between intercepts of Toxic 3 and Toxic 1</span></span>
+<span id="cb13-350"><a href="#cb13-350" aria-hidden="true" tabindex="-1"></a><span class="co"># fToxic4:       difference between intercepts of Toxic 4 and Toxic 1</span></span>
+<span id="cb13-351"><a href="#cb13-351" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-352"><a href="#cb13-352" aria-hidden="true" tabindex="-1"></a><span class="co"># Concentration:fToxic2  difference between Conc. slopes for Toxic 2 and</span></span>
+<span id="cb13-353"><a href="#cb13-353" aria-hidden="true" tabindex="-1"></a><span class="co"># Toxic 1. Negative means a more lethal effect than Toxic 1</span></span>
+<span id="cb13-354"><a href="#cb13-354" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-355"><a href="#cb13-355" aria-hidden="true" tabindex="-1"></a><span class="co"># Concentration:fToxic3  difference between Conc. slopes for Toxic 2 and Toxic 1</span></span>
+<span id="cb13-356"><a href="#cb13-356" aria-hidden="true" tabindex="-1"></a><span class="co"># Concentration:fToxic4  difference between Conc. slopes for Toxic 2 and Toxic 1</span></span></code></pre></div>
 <p> </p>
 <p>6. Do you need to check for overdispersion? If so, how do you do it?</p>
 <p> </p>

@@ -1,4 +1,4 @@
-## ----Q1, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE---------------------------------------------------------
+## ----Q1, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE----------
 Mites<- read.delim("./data/DrugsMites.txt")
 str(Mites)
 
@@ -7,7 +7,7 @@ Mites$fToxic<- factor(Mites$Toxic)
 str(Mites)
 
 
-## ----Q2, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.show= ifelse(SOLUTIONS, "asis", "hide")------------
+## ----Q2, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.show= ifelse(SOLUTIONS, "asis", "hide")----
 # Outliers Y
 boxplot(Mites$Proportion) # not very useful for this data set
 dotchart(Mites$Proportion)
@@ -36,19 +36,19 @@ coplot(jitter(Proportion) ~ jitter(Concentration) | fToxic, data= Mites)
 
 
 
-## ----Q3, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE---------------------------------------------------------
+## ----Q3, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE----------
 Mites$Living_mites<- Mites$Total - Mites$Dead_mites
 
 table(Mites$Total)
 
 
-## ----Q4, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE---------------------------------------------------------
+## ----Q4, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE----------
 M1<- glm(cbind(Living_mites, Dead_mites) ~ Concentration + fToxic + Concentration : fToxic, family= binomial, data= Mites)
 
 M1<- glm(cbind(Living_mites, Dead_mites) ~ Concentration * fToxic, family= binomial, data= Mites)
 
 
-## ----Q5, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE---------------------------------------------------------
+## ----Q5, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE----------
 summary(M1)
 
 coef(M1)
@@ -93,14 +93,14 @@ unique(model.matrix(M1))
 # Concentration:fToxic4  difference between Conc. slopes for Toxic 2 and Toxic 1
 
 
-## ----Q6, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE---------------------------------------------------------
+## ----Q6, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE----------
 # Yes, because this is a binomial variable with more than 1 trial per observation
 # Residual deviance: 117.67  on 107  degrees of freedom
 # -> negligible overdispersion
 
 
 
-## ----Q7, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE---------------------------------------------------------
+## ----Q7, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE----------
 # we don't need to perform model selection here: given that the assay is
 # to compare the effect of different chemicals, the interaction alone is the
 # focus of the experiment. If it is not significant, we would have our answer
@@ -159,7 +159,7 @@ abline(h= 0, col= grey(0.5), lty= 2)
 
 
 
-## ----Q9, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.show= ifelse(SOLUTIONS, "asis", "hide")------------
+## ----Q9, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.show= ifelse(SOLUTIONS, "asis", "hide")----
 MyData1<- data.frame(Concentration= seq(0, 2.16, length= 50), fToxic= "1")
 MyData2<- data.frame(Concentration= seq(0, 2.16, length= 50), fToxic= "2")
 MyData3<- data.frame(Concentration= seq(0, 2.16, length= 50), fToxic= "3")
@@ -205,7 +205,7 @@ summary(M2)
 
 
 
-## ----Q10, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.show= ifelse(SOLUTIONS, "asis", "hide")-----------
+## ----Q10, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.show= ifelse(SOLUTIONS, "asis", "hide")----
 # Sketch model fit with 95% confidence bands for Toxic 1
 MyData1<- data.frame(Concentration= seq(0, 2.16, length= 50), fToxic= "1")
 MyData2<- data.frame(Concentration= seq(0, 2.16, length= 50), fToxic= "2")
