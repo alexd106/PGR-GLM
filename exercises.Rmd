@@ -23,38 +23,23 @@ Whilst working through the exercises we recommend that you create a new R script
 
 During each exercise you will be working in a synchronous session on Blackboard collaborate where you will be able to ask questions and get one-to-one help from the course instructors. Towards the end of each session, one of the instructors will go through each exercise with you in real time to help clear up any lingering doubts and also provide you with an opportunity to discuss analytical decisions.
 
-We will release the [solutions to the exercises](exercise_solutions.html){target="_blank"} after each of our synchronous sessions. If you prefer to download these exercises in pdf format you can [find them here](exercise_pdf.html){target="_blank"}. 
-
+You can check the [solutions to the exercises](exercise_solutions.html){target="_blank"} after each of our synchronous sessions. 
 
 Have fun!
 
 \  
 
-```{r, reveal, echo=FALSE, eval = isFALSE(show_exercise)}
-cat("Exercises will be released as the course progresses")
-```
-
-\  
-
-```{r pdf-out, include = FALSE}
-# TODO: generate list automagically
-
-rmarkdown::render("GLM_1_Poisson_exercise_v2.Rmd", output_format = "pdf_document", output_file = "./exercises/GLM_1_Poisson_exercise_v2.pdf", quiet = TRUE)
-rmarkdown::render("GLM_2_Binomial_exercise_v2.Rmd", output_format = "pdf_document", output_file = "./exercises/GLM_2_Binomial_exercise_v2.pdf", quiet = TRUE)
-rmarkdown::render("GLM_3_BinomialProportions_exercise.Rmd", output_format = "pdf_document", output_file = "./exercises/GLM_3_BinomialProportions_exercise.pdf", quiet = TRUE)
-```
-
-\  
-
 ### Day 1
 
- - [GLM - Poisson exercise](GLM_1_Poisson_exercise_v2.html)
+ - [GLM - Poisson exercise](GLM_1_Poisson_exercise.html)
 
 \  
  
 ### Day 2
 
- - [GLM - binomial (0/1 data) exercise](GLM_2_Binomial_exercise_v2.html)
+ - [GLM - binomial (0/1 data) exercise: Rays maturity](GLM_2_Binomial_RayBin_exercise.html)
+ - [GLM - binomial (0/1 data) optional exercise #1: Dolphins activity](GLM_2_Optional_Binomial_Dolphins_exercise.html)
+ - [GLM - binomial (0/1 data) optional exercise #2: Dolphins extension](GLM_2_Optional_Binomial_Dolphins_extension_exercise.html)
  
 \  
 

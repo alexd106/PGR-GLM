@@ -16,7 +16,7 @@ source('reveal.R')
 
 \  
 
-Follow the links below for solutions to each of the exercises you have completed on this course. Click on the 'code' buttons to reveal the R code associated with each question. If you would prefer these solutions as R scripts for later offline use then you can [find these here](course_code.html).
+Follow the links below for solutions to each of the exercises you have completed on this course. Click on the 'code' buttons to reveal the R code associated with each question.
 
 \  
 
@@ -24,8 +24,8 @@ Follow the links below for solutions to each of the exercises you have completed
 
 ```{r sol_GDE, results='asis', eval = isTRUE(show_text_GDE)}
 link_name <- "GLM - Poisson exercise"
-file_name <- "GLM_1_Poisson_exercise_solutions_v2.html"
-paste0("- [", link_name, "](", file_name, ")") %>%
+file_name <- "GLM_1_Poisson_exercise_solutions"
+paste0("- [", link_name, "](", file_name, ".html)") %>%
 cat(sep="\n\n")
 ```
 
@@ -34,9 +34,19 @@ cat(sep="\n\n")
 ### Day 2
 
 ```{r sol_lm1, results='asis', eval = isTRUE(show_text_lm1)}
-link_name <- "GLM - binomial (0/1 data) exercise"
-file_name <- "GLM_2_Binomial_exercise_solutions_v2.html"
-paste0("- [", link_name, "](", file_name, ")") %>%
+link_name <- "GLM - binomial (0/1 data) exercise: Rays maturity"
+file_name <- "GLM_2_Binomial_RayBin_exercise_solutions"
+paste0("- [", link_name, "](", file_name, ".html)") %>%
+cat(sep="\n\n")
+
+link_name <- "GLM - binomial (0/1 data) optional exercise #1: Dolphins activity"
+file_name <- "GLM_2_Optional_Binomial_Dolphins_exercise_solutions"
+paste0("- [", link_name, "](", file_name, ".html)") %>%
+cat(sep="\n\n")
+
+link_name <- "GLM - binomial (0/1 data) optional exercise #2: Dolphins extension"
+file_name <- "GLM_2_Optional_Binomial_Dolphins_extension_exercise_solutions"
+paste0("- [", link_name, "](", file_name, ".html)") %>%
 cat(sep="\n\n")
 ```
 
@@ -46,32 +56,17 @@ cat(sep="\n\n")
 
 ```{r sol_lm2, results='asis', eval = isTRUE(show_text_lm2)}
 link_name <- "GLM - binomial (proportion data) exercise"
-file_name <- "GLM_3_BinomialProportions_exercise_solutions.html"
-paste0("- [", link_name, "](", file_name, ")") %>%
+file_name <- "GLM_3_BinomialProportions_exercise_solutions"
+paste0("- [", link_name, "](", file_name, ".html)") %>%
 cat(sep="\n\n")
 ```
 
 \  
 
-
-
-\  
-
-#### PDF versions of exercise solutions
-
-\  
-
-[Offline R scripts](course_code.html)
-
 ```{r code-out, include = FALSE}
-# TODO: generate list automagically
+sol_files<- list.files(pattern= "_exercise_solutions.Rmd", full.names= F)
 
-knitr::purl('./GLM_1_Poisson_exercise_solutions_v2.Rmd', output = './exercise_solutions/GLM_1_Poisson_exercise_solutions_v2.R', quiet = TRUE)
-knitr::purl('./GLM_2_Binomial_exercise_solutions_v2.Rmd', output = './exercise_solutions/GLM_2_Binomial_exercise_solutions_v2.R', quiet = TRUE)
-knitr::purl('./GLM_3_BinomialProportions_exercise_solutions.Rmd', output = './exercise_solutions/GLM_3_BinomialProportions_exercise_solutions.R', quiet = TRUE)
-
+for(i in sol_files){
+  knitr::purl(i, output = paste0('./exercise_solutions/', substr(i, 1, nchar(i)-4), '.R'), quiet = TRUE)
+}
 ```
-
-
-
-
