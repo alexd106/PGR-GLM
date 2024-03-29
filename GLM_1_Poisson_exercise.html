@@ -45,116 +45,6 @@
 
 
 
-<style type="text/css">
-  code {
-    white-space: pre;
-  }
-  .sourceCode {
-    overflow: visible;
-  }
-</style>
-<style type="text/css" data-origin="pandoc">
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {  background-color: #f8f8f8; }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
-code span.al { color: #ef2929; } /* Alert */
-code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #204a87; } /* Attribute */
-code span.bn { color: #0000cf; } /* BaseN */
-code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4e9a06; } /* Char */
-code span.cn { color: #8f5902; } /* Constant */
-code span.co { color: #8f5902; font-style: italic; } /* Comment */
-code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
-code span.dt { color: #204a87; } /* DataType */
-code span.dv { color: #0000cf; } /* DecVal */
-code span.er { color: #a40000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #0000cf; } /* Float */
-code span.fu { color: #204a87; font-weight: bold; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
-code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
-code span.ot { color: #8f5902; } /* Other */
-code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
-code span.sc { color: #ce5c00; font-weight: bold; } /* SpecialChar */
-code span.ss { color: #4e9a06; } /* SpecialString */
-code span.st { color: #4e9a06; } /* String */
-code span.va { color: #000000; } /* Variable */
-code span.vs { color: #4e9a06; } /* VerbatimString */
-code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
-
-.sourceCode .row {
-  width: 100%;
-}
-.sourceCode {
-  overflow-x: auto;
-}
-.code-folding-btn {
-  margin-right: -30px;
-}
-</style>
-<script>
-// apply pandoc div.sourceCode style to pre.sourceCode instead
-(function() {
-  var sheets = document.styleSheets;
-  for (var i = 0; i < sheets.length; i++) {
-    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
-    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
-    var j = 0;
-    while (j < rules.length) {
-      var rule = rules[j];
-      // check if there is a div.sourceCode rule
-      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
-        j++;
-        continue;
-      }
-      var style = rule.style.cssText;
-      // check if color or background-color is set
-      if (rule.style.color === '' && rule.style.backgroundColor === '') {
-        j++;
-        continue;
-      }
-      // replace div.sourceCode by a pre.sourceCode rule
-      sheets[i].deleteRule(j);
-      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
-    }
-  }
-})();
-</script>
 
 
 
@@ -527,7 +417,6 @@ collected data from 90 plots of land (<span class="math inline">\(n =
 be answered with our analysis. This might seem trivial in this case, but
 it’s often one of the hardest parts of research; going from a
 theoretical query to a research question.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co"># How does biomass and pH relate to the number of plant species in a given plot of land?</span></span></code></pre></div>
 <p>2. Think about your response variable (the stochastic element).</p>
 <p>From the information provided in the brief above, we are already able
 to determine a suitable distribution to use when fitting the model (the
@@ -609,65 +498,7 @@ vector <code>VOI&lt;- c("Var1", "Var2", ...)</code> and then use the
 list of variable names to subset the variables that get plotted
 (e.g. <code>pairs(Mydata[, VOI])</code>)</p>
 <p> </p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co">#sp &lt;- read.table(file= &quot;./data/species.txt&quot;, header= TRUE)</span></span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>seed <span class="ot">&lt;-</span> <span class="dv">1988</span></span>
-<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="fu">set.seed</span>(seed)</span>
-<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">90</span></span>
-<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>Biomass <span class="ot">&lt;-</span> <span class="fu">rlnorm</span>(N, <span class="fl">0.7</span>, <span class="fl">0.7</span>)</span>
-<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>pH <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">&quot;low&quot;</span>, <span class="st">&quot;mid&quot;</span>, <span class="st">&quot;high&quot;</span>), <span class="at">each =</span> <span class="dv">30</span>)</span>
-<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(Biomass, pH)</span>
-<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a>df<span class="sc">$</span>med <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(df<span class="sc">$</span>pH <span class="sc">==</span> <span class="st">&quot;mid&quot;</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
-<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a>df<span class="sc">$</span>high <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(df<span class="sc">$</span>pH <span class="sc">==</span> <span class="st">&quot;high&quot;</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
-<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a></span>
-<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a><span class="co"># (Intercept)  2.71255</span></span>
-<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a><span class="co"># Biomass     -0.12756</span></span>
-<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a><span class="co"># pHmid        0.69123</span></span>
-<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a><span class="co"># pHhigh       1.13639</span></span>
-<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a></span>
-<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a>b0 <span class="ot">&lt;-</span> <span class="fl">2.71255</span></span>
-<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a>b1 <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fl">0.12756</span></span>
-<span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a>b2 <span class="ot">&lt;-</span> <span class="fl">0.69123</span></span>
-<span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a>b3 <span class="ot">&lt;-</span> <span class="fl">1.13639</span></span>
-<span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a></span>
-<span id="cb2-22"><a href="#cb2-22" tabindex="-1"></a>df<span class="sc">$</span>Species <span class="ot">&lt;-</span> <span class="fu">rpois</span>(N, <span class="at">lambda =</span> <span class="fu">exp</span>(b0 <span class="sc">+</span> b1 <span class="sc">*</span> df<span class="sc">$</span>Biomass <span class="sc">+</span> b2 <span class="sc">*</span> df<span class="sc">$</span>med <span class="sc">+</span> b3 <span class="sc">*</span> df<span class="sc">$</span>high))</span>
-<span id="cb2-23"><a href="#cb2-23" tabindex="-1"></a></span>
-<span id="cb2-24"><a href="#cb2-24" tabindex="-1"></a>sp <span class="ot">&lt;-</span> df[,<span class="fu">c</span>(<span class="st">&quot;Species&quot;</span>, <span class="st">&quot;Biomass&quot;</span>, <span class="st">&quot;pH&quot;</span>)]</span>
-<span id="cb2-25"><a href="#cb2-25" tabindex="-1"></a></span>
-<span id="cb2-26"><a href="#cb2-26" tabindex="-1"></a><span class="co"># Check the structure of the data to see if we need to correct anything</span></span>
-<span id="cb2-27"><a href="#cb2-27" tabindex="-1"></a><span class="fu">str</span>(sp)</span>
-<span id="cb2-28"><a href="#cb2-28" tabindex="-1"></a><span class="do">## &#39;data.frame&#39;:    90 obs. of  3 variables:</span></span>
-<span id="cb2-29"><a href="#cb2-29" tabindex="-1"></a><span class="do">##  $ Species: int  9 10 15 9 7 8 7 6 13 14 ...</span></span>
-<span id="cb2-30"><a href="#cb2-30" tabindex="-1"></a><span class="do">##  $ Biomass: num  2.214 1.589 0.973 1.434 4.858 ...</span></span>
-<span id="cb2-31"><a href="#cb2-31" tabindex="-1"></a><span class="do">##  $ pH     : chr  &quot;low&quot; &quot;low&quot; &quot;low&quot; &quot;low&quot; ...</span></span>
-<span id="cb2-32"><a href="#cb2-32" tabindex="-1"></a></span>
-<span id="cb2-33"><a href="#cb2-33" tabindex="-1"></a><span class="co"># Correct pH so it is read as a factor, reordered such that &quot;low&quot; is the reference level</span></span>
-<span id="cb2-34"><a href="#cb2-34" tabindex="-1"></a>sp<span class="sc">$</span>pH<span class="ot">&lt;-</span> <span class="fu">factor</span>(sp<span class="sc">$</span>pH, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;low&quot;</span>, <span class="st">&quot;mid&quot;</span>, <span class="st">&quot;high&quot;</span>))</span>
-<span id="cb2-35"><a href="#cb2-35" tabindex="-1"></a></span>
-<span id="cb2-36"><a href="#cb2-36" tabindex="-1"></a><span class="co"># Get simple descriptives of the data (e.g. what is the range for each variable?)</span></span>
-<span id="cb2-37"><a href="#cb2-37" tabindex="-1"></a><span class="fu">summary</span>(sp)</span>
-<span id="cb2-38"><a href="#cb2-38" tabindex="-1"></a><span class="do">##     Species         Biomass           pH    </span></span>
-<span id="cb2-39"><a href="#cb2-39" tabindex="-1"></a><span class="do">##  Min.   : 2.00   Min.   : 0.2594   low :30  </span></span>
-<span id="cb2-40"><a href="#cb2-40" tabindex="-1"></a><span class="do">##  1st Qu.:12.00   1st Qu.: 1.3115   mid :30  </span></span>
-<span id="cb2-41"><a href="#cb2-41" tabindex="-1"></a><span class="do">##  Median :18.50   Median : 2.0179   high:30  </span></span>
-<span id="cb2-42"><a href="#cb2-42" tabindex="-1"></a><span class="do">##  Mean   :22.34   Mean   : 2.6864            </span></span>
-<span id="cb2-43"><a href="#cb2-43" tabindex="-1"></a><span class="do">##  3rd Qu.:33.00   3rd Qu.: 3.2794            </span></span>
-<span id="cb2-44"><a href="#cb2-44" tabindex="-1"></a><span class="do">##  Max.   :52.00   Max.   :13.6019</span></span>
-<span id="cb2-45"><a href="#cb2-45" tabindex="-1"></a></span>
-<span id="cb2-46"><a href="#cb2-46" tabindex="-1"></a><span class="co"># make a list of the variables of interest, for convenience:</span></span>
-<span id="cb2-47"><a href="#cb2-47" tabindex="-1"></a>VOI<span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Species&quot;</span>, <span class="st">&quot;Biomass&quot;</span>, <span class="st">&quot;pH&quot;</span>)</span>
-<span id="cb2-48"><a href="#cb2-48" tabindex="-1"></a><span class="fu">pairs</span>(sp[, VOI])</span></code></pre></div>
-<p><img src="GLM_1_Poisson_exercise_files/figure-html/Q4-1.png" width="672" /></p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># Negative relationship between Species and Biomass?</span></span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="co"># Positive relationship between Species and pH? </span></span>
-<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="co"># Biomass tends to increase with pH, which could generate</span></span>
-<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="co"># some collinearity between these explanatory variables in a model.</span></span>
-<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="co"># but still plenty of variation in Biomass within each pH, </span></span>
-<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="co"># so hopefully this won&#39;t be an issue.</span></span>
-<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a></span>
-<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a><span class="fu">coplot</span>(Species <span class="sc">~</span> Biomass <span class="sc">|</span> pH, <span class="at">data =</span> sp)</span></code></pre></div>
-<p><img src="GLM_1_Poisson_exercise_files/figure-html/Q4-2.png" width="672" /></p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># the relationships looks consistently negative with biomass across the pH levels</span></span></code></pre></div>
+<p><img src="GLM_1_Poisson_exercise_files/figure-html/Q4-1.png" width="672" /><img src="GLM_1_Poisson_exercise_files/figure-html/Q4-2.png" width="672" /></p>
 <p>5. Combine into a model that can answer your question.</p>
 <p>Having thought through the above details, it’s now time to bring that
 information together into a single model. As a reminder, we want to
@@ -690,8 +521,6 @@ class="math inline">\(Poisson\)</span> distribution with rate <span
 class="math inline">\(/lambda\)</span>, regressed on the <span
 class="math inline">\(log\)</span> link as a function of an intercept
 (<span class="math inline">\(\beta_0\)</span>) only.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># y_i ~ Poisson(lambda_i)</span></span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="co"># log(lambda_i) = beta_0 + beta_1 * Biomass</span></span></code></pre></div>
 <p>6. Fit the model.</p>
 <p>To warm up, we’ll start by running the version of the Poisson GLM
 that you (hopefully) managed to write above, where we assume that the
@@ -715,7 +544,6 @@ number <code>Species</code> counted in a plot is a function of how much
 </ul></li>
 </ul>
 <p> </p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>sp.glm1 <span class="ot">&lt;-</span> <span class="fu">glm</span>(Species <span class="sc">~</span> Biomass, <span class="at">family =</span> <span class="fu">poisson</span>(<span class="at">link =</span> <span class="st">&quot;log&quot;</span>), <span class="at">data =</span> sp)</span></code></pre></div>
 <p>7. Check your assumption(s).</p>
 <p>Even though this isn’t our final model, it can still be worthwhile to
 check how well this model met the assumptions.</p>
@@ -743,62 +571,7 @@ PearsonResid|}\)</span> we would be comfortable with?</li>
 fit?</li>
 </ul></li>
 </ul>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>))</span>
-<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="fu">plot</span>(sp.glm1)</span></code></pre></div>
 <p><img src="GLM_1_Poisson_exercise_files/figure-html/Q7-1.png" width="672" /></p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</span>
-<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="fu">summary</span>(sp.glm1)</span>
-<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="do">## Call:</span></span>
-<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="do">## glm(formula = Species ~ Biomass, family = poisson(link = &quot;log&quot;), </span></span>
-<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a><span class="do">##     data = sp)</span></span>
-<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a><span class="do">## Coefficients:</span></span>
-<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a><span class="do">##             Estimate Std. Error z value Pr(&gt;|z|)    </span></span>
-<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a><span class="do">## (Intercept)  3.55628    0.03942    90.2   &lt;2e-16 ***</span></span>
-<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a><span class="do">## Biomass     -0.19598    0.01606   -12.2   &lt;2e-16 ***</span></span>
-<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a><span class="do">## ---</span></span>
-<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a><span class="do">## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span>
-<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a><span class="do">## (Dispersion parameter for poisson family taken to be 1)</span></span>
-<span id="cb8-16"><a href="#cb8-16" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb8-17"><a href="#cb8-17" tabindex="-1"></a><span class="do">##     Null deviance: 645.45  on 89  degrees of freedom</span></span>
-<span id="cb8-18"><a href="#cb8-18" tabindex="-1"></a><span class="do">## Residual deviance: 432.63  on 88  degrees of freedom</span></span>
-<span id="cb8-19"><a href="#cb8-19" tabindex="-1"></a><span class="do">## AIC: 865.48</span></span>
-<span id="cb8-20"><a href="#cb8-20" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb8-21"><a href="#cb8-21" tabindex="-1"></a><span class="do">## Number of Fisher Scoring iterations: 4</span></span>
-<span id="cb8-22"><a href="#cb8-22" tabindex="-1"></a></span>
-<span id="cb8-23"><a href="#cb8-23" tabindex="-1"></a><span class="co"># Model diagnostic plots:</span></span>
-<span id="cb8-24"><a href="#cb8-24" tabindex="-1"></a><span class="co"># Residuals vs Fitted</span></span>
-<span id="cb8-25"><a href="#cb8-25" tabindex="-1"></a>  <span class="co"># While we do expect some funelling with Poisson GLMs the amount that we&#39;re</span></span>
-<span id="cb8-26"><a href="#cb8-26" tabindex="-1"></a>  <span class="co"># seeing here is concerning. We go from having relatively &quot;little&quot; variation</span></span>
-<span id="cb8-27"><a href="#cb8-27" tabindex="-1"></a>  <span class="co"># when our predicted values (on the link scale) are small, to &quot;lots&quot; of variation</span></span>
-<span id="cb8-28"><a href="#cb8-28" tabindex="-1"></a>  <span class="co"># when our predicted values are large, and most of this is happening between predicted</span></span>
-<span id="cb8-29"><a href="#cb8-29" tabindex="-1"></a>  <span class="co"># values of 2.5 to 3.5 (so over a fairly small range of predicted values)</span></span>
-<span id="cb8-30"><a href="#cb8-30" tabindex="-1"></a>  <span class="co"># This is would suggest we&#39;re not meeting the assumptions particularly well and</span></span>
-<span id="cb8-31"><a href="#cb8-31" tabindex="-1"></a>  <span class="co"># is a good indication that we have overdispersion.</span></span>
-<span id="cb8-32"><a href="#cb8-32" tabindex="-1"></a><span class="co"># Q-Q Residuals</span></span>
-<span id="cb8-33"><a href="#cb8-33" tabindex="-1"></a>  <span class="co"># We completely ignore this figure for GLMs.</span></span>
-<span id="cb8-34"><a href="#cb8-34" tabindex="-1"></a><span class="co"># Scale-Location</span></span>
-<span id="cb8-35"><a href="#cb8-35" tabindex="-1"></a>  <span class="co"># Ideally, we want std pearson resids to be ca. &lt; 3, so we&#39;re good there</span></span>
-<span id="cb8-36"><a href="#cb8-36" tabindex="-1"></a>  <span class="co"># We also don&#39;t want to see any patterns (as for Resids vs Fitted) but we see the</span></span>
-<span id="cb8-37"><a href="#cb8-37" tabindex="-1"></a>  <span class="co"># same rapid increase in variation once predicted values are above 2.5</span></span>
-<span id="cb8-38"><a href="#cb8-38" tabindex="-1"></a><span class="co"># Residuals vs Leverage</span></span>
-<span id="cb8-39"><a href="#cb8-39" tabindex="-1"></a>  <span class="co"># We&#39;re really only using this to check for values close to a Cook&#39;s distance of 1</span></span>
-<span id="cb8-40"><a href="#cb8-40" tabindex="-1"></a>  <span class="co"># While we don&#39;t have any observations that are greater than 1, we have a handful</span></span>
-<span id="cb8-41"><a href="#cb8-41" tabindex="-1"></a>  <span class="co"># that are getting uncomfortably close. While these values are fine, we&#39;re</span></span>
-<span id="cb8-42"><a href="#cb8-42" tabindex="-1"></a>  <span class="co"># not exactly jumping for joy with these Cook&#39;s distances.</span></span>
-<span id="cb8-43"><a href="#cb8-43" tabindex="-1"></a><span class="co"># Overall, the diagnostic plots don&#39;t look great. Not the worst, but we&#39;d want something</span></span>
-<span id="cb8-44"><a href="#cb8-44" tabindex="-1"></a><span class="co"># better.</span></span>
-<span id="cb8-45"><a href="#cb8-45" tabindex="-1"></a></span>
-<span id="cb8-46"><a href="#cb8-46" tabindex="-1"></a><span class="co"># To do a quick and crude check for dispersion, we can use the information from summary()</span></span>
-<span id="cb8-47"><a href="#cb8-47" tabindex="-1"></a>  <span class="co"># We take residual deviance and divide by the degrees of freedom, so for this model:</span></span>
-<span id="cb8-48"><a href="#cb8-48" tabindex="-1"></a>  <span class="co"># 432.63/88 = 4.9!</span></span>
-<span id="cb8-49"><a href="#cb8-49" tabindex="-1"></a>  <span class="co"># We have a whopping 4.9 overdispersion! My general rule of thumb is that I start getting</span></span>
-<span id="cb8-50"><a href="#cb8-50" tabindex="-1"></a>  <span class="co"># concerned when dispersion is somewhere in the 1.5-1.8 region. 4.9 is doomsday!</span></span>
-<span id="cb8-51"><a href="#cb8-51" tabindex="-1"></a>  <span class="co"># As a result, our standard error for our parameter estimates is going to be artificially</span></span>
-<span id="cb8-52"><a href="#cb8-52" tabindex="-1"></a>  <span class="co"># small. This in turn leads to both 1) risks of our p value being smaller than it should be</span></span>
-<span id="cb8-53"><a href="#cb8-53" tabindex="-1"></a>  <span class="co"># for Biomass, and 2) any predictions that include uncertainty being too confident.</span></span></code></pre></div>
 <p>8. Answer your question</p>
 <p>Hopefully you identified issues that mean we should be very cautious
 with interpreting this simple version of the model. For now, we’ll put
@@ -817,15 +590,6 @@ had 2.5 kg of biomass?</p></li>
 <li><p>On the link scale, how many plants would you predict if a plot
 had 5 kg of biomass?</p></li>
 </ul>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="co"># On the link scale, how many plants would you predict if a plot had 0 kg of biomass?</span></span>
-<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="fl">3.55628</span> <span class="sc">+</span> <span class="sc">-</span><span class="fl">0.19598</span> <span class="sc">*</span> <span class="dv">0</span> <span class="co"># = 3.55628</span></span>
-<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a><span class="do">## [1] 3.55628</span></span>
-<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a><span class="co"># On the link scale, how many plants would you predict if a plot had 2.5 kg of biomass?</span></span>
-<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a><span class="fl">3.55628</span> <span class="sc">+</span> <span class="sc">-</span><span class="fl">0.19598</span> <span class="sc">*</span> <span class="fl">2.5</span> <span class="co"># = 3.06633</span></span>
-<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a><span class="do">## [1] 3.06633</span></span>
-<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a><span class="co"># On the link scale, how many plants would you predict if a plot had 5 kg of biomass?</span></span>
-<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a><span class="fl">3.55628</span> <span class="sc">+</span> <span class="sc">-</span><span class="fl">0.19598</span> <span class="sc">*</span> <span class="dv">5</span> <span class="co"># = 2.57638</span></span>
-<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a><span class="do">## [1] 2.57638</span></span></code></pre></div>
 <p>8.2. Now, let’s make predictions on the response scale. To go from
 the <span class="math inline">\(log\)</span> link scale, to the response
 scale, we take our predictions and apply the inverse link function to
@@ -842,15 +606,6 @@ plot had 5 kg of biomass?</p></li>
 <li><p>On the response scale, how many plants would you predict if a
 plot had 10 kg of biomass?</p></li>
 </ul>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="co"># On the response scale, how many plants would you predict if a plot had 0 kg of biomass?</span></span>
-<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="fu">exp</span>(<span class="fl">3.55628</span> <span class="sc">+</span> <span class="sc">-</span><span class="fl">0.19598</span> <span class="sc">*</span> <span class="dv">0</span>) <span class="co"># = 35.0</span></span>
-<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a><span class="do">## [1] 35.03263</span></span>
-<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a><span class="co"># On the response scale, how many plants would you predict if a plot had 5 kg of biomass?</span></span>
-<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a><span class="fu">exp</span>(<span class="fl">3.55628</span> <span class="sc">+</span> <span class="sc">-</span><span class="fl">0.19598</span> <span class="sc">*</span> <span class="dv">5</span>) <span class="co"># = 13.1</span></span>
-<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a><span class="do">## [1] 13.14945</span></span>
-<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a><span class="co"># On the response scale, how many plants would you predict if a plot had 10 kg of biomass?</span></span>
-<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a><span class="fu">exp</span>(<span class="fl">3.55628</span> <span class="sc">+</span> <span class="sc">-</span><span class="fl">0.19598</span> <span class="sc">*</span> <span class="dv">10</span>) <span class="co"># = 4.9</span></span>
-<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a><span class="do">## [1] 4.935628</span></span></code></pre></div>
 <p>8.3. Using this approach, we get a series of snapshot predictions.
 That’s useful in and of itself, but we can make this a bit easier
 visually. To do so, rather copy-and-pasting our equation and
@@ -860,17 +615,11 @@ create a sequence of 5 biomass values that range from the minimum we
 observed in the data, to the maximum, and store this variable.</p>
 <p>Hint: do not add this new biomass variable to your original
 dataset.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a>biomass_new <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="fu">min</span>(sp<span class="sc">$</span>Biomass), <span class="at">to =</span> <span class="fu">max</span>(sp<span class="sc">$</span>Biomass), <span class="at">length.out =</span> <span class="dv">5</span>)</span>
-<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>biomass_new</span>
-<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a><span class="do">## [1]  0.2593796  3.5950203  6.9306610 10.2663016 13.6019423</span></span></code></pre></div>
 <p>8.4. Once you have this variable (or “vector”), use it to make 5
 simultaneous predictions of how many plant species we would expect to
 find, on the response scale. Store the output in another variable.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>pred_plants <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fl">3.55628</span> <span class="sc">+</span> <span class="sc">-</span><span class="fl">0.19598</span> <span class="sc">*</span> biomass_new)</span></code></pre></div>
 <p>8.5. With both of these new variables, create a plot to show our
 prediction.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="fu">plot</span>(pred_plants <span class="sc">~</span> biomass_new)</span>
-<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a><span class="fu">lines</span>(pred_plants <span class="sc">~</span> biomass_new)</span></code></pre></div>
 <p><img src="GLM_1_Poisson_exercise_files/figure-html/Q8.5-1.png" width="672" /></p>
 <p>And with that, we have a prediction (from our model which we know has
 issues). If we stopped here, we’d conclude that biomass has a negative
@@ -878,7 +627,6 @@ association with the number of plant species.</p>
 <p>8.6. (Optional): The figure we have produced is pretty jagged
 looking. If we wanted a smoother line to be drawn, how would we do
 so?</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="co"># We would simply increase the number of biomass values that our seq() code created. Try it out if you&#39;re interested.</span></span></code></pre></div>
 <p> </p>
 <p>9. We’ve run a Poisson GLM where <code>Species</code> is explained by
 <code>Biomass</code>, but remember that our initial research question
@@ -890,20 +638,10 @@ we’ll need additional covariates to indicate if an observation is,
 e.g. “Medium” pH (1) or not (0), or “High” pH (1) or not (0). (If you’re
 not sure how to do this, you can either go back and watch the relevant
 sections of the Poisson lecture or ask for help).</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="co"># y_i ~ Poisson(lambda_i)</span></span>
-<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a><span class="co"># log(lambda_i) = beta_0 + beta_1 * biomass + beta_2 * pHmid + beta_3 * pHhigh</span></span>
-<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a></span>
-<span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a><span class="co"># Remember that for models with categorical variables, models will break that single </span></span>
-<span id="cb15-5"><a href="#cb15-5" tabindex="-1"></a><span class="co"># categorical column into however many levels there are minus 1. Here 2 columns </span></span>
-<span id="cb15-6"><a href="#cb15-6" tabindex="-1"></a><span class="co"># are &quot;created&quot; that are used to indicate if an observation is &quot;mid&quot; pH (1 if yes, 0</span></span>
-<span id="cb15-7"><a href="#cb15-7" tabindex="-1"></a><span class="co"># if no), and another to indicate if an observation is &quot;high&quot; pH</span></span>
-<span id="cb15-8"><a href="#cb15-8" tabindex="-1"></a><span class="co"># We don&#39;t need to column for &quot;low&quot;, because if both &quot;mid&quot; and &quot;high&quot; are 0, then</span></span>
-<span id="cb15-9"><a href="#cb15-9" tabindex="-1"></a><span class="co"># the only option is that it *must* be &quot;low&quot;</span></span></code></pre></div>
 <p>9.1. Once you’ve given that a shot, run the <code>glm()</code> which
 includes both <code>Biomass</code> and <code>pH</code> as main effects
 only (we won’t be doing any interactions yet).</p>
 <p> </p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a>sp.glm2 <span class="ot">&lt;-</span> <span class="fu">glm</span>(Species <span class="sc">~</span> Biomass <span class="sc">+</span> pH, <span class="at">family =</span> <span class="fu">poisson</span>(<span class="at">link =</span> <span class="st">&quot;log&quot;</span>), <span class="at">data =</span> sp)</span></code></pre></div>
 <p> </p>
 <p>10. With every model we run, we need to re-diagnose the models. We’ve
 already done that once, so let’s quickly do it again.</p>
@@ -929,56 +667,7 @@ PearsonResid|}\)</span> we would be comfortable with?</li>
 fit?</li>
 </ul></li>
 </ul>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>))</span>
-<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a><span class="fu">plot</span>(sp.glm2)</span></code></pre></div>
 <p><img src="GLM_1_Poisson_exercise_files/figure-html/Q10-1.png" width="672" /></p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</span>
-<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a><span class="fu">summary</span>(sp.glm2)</span>
-<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a><span class="do">## Call:</span></span>
-<span id="cb18-5"><a href="#cb18-5" tabindex="-1"></a><span class="do">## glm(formula = Species ~ Biomass + pH, family = poisson(link = &quot;log&quot;), </span></span>
-<span id="cb18-6"><a href="#cb18-6" tabindex="-1"></a><span class="do">##     data = sp)</span></span>
-<span id="cb18-7"><a href="#cb18-7" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb18-8"><a href="#cb18-8" tabindex="-1"></a><span class="do">## Coefficients:</span></span>
-<span id="cb18-9"><a href="#cb18-9" tabindex="-1"></a><span class="do">##             Estimate Std. Error z value Pr(&gt;|z|)    </span></span>
-<span id="cb18-10"><a href="#cb18-10" tabindex="-1"></a><span class="do">## (Intercept)  2.76461    0.06894  40.104   &lt;2e-16 ***</span></span>
-<span id="cb18-11"><a href="#cb18-11" tabindex="-1"></a><span class="do">## Biomass     -0.15618    0.01567  -9.968   &lt;2e-16 ***</span></span>
-<span id="cb18-12"><a href="#cb18-12" tabindex="-1"></a><span class="do">## pHmid        0.65269    0.06965   9.371   &lt;2e-16 ***</span></span>
-<span id="cb18-13"><a href="#cb18-13" tabindex="-1"></a><span class="do">## pHhigh       1.12563    0.06516  17.274   &lt;2e-16 ***</span></span>
-<span id="cb18-14"><a href="#cb18-14" tabindex="-1"></a><span class="do">## ---</span></span>
-<span id="cb18-15"><a href="#cb18-15" tabindex="-1"></a><span class="do">## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span>
-<span id="cb18-16"><a href="#cb18-16" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb18-17"><a href="#cb18-17" tabindex="-1"></a><span class="do">## (Dispersion parameter for poisson family taken to be 1)</span></span>
-<span id="cb18-18"><a href="#cb18-18" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb18-19"><a href="#cb18-19" tabindex="-1"></a><span class="do">##     Null deviance: 645.453  on 89  degrees of freedom</span></span>
-<span id="cb18-20"><a href="#cb18-20" tabindex="-1"></a><span class="do">## Residual deviance:  77.128  on 86  degrees of freedom</span></span>
-<span id="cb18-21"><a href="#cb18-21" tabindex="-1"></a><span class="do">## AIC: 513.98</span></span>
-<span id="cb18-22"><a href="#cb18-22" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb18-23"><a href="#cb18-23" tabindex="-1"></a><span class="do">## Number of Fisher Scoring iterations: 4</span></span>
-<span id="cb18-24"><a href="#cb18-24" tabindex="-1"></a></span>
-<span id="cb18-25"><a href="#cb18-25" tabindex="-1"></a><span class="co"># Model diagnostic plots:</span></span>
-<span id="cb18-26"><a href="#cb18-26" tabindex="-1"></a><span class="co"># Residuals versus Fitted</span></span>
-<span id="cb18-27"><a href="#cb18-27" tabindex="-1"></a>  <span class="co"># While we do still see a little bit of a funnel, we expect some</span></span>
-<span id="cb18-28"><a href="#cb18-28" tabindex="-1"></a>  <span class="co"># given that the variation (y-axis) increases as the mean (x-axis) increases</span></span>
-<span id="cb18-29"><a href="#cb18-29" tabindex="-1"></a>  <span class="co"># with the Poisson distribution</span></span>
-<span id="cb18-30"><a href="#cb18-30" tabindex="-1"></a>  <span class="co"># This plot for the new model is a pretty ideal</span></span>
-<span id="cb18-31"><a href="#cb18-31" tabindex="-1"></a><span class="co"># Q-Q Residuals</span></span>
-<span id="cb18-32"><a href="#cb18-32" tabindex="-1"></a>  <span class="co"># We completely ignore this figure (despite it looking nice in this model)</span></span>
-<span id="cb18-33"><a href="#cb18-33" tabindex="-1"></a><span class="co"># Scale-Location</span></span>
-<span id="cb18-34"><a href="#cb18-34" tabindex="-1"></a>  <span class="co"># Ideally, we want std pearson resids to be ca. &lt; 3, so we&#39;re good there</span></span>
-<span id="cb18-35"><a href="#cb18-35" tabindex="-1"></a>  <span class="co"># We also don&#39;t want to see any patterns, so good here too</span></span>
-<span id="cb18-36"><a href="#cb18-36" tabindex="-1"></a><span class="co"># Residuals vs Leverage</span></span>
-<span id="cb18-37"><a href="#cb18-37" tabindex="-1"></a>  <span class="co"># We&#39;re really only using this to check for values close to a Cook&#39;s distance of 1</span></span>
-<span id="cb18-38"><a href="#cb18-38" tabindex="-1"></a>  <span class="co"># We can&#39;t even see the dashed lines showing a Cook&#39;s distance of 0.5, so we&#39;re</span></span>
-<span id="cb18-39"><a href="#cb18-39" tabindex="-1"></a>  <span class="co"># golden here too</span></span>
-<span id="cb18-40"><a href="#cb18-40" tabindex="-1"></a><span class="co"># Overall, the diagnostic plots look great</span></span>
-<span id="cb18-41"><a href="#cb18-41" tabindex="-1"></a></span>
-<span id="cb18-42"><a href="#cb18-42" tabindex="-1"></a><span class="co"># To do a quick and crude check for dispersion, we can use the information from summary()</span></span>
-<span id="cb18-43"><a href="#cb18-43" tabindex="-1"></a>  <span class="co"># We take residual deviance and devide by the degrees of freedom, so for this model:</span></span>
-<span id="cb18-44"><a href="#cb18-44" tabindex="-1"></a>  <span class="co"># 77.128/86 = 0.9</span></span>
-<span id="cb18-45"><a href="#cb18-45" tabindex="-1"></a>  <span class="co"># Not exactly the ideal value of 1 but 0.9 is nothing to get concerned about</span></span>
-<span id="cb18-46"><a href="#cb18-46" tabindex="-1"></a>  <span class="co"># Also, remember that *underdispersion* is generally not much of an issue</span></span>
-<span id="cb18-47"><a href="#cb18-47" tabindex="-1"></a>  <span class="co"># Compared to the first model, this is a fantastic improvement</span></span></code></pre></div>
 <p>11. (Optional): Obtain and compare summaries of the model output
 using the <code>summary()</code> and the ANOVA of the model.</p>
 <ul>
@@ -992,76 +681,6 @@ would you choose to use if you wanted to
 </ul></li>
 </ul>
 <p> </p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a><span class="fu">anova</span>(sp.glm2, <span class="at">test=</span> <span class="st">&quot;Chisq&quot;</span>)</span>
-<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a><span class="do">## Analysis of Deviance Table</span></span>
-<span id="cb19-3"><a href="#cb19-3" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb19-4"><a href="#cb19-4" tabindex="-1"></a><span class="do">## Model: poisson, link: log</span></span>
-<span id="cb19-5"><a href="#cb19-5" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb19-6"><a href="#cb19-6" tabindex="-1"></a><span class="do">## Response: Species</span></span>
-<span id="cb19-7"><a href="#cb19-7" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb19-8"><a href="#cb19-8" tabindex="-1"></a><span class="do">## Terms added sequentially (first to last)</span></span>
-<span id="cb19-9"><a href="#cb19-9" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb19-10"><a href="#cb19-10" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb19-11"><a href="#cb19-11" tabindex="-1"></a><span class="do">##         Df Deviance Resid. Df Resid. Dev  Pr(&gt;Chi)    </span></span>
-<span id="cb19-12"><a href="#cb19-12" tabindex="-1"></a><span class="do">## NULL                       89     645.45              </span></span>
-<span id="cb19-13"><a href="#cb19-13" tabindex="-1"></a><span class="do">## Biomass  1   212.83        88     432.63 &lt; 2.2e-16 ***</span></span>
-<span id="cb19-14"><a href="#cb19-14" tabindex="-1"></a><span class="do">## pH       2   355.50        86      77.13 &lt; 2.2e-16 ***</span></span>
-<span id="cb19-15"><a href="#cb19-15" tabindex="-1"></a><span class="do">## ---</span></span>
-<span id="cb19-16"><a href="#cb19-16" tabindex="-1"></a><span class="do">## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span>
-<span id="cb19-17"><a href="#cb19-17" tabindex="-1"></a><span class="co"># DEVIANCE COMPONENTS:</span></span>
-<span id="cb19-18"><a href="#cb19-18" tabindex="-1"></a><span class="co"># anova is useful for getting an idea of the relative contributions</span></span>
-<span id="cb19-19"><a href="#cb19-19" tabindex="-1"></a><span class="co"># of each term to explaining the overall variability in the data,</span></span>
-<span id="cb19-20"><a href="#cb19-20" tabindex="-1"></a><span class="co"># using the deviance. Beware that order does matter for all but the last term!</span></span>
-<span id="cb19-21"><a href="#cb19-21" tabindex="-1"></a></span>
-<span id="cb19-22"><a href="#cb19-22" tabindex="-1"></a><span class="fu">summary</span>(sp.glm2)</span>
-<span id="cb19-23"><a href="#cb19-23" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb19-24"><a href="#cb19-24" tabindex="-1"></a><span class="do">## Call:</span></span>
-<span id="cb19-25"><a href="#cb19-25" tabindex="-1"></a><span class="do">## glm(formula = Species ~ Biomass + pH, family = poisson(link = &quot;log&quot;), </span></span>
-<span id="cb19-26"><a href="#cb19-26" tabindex="-1"></a><span class="do">##     data = sp)</span></span>
-<span id="cb19-27"><a href="#cb19-27" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb19-28"><a href="#cb19-28" tabindex="-1"></a><span class="do">## Coefficients:</span></span>
-<span id="cb19-29"><a href="#cb19-29" tabindex="-1"></a><span class="do">##             Estimate Std. Error z value Pr(&gt;|z|)    </span></span>
-<span id="cb19-30"><a href="#cb19-30" tabindex="-1"></a><span class="do">## (Intercept)  2.76461    0.06894  40.104   &lt;2e-16 ***</span></span>
-<span id="cb19-31"><a href="#cb19-31" tabindex="-1"></a><span class="do">## Biomass     -0.15618    0.01567  -9.968   &lt;2e-16 ***</span></span>
-<span id="cb19-32"><a href="#cb19-32" tabindex="-1"></a><span class="do">## pHmid        0.65269    0.06965   9.371   &lt;2e-16 ***</span></span>
-<span id="cb19-33"><a href="#cb19-33" tabindex="-1"></a><span class="do">## pHhigh       1.12563    0.06516  17.274   &lt;2e-16 ***</span></span>
-<span id="cb19-34"><a href="#cb19-34" tabindex="-1"></a><span class="do">## ---</span></span>
-<span id="cb19-35"><a href="#cb19-35" tabindex="-1"></a><span class="do">## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span>
-<span id="cb19-36"><a href="#cb19-36" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb19-37"><a href="#cb19-37" tabindex="-1"></a><span class="do">## (Dispersion parameter for poisson family taken to be 1)</span></span>
-<span id="cb19-38"><a href="#cb19-38" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb19-39"><a href="#cb19-39" tabindex="-1"></a><span class="do">##     Null deviance: 645.453  on 89  degrees of freedom</span></span>
-<span id="cb19-40"><a href="#cb19-40" tabindex="-1"></a><span class="do">## Residual deviance:  77.128  on 86  degrees of freedom</span></span>
-<span id="cb19-41"><a href="#cb19-41" tabindex="-1"></a><span class="do">## AIC: 513.98</span></span>
-<span id="cb19-42"><a href="#cb19-42" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb19-43"><a href="#cb19-43" tabindex="-1"></a><span class="do">## Number of Fisher Scoring iterations: 4</span></span>
-<span id="cb19-44"><a href="#cb19-44" tabindex="-1"></a><span class="co"># EXPLAINING PREDICTIONS:</span></span>
-<span id="cb19-45"><a href="#cb19-45" tabindex="-1"></a><span class="co"># to explain patterns in the data, we need to look at the coefficient</span></span>
-<span id="cb19-46"><a href="#cb19-46" tabindex="-1"></a><span class="co"># estimates from the summary of the model.</span></span>
-<span id="cb19-47"><a href="#cb19-47" tabindex="-1"></a></span>
-<span id="cb19-48"><a href="#cb19-48" tabindex="-1"></a><span class="co"># </span><span class="al">TESTING</span><span class="co"> HYPOTHESES:</span></span>
-<span id="cb19-49"><a href="#cb19-49" tabindex="-1"></a></span>
-<span id="cb19-50"><a href="#cb19-50" tabindex="-1"></a><span class="co"># To test hyoptheses on the coefficient value being different from zero,</span></span>
-<span id="cb19-51"><a href="#cb19-51" tabindex="-1"></a><span class="co"># look at the Z-test in the summary table</span></span>
-<span id="cb19-52"><a href="#cb19-52" tabindex="-1"></a></span>
-<span id="cb19-53"><a href="#cb19-53" tabindex="-1"></a><span class="co"># To test hyoptheses on a predictor explaining a significant porportion of </span></span>
-<span id="cb19-54"><a href="#cb19-54" tabindex="-1"></a><span class="co"># variation in the data, look at the Chi-sq-test in the anova table</span></span>
-<span id="cb19-55"><a href="#cb19-55" tabindex="-1"></a></span>
-<span id="cb19-56"><a href="#cb19-56" tabindex="-1"></a><span class="fu">drop1</span>(sp.glm2)</span>
-<span id="cb19-57"><a href="#cb19-57" tabindex="-1"></a><span class="do">## Single term deletions</span></span>
-<span id="cb19-58"><a href="#cb19-58" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb19-59"><a href="#cb19-59" tabindex="-1"></a><span class="do">## Model:</span></span>
-<span id="cb19-60"><a href="#cb19-60" tabindex="-1"></a><span class="do">## Species ~ Biomass + pH</span></span>
-<span id="cb19-61"><a href="#cb19-61" tabindex="-1"></a><span class="do">##         Df Deviance    AIC</span></span>
-<span id="cb19-62"><a href="#cb19-62" tabindex="-1"></a><span class="do">## &lt;none&gt;        77.13 513.98</span></span>
-<span id="cb19-63"><a href="#cb19-63" tabindex="-1"></a><span class="do">## Biomass  1   217.36 652.22</span></span>
-<span id="cb19-64"><a href="#cb19-64" tabindex="-1"></a><span class="do">## pH       2   432.63 865.48</span></span>
-<span id="cb19-65"><a href="#cb19-65" tabindex="-1"></a><span class="co"># VARIABLE SELECTION (SIMPLIFICATION):</span></span>
-<span id="cb19-66"><a href="#cb19-66" tabindex="-1"></a><span class="co"># If we wanted to perform variable selection, we could use AIC to find</span></span>
-<span id="cb19-67"><a href="#cb19-67" tabindex="-1"></a><span class="co"># any variables that we could drop from the model, without it loosing</span></span>
-<span id="cb19-68"><a href="#cb19-68" tabindex="-1"></a><span class="co"># predictive power. In this example, the lowest AIC (the one with the best</span></span>
-<span id="cb19-69"><a href="#cb19-69" tabindex="-1"></a><span class="co"># predictive power) is the full model (i.e. the one where we do not remove</span></span>
-<span id="cb19-70"><a href="#cb19-70" tabindex="-1"></a><span class="co"># any variables)</span></span></code></pre></div>
 <p> </p>
 <p>12. Now that we’ve fit the full model, let’s begin the process of
 interpreting what the results mean. For starters, given this is a more
@@ -1069,79 +688,7 @@ complex model, let’s take it slowly and make sure we understand what
 each parameter estimate means. Using <code>summary()</code>, identify
 what each parameter means.</p>
 <p> </p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a><span class="fu">summary</span>(sp.glm2)</span>
-<span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb20-3"><a href="#cb20-3" tabindex="-1"></a><span class="do">## Call:</span></span>
-<span id="cb20-4"><a href="#cb20-4" tabindex="-1"></a><span class="do">## glm(formula = Species ~ Biomass + pH, family = poisson(link = &quot;log&quot;), </span></span>
-<span id="cb20-5"><a href="#cb20-5" tabindex="-1"></a><span class="do">##     data = sp)</span></span>
-<span id="cb20-6"><a href="#cb20-6" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb20-7"><a href="#cb20-7" tabindex="-1"></a><span class="do">## Coefficients:</span></span>
-<span id="cb20-8"><a href="#cb20-8" tabindex="-1"></a><span class="do">##             Estimate Std. Error z value Pr(&gt;|z|)    </span></span>
-<span id="cb20-9"><a href="#cb20-9" tabindex="-1"></a><span class="do">## (Intercept)  2.76461    0.06894  40.104   &lt;2e-16 ***</span></span>
-<span id="cb20-10"><a href="#cb20-10" tabindex="-1"></a><span class="do">## Biomass     -0.15618    0.01567  -9.968   &lt;2e-16 ***</span></span>
-<span id="cb20-11"><a href="#cb20-11" tabindex="-1"></a><span class="do">## pHmid        0.65269    0.06965   9.371   &lt;2e-16 ***</span></span>
-<span id="cb20-12"><a href="#cb20-12" tabindex="-1"></a><span class="do">## pHhigh       1.12563    0.06516  17.274   &lt;2e-16 ***</span></span>
-<span id="cb20-13"><a href="#cb20-13" tabindex="-1"></a><span class="do">## ---</span></span>
-<span id="cb20-14"><a href="#cb20-14" tabindex="-1"></a><span class="do">## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span>
-<span id="cb20-15"><a href="#cb20-15" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb20-16"><a href="#cb20-16" tabindex="-1"></a><span class="do">## (Dispersion parameter for poisson family taken to be 1)</span></span>
-<span id="cb20-17"><a href="#cb20-17" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb20-18"><a href="#cb20-18" tabindex="-1"></a><span class="do">##     Null deviance: 645.453  on 89  degrees of freedom</span></span>
-<span id="cb20-19"><a href="#cb20-19" tabindex="-1"></a><span class="do">## Residual deviance:  77.128  on 86  degrees of freedom</span></span>
-<span id="cb20-20"><a href="#cb20-20" tabindex="-1"></a><span class="do">## AIC: 513.98</span></span>
-<span id="cb20-21"><a href="#cb20-21" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb20-22"><a href="#cb20-22" tabindex="-1"></a><span class="do">## Number of Fisher Scoring iterations: 4</span></span>
-<span id="cb20-23"><a href="#cb20-23" tabindex="-1"></a><span class="co"># &quot;(Intercept)&quot; is the predicted value on the link (log) scale when</span></span>
-<span id="cb20-24"><a href="#cb20-24" tabindex="-1"></a><span class="co"># pH is &quot;low&quot;. A hint is that there is no labelled coefficient called</span></span>
-<span id="cb20-25"><a href="#cb20-25" tabindex="-1"></a><span class="co"># &quot;pHlow&quot;.</span></span>
-<span id="cb20-26"><a href="#cb20-26" tabindex="-1"></a></span>
-<span id="cb20-27"><a href="#cb20-27" tabindex="-1"></a><span class="co"># &quot;Biomass&quot; is the slope of Biomass.</span></span>
-<span id="cb20-28"><a href="#cb20-28" tabindex="-1"></a><span class="co"># It is negative, so assumes a linear decrease (on the log scale)</span></span>
-<span id="cb20-29"><a href="#cb20-29" tabindex="-1"></a><span class="co"># For every extra 1 unit (here kg) of biomass &quot;added&quot; to a plot</span></span>
-<span id="cb20-30"><a href="#cb20-30" tabindex="-1"></a><span class="co"># the number of species (on the log scale) decreases by -0.16</span></span>
-<span id="cb20-31"><a href="#cb20-31" tabindex="-1"></a></span>
-<span id="cb20-32"><a href="#cb20-32" tabindex="-1"></a><span class="co"># &quot;pHmid&quot; is the estimated difference (on the log scale) between</span></span>
-<span id="cb20-33"><a href="#cb20-33" tabindex="-1"></a><span class="co"># the &quot;pHmid&quot; and the reference level, &quot;pHlow&quot;.</span></span>
-<span id="cb20-34"><a href="#cb20-34" tabindex="-1"></a><span class="co"># A value of 0.65 means plots with &quot;mid&quot; pH have 0.65 (on link scale)</span></span>
-<span id="cb20-35"><a href="#cb20-35" tabindex="-1"></a><span class="co"># more species than &quot;low&quot; (our intercept).</span></span>
-<span id="cb20-36"><a href="#cb20-36" tabindex="-1"></a></span>
-<span id="cb20-37"><a href="#cb20-37" tabindex="-1"></a><span class="co"># &quot;pHhigh&quot; is the estimated difference (on the log scale) between</span></span>
-<span id="cb20-38"><a href="#cb20-38" tabindex="-1"></a><span class="co"># the &quot;pHhigh&quot; and the reference level, &quot;pHlow&quot;.</span></span>
-<span id="cb20-39"><a href="#cb20-39" tabindex="-1"></a><span class="co"># A value of 1.13 means plots with &quot;mid&quot; pH have 1.13 (on link scale)</span></span>
-<span id="cb20-40"><a href="#cb20-40" tabindex="-1"></a><span class="co"># more species than &quot;low&quot; (our intercept).</span></span>
-<span id="cb20-41"><a href="#cb20-41" tabindex="-1"></a></span>
-<span id="cb20-42"><a href="#cb20-42" tabindex="-1"></a><span class="co"># A mathematical description of the model</span></span>
-<span id="cb20-43"><a href="#cb20-43" tabindex="-1"></a><span class="co"># (and how I would present it in the methods section of a paper):</span></span>
-<span id="cb20-44"><a href="#cb20-44" tabindex="-1"></a><span class="co"># Species_i ~ Poisson(lambda_i)</span></span>
-<span id="cb20-45"><a href="#cb20-45" tabindex="-1"></a><span class="co"># log(lambda_i) = 2.76 + -0.16 * Biomass_i</span></span>
-<span id="cb20-46"><a href="#cb20-46" tabindex="-1"></a><span class="co">#    + 0.65 * pHmid_i</span></span>
-<span id="cb20-47"><a href="#cb20-47" tabindex="-1"></a><span class="co">#    + 1.13 * pHhigh_i</span></span></code></pre></div>
 <p> </p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a><span class="co"># we can produce more residual plots if desired:</span></span>
-<span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a><span class="co"># extract various residuals and plot</span></span>
-<span id="cb21-3"><a href="#cb21-3" tabindex="-1"></a>res.p <span class="ot">&lt;-</span> <span class="fu">resid</span>(sp.glm2, <span class="at">type =</span> <span class="st">&quot;pearson&quot;</span>)</span>
-<span id="cb21-4"><a href="#cb21-4" tabindex="-1"></a>res.d <span class="ot">&lt;-</span> <span class="fu">resid</span>(sp.glm2, <span class="at">type =</span> <span class="st">&quot;deviance&quot;</span>)</span>
-<span id="cb21-5"><a href="#cb21-5" tabindex="-1"></a></span>
-<span id="cb21-6"><a href="#cb21-6" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">fitted</span>(sp.glm2) <span class="co"># on the response scale</span></span>
-<span id="cb21-7"><a href="#cb21-7" tabindex="-1"></a></span>
-<span id="cb21-8"><a href="#cb21-8" tabindex="-1"></a><span class="fu">plot</span>(res.p, res.d); <span class="fu">abline</span>(<span class="dv">0</span>,<span class="dv">1</span>) <span class="co"># deviance against Std Pearson residuals</span></span></code></pre></div>
-<p><img src="GLM_1_Poisson_exercise_files/figure-html/Q13-1.png" width="672" /></p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a><span class="co"># quite similar in this model (no overdispersion, moderate underdispersion)</span></span>
-<span id="cb22-2"><a href="#cb22-2" tabindex="-1"></a><span class="fu">plot</span>(fit, res.d, <span class="at">ylab=</span> <span class="st">&quot;Deviance residuals&quot;</span>, <span class="at">xlab=</span> <span class="st">&quot;Fitted values (response scale)&quot;</span>)</span>
-<span id="cb22-3"><a href="#cb22-3" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span> <span class="dv">0</span>, <span class="at">col=</span> <span class="dv">2</span>, <span class="at">lty=</span> <span class="dv">2</span>)</span></code></pre></div>
-<p><img src="GLM_1_Poisson_exercise_files/figure-html/Q13-2.png" width="672" /></p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a></span>
-<span id="cb23-2"><a href="#cb23-2" tabindex="-1"></a><span class="co"># residuals against the predictors:</span></span>
-<span id="cb23-3"><a href="#cb23-3" tabindex="-1"></a><span class="fu">plot</span>(sp<span class="sc">$</span>pH, res.p, <span class="at">ylab=</span> <span class="st">&quot;Std Pearson residuals&quot;</span>, <span class="at">xlab=</span> <span class="st">&quot;pH&quot;</span>)</span>
-<span id="cb23-4"><a href="#cb23-4" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span> <span class="dv">0</span>, <span class="at">col=</span> <span class="dv">2</span>, <span class="at">lty=</span> <span class="dv">2</span>)</span></code></pre></div>
-<p><img src="GLM_1_Poisson_exercise_files/figure-html/Q13-3.png" width="672" /></p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a><span class="co"># low pH plots are more variable</span></span>
-<span id="cb24-2"><a href="#cb24-2" tabindex="-1"></a></span>
-<span id="cb24-3"><a href="#cb24-3" tabindex="-1"></a><span class="fu">plot</span>(sp<span class="sc">$</span>Biomass, res.p, <span class="at">ylab=</span> <span class="st">&quot;Std Pearson residuals&quot;</span>, <span class="at">xlab=</span> <span class="st">&quot;Biomass&quot;</span>)</span>
-<span id="cb24-4"><a href="#cb24-4" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span> <span class="dv">0</span>, <span class="at">col=</span> <span class="dv">2</span>, <span class="at">lty=</span> <span class="dv">2</span>)</span></code></pre></div>
-<p><img src="GLM_1_Poisson_exercise_files/figure-html/Q13-4.png" width="672" /></p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" tabindex="-1"></a><span class="co"># Species richness over-predicted for highest and lowest Biomass plots</span></span>
-<span id="cb25-2"><a href="#cb25-2" tabindex="-1"></a><span class="co"># Few cases: could be by chance?</span></span></code></pre></div>
 <p><br />
 </p>
 <p>We can use the same technique we used for the model with just
@@ -1167,41 +714,6 @@ so we don’t need to by setting <code>type = "response"</code>:
 <code>(predict(sp.glm2, new_data = synth_data, type = "response")</code>).
 Using these predicted values, create a figure to show your predicted
 relationships for pH and biomass.</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" tabindex="-1"></a>synth_data <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">Biomass =</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="fu">min</span>(sp<span class="sc">$</span>Biomass), <span class="at">to =</span> <span class="fu">max</span>(sp<span class="sc">$</span>Biomass), <span class="at">length.out =</span> <span class="dv">20</span>), </span>
-<span id="cb26-2"><a href="#cb26-2" tabindex="-1"></a>                          <span class="at">pH =</span> <span class="fu">c</span>(<span class="st">&quot;low&quot;</span>, <span class="st">&quot;mid&quot;</span>, <span class="st">&quot;high&quot;</span>))</span>
-<span id="cb26-3"><a href="#cb26-3" tabindex="-1"></a></span>
-<span id="cb26-4"><a href="#cb26-4" tabindex="-1"></a>synth_data<span class="sc">$</span>pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(sp.glm2, <span class="at">newdata =</span> synth_data, <span class="at">type =</span> <span class="st">&quot;response&quot;</span>)</span>
-<span id="cb26-5"><a href="#cb26-5" tabindex="-1"></a></span>
-<span id="cb26-6"><a href="#cb26-6" tabindex="-1"></a><span class="fu">plot</span>(sp<span class="sc">$</span>Biomass, sp<span class="sc">$</span>Species, <span class="at">col=</span> sp<span class="sc">$</span>pH, <span class="at">xlab=</span> <span class="st">&quot;Biomass&quot;</span>, <span class="at">ylab=</span> <span class="st">&quot;Number of species&quot;</span>)</span>
-<span id="cb26-7"><a href="#cb26-7" tabindex="-1"></a></span>
-<span id="cb26-8"><a href="#cb26-8" tabindex="-1"></a><span class="fu">lines</span>(synth_data<span class="sc">$</span>pred[synth_data<span class="sc">$</span>pH <span class="sc">==</span> <span class="st">&quot;low&quot;</span>] <span class="sc">~</span> </span>
-<span id="cb26-9"><a href="#cb26-9" tabindex="-1"></a>      synth_data<span class="sc">$</span>Biomass[synth_data<span class="sc">$</span>pH <span class="sc">==</span> <span class="st">&quot;low&quot;</span>], <span class="at">lty=</span> <span class="dv">1</span>, <span class="at">col=</span> <span class="dv">1</span>)</span>
-<span id="cb26-10"><a href="#cb26-10" tabindex="-1"></a><span class="fu">lines</span>(synth_data<span class="sc">$</span>pred[synth_data<span class="sc">$</span>pH <span class="sc">==</span> <span class="st">&quot;mid&quot;</span>] <span class="sc">~</span> </span>
-<span id="cb26-11"><a href="#cb26-11" tabindex="-1"></a>      synth_data<span class="sc">$</span>Biomass[synth_data<span class="sc">$</span>pH <span class="sc">==</span> <span class="st">&quot;mid&quot;</span>], <span class="at">lty=</span> <span class="dv">1</span>, <span class="at">col=</span> <span class="dv">2</span>)</span>
-<span id="cb26-12"><a href="#cb26-12" tabindex="-1"></a><span class="fu">lines</span>(synth_data<span class="sc">$</span>pred[synth_data<span class="sc">$</span>pH <span class="sc">==</span> <span class="st">&quot;high&quot;</span>] <span class="sc">~</span> </span>
-<span id="cb26-13"><a href="#cb26-13" tabindex="-1"></a>      synth_data<span class="sc">$</span>Biomass[synth_data<span class="sc">$</span>pH <span class="sc">==</span> <span class="st">&quot;high&quot;</span>], <span class="at">lty=</span> <span class="dv">1</span>, <span class="at">col=</span> <span class="dv">3</span>)</span>
-<span id="cb26-14"><a href="#cb26-14" tabindex="-1"></a></span>
-<span id="cb26-15"><a href="#cb26-15" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;topright&quot;</span>, </span>
-<span id="cb26-16"><a href="#cb26-16" tabindex="-1"></a> <span class="at">legend=</span> <span class="fu">c</span>(<span class="st">&quot;high&quot;</span>, <span class="st">&quot;mid&quot;</span>, <span class="st">&quot;low&quot;</span>), </span>
-<span id="cb26-17"><a href="#cb26-17" tabindex="-1"></a> <span class="at">col=</span> <span class="fu">c</span>(<span class="dv">3</span><span class="sc">:</span><span class="dv">1</span>), </span>
-<span id="cb26-18"><a href="#cb26-18" tabindex="-1"></a> <span class="at">lty=</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>), </span>
-<span id="cb26-19"><a href="#cb26-19" tabindex="-1"></a> <span class="at">lwd=</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>))</span></code></pre></div>
-<p><img src="GLM_1_Poisson_exercise_files/figure-html/Q14-1.png" width="672" /></p>
-<p>For those who use, or are interested in using <code>ggplot2</code> to
-create figures, here is how you’d create the equivalent figure using the
-<code>ggplot2</code> package.</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb27-2"><a href="#cb27-2" tabindex="-1"></a></span>
-<span id="cb27-3"><a href="#cb27-3" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb27-4"><a href="#cb27-4" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> sp, <span class="fu">aes</span>(<span class="at">x =</span> Biomass, <span class="at">y =</span> Species, <span class="at">colour =</span> pH)) <span class="sc">+</span></span>
-<span id="cb27-5"><a href="#cb27-5" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data =</span> synth_data, <span class="fu">aes</span>(<span class="at">x =</span> Biomass, <span class="at">y =</span> pred, <span class="at">colour =</span> pH))</span>
-<span id="cb27-6"><a href="#cb27-6" tabindex="-1"></a></span>
-<span id="cb27-7"><a href="#cb27-7" tabindex="-1"></a><span class="co"># Or with a bit more complexity</span></span>
-<span id="cb27-8"><a href="#cb27-8" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb27-9"><a href="#cb27-9" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> sp, <span class="fu">aes</span>(<span class="at">x =</span> Biomass, <span class="at">y =</span> Species, <span class="at">colour =</span> pH)) <span class="sc">+</span></span>
-<span id="cb27-10"><a href="#cb27-10" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data =</span> synth_data, <span class="fu">aes</span>(<span class="at">x =</span> Biomass, <span class="at">y =</span> pred, <span class="at">colour =</span> pH)) <span class="sc">+</span></span>
-<span id="cb27-11"><a href="#cb27-11" tabindex="-1"></a>  <span class="fu">scale_colour_brewer</span>(<span class="at">palette =</span> <span class="st">&quot;Set2&quot;</span>) <span class="sc">+</span></span>
-<span id="cb27-12"><a href="#cb27-12" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
 <p><strong>End of the Poisson GLM - predicting species richness
 exercise</strong></p>
 </div>

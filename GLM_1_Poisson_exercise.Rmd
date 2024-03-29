@@ -1,6 +1,6 @@
 ---
 title: 'Exercise'
-# author: TCornulier
+# author: Deon Roos
 output: 
   html_document: 
     code_folding: hide
@@ -13,7 +13,7 @@ editor_options:
 ```{r setup, echo=FALSE, purl = FALSE}
 knitr::opts_chunk$set(echo=TRUE, message = FALSE, warning = FALSE, eval = FALSE, cache = FALSE)
 
-SOLUTIONS <- TRUE
+SOLUTIONS <- FALSE
 ```
 
 \  
@@ -93,30 +93,7 @@ If using `pairs()` to create a plot of the variables of interest, rather than cr
 \  
 
 ```{r Q4, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
-#sp <- read.table(file= "./data/species.txt", header= TRUE)
-
-seed <- 1988
-set.seed(seed)
-N <- 90
-Biomass <- rlnorm(N, 0.7, 0.7)
-pH <- rep(c("low", "mid", "high"), each = 30)
-df <- data.frame(Biomass, pH)
-df$med <- ifelse(df$pH == "mid", 1, 0)
-df$high <- ifelse(df$pH == "high", 1, 0)
-
-# (Intercept)  2.71255
-# Biomass     -0.12756
-# pHmid        0.69123
-# pHhigh       1.13639
-
-b0 <- 2.71255
-b1 <- -0.12756
-b2 <- 0.69123
-b3 <- 1.13639
-
-df$Species <- rpois(N, lambda = exp(b0 + b1 * df$Biomass + b2 * df$med + b3 * df$high))
-
-sp <- df[,c("Species", "Biomass", "pH")]
+sp <- read.table(file= "./data/species.txt", header= TRUE)
 
 # Check the structure of the data to see if we need to correct anything
 str(sp)
@@ -502,23 +479,6 @@ legend("topright",
  col= c(3:1), 
  lty= c(1, 1, 1), 
  lwd= c(1, 1, 1))
-```
-
-For those who use, or are interested in using `ggplot2` to create figures, here is how you'd create the equivalent figure using the `ggplot2` package.
-
-```{r}
-library(ggplot2)
-
-ggplot() +
-  geom_point(data = sp, aes(x = Biomass, y = Species, colour = pH)) +
-  geom_line(data = synth_data, aes(x = Biomass, y = pred, colour = pH))
-
-# Or with a bit more complexity
-ggplot() +
-  geom_point(data = sp, aes(x = Biomass, y = Species, colour = pH)) +
-  geom_line(data = synth_data, aes(x = Biomass, y = pred, colour = pH)) +
-  scale_colour_brewer(palette = "Set2") +
-  theme_minimal()
 ```
 
 **End of the Poisson GLM - predicting species richness exercise**
