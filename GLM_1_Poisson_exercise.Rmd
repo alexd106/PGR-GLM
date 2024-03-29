@@ -22,7 +22,9 @@ SOLUTIONS<- FALSE
 
 \  
 
-The data for this exercise were collected during an experiment which investigated the relationship between the number of plant species and plant biomass grown in plots with 3 controlled pH treatments: low, medium and high pH. The research seeks to find out if increasing biomass has an effect on species richness, and if this effect could be modulated by pH. Therefore, `Species` is the response variable and `pH` and `Biomass` are explanatory variables. Because the number of species is a count (positive and integer), we will attempt to fit a Poisson distribution to these data. 
+The research question underpinning the data collection was to describe the relationships between the number of species (`Species`) present in a plot of land, and how this number was determined by the overall plant biomass (`Biomass`, i.e. what was the overall weight of plants in the plot of land), and the pH of the soil (`pH`, categorised into "High", "Medium" and "Low"). The researchers were interested in merely describing the relationships between species and the two explanatory variables. In total, the researchers collected data from 90 plots of land ($n = 90$), where each observation is from a single plot.
+
+From this information alone, we are already able to determine a suitable distribution to use when fitting the model (the fact that this practical is called Poisson GLM may also offer a cryptic hint...). The relevant information comes from the description of `Species` clearly indicating that this variable is a count, which implies 1) the minimum value is 0 [we cannot have -1 species], and 2) the response variable will be measured in integers [we cannot count 3.14 plants]. With this information alone, we can already deduce the *stochastic* element of our model should be adequately described by specifying a $Poisson$ distribution (but note that there are other distributions we could use).
 
 \  
 
@@ -30,58 +32,81 @@ The data for this exercise were collected during an experiment which investigate
 
 \  
 
-2\. Import the data file 'species.txt' into R and take a look at the structure of this dataframe. Start with an initial data exploration (using `pairs()` and `coplot()`?). Do you see any imbalance of concern between the predictors? Do you foresee any problem for the model to answer the initial question?
+2\. Import the data file 'species.txt' into R and take a look at the structure of this dataframe. Given you have never seen this data before, it's really important that you familiarise yourself with any nuances. To help with this, carry out an initial data exploration (using any methods you think will help you get a sense of the data, e.g. `plot()`, `pairs()`, `coplot()`, amongst many other options).
 
-* Hints:
-  + the Poisson model uses a log-link, therefore the equation of the model (the linear predictor) will predict the expected number of plant species on the log scale. 
-  + for a corresponding data exploration it would make sense to use the log of the response.
-  + check that the format of pH is appropriate and that the reference level is what you want.
-  + restrict the plot to the variables you actually need
-  + an effective way of doing this is to store the names of the variables of interest in a vector `VOI<- c("Var1", "Var2", ...)`
-  + and then use the naming method for subsetting the data set `Mydata[, VOI]`
+While doing this, ask yourself:
+
+* Do any of the variables need to be adjusted? (e.g. are factors recognised as such?)
+* Do any factors need to be "re-levelled", such that it is read "Low", "Medium "High" (or any order we may prefer)?
+  + (Hint: check `?factor` and look at the `levels` argument)
+* Are there any relationships you can already see by eye alone?
+* Are there any imbalances in any of the explanatory variables?
+* Are there any observations that seem like they may be a data entry mistake?
+
+If using `pairs()` to create a plot of the variables of interest, rather than creating a plot with every single variable in our dataset, we may prefer to restrict the plot to the variables we are actually interested in. An effective way of doing this is to store the names of the variables of interest in a vector `VOI<- c("Var1", "Var2", ...)` and then use the list of variable names to subset the variables that get plotted (e.g. `pairs(Mydata[, VOI])`)
 
 
 \  
 
 ```{r Q2, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
 sp<- read.table(file= "./data/species.txt", header= TRUE)
+
+# Check the structure of the data to see if we need to correct anything
 str(sp)
 
-sp$logSp<- log(sp$Species)
-sp$pH<- factor(sp$pH, levels= c("low", "mid", "high"))
+# Correct pH so it is read as a factor, reordered such that "low" is the reference level
+sp$pH<- factor(sp$pH, levels = c("low", "mid", "high"))
+
+# Get simple descriptives of the data (e.g. what is the range for each variable?)
+summary(sp)
 
 # make a list of the variables of interest, for convenience:
-VOI<- c("logSp", "Biomass", "pH")
+VOI<- c("Species", "Biomass", "pH")
 pairs(sp[, VOI])
+# Negative relationship between Species and Biomass?
+# Positive relationship between Species and pH? 
 # Biomass tends to increase with pH, which could generate
 # some collinearity between these explanatory variables in a model.
 # but still plenty of variation in Biomass within each pH, 
 # so hopefully this won't be an issue.
 
-coplot(logSp ~ Biomass | pH, data= sp)
-# the relationships look clean and well distinct between treatments, 
-# supporting the idea of an interaction.
-# looking promising.
+coplot(Species ~ Biomass | pH, data = sp)
+# the relationships looks consistently negative with biomass across the pH levels
 ```
 
 \  
 
-3\. To warm up, let's start with a simple Poisson GLM (using `glm`) including only `Biomass` as a predictor.
+3\. To warm up, let's start with a simple Poisson GLM (using `glm`) where we assume that the number `Species` counted in a plot is a function of how much `Biomass` there was. 
+
+As a reminder, for this model the stochastic element is specified by using the $Poisson$ distribution, which controls *how* randomness is allowed to work for this data (i.e. even if a given amount of `Biomass` would predict 5 species, we wouldn't expect zero variation away from this but neither would we think a prediction of one billion species is sensible - the $Poisson$ distribution helps ensure that any randomness is appropriate for the type of data we're working with). The deterministic element of this model will be "saying" that at least part of what explains the number of species is determined by how much biomass there is in a given plot. 
 
 * Hints:
-  + take some time to think what the appropriate response variable is!
-  + if in doubt, make sure to ask someone to help clear this with you.
-  + remember to specify the assumed distribution of the data in `glm()`
+  + We use `family =` to specify the distribution in a `glm()`
+    - "Family" is just an alternative way to refer to a distribution.
+  + What is the default link function used by Poisson GLMs?
+    - How do we specify it?
+    - Do we need to specify it?
 
 \  
 
 ```{r Q3, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
-sp.glm1<- glm(Species ~ Biomass, family= poisson, data= sp)
+sp.glm1 <- glm(Species ~ Biomass, family = poisson(link = "log"), data = sp)
 ```
 
 \  
 
 4\. Obtain summaries of the model output using the `summary()` function. Make sure you understand the mathematical and biological interpretation of the model, by writing down the complete model on paper.
+
+For example, an intercept-only $Poisson$ GLM would be:
+
+$$
+y_i \sim Poisson(\lambda_i)\\
+log(\lambda_i) = \beta_0
+$$
+
+where, $y_i$ is the value of the response variable for the $i^{th}$ observation (e.g. if $i = 1$, then this is the first row of our dataset), assumed to follow a $Poisson$ distribution with rate $/lambda$, regressed on the $log$ link as a function of an intercept ($\beta_0$) only.
+
+How would you extend this, given we've included `Biomass` in our model? If you've run the model, you will have an estimate for your parameters ($\beta_0$ and any other you may have included), so we can replace these temporary place holder labels (e.g. $\beta_0$) with the estimated values.
 
 \  
 
@@ -96,7 +121,7 @@ summary(sp.glm1)
 
 \  
 
-5\. According to this model, what would be the predicted value (by hand) on the link scale log(mu) when Biomass= 5? What would this become on the response scale, i.e. the number of species?
+5\. According to this model, what would be the predicted value (by hand) on the link scale (i.e. $log(\lambda)$) when `Biomass` is equal to 5? What would this become on the response scale, i.e. the number of species?
 
 \  
 
@@ -109,12 +134,12 @@ exp(3.18 - 0.064*5) # 17.46
 
 \  
 
-6\. Now, specify a more useful Poisson GLM (using `glm`) to match the stated research questions.
+6\. We've now run a Poisson GLM where `Species` is explained by `Biomass`, but remember that our initial research question sought to describe the relationships between `Species` with both `Biomass` and `pH`. Before running this model, try to write down the equation for this new version of the model (you can always go back and watch any relevant sections of the Poisson lecture). Once you've given that a shot, run the `glm()` which includes both `Biomass` and `pH` as main effects only (we won't be doing any interactions yet).
 
 \  
 
 ```{r Q6, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
-sp.glm2<- glm(Species ~ Biomass * pH, family= poisson, data= sp)
+sp.glm2 <- glm(Species ~ Biomass + pH, family = poisson(link = "log"), data = sp)
 ```
 
 \  
