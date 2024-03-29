@@ -22,17 +22,62 @@ SOLUTIONS<- FALSE
 
 \  
 
-The research question underpinning the data collection was to describe the relationships between the number of species (`Species`) present in a plot of land, and how this number was determined by the overall plant biomass (`Biomass`, i.e. what was the overall weight of plants in the plot of land), and the pH of the soil (`pH`, categorised into "High", "Medium" and "Low"). The researchers were interested in merely describing the relationships between species and the two explanatory variables. In total, the researchers collected data from 90 plots of land ($n = 90$), where each observation is from a single plot.
+For the GLM exercises, we'll use the workflow suggested in the first GLM overview lecture as a template, specifically:
 
-From this information alone, we are already able to determine a suitable distribution to use when fitting the model (the fact that this practical is called Poisson GLM may also offer a cryptic hint...). The relevant information comes from the description of `Species` clearly indicating that this variable is a count, which implies 1) the minimum value is 0 [we cannot have -1 species], and 2) the response variable will be measured in integers [we cannot count 3.14 plants]. With this information alone, we can already deduce the *stochastic* element of our model should be adequately described by specifying a $Poisson$ distribution (but note that there are other distributions we could use).
+1. Know your research question!
+
+2. Think about your response variable (stochastic).
+
+3. Think about the process behind the data (deterministic).
+
+4. Understand the data that you’ve collected (plot it!)
+
+5. Combine into a model that can answer your question.
+
+6. Fit the model.
+
+7. Check your assumption(s).
+
+8. Answer your question.
+
+\
+
+1\. Know your research question!
+
+The researchers who collected this data wanted to describe the relationships between the number of species (`Species`) present in a plot of land, and how this number was associated with the overall plant biomass (`Biomass`, i.e. what was the overall weight of plants in the plot of land), and the pH of the soil (`pH`, categorised into "High", "Medium" and "Low"). The researchers were interested in merely describing the relationships between species and the two explanatory variables. In total, the researchers collected data from 90 plots of land ($n = 90$), where each observation is from a single plot.
+
+As concisely as possible, write down the research question we want to answer with our analysis.
+
+```{r}
+# How does biomass and pH relate to the number of plant species in a given plot of land?
+```
+
+
+2\. Think about your response variable (stochastic).
+
+From the information provided in the brief above, we are already able to determine a suitable distribution to use when fitting the model (the fact that this practical is called Poisson GLM may also offer a rather cryptic hint...). The relevant information comes from the description of `Species` clearly indicating that this variable is a count, which implies 1) the minimum value is 0 [we cannot have -1 species], and 2) the response variable will be measured in integers [we cannot count 3.14 plants]. With this information alone, we can already deduce the *stochastic* element of our model (i.e. the error) should be adequately described by specifying a $Poisson$ distribution.
+
+\
+
+3\. Think about the process behind the data (deterministic).
+
+Spare a moment's thought to how complex the process behind the number of plant species present in a plot of land will be. How much sunlight does each plot get? How much rainfall? What seeds were already present in the soil before data collection started? Why were *those* seeds present and not others? Why did some of them germinate in time for us to count them? The list goes on. 
+
+For our purposes, the only explanatory variables we have available to us are plant biomass and soil pH. Clearly we won't be explaining the intricacies of plant species richness, but that isn't our aim. Instead, we're simply trying to understand two parts (association with biomass and pH) of this much larger process. It is worth noting though, that if we were to find our model does a poor job of explaining species richness, we probably shouldn't be massively surprised. We have an enormously complex system which we are caricaturing with just two explanatory variables. However, that complexity doesn't mean we're doomed to fail - simple models often do an unreasonably good job at describing complex systems - it just means that we need to appreciate the world is more complex than our model is able to account for. In a sense, it's that complexity that we're tasking the $Poisson$ distribution with capturing.
 
 \  
 
-1\. As in previous exercises, either create a new R script (perhaps call it GLM_Poisson) or continue with your previous R script in your RStudio Project. Again, make sure you include any metadata you feel is appropriate (title, description of task, date of creation etc) and  don't forget to comment out your metadata with a `#` at the beginning of the line. 
+4\. Understand the data that you’ve collected (plot it!)
 
-\  
+We now get to the part where we'll actually start using `R`. A plea though - do not underestimate the value in taking the time to think carefully about steps that do not require coding. Spending the time thinking about those questions makes your life that much easier. I'd estimate that for my own work, I spend at least 60% of my time thinking before doing anything with data or `R`. It really is that important.
 
-2\. Import the data file 'species.txt' into R and take a look at the structure of this dataframe. Given you have never seen this data before, it's really important that you familiarise yourself with any nuances. To help with this, carry out an initial data exploration (using any methods you think will help you get a sense of the data, e.g. `plot()`, `pairs()`, `coplot()`, amongst many other options).
+4.1\. Get R ready to go
+
+As in previous exercises, either create a new R script (perhaps call it GLM_Poisson) or continue with your previous R script in your RStudio Project. Again, make sure you include any metadata you feel is appropriate (title, description of task, date of creation etc) and  don't forget to comment out your metadata with a `#` at the beginning of the line. 
+
+4.2\. Data exploration
+
+Import the data file 'species.txt' into R and take a look at the structure of this dataframe. Given you have never seen this data before, it's really important that you familiarise yourself with any nuances. To help with this, carry out an initial data exploration (using any methods you think will help you get a sense of the data, e.g. `plot()`, `pairs()`, `coplot()`, amongst many other options).
 
 While doing this, ask yourself:
 
@@ -43,13 +88,12 @@ While doing this, ask yourself:
 * Are there any imbalances in any of the explanatory variables?
 * Are there any observations that seem like they may be a data entry mistake?
 
-If using `pairs()` to create a plot of the variables of interest, rather than creating a plot with every single variable in our dataset, we may prefer to restrict the plot to the variables we are actually interested in. An effective way of doing this is to store the names of the variables of interest in a vector `VOI<- c("Var1", "Var2", ...)` and then use the list of variable names to subset the variables that get plotted (e.g. `pairs(Mydata[, VOI])`)
-
+If using `pairs()` to create a plot of the variables of interest, rather than creating a plot with every single variable in our dataset, we may prefer to restrict the plot to the variables we are actually interested in (this is redundant for this dataset but it's worth keeping this trick in mind for larger datasets). An effective way of doing this is to store the names of the variables of interest in a vector `VOI<- c("Var1", "Var2", ...)` and then use the list of variable names to subset the variables that get plotted (e.g. `pairs(Mydata[, VOI])`)
 
 \  
 
 ```{r Q2, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
-sp<- read.table(file= "./data/species.txt", header= TRUE)
+sp <- read.table(file= "./data/species.txt", header= TRUE)
 
 # Check the structure of the data to see if we need to correct anything
 str(sp)
@@ -74,28 +118,9 @@ coplot(Species ~ Biomass | pH, data = sp)
 # the relationships looks consistently negative with biomass across the pH levels
 ```
 
-\  
+5\. Combine into a model that can answer your question.
 
-3\. To warm up, let's start with a simple Poisson GLM (using `glm`) where we assume that the number `Species` counted in a plot is a function of how much `Biomass` there was. 
-
-As a reminder, for this model the stochastic element is specified by using the $Poisson$ distribution, which controls *how* randomness is allowed to work for this data (i.e. even if a given amount of `Biomass` would predict 5 species, we wouldn't expect zero variation away from this but neither would we think a prediction of one billion species is sensible - the $Poisson$ distribution helps ensure that any randomness is appropriate for the type of data we're working with). The deterministic element of this model will be "saying" that at least part of what explains the number of species is determined by how much biomass there is in a given plot. 
-
-* Hints:
-  + We use `family =` to specify the distribution in a `glm()`
-    - "Family" is just an alternative way to refer to a distribution.
-  + What is the default link function used by Poisson GLMs?
-    - How do we specify it?
-    - Do we need to specify it?
-
-\  
-
-```{r Q3, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
-sp.glm1 <- glm(Species ~ Biomass, family = poisson(link = "log"), data = sp)
-```
-
-\  
-
-4\. Obtain summaries of the model output using the `summary()` function. Make sure you understand the mathematical and biological interpretation of the model, by writing down the complete model on paper.
+Having thought through the above details, it's now time to bring that information together into a single model. As a reminder, we want to describe the associations between species richness and plant biomass, and soil pH. Given this is the first practical session, we'll break this up for the sake of pedagogy. Let's start with species richness explained by biomass. Write the equation (not the `R` code) for this model.
 
 For example, an intercept-only $Poisson$ GLM would be:
 
@@ -104,37 +129,169 @@ y_i \sim Poisson(\lambda_i)\\
 log(\lambda_i) = \beta_0
 $$
 
-where, $y_i$ is the value of the response variable for the $i^{th}$ observation (e.g. if $i = 1$, then this is the first row of our dataset), assumed to follow a $Poisson$ distribution with rate $/lambda$, regressed on the $log$ link as a function of an intercept ($\beta_0$) only.
+where, $y_i$ is the value of the response variable for the $i^{th}$ observation (e.g. if $i = 1$, then this indicates the first row of our dataset), assumed to follow a $Poisson$ distribution with rate $/lambda$, regressed on the $log$ link as a function of an intercept ($\beta_0$) only.
 
-How would you extend this, given we've included `Biomass` in our model? If you've run the model, you will have an estimate for your parameters ($\beta_0$ and any other you may have included), so we can replace these temporary place holder labels (e.g. $\beta_0$) with the estimated values.
+6\. Fit the model.
+
+To warm up, we'll start by running the version of the Poisson GLM that you (hopefully) managed to write above, where we assume that the number `Species` counted in a plot is a function of how much `Biomass` there was. 
+
+Run the model now, using `glm()`.
+
+* Hints:
+  + We use `family =` to specify the distribution in a `glm()`
+    - "Family" is just an alternative way to refer to a distribution.
+  + What is the default link function used by Poisson GLMs?
+    - How do we specify it?
+    - Do we need to specify it?
+  + Use `?glm` if you're stuck, or ask for help.
 
 \  
 
-```{r Q4, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
+```{r Q3, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
+sp.glm1 <- glm(Species ~ Biomass, family = poisson(link = "log"), data = sp)
+```
+
+7\. Check your assumption(s).
+
+Even though this isn't our final model, it can still be worthwhile to check how well this model met the assumptions.
+
+To do so, we can check the model diagnostic plots, as well as check for dispersion. Do so now.
+
+For the diagnostic plots:
+
+1. Residuals vs Fitted
+  * What kind of pattern would we expect?
+2. Q-Q Residuals
+  * Are we expecting Normally distribted error with a Poisson distribution?
+3. Scale-Location
+  * What is the maximum $\sqrt{|Std. PearsonResid|}$ we would be comfortable with?
+4. Residuals vs Leverage
+  * Are any observations having a strong influence on the model fit?
+
+```{r Q7, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
+par(mfrow = c(2,2))
+plot(sp.glm1)
+par(mfrow = c(1,1))
 summary(sp.glm1)
 
-# Model description:
-# Species_i ~ Poisson(mu_i)
-# log(mu_i) = 3.18 - 0.064*Biomass_i
+# Model diagnostic plots:
+# Residuals vs Fitted
+  # While we do expect some funelling with Poisson GLMs the amount that we're
+  # seeing here is concerning. We go from having relatively "little" variation
+  # when our predicted values (on the link scale) are small, to "lots" of variation
+  # when our predicted values are large, and most of this is happening between predicted
+  # values of 2.5 to 3.5 (so over a fairly small range of predicted values)
+  # This is would suggest we're not meeting the assumptions particularly well and
+  # is a good indication that we have overdispersion.
+# Q-Q Residuals
+  # We completely ignore this figure for GLMs.
+# Scale-Location
+  # Ideally, we want std pearson resids to be ca. < 3, so we're good there
+  # We also don't want to see any patterns (as for Resids vs Fitted) but we see the
+  # same rapid increase in variation once predicted values are above 2.5
+# Residuals vs Leverage
+  # We're really only using this to check for values close to a Cook's distance of 1
+  # While we don't have any observations that are greater than 1, we have a handful
+  # that are getting uncomfortably close. While these values are fine, we're
+  # not exactly jumping for joy with these Cook's distances.
+# Overall, the diagnostic plots don't look great. Not the worst, but we'd want something
+# better.
 
+# To do a quick and crude check for dispersion, we can use the information from summary()
+  # We take residual deviance and divide by the degrees of freedom, so for this model:
+  # 432.63/88 = 4.9!
+  # We have a whopping 4.9 overdispersion! My general rule of thumb is that I start getting
+  # concerned when dispersion is somewhere in the 1.5-1.8 region. 4.9 is doomsday!
+  # As a result, our standard error for our parameter estimates is going to be artificially
+  # small. This in turn leads to both 1) risks of our p value being smaller than it should be
+  # for Biomass, and 2) any predictions that include uncertainty being too confident.
+```
+
+8.\ Answer your question
+
+Hopefully you identified issues that mean we should be very cautious with interpreting this simple version of the model. For now, we'll put these concerns to rest, and use this model as an opportunity to practice making predictions (and therefore answering our research question).
+
+Go back to your equation that you wrote for question 5. Using `summary()`, replace the place-holder letters (e.g. $\beta_0$) with the estimated values from your model. Using this updated equation, make the following predictions:
+
+* On the link scale, how many plants would you predict if a plot had 0 kg of biomass?
+
+* On the link scale, how many plants would you predict if a plot had 2.5 kg of biomass?
+
+* On the link scale, how many plants would you predict if a plot had 5 kg of biomass?
+
+```{r}
+# On the link scale, how many plants would you predict if a plot had 0 kg of biomass?
+3.55628 + -0.19598 * 0 # = 3.55628
+# On the link scale, how many plants would you predict if a plot had 2.5 kg of biomass?
+3.55628 + -0.19598 * 2.5 # = 3.06633
+# On the link scale, how many plants would you predict if a plot had 5 kg of biomass?
+3.55628 + -0.19598 * 5 # = 2.57638
+```
+
+Now, let's make predictions on the response scale. To go from the $log$ link scale, to the response scale, we take our predictions and apply the inverse link function to them. The inverse link function of $log$ is $e$ (or exponential, or `exp()`). Predict, on the response scale, how many plant species we would observe if:
+
+* On the response scale, how many plants would you predict if a plot had 0 kg of biomass?
+
+* On the response scale, how many plants would you predict if a plot had 5 kg of biomass?
+
+* On the response scale, how many plants would you predict if a plot had 10 kg of biomass?
+
+```{r}
+# On the response scale, how many plants would you predict if a plot had 0 kg of biomass?
+exp(3.55628 + -0.19598 * 0) # = 35.0
+# On the response scale, how many plants would you predict if a plot had 5 kg of biomass?
+exp(3.55628 + -0.19598 * 5) # = 13.1
+# On the response scale, how many plants would you predict if a plot had 10 kg of biomass?
+exp(3.55628 + -0.19598 * 10) # = 4.9
+```
+
+Using this approach, we get a series of snapshot predictions. That's useful in and of itself, but we can make this a bit easier visually. To do so, rather copy-and-pasting our equation and substituting in different value of biomass, why not use `R` to make this a bit easier for us. Begin by using `seq()` to create a sequence of 5 biomass values that range from the minimum we observed in the data, to the maximum, and store this variable.
+
+Hint: do not add this new biomass variable to your original dataset.
+
+```{r}
+biomass_new <- seq(from = min(sp$Biomass), to = max(sp$Biomass), length.out = 5)
+biomass_new
+```
+
+Once you have this variable (or "vector"), use it to make 5 simultaneous predictions of how many plant species we would expect to find, on the response scale. Store the output in another variable.
+
+```{r}
+pred_plants <- exp(3.55628 + -0.19598 * biomass_new)
+```
+
+With both of these new variables, create a plot to show our prediction.
+
+```{r}
+plot(pred_plants ~ biomass_new)
+lines(pred_plants ~ biomass_new)
+```
+
+And with that, we have a prediction (from our model which we know has issues). If we stopped here, we'd conclude that biomass has a negative association with the number of plant species.
+
+(Optional): The figure we have produced is pretty jagged looking. If we wanted a smoother line to be drawn, how would we do so?
+
+```{r}
+# We would simply increase the number of biomass values that our seq() code created. Try it out if you're interested.
 ```
 
 \  
 
-5\. According to this model, what would be the predicted value (by hand) on the link scale (i.e. $log(\lambda)$) when `Biomass` is equal to 5? What would this become on the response scale, i.e. the number of species?
+6\. We've run a Poisson GLM where `Species` is explained by `Biomass`, but remember that our initial research question sought to describe the relationships between `Species` with both `Biomass` and `pH`. Before running this model, try to write down the equation for this new version of the model. Keep in mind that `pH` is a categorical variable, meaning we'll need additional covariates to indicate if an observation is, e.g. "Medium" pH (1) or not (0), or "High" pH (1) or not (0). (If you're not sure how to do this, you can either go back and watch the relevant sections of the Poisson lecture or ask for help). 
 
-\  
+```{r}
+# y_i ~ Poisson(lambda_i)
+# log(lambda_i) = beta_0 + beta_1 * biomass + beta_2 * pHmid + beta_3 * pHhigh
 
-```{r Q5, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
-# On the link scale:
-3.18 - 0.064*5 # 2.86
-# On the response scale (species count):
-exp(3.18 - 0.064*5) # 17.46
+# Remember that for models with categorical variables, models will break that single 
+# categorical column into however many levels there are minus 1. Here 2 columns 
+# are "created" that are used to indicate if an observation is "mid" pH (1 if yes, 0
+# if no), and another to indicate if an observation is "high" pH
+# We don't need to column for "low", because if both "mid" and "high" are 0, then
+# the only option is that it *must* be "low"
 ```
 
-\  
-
-6\. We've run a Poisson GLM where `Species` is explained by `Biomass`, but remember that our initial research question sought to describe the relationships between `Species` with both `Biomass` and `pH`. Before running this model, try to write down the equation for this new version of the model. Keep in mind that `pH` is a categorical variable, meaning we'll need additional covariates to indicate if an observation is, e.g. "Medium" pH (1) or not (0), or "High" pH (1) or not (0). (If you're not sure how to do this, you can either go back and watch the relevant sections of the Poisson lecture or ask for help). Once you've given that a shot, run the `glm()` which includes both `Biomass` and `pH` as main effects only (we won't be doing any interactions yet).
+Once you've given that a shot, run the `glm()` which includes both `Biomass` and `pH` as main effects only (we won't be doing any interactions yet).
 
 \  
 
@@ -143,6 +300,51 @@ sp.glm2 <- glm(Species ~ Biomass + pH, family = poisson(link = "log"), data = sp
 ```
 
 \  
+
+7\. With every model we run, we need to re-diagnose the models. We've already done that once, so let's quickly do it again.
+
+For the diagnostic plots:
+
+1. Residuals vs Fitted
+  * What kind of pattern would we expect?
+2. Q-Q Residuals
+  * Are we expecting Normally distribted error with a Poisson distribution?
+3. Scale-Location
+  * What is the maximum $\sqrt{|Std. PearsonResid|}$ we would be comfortable with?
+4. Residuals vs Leverage
+  * Are any observations having a strong influence on the model fit?
+
+```{r Q7, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
+par(mfrow = c(2,2))
+plot(sp.glm2)
+par(mfrow = c(1,1))
+summary(sp.glm2)
+
+# Model diagnostic plots:
+# Residuals versus Fitted
+  # While we do still see a little bit of a funnel, we expect some
+  # given that the variation (y-axis) increases as the mean (x-axis) increases
+  # with the Poisson distribution
+  # This plot for the new model is a pretty ideal
+# Q-Q Residuals
+  # We completely ignore this figure (despite it looking nice in this model)
+# Scale-Location
+  # Ideally, we want std pearson resids to be ca. < 3, so we're good there
+  # We also don't want to see any patterns, so good here too
+# Residuals vs Leverage
+  # We're really only using this to check for values close to a Cook's distance of 1
+  # We can't even see the dashed lines showing a Cook's distance of 0.5, so we're
+  # golden here too
+# Overall, the diagnostic plots look great
+
+# To do a quick and crude check for dispersion, we can use the information from summary()
+  # We take residual deviance and devide by the degrees of freedom, so for this model:
+  # 77.128/86 = 0.9
+  # Not exactly the ideal value of 1 but 0.9 is nothing to get concerned about
+  # Also, remember that *underdispersion* is generally not much of an issue
+  # Compared to the first model, this is a fantastic improvement
+```
+
 
 7\. Obtain summaries of the model output using the `summary()` and the ANOVA of the model. 
 
@@ -192,49 +394,49 @@ drop1(sp.glm2, test= "Chisq")
 
 \  
 
-8\. Looking at the model summary, make sure you understand the individual components, null hypotheses, and the mathematical and biological interpretation of the different coefficients (i.e. would you be able to reconstruct and to use the model formula to make predictions? In doubt, try it and seek assistance!). 
+8\. Hopefully you're happy that the model diagnostic checks suggest no issues with the model assumptions. We can now move onto interpreting the results. Pull up the model summary and make sure you understand what this means, both scientifically and statistically.
 
 * How do you interpret the model terms? 
   + what does the `Intercept` represent, and which categories does it apply to?
-  + what does the `Biomass` effect represent, and which category does it apply to?
-  + what does the `pHmid` effect represent?
-  + what does the `Biomass:pHmid` effect represent?
+  + what does the `Biomass` estimate represent?
+  + what does the `pHmid` estimate represent?
+  + what does the `pHhigh` estimate represent?
 
 \  
 
 ```{r Q8, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
 
-# "(Intercept)" is the predicted value on the link (log) scale for
-# Biomass = 0, and pH= "low"
+# "(Intercept)" is the predicted value on the link (log) scale when
+# pH is "low". A hint is that there is no labelled coefficient called
+# "pHlow".
 
-# "Biomass" is the slope of Biomass for the low pH category.
+# "Biomass" is the slope of Biomass.
 # It is negative, so assumes a linear decrease (on the log scale)
+# For every extra 1 unit (here kg) of biomass "added" to a plot
+# the number of species (on the log scale) decreases by -0.15
 
 # "pHmid" is the estimated difference (on the log scale) between
 # the "pHmid" and the reference level, "pHlow".
 # Positive means higher on average than pHlow.
 
-# "Biomass:pHmid" is the difference between the slope of Biomass for pHmid
-# compared to the slope of Biomass for the reference level, "pHlow".
-# Positive means that the decrease is slower in "pHmid" (although this is
-# for the linear relationships on the log scale, but it may not look
-# the same on the response scale - see the graphical interpretation below)
+# "pHhigh" is the estimated difference (on the log scale) between
+# the "pHhigh" and the reference level, "pHlow".
+# Positive means higher on average than pHlow.
+# If pHhigh is larger than pHmid, then pHhigh has a "bigger" effect
 
 # A mathematical description of the model
 # (more or less how I would present it in the methods section of a paper):
 # Species ~ Poisson(mu)
-# log(mu) = 2.95 - 0.26 * Biomass
-#    + 0.48 * pHmid
-#    + 0.82 * pHhigh
-#    + 0.12 * Biomass * pHmid
-#    + 0.16 * Biomass * pHhigh
+# log(mu) = 2.76 + -0.16 * Biomass
+#    + 0.65 * pHmid
+#    + 1.13 * pHhigh
 
 # The coefficients are on the log scale,
 # so cannot be interpreted directly as counts. 
 # They are interpreted as changes in log-counts:
 
 # For a biomass of zero, the log of the number of species at medium pH
-# is increased by 0.48 compared to the low pH.
+# is increased by 0.65 compared to the low pH.
 # This is equivalent to saying that the counts increase by exp(0.48),
 # hence that they are multiplied by 1.62.
 
