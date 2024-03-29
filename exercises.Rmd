@@ -36,16 +36,14 @@ Have fun!
 \  
  
 ### Day 2
-
- - [GLM - binomial (0/1 data) exercise: Rays maturity](GLM_2_Binomial_RayBin_exercise.html)
- - [GLM - binomial (0/1 data) optional exercise #1: Dolphins activity](GLM_2_Optional_Binomial_Dolphins_exercise.html)
- - [GLM - binomial (0/1 data) optional exercise #2: Dolphins extension](GLM_2_Optional_Binomial_Dolphins_extension_exercise.html)
+ 
+ - [GLM - binomial (proportion data) exercise](GLM_2_BinomialProportions_exercise.html)
  
 \  
 
 ### Day 3
- 
- - [GLM - binomial (proportion data) exercise](GLM_3_BinomialProportions_exercise.html)
+
+ - [GLM - binomial (0/1 data) exercise: Rays maturity](GLM_3_Binomial_RayBin_exercise.html)
  
 \  
 
