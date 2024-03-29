@@ -134,7 +134,7 @@ exp(3.18 - 0.064*5) # 17.46
 
 \  
 
-6\. We've now run a Poisson GLM where `Species` is explained by `Biomass`, but remember that our initial research question sought to describe the relationships between `Species` with both `Biomass` and `pH`. Before running this model, try to write down the equation for this new version of the model (you can always go back and watch any relevant sections of the Poisson lecture). Once you've given that a shot, run the `glm()` which includes both `Biomass` and `pH` as main effects only (we won't be doing any interactions yet).
+6\. We've run a Poisson GLM where `Species` is explained by `Biomass`, but remember that our initial research question sought to describe the relationships between `Species` with both `Biomass` and `pH`. Before running this model, try to write down the equation for this new version of the model. Keep in mind that `pH` is a categorical variable, meaning we'll need additional covariates to indicate if an observation is, e.g. "Medium" pH (1) or not (0), or "High" pH (1) or not (0). (If you're not sure how to do this, you can either go back and watch the relevant sections of the Poisson lecture or ask for help). Once you've given that a shot, run the `glm()` which includes both `Biomass` and `pH` as main effects only (we won't be doing any interactions yet).
 
 \  
 
