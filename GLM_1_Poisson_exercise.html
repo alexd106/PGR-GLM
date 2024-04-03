@@ -45,6 +45,116 @@
 
 
 
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #204a87; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #204a87; font-weight: bold; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #ce5c00; font-weight: bold; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
+.sourceCode .row {
+  width: 100%;
+}
+.sourceCode {
+  overflow-x: auto;
+}
+.code-folding-btn {
+  margin-right: -30px;
+}
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
 
 
 
@@ -415,8 +525,8 @@ collected data from 90 plots of land (<span class="math inline">\(n =
 90\)</span>), where each observation is from a single plot.</p>
 <p>As concisely as possible, write down the research question that can
 be answered with our analysis. This might seem trivial in this case, but
-it’s often one of the hardest parts of research; going from a
-theoretical query to a research question.</p>
+it’s often one of the hardest parts of research; going from science to
+an actionable research question.</p>
 <p>2. Think about your response variable (the stochastic element).</p>
 <p>From the information provided in the brief above, we are already able
 to determine a suitable distribution to use when fitting the model (the
@@ -429,6 +539,12 @@ which implies 1) the minimum value is 0 [we cannot have -1 species], and
 <em>stochastic</em> element of our model (i.e. the error) should be
 adequately described by specifying a <span
 class="math inline">\(Poisson\)</span> distribution.</p>
+<p>If you’re comfortable doing so, write down the stochastic element of
+our model using statistical notation.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co"># y ~ Poisson(lambda)</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="co"># Where</span></span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>  <span class="co"># y is the count of species in a given plot</span></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>  <span class="co"># lambda is the rate parameter for the Poisson distribution</span></span></code></pre></div>
 <p><br />
 </p>
 <p>3. Think about the process behind the data (the deterministic
@@ -438,17 +554,13 @@ of plant species present in a plot of land will be. How much sunlight
 does each plot get? How much rainfall? What seeds were already present
 in the soil before data collection started? Why were <em>those</em>
 seeds present and not others? Why did some of them germinate in time for
-us to count them? The list goes on.</p>
-<p>For our purposes, the only explanatory variables we have available to
-us are plant biomass and soil pH. Clearly we won’t be explaining the
-intricacies of plant species richness, but that isn’t our aim. It is
-worth noting though, that if we were to find our model does a poor job
-of explaining species richness, we shouldn’t be massively surprised. We
-have an enormously complex system which we are caricaturing with just
-two explanatory variables. However, that complexity doesn’t mean we’re
-doomed to fail - simple models often do an unreasonably good job at
-describing complex systems - it just means that we need to appreciate
-the world is more complex than our model is able to account for.</p>
+us to count them? We don’t have any data to try and explain this
+variation, yet it will still be there (this is what we are tasking the
+stochastic part of the model to deal with).</p>
+<p>For our purposes, we’re interested in how plant biomass and soil pH
+affect species richness. If you’re comfortable doing so, write down a
+sensible deterministic element for the model you would run, using
+statistical notation.</p>
 <p> </p>
 <p>4. Understand the data that you’ve collected (plot it!)</p>
 <p>We now get to the part where we’ll actually start using
@@ -506,7 +618,8 @@ describe the associations between species richness and plant biomass,
 and soil pH. Given this is the first practical session, we’ll break this
 up for the sake of pedagogy. Let’s start with species richness explained
 by biomass. Write the equation (not the <code>R</code> code) for this
-model.</p>
+model (i.e. combine the stochastic and deterministic elements from
+Questions 3 and 4).</p>
 <p>For example, an intercept-only <span
 class="math inline">\(Poisson\)</span> GLM would be:</p>
 <p><span class="math display">\[
@@ -515,17 +628,18 @@ log(\lambda_i) = \beta_0
 \]</span></p>
 <p>where, <span class="math inline">\(y_i\)</span> is the value of the
 response variable for the <span class="math inline">\(i^{th}\)</span>
-observation (e.g. if <span class="math inline">\(i = 1\)</span>, then
-this indicates the first row of our dataset), assumed to follow a <span
+plot of land (e.g. if <span class="math inline">\(i = 1\)</span>, then
+this indicates the first row of our dataset, or the first plot of land
+we have data for), assumed to follow a <span
 class="math inline">\(Poisson\)</span> distribution with rate <span
 class="math inline">\(/lambda\)</span>, regressed on the <span
 class="math inline">\(log\)</span> link as a function of an intercept
 (<span class="math inline">\(\beta_0\)</span>) only.</p>
 <p>6. Fit the model.</p>
-<p>To warm up, we’ll start by running the version of the Poisson GLM
-that you (hopefully) managed to write above, where we assume that the
+<p>To warm up, let’s start by a simpler model, where we assume that the
 number <code>Species</code> counted in a plot is a function of how much
-<code>Biomass</code> there was.</p>
+<code>Biomass</code> there was. We’ll leave <code>pH</code> out of the
+model for the time being.</p>
 <p>Run the model now, using <code>glm()</code>.</p>
 <ul>
 <li>Hints:
@@ -689,8 +803,8 @@ each parameter estimate means. Using <code>summary()</code>, identify
 what each parameter means.</p>
 <p> </p>
 <p> </p>
-<p><br />
-</p>
+<p>13. Create full predictions and a figure to visualise your
+relationship</p>
 <p>We can use the same technique we used for the model with just
 biomass, but now extend it to include the differing levels of pH. In
 addition, rather than manually writing out the equation (and possibly
@@ -701,19 +815,87 @@ sequence of biomass values, that is replicate for each level of pH. To
 do so, we need to specify the range of values for both
 <code>biomass</code> and <code>ph</code>. We already did this for
 <code>biomass</code>, and it’s pretty easy to do for <code>ph</code> as
-well: <code>c("Low", "Medium", "High")</code>. With that, we can feed
-these into <code>expand.grid()</code>, as
-<code>synth_data &lt;- expand.grid(Biomass = seq(from = min(dat$Biomass), to = max(dat$Biomass), length.out = 5), pH = c("low", "mid", "high"))</code>.
-You can now feed this new <em>synthetic</em> data into the predict
-function, while also specifying which model to use to make the
-prediction, as
-<code>synth_data$pred &lt;- predict(sp.glm2, newdata = synth_data)</code>.
-A final, final trick; we can tell the <code>predict()</code> function to
-use the inverse link function automatically when making the predictions,
-so we don’t need to by setting <code>type = "response"</code>:
-<code>(predict(sp.glm2, new_data = synth_data, type = "response")</code>).
-Using these predicted values, create a figure to show your predicted
-relationships for pH and biomass.</p>
+well: <code>c("Low", "Medium", "High")</code>. With that, we can use the
+following code:</p>
+<p><code>synth_data &lt;- expand.grid(Biomass = seq(from = min(dat$Biomass), to = max(dat$Biomass), length.out = 5), pH = c("low", "mid", "high"))</code></p>
+<p>to create a new <em>synthetic</em> dataset, which we can use in the
+<code>predict()</code> function:</p>
+<p><code>synth_data$pred &lt;- predict(sp.glm2, newdata = synth_data)</code></p>
+<p>A hint: we can tell the <code>predict()</code> function to use the
+inverse link function automatically when making the predictions, so we
+don’t need to by setting <code>type = "response"</code> or else we could
+always do this manually by exponentiating our predicted values.</p>
+<p>Using your synthetic dataset and model, create predictions of species
+richness. Once done, then use these to create a figure to show your
+predicted relationships for pH and biomass.</p>
+<p>14. (Optional) Exploring model diagnostics</p>
+<p>One of the most challenging aspects in learning GLMs is how to
+determine if there is a problem in model diagnostics. Overwhelmingly,
+this is because a lot of this relies on gaining enough experience to
+know when there is a problem or not. To that end, as an optional
+exercise, we include code to simulate data, run a <span
+class="math inline">\(Poisson\)</span> GLM, and perform model
+diagnostics on with the aim of giving you a flexible means to gain some
+experience. The benefit of having you simulate datasets is that you know
+what the <em>Truth</em> is, because you decide what it is. With that
+anchor in place, you can then gauge when tools are reliable and when
+they are not. In general, simulating datasets and testing your
+statistical models is an excellent approach and one that is well worth
+building into your data analysis workflow (ideally before ever
+collecting real data).</p>
+<p>The code to do the simulation can be found below, but is generated
+(often called the <em>Data Generating Process</em>, or DGP, in both code
+or real data sets) as:</p>
+<p><span class="math inline">\(y_i \sim Poisson(\lambda_i)\)</span></p>
+<p><span class="math inline">\(log(\lambda_i) = \beta_0 + \beta_1 \times
+x_{1,i} + \beta_2 \times x_{2,i} + \beta_3\times x_{3,i}\)</span></p>
+<p>Rerun the simulation and analysis varying the sample size
+(<code>N &lt;- 1000</code>) or the formula of the <code>glm()</code>
+(e.g. <code>y ~ x1 + x2</code>). Check what effect this has on
+dispersion and the model diagnostic plots.</p>
+<pre><code># Set your seed to have the randomness be cosnsitent each time you run the code
+# You can change this, or comment it out, if you want to embrase the randomness
+set.seed(1234)
+
+# Set your sample size
+N &lt;- 500
+
+# Create two continuous covariates
+x1 &lt;- runif(N, 0, 10)
+x2 &lt;- runif(N, 0, 10)
+x3 &lt;- runif(N, 0, 10)
+
+# Set your parameter values
+beta_0 &lt;- 2.5   # This is the intercept (on link scale)
+beta_1 &lt;- 0.2   # This is the slope for the x1 variable (on link scale)
+beta_2 &lt;- -1.3  # This is the slope for the x2 variable (on link scale)
+beta_3 &lt;- 0.4   # This is the slope for the x3 variable (on link scale)
+
+# Generate your linear predictor on the link scale (i.e. log)
+# We don&#39;t actually need to use log() here (it&#39;s already on the link scale)
+linear_predictor_link &lt;- beta_0 + beta_1 * x1 + beta_2 * x2 + beta_3 * x3
+# Backtransform your linear predictor to the response scale (i.e. exponentiate)
+linear_predictor_response &lt;- exp(linear_predictor_link)
+# Generate your response variable
+y &lt;- rpois(N, lambda = linear_predictor_response)
+# Note that the above three lines of code are the equivalent to:
+# y ~ Poisson(lambda)
+# log(lambda) = beta_0 + beta_1 * x1 + beta_2 * x2
+
+# Store your data in a dataframe
+dat &lt;- data.frame(y, x1, x2, x3)
+
+# Run a Poisson GLM
+fit &lt;- glm(y ~ x1 + x2 + x3, 
+           data = dat, 
+           family = poisson)
+
+# See if the model was able to estimate your parameter values
+summary(fit)
+
+# See how well the model diagnostics perform
+par(mfrow = c(2,2))
+plot(fit)</code></pre>
 <p><strong>End of the Poisson GLM - predicting species richness
 exercise</strong></p>
 </div>

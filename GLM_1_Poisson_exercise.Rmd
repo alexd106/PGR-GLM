@@ -46,7 +46,7 @@ For the GLM exercises, we'll use the workflow we suggested in the first GLM over
 
 The researchers who collected this data wanted to describe the relationships between the number of species (`Species`) present in a plot of land, and how this number was associated with the overall plant biomass (`Biomass`, i.e. what was the overall weight of plants in the plot of land), and the pH of the soil (`pH`, categorised into "High", "Medium" and "Low"). The researchers were interested in describing the associations between species and the two explanatory variables. In total, the researchers collected data from 90 plots of land ($n = 90$), where each observation is from a single plot.
 
-As concisely as possible, write down the research question that can be answered with our analysis. This might seem trivial in this case, but it's often one of the hardest parts of research; going from a theoretical query to a research question.
+As concisely as possible, write down the research question that can be answered with our analysis. This might seem trivial in this case, but it's often one of the hardest parts of research; going from science to an actionable research question.
 
 ```{r Q1, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
 # How does biomass and pH relate to the number of plant species in a given plot of land?
@@ -57,13 +57,33 @@ As concisely as possible, write down the research question that can be answered 
 
 From the information provided in the brief above, we are already able to determine a suitable distribution to use when fitting the model (the fact that this practical is called Poisson GLM may also offer a rather cryptic hint...). The relevant information comes from the description of `Species` clearly indicating that this variable is a count, which implies 1) the minimum value is 0 [we cannot have -1 species], and 2) the response variable will be measured in integers [we cannot count 3.14 plants]. With this information alone, we can already deduce the *stochastic* element of our model (i.e. the error) should be adequately described by specifying a $Poisson$ distribution.
 
+If you're comfortable doing so, write down the stochastic element of our model using statistical notation.
+
+```{r}
+# y ~ Poisson(lambda)
+# Where
+  # y is the count of species in a given plot
+  # lambda is the rate parameter for the Poisson distribution
+```
+
+
 \
 
 3\. Think about the process behind the data (the deterministic element).
 
-Spare a moment's thought to how complex the process behind the number of plant species present in a plot of land will be. How much sunlight does each plot get? How much rainfall? What seeds were already present in the soil before data collection started? Why were *those* seeds present and not others? Why did some of them germinate in time for us to count them? The list goes on. 
+Spare a moment's thought to how complex the process behind the number of plant species present in a plot of land will be. How much sunlight does each plot get? How much rainfall? What seeds were already present in the soil before data collection started? Why were *those* seeds present and not others? Why did some of them germinate in time for us to count them? We don't have any data to try and explain this variation, yet it will still be there (this is what we are tasking the stochastic part of the model to deal with).
 
-For our purposes, the only explanatory variables we have available to us are plant biomass and soil pH. Clearly we won't be explaining the intricacies of plant species richness, but that isn't our aim. It is worth noting though, that if we were to find our model does a poor job of explaining species richness, we shouldn't be massively surprised. We have an enormously complex system which we are caricaturing with just two explanatory variables. However, that complexity doesn't mean we're doomed to fail - simple models often do an unreasonably good job at describing complex systems - it just means that we need to appreciate the world is more complex than our model is able to account for.
+For our purposes, we're interested in how plant biomass and soil pH affect species richness. If you're comfortable doing so, write down a sensible deterministic element for the model you would run, using statistical notation.
+
+```{r Q3, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
+# log(lambda) = beta_0 + beta_1 * biomass + beta_2 * midpH + beta_3 * highpH
+# Where
+  # lambda is our linear predictor regressed on the log link scale
+  # beta_0 defaults to low pH when biomass is equal to zero
+  # beta_1 is the slope for biomass
+  # beta_2 is the difference from low pH to mid pH
+  # beta_3 is the difference from low pH to high pH
+```
 
 \  
 
@@ -120,7 +140,7 @@ coplot(Species ~ Biomass | pH, data = sp)
 
 5\. Combine into a model that can answer your question.
 
-Having thought through the above details, it's now time to bring that information together into a single model. As a reminder, we want to describe the associations between species richness and plant biomass, and soil pH. Given this is the first practical session, we'll break this up for the sake of pedagogy. Let's start with species richness explained by biomass. Write the equation (not the `R` code) for this model.
+Having thought through the above details, it's now time to bring that information together into a single model. As a reminder, we want to describe the associations between species richness and plant biomass, and soil pH. Given this is the first practical session, we'll break this up for the sake of pedagogy. Let's start with species richness explained by biomass. Write the equation (not the `R` code) for this model (i.e. combine the stochastic and deterministic elements from Questions 3 and 4).
 
 For example, an intercept-only $Poisson$ GLM would be:
 
@@ -129,7 +149,7 @@ y_i \sim Poisson(\lambda_i)\\
 log(\lambda_i) = \beta_0
 $$
 
-where, $y_i$ is the value of the response variable for the $i^{th}$ observation (e.g. if $i = 1$, then this indicates the first row of our dataset), assumed to follow a $Poisson$ distribution with rate $/lambda$, regressed on the $log$ link as a function of an intercept ($\beta_0$) only.
+where, $y_i$ is the value of the response variable for the $i^{th}$ plot of land (e.g. if $i = 1$, then this indicates the first row of our dataset, or the first plot of land we have data for), assumed to follow a $Poisson$ distribution with rate $/lambda$, regressed on the $log$ link as a function of an intercept ($\beta_0$) only.
 
 ```{r Q5, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
 # y_i ~ Poisson(lambda_i)
@@ -139,7 +159,7 @@ where, $y_i$ is the value of the response variable for the $i^{th}$ observation 
 
 6\. Fit the model.
 
-To warm up, we'll start by running the version of the Poisson GLM that you (hopefully) managed to write above, where we assume that the number `Species` counted in a plot is a function of how much `Biomass` there was. 
+To warm up, let's start by a simpler model, where we assume that the number `Species` counted in a plot is a function of how much `Biomass` there was. We'll leave `pH` out of the model for the time being.
 
 Run the model now, using `glm()`.
 
@@ -154,7 +174,9 @@ Run the model now, using `glm()`.
 \  
 
 ```{r Q6, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
-sp.glm1 <- glm(Species ~ Biomass, family = poisson(link = "log"), data = sp)
+sp.glm1 <- glm(Species ~ Biomass, 
+               family = poisson(link = "log"), 
+               data = sp)
 ```
 
 7\. Check your assumption(s).
@@ -182,8 +204,7 @@ summary(sp.glm1)
 
 # Model diagnostic plots:
 # Residuals vs Fitted
-  # While we do expect some funelling with Poisson GLMs the amount that we're
-  # seeing here is concerning. We go from having relatively "little" variation
+  # We see a fairly clear "funnel" pattern. We go from having relatively "little" variation
   # when our predicted values (on the link scale) are small, to "lots" of variation
   # when our predicted values are large, and most of this is happening between predicted
   # values of 2.5 to 3.5 (so over a fairly small range of predicted values)
@@ -192,7 +213,6 @@ summary(sp.glm1)
 # Q-Q Residuals
   # We completely ignore this figure for GLMs.
 # Scale-Location
-  # Ideally, we want std pearson resids to be ca. < 3, so we're good there
   # We also don't want to see any patterns (as for Resids vs Fitted) but we see the
   # same rapid increase in variation once predicted values are above 2.5
 # Residuals vs Leverage
@@ -328,15 +348,13 @@ summary(sp.glm2)
 
 # Model diagnostic plots:
 # Residuals versus Fitted
-  # While we do still see a little bit of a funnel, we expect some
-  # given that the variation (y-axis) increases as the mean (x-axis) increases
-  # with the Poisson distribution
-  # This plot for the new model is a pretty ideal
+  # While we do still see a little bit of a funnel, it's a big improvement compared 
+  # to previous model. This plot for the new model, while not perfect, is pretty good
 # Q-Q Residuals
   # We completely ignore this figure (despite it looking nice in this model)
 # Scale-Location
-  # Ideally, we want std pearson resids to be ca. < 3, so we're good there
-  # We also don't want to see any patterns, so good here too
+  # We also don't want to see any patterns. There's maybe a touch of increasing
+  # error as our predictor gets larger, but not enough to concern me
 # Residuals vs Leverage
   # We're really only using this to check for values close to a Cook's distance of 1
   # We can't even see the dashed lines showing a Cook's distance of 0.5, so we're
@@ -344,7 +362,7 @@ summary(sp.glm2)
 # Overall, the diagnostic plots look great
 
 # To do a quick and crude check for dispersion, we can use the information from summary()
-  # We take residual deviance and devide by the degrees of freedom, so for this model:
+  # We take residual deviance and divide by the degrees of freedom, so for this model:
   # 77.128/86 = 0.9
   # Not exactly the ideal value of 1 but 0.9 is nothing to get concerned about
   # Also, remember that *underdispersion* is generally not much of an issue
@@ -428,36 +446,19 @@ summary(sp.glm2)
 
 \  
 
-```{r Q13, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.show= ifelse(SOLUTIONS, "asis", "hide")}
-# we can produce more residual plots if desired:
-# extract various residuals and plot
-res.p <- resid(sp.glm2, type = "pearson")
-res.d <- resid(sp.glm2, type = "deviance")
+13\. Create full predictions and a figure to visualise your relationship
 
-fit <- fitted(sp.glm2) # on the response scale
+We can use the same technique we used for the model with just biomass, but now extend it to include the differing levels of pH. In addition, rather than manually writing out the equation (and possibly making mistakes), we can use the `predict()` function to just do it for us. A trick we can use here is to make use of the `expand.grid()` function, to create a new dataset that has a sequence of biomass values, that is replicate for each level of pH. To do so, we need to specify the range of values for both `biomass` and `ph`. We already did this for `biomass`, and it's pretty easy to do for `ph` as well: `c("Low", "Medium", "High")`. With that, we can use the following code:
 
-plot(res.p, res.d); abline(0,1) # deviance against Std Pearson residuals
-# quite similar in this model (no overdispersion, moderate underdispersion)
-plot(fit, res.d, ylab= "Deviance residuals", xlab= "Fitted values (response scale)")
-abline(h= 0, col= 2, lty= 2)
+`synth_data <- expand.grid(Biomass = seq(from = min(dat$Biomass), to = max(dat$Biomass), length.out = 5), pH = c("low", "mid", "high"))`
 
-# residuals against the predictors:
-plot(sp$pH, res.p, ylab= "Std Pearson residuals", xlab= "pH")
-abline(h= 0, col= 2, lty= 2)
-# low pH plots are more variable
+to create a new *synthetic* dataset, which we can use in the `predict()` function:
 
-plot(sp$Biomass, res.p, ylab= "Std Pearson residuals", xlab= "Biomass")
-abline(h= 0, col= 2, lty= 2)
-# Species richness over-predicted for highest and lowest Biomass plots
-# Few cases: could be by chance?
+`synth_data$pred <- predict(sp.glm2, newdata = synth_data)` 
 
-```
+A hint: we can tell the `predict()` function to use the inverse link function automatically when making the predictions, so we don't need to by setting `type = "response"` or else we could always do this manually by exponentiating our predicted values. 
 
-\
-
-We can use the same technique we used for the model with just biomass, but now extend it to include the differing levels of pH. In addition, rather than manually writing out the equation (and possibly making mistakes), we can use the `predict()` function to just do it for us. A trick we can use here is to make use of the `expand.grid()` function, to create a new dataset that has a sequence of biomass values, that is replicate for each level of pH. To do so, we need to specify the range of values for both `biomass` and `ph`. We already did this for `biomass`, and it's pretty easy to do for `ph` as well: `c("Low", "Medium", "High")`. With that, we can feed these into `expand.grid()`, as `synth_data <- expand.grid(Biomass = seq(from = min(dat$Biomass), to = max(dat$Biomass), length.out = 5), pH = c("low", "mid", "high"))`. You can now feed this new *synthetic* data into the predict function, while also specifying which model to use to make the prediction, as `synth_data$pred <- predict(sp.glm2, newdata = synth_data)`. A final, final trick; we can tell the `predict()` function to use the inverse link function automatically when making the predictions, so we don't need to by setting `type = "response"`: `(predict(sp.glm2, new_data = synth_data, type = "response")`). Using these predicted values, create a figure to show your predicted relationships for pH and biomass.
-
-
+Using your synthetic dataset and model, create predictions of species richness. Once done, then use these to create a figure to show your predicted relationships for pH and biomass.
 
 ```{r Q14, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.height=8, fig.show= ifelse(SOLUTIONS, "asis", "hide")}
 synth_data <- expand.grid(Biomass = seq(from = min(sp$Biomass), to = max(sp$Biomass), length.out = 20), 
@@ -479,6 +480,64 @@ legend("topright",
  col= c(3:1), 
  lty= c(1, 1, 1), 
  lwd= c(1, 1, 1))
+```
+
+14\. (Optional) Exploring model diagnostics
+
+One of the most challenging aspects in learning GLMs is how to determine if there is a problem in model diagnostics. Overwhelmingly, this is because a lot of this relies on gaining enough experience to know when there is a problem or not. To that end, as an optional exercise, we include code to simulate data, run a $Poisson$ GLM, and perform model diagnostics on with the aim of giving you a flexible means to gain some experience. The benefit of having you simulate datasets is that you know what the *Truth* is, because you decide what it is. With that anchor in place, you can then gauge when tools are reliable and when they are not. In general, simulating datasets and testing your statistical models is an excellent approach and one that is well worth building into your data analysis workflow (ideally before ever collecting real data).
+
+The code to do the simulation can be found below, but is generated (often called the *Data Generating Process*, or DGP, in both code or real data sets) as:
+
+$y_i \sim Poisson(\lambda_i)$
+
+$log(\lambda_i) = \beta_0 + \beta_1 \times x_{1,i} + \beta_2 \times x_{2,i} + \beta_3\times x_{3,i}$
+
+Rerun the simulation and analysis varying the sample size (`N <- 1000`) or the formula of the `glm()` (e.g. `y ~ x1 + x2`). Check what effect this has on dispersion and the model diagnostic plots.
+
+```
+# Set your seed to have the randomness be cosnsitent each time you run the code
+# You can change this, or comment it out, if you want to embrase the randomness
+set.seed(1234)
+
+# Set your sample size
+N <- 500
+
+# Create two continuous covariates
+x1 <- runif(N, 0, 10)
+x2 <- runif(N, 0, 10)
+x3 <- runif(N, 0, 10)
+
+# Set your parameter values
+beta_0 <- 2.5   # This is the intercept (on link scale)
+beta_1 <- 0.2   # This is the slope for the x1 variable (on link scale)
+beta_2 <- -1.3  # This is the slope for the x2 variable (on link scale)
+beta_3 <- 0.4   # This is the slope for the x3 variable (on link scale)
+
+# Generate your linear predictor on the link scale (i.e. log)
+# We don't actually need to use log() here (it's already on the link scale)
+linear_predictor_link <- beta_0 + beta_1 * x1 + beta_2 * x2 + beta_3 * x3
+# Backtransform your linear predictor to the response scale (i.e. exponentiate)
+linear_predictor_response <- exp(linear_predictor_link)
+# Generate your response variable
+y <- rpois(N, lambda = linear_predictor_response)
+# Note that the above three lines of code are the equivalent to:
+# y ~ Poisson(lambda)
+# log(lambda) = beta_0 + beta_1 * x1 + beta_2 * x2
+
+# Store your data in a dataframe
+dat <- data.frame(y, x1, x2, x3)
+
+# Run a Poisson GLM
+fit <- glm(y ~ x1 + x2 + x3, 
+           data = dat, 
+           family = poisson)
+
+# See if the model was able to estimate your parameter values
+summary(fit)
+
+# See how well the model diagnostics perform
+par(mfrow = c(2,2))
+plot(fit)
 ```
 
 **End of the Poisson GLM - predicting species richness exercise**
