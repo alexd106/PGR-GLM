@@ -26,9 +26,9 @@ For the GLM exercises, we'll use the workflow we suggested in the first GLM over
 
 1. Know your research question!
 
-2. Think about your response variable (stochastic).
+2. Think about your response variable (stochastic element).
 
-3. Think about the process behind the data (deterministic).
+3. Think about the process behind the data (deterministic element).
 
 4. Understand the data that you’ve collected (plot it!)
 
@@ -149,7 +149,7 @@ y_i \sim Poisson(\lambda_i)\\
 log(\lambda_i) = \beta_0
 $$
 
-where, $y_i$ is the value of the response variable for the $i^{th}$ plot of land (e.g. if $i = 1$, then this indicates the first row of our dataset, or the first plot of land we have data for), assumed to follow a $Poisson$ distribution with rate $/lambda$, regressed on the $log$ link as a function of an intercept ($\beta_0$) only.
+where, $y_i$ is the value of the response variable for the $i^{th}$ plot of land (e.g. if $i = 1$, then this indicates the first row of our dataset, or the first plot of land we have data for), assumed to follow a $Poisson$ distribution with rate $\lambda$, regressed on the $log$ link as a function of an intercept ($\beta_0$) only.
 
 ```{r Q5, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
 # y_i ~ Poisson(lambda_i)

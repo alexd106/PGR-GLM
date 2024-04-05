@@ -502,8 +502,9 @@ class="section level1">
 first GLM overview lecture as a template, specifically:</p>
 <ol style="list-style-type: decimal">
 <li><p>Know your research question!</p></li>
-<li><p>Think about your response variable (stochastic).</p></li>
-<li><p>Think about the process behind the data (deterministic).</p></li>
+<li><p>Think about your response variable (stochastic element).</p></li>
+<li><p>Think about the process behind the data (deterministic
+element).</p></li>
 <li><p>Understand the data that you’ve collected (plot it!)</p></li>
 <li><p>Combine into a model that can answer your question.</p></li>
 <li><p>Fit the model.</p></li>
@@ -675,7 +676,7 @@ plot of land (e.g. if <span class="math inline">\(i = 1\)</span>, then
 this indicates the first row of our dataset, or the first plot of land
 we have data for), assumed to follow a <span
 class="math inline">\(Poisson\)</span> distribution with rate <span
-class="math inline">\(/lambda\)</span>, regressed on the <span
+class="math inline">\(\lambda\)</span>, regressed on the <span
 class="math inline">\(log\)</span> link as a function of an intercept
 (<span class="math inline">\(\beta_0\)</span>) only.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="co"># y_i ~ Poisson(lambda_i)</span></span>
