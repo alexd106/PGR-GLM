@@ -46,7 +46,7 @@ For the GLM exercises, we'll use the workflow we suggested in the first GLM over
 
 The researchers who collected this data wanted to describe the relationships between the number of species (`Species`) present in a plot of land, and how this number was associated with the overall plant biomass (`Biomass`, i.e. what was the overall weight of plants in the plot of land), and the pH of the soil (`pH`, categorised into "High", "Medium" and "Low"). The researchers were interested in describing the associations between species and the two explanatory variables. In total, the researchers collected data from 90 plots of land ($n = 90$), where each observation is from a single plot.
 
-As concisely as possible, write down the research question that can be answered with our analysis. This might seem trivial in this case, but it's often one of the hardest parts of research; going from science to an actionable research question.
+As concisely as possible, write down the research question that can be answered with our analysis. This might seem trivial in this case, but it's often one of the hardest parts of research; going from science, to data, to an actionable research question.
 
 ```{r Q1, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
 # How does biomass and pH relate to the number of plant species in a given plot of land?
@@ -55,7 +55,7 @@ As concisely as possible, write down the research question that can be answered 
 
 2\. Think about your response variable (the stochastic element).
 
-From the information provided in the brief above, we are already able to determine a suitable distribution to use when fitting the model (the fact that this practical is called Poisson GLM may also offer a rather cryptic hint...). The relevant information comes from the description of `Species` clearly indicating that this variable is a count, which implies 1) the minimum value is 0 [we cannot have -1 species], and 2) the response variable will be measured in integers [we cannot count 3.14 plants]. With this information alone, we can already deduce the *stochastic* element of our model (i.e. the error) should be adequately described by specifying a $Poisson$ distribution.
+From the information provided in the brief above, we are already able to determine a suitable distribution to use when fitting the model (the fact that this practical is called Poisson GLM may also offer a rather cryptic hint...). The relevant information comes from the description of `Species` indicating that this variable is a count, which implies 1) the minimum value is 0 [we cannot have -1 species], and 2) the response variable will be measured in integers [we cannot count 3.14 plants]. With this information alone, we can already deduce the *stochastic* element of our model (i.e. the error) should be adequately described by specifying a $Poisson$ distribution.
 
 If you're comfortable doing so, write down the stochastic element of our model using statistical notation.
 
@@ -73,7 +73,9 @@ If you're comfortable doing so, write down the stochastic element of our model u
 
 Spare a moment's thought to how complex the process behind the number of plant species present in a plot of land will be. How much sunlight does each plot get? How much rainfall? What seeds were already present in the soil before data collection started? Why were *those* seeds present and not others? Why did some of them germinate in time for us to count them? We don't have any data to try and explain this variation, yet it will still be there (this is what we are tasking the stochastic part of the model to deal with).
 
-For our purposes, we're interested in how plant biomass and soil pH affect species richness. If you're comfortable doing so, write down a sensible deterministic element for the model you would run, using statistical notation.
+For our purposes, the deterministic part we're interested in is what role plant biomass and soil pH plays in determining species richness. If you're comfortable doing so, write down a sensible deterministic element for the model you would run, using statistical notation.
+
+Hint: If you're struggling, come back to this part having run a `glm()`, and use the `summary()` to help guide you.
 
 ```{r Q3, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
 # log(lambda) = beta_0 + beta_1 * biomass + beta_2 * midpH + beta_3 * highpH
@@ -83,6 +85,16 @@ For our purposes, we're interested in how plant biomass and soil pH affect speci
   # beta_1 is the slope for biomass
   # beta_2 is the difference from low pH to mid pH
   # beta_3 is the difference from low pH to high pH
+
+# If you wrote:
+# log(lambda) = beta_0 + beta_1 * biomass + beta_2 * pH
+# Then you'd be wrong in this case (though maybe not always depend on how we measure pH)
+# Here, pH is a categorical variable, labelled as low, mid and high
+# As such, we can't multiply, say 1.2, by "mid". Instead, we need to convert
+# these words into numbers. The way R and glm() does this is to create so-called
+# indicator variables. We could create 3 variables in this case for low, mid and
+# high, but we can actually drop one if we say beta_2 and 3 are contrasts, allowing us
+# to be a little more efficient in terms of the number of parameters.
 ```
 
 \  
@@ -140,7 +152,11 @@ coplot(Species ~ Biomass | pH, data = sp)
 
 5\. Combine into a model that can answer your question.
 
-Having thought through the above details, it's now time to bring that information together into a single model. As a reminder, we want to describe the associations between species richness and plant biomass, and soil pH. Given this is the first practical session, we'll break this up for the sake of pedagogy. Let's start with species richness explained by biomass. Write the equation (not the `R` code) for this model (i.e. combine the stochastic and deterministic elements from Questions 3 and 4).
+Having thought through the above details, it's now time to bring that information together into a single model. As a reminder, we want to describe the associations between species richness and plant biomass, and soil pH. Given this is the first practical session, we'll break this up for the sake of pedagogy. 
+
+Let's start with species richness explained by biomass. 
+
+Write the equation (not the `R` code) for this model.
 
 For example, an intercept-only $Poisson$ GLM would be:
 
@@ -159,7 +175,7 @@ where, $y_i$ is the value of the response variable for the $i^{th}$ plot of land
 
 6\. Fit the model.
 
-To warm up, let's start by a simpler model, where we assume that the number `Species` counted in a plot is a function of how much `Biomass` there was. We'll leave `pH` out of the model for the time being.
+To warm up, let's start by using this simpler model, where we assume that the number `Species` counted in a plot is a function of how much `Biomass` there was. We'll leave `pH` out of the model for the time being.
 
 Run the model now, using `glm()`.
 
@@ -192,23 +208,18 @@ For the diagnostic plots:
 + Q-Q Residuals
   * Are we expecting Normally distribted error with a Poisson distribution?
 + Scale-Location
-  * What is the maximum $\sqrt{|Std. PearsonResid|}$ we would be comfortable with?
+  * What kind of pattern would we expect?
 + Residuals vs Leverage
   * Are any observations having a strong influence on the model fit?
 
 ```{r Q7, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
-par(mfrow = c(2,2))
-plot(sp.glm1)
-par(mfrow = c(1,1))
-summary(sp.glm1)
-
 # Model diagnostic plots:
 # Residuals vs Fitted
   # We see a fairly clear "funnel" pattern. We go from having relatively "little" variation
   # when our predicted values (on the link scale) are small, to "lots" of variation
   # when our predicted values are large, and most of this is happening between predicted
   # values of 2.5 to 3.5 (so over a fairly small range of predicted values)
-  # This is would suggest we're not meeting the assumptions particularly well and
+  # This would suggest we're not meeting the assumptions particularly well and
   # is a good indication that we have overdispersion.
 # Q-Q Residuals
   # We completely ignore this figure for GLMs.
@@ -231,13 +242,18 @@ summary(sp.glm1)
   # As a result, our standard error for our parameter estimates is going to be artificially
   # small. This in turn leads to both 1) risks of our p value being smaller than it should be
   # for Biomass, and 2) any predictions that include uncertainty being too confident.
+
+par(mfrow = c(2,2)) # Show figures in 2 rows and 2 columns
+plot(sp.glm1)       # Plot the model diagnostics
+par(mfrow = c(1,1)) # Reset so only 1 figure is shown
+summary(sp.glm1)    # Get the summary of the model (to check dispersion)
 ```
 
 8.\ Answer your question
 
-Hopefully you identified issues that mean we should be very cautious with interpreting this simple version of the model. For now, we'll put these concerns to rest, and use this model as an opportunity to practice making predictions (and therefore answering our research question).
+Hopefully you identified issues that mean we should be very cautious with interpreting this simple version of the model. For now, we'll put these concerns to rest (we will come back to these issues), and use this model as an opportunity to practice making predictions (and therefore answering our research question).
 
-8.1.\ Go back to your equation that you wrote for question 5. Using `summary()`, replace the place-holder letters (e.g. $\beta_0$) with the estimated values from your model. Using this updated equation, make the following predictions:
+8.1.\ Go back to your equation that you wrote for question 5. Using `summary()`, replace the place-holder letters (e.g. $\beta_0$) with the values estimated for these parameter from your model. Using this updated equation, make the following predictions:
 
 * On the link scale, how many plants would you predict if a plot had 0 kg of biomass?
 
@@ -254,7 +270,7 @@ Hopefully you identified issues that mean we should be very cautious with interp
 3.55628 + -0.19598 * 5 # = 2.57638
 ```
 
-8.2.\ Now, let's make predictions on the response scale. To go from the $log$ link scale, to the response scale, we take our predictions and apply the inverse link function to them. The inverse link function of $log$ is $e$ (or exponential, or `exp()`). Predict, on the response scale, how many plant species we would observe if:
+8.2.\ Now, let's make predictions on the response scale. To go from the $log$ link scale, to the response scale, we take our predictions and apply the inverse link function to them. The inverse link function of $log$ is $e$ (or exponential, or `exp()`). Predict, on the response scale, how many plant species we would expect if:
 
 * On the response scale, how many plants would you predict if a plot had 0 kg of biomass?
 
@@ -271,7 +287,7 @@ exp(3.55628 + -0.19598 * 5) # = 13.1
 exp(3.55628 + -0.19598 * 10) # = 4.9
 ```
 
-8.3.\ Using this approach, we get a series of snapshot predictions. That's useful in and of itself, but we can make this a bit easier visually. To do so, rather copy-and-pasting our equation and substituting in different value of biomass, why not use `R` to make this a bit easier for us. Begin by using `seq()` to create a sequence of 5 biomass values that range from the minimum we observed in the data, to the maximum, and store this variable.
+8.3.\ Using this approach, we get a series of snapshot predictions over different values of Biomass. That's useful in and of itself, but we can make this a bit easier to interpret by showing this in a figure. To do so, rather copy-and-pasting our equation and substituting in different value of biomass, why not use `R` to make this a bit easier for us? Begin by using `seq()` to create a sequence of 5 biomass values that range from the minimum we observed in the data, to the maximum, and store this variable.
 
 Hint: do not add this new biomass variable to your original dataset.
 
@@ -295,7 +311,7 @@ lines(pred_plants ~ biomass_new)
 
 And with that, we have a prediction (from our model which we know has issues). If we stopped here, we'd conclude that biomass has a negative association with the number of plant species.
 
-8.6.\ (Optional): The figure we have produced is pretty jagged looking. If we wanted a smoother line to be drawn, how would we do so?
+8.6.\ (Optional): The figure we have produced looks pretty jagged. If we wanted a smoother line to be drawn, how would we do so?
 
 ```{r Q8.6, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
 # We would simply increase the number of biomass values that our seq() code created. Try it out if you're interested.
@@ -303,31 +319,19 @@ And with that, we have a prediction (from our model which we know has issues). I
 
 \  
 
-9\. We've run a Poisson GLM where `Species` is explained by `Biomass`, but remember that our initial research question sought to describe the relationships between `Species` with both `Biomass` and `pH`. Before running this model, try to write down the equation for this new version of the model. Keep in mind that `pH` is a categorical variable, meaning we'll need additional covariates to indicate if an observation is, e.g. "Medium" pH (1) or not (0), or "High" pH (1) or not (0). (If you're not sure how to do this, you can either go back and watch the relevant sections of the Poisson lecture or ask for help). 
+9\. We've run a Poisson GLM where `Species` is explained by `Biomass`, but remember that our initial research question sought to describe the relationships between `Species` with both `Biomass` *and* `pH`. This should be the model you wrote back in section 3 (if you skipped that section, go back to it after running this next model). 
+
+Run a $Poisson$ GLM where `Species` is a function of `Biomass` and `pH`.
 
 ```{r Q9, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
-# y_i ~ Poisson(lambda_i)
-# log(lambda_i) = beta_0 + beta_1 * biomass + beta_2 * pHmid + beta_3 * pHhigh
-
-# Remember that for models with categorical variables, models will break that single 
-# categorical column into however many levels there are minus 1. Here 2 columns 
-# are "created" that are used to indicate if an observation is "mid" pH (1 if yes, 0
-# if no), and another to indicate if an observation is "high" pH
-# We don't need to column for "low", because if both "mid" and "high" are 0, then
-# the only option is that it *must* be "low"
-```
-
-9.1.\ Once you've given that a shot, run the `glm()` which includes both `Biomass` and `pH` as main effects only (we won't be doing any interactions yet).
-
-\  
-
-```{r Q9.1, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
-sp.glm2 <- glm(Species ~ Biomass + pH, family = poisson(link = "log"), data = sp)
+sp.glm2 <- glm(Species ~ Biomass + pH, 
+               family = poisson(link = "log"), 
+               data = sp)
 ```
 
 \  
 
-10\. With every model we run, we need to re-diagnose the models. We've already done that once, so let's quickly do it again.
+10\. With every new model we run, we need to diagnose that model. We've already done that once, so let's quickly do it again.
 
 For the diagnostic plots:
 
@@ -341,11 +345,6 @@ For the diagnostic plots:
   * Are any observations having a strong influence on the model fit?
 
 ```{r Q10, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
-par(mfrow = c(2,2))
-plot(sp.glm2)
-par(mfrow = c(1,1))
-summary(sp.glm2)
-
 # Model diagnostic plots:
 # Residuals versus Fitted
   # While we do still see a little bit of a funnel, it's a big improvement compared 
@@ -367,6 +366,10 @@ summary(sp.glm2)
   # Not exactly the ideal value of 1 but 0.9 is nothing to get concerned about
   # Also, remember that *underdispersion* is generally not much of an issue
   # Compared to the first model, this is a fantastic improvement
+par(mfrow = c(2,2))
+plot(sp.glm2)
+par(mfrow = c(1,1))
+summary(sp.glm2)
 ```
 
 
@@ -411,7 +414,9 @@ drop1(sp.glm2)
 
 \  
 
-12\. Now that we've fit the full model, let's begin the process of interpreting what the results mean. For starters, given this is a more complex model, let's take it slowly and make sure we understand what each parameter estimate means. Using `summary()`, identify what each parameter means.
+12\. Now that we've fit a model that answers our question and checked that we are meeting the assumptions reasonably well, let's begin the process of interpreting what the results mean. For starters, given this is a more complex model, let's take it slowly and make sure we understand what each parameter estimate means. 
+
+Using `summary()`, identify what each parameter means.
 
 \  
 
@@ -452,15 +457,18 @@ We can use the same technique we used for the model with just biomass, but now e
 
 `synth_data <- expand.grid(Biomass = seq(from = min(dat$Biomass), to = max(dat$Biomass), length.out = 5), pH = c("low", "mid", "high"))`
 
-to create a new *synthetic* dataset, which we can use in the `predict()` function:
+We can then use this new *synthetic* dataset to create predictions of species richness using `predict()` function. The `predict()` function takes the model equation (with the estimated parameter values) and combines this with either the original data (if you do not supply a synthetic dataset) or with synthetic data (if you do supply a synthetic dataset). It is doing exactly the same as what you were doing in section 8 - there's no magic here.
 
 `synth_data$pred <- predict(sp.glm2, newdata = synth_data)` 
 
-A hint: we can tell the `predict()` function to use the inverse link function automatically when making the predictions, so we don't need to by setting `type = "response"` or else we could always do this manually by exponentiating our predicted values. 
+A hint: we can tell the `predict()` function to use the inverse link function automatically when making the predictions, so we don't need to by setting `type = "response"` or else we could always do this manually by exponentiating our predicted values (note for the tomorrow's lecture, you shouldn't use `type = "response"` if you are going to create 95% CI - more tomorrow). 
 
-Using your synthetic dataset and model, create predictions of species richness. Once done, then use these to create a figure to show your predicted relationships for pH and biomass.
+Once done, use your new synthetic data and predicted species richness to create a figure that shows the relationships for pH and biomass.
 
 ```{r Q14, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.height=8, fig.show= ifelse(SOLUTIONS, "asis", "hide")}
+# Create a fake dataset to feed into our model equation
+# We'll discuss how expand.grid() works tomorrow (and the problem with using it)
+# But for now, just know that it creates a suitable "fake" dataset
 synth_data <- expand.grid(Biomass = seq(from = min(sp$Biomass), to = max(sp$Biomass), length.out = 20), 
                           pH = c("low", "mid", "high"))
 
