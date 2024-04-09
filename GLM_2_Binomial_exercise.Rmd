@@ -38,7 +38,7 @@ mrse <- rbinom(N_hosp, size = N_pat, prob = plogis(b0 +
                                                      b4 * capacity))
 
 policy_f <- ifelse(policy == 1, "Implemented", "Not implemented")
-df$policy <- factor(df$policy, levels = c("Implemented", "Not implemented"))
+policy_f <- factor(policy_f, levels = c("Implemented", "Not implemented"))
 mrse <- data.frame(mrse, total_patients = N_pat, n_staff = staff, policy = policy_f, capacity)
 
 ```
@@ -150,7 +150,7 @@ As in previous exercises, either create a new R script (perhaps call it GLM_Bino
 
 \  
 
-```{r Q1, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
+```{r Q1.1, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
 Mites<- read.delim("./data/DrugsMites.txt")
 str(Mites)
 

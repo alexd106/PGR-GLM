@@ -1,0 +1,211 @@
+"mrse" "total_patients" "n_staff" "policy" "capacity"
+0 15 24 "Implemented" 0.72
+4 13 16 "Not implemented" 0.86
+6 10 17 "Not implemented" 0.76
+9 17 23 "Not implemented" 0.75
+0 10 20 "Implemented" 0.66
+7 18 30 "Not implemented" 0.68
+10 21 22 "Not implemented" 0.84
+9 19 26 "Not implemented" 0.67
+11 18 13 "Not implemented" 0.65
+10 19 27 "Not implemented" 0.79
+0 15 26 "Implemented" 0.85
+1 19 16 "Implemented" 0.71
+12 18 23 "Not implemented" 0.95
+9 16 21 "Not implemented" 0.82
+10 20 17 "Not implemented" 0.86
+9 13 14 "Not implemented" 0.98
+8 16 26 "Not implemented" 0.94
+6 15 21 "Not implemented" 0.74
+5 18 20 "Not implemented" 0.49
+2 20 16 "Implemented" 0.76
+3 11 16 "Implemented" 0.88
+9 20 17 "Not implemented" 0.8
+6 24 16 "Implemented" 0.93
+5 20 25 "Not implemented" 0.7
+7 9 14 "Not implemented" 0.94
+6 20 16 "Not implemented" 0.51
+1 17 24 "Implemented" 0.76
+4 12 18 "Implemented" 0.89
+5 17 28 "Not implemented" 0.82
+4 17 13 "Implemented" 0.92
+0 15 23 "Implemented" 0.9
+0 13 30 "Implemented" 0.74
+0 12 12 "Implemented" 0.49
+0 13 24 "Implemented" 0.49
+0 11 20 "Implemented" 0.83
+1 11 25 "Implemented" 0.75
+10 26 17 "Not implemented" 0.58
+7 20 15 "Not implemented" 0.61
+1 15 26 "Implemented" 0.69
+8 19 22 "Not implemented" 0.72
+3 10 21 "Not implemented" 0.87
+7 14 27 "Not implemented" 0.94
+9 15 19 "Not implemented" 0.92
+6 11 19 "Not implemented" 0.82
+11 18 22 "Not implemented" 0.86
+12 19 18 "Not implemented" 0.75
+1 13 19 "Implemented" 0.75
+9 21 18 "Not implemented" 0.62
+7 21 23 "Not implemented" 0.89
+0 15 19 "Implemented" 0.58
+4 16 25 "Not implemented" 0.76
+0 14 29 "Implemented" 0.84
+8 16 23 "Not implemented" 0.94
+1 15 19 "Implemented" 0.54
+4 21 36 "Not implemented" 0.53
+0 17 19 "Implemented" 0.68
+7 9 26 "Not implemented" 0.7
+4 14 18 "Implemented" 0.78
+5 18 20 "Not implemented" 0.81
+12 15 23 "Not implemented" 0.88
+6 15 26 "Not implemented" 0.98
+1 14 22 "Implemented" 0.56
+2 10 26 "Not implemented" 0.56
+5 12 11 "Not implemented" 0.89
+1 11 23 "Implemented" 0.79
+12 20 21 "Not implemented" 0.74
+7 18 25 "Not implemented" 0.83
+9 14 20 "Not implemented" 0.87
+12 19 19 "Not implemented" 0.77
+0 11 20 "Implemented" 0.34
+1 14 21 "Implemented" 0.74
+2 15 27 "Implemented" 0.58
+7 8 24 "Not implemented" 0.9
+0 19 25 "Implemented" 0.86
+1 15 26 "Implemented" 0.97
+1 18 21 "Implemented" 0.51
+8 23 17 "Not implemented" 0.69
+2 11 19 "Implemented" 0.82
+0 25 32 "Implemented" 0.87
+6 12 23 "Not implemented" 0.8
+9 14 24 "Not implemented" 0.86
+0 14 24 "Implemented" 0.81
+0 13 26 "Implemented" 0.72
+1 12 23 "Implemented" 0.7
+14 19 16 "Not implemented" 0.85
+1 17 23 "Implemented" 0.94
+4 14 21 "Not implemented" 0.76
+1 12 22 "Implemented" 0.69
+5 10 24 "Not implemented" 0.9
+4 12 17 "Not implemented" 0.9
+8 15 21 "Not implemented" 0.82
+6 21 32 "Not implemented" 0.7
+3 11 25 "Not implemented" 0.41
+0 16 21 "Implemented" 0.78
+0 15 28 "Not implemented" 0.35
+8 18 17 "Not implemented" 0.74
+12 16 18 "Not implemented" 0.75
+0 17 32 "Implemented" 0.38
+7 14 24 "Not implemented" 0.94
+0 9 30 "Implemented" 0.52
+0 19 20 "Implemented" 0.86
+11 19 23 "Not implemented" 0.82
+7 14 20 "Not implemented" 0.59
+8 22 22 "Not implemented" 0.68
+2 18 12 "Implemented" 0.81
+2 13 24 "Implemented" 0.83
+4 9 30 "Not implemented" 0.74
+0 13 22 "Implemented" 0.82
+1 10 14 "Implemented" 0.82
+8 12 20 "Not implemented" 0.84
+2 10 16 "Implemented" 0.94
+3 9 23 "Not implemented" 0.63
+6 13 22 "Not implemented" 0.6
+7 22 32 "Not implemented" 0.73
+1 15 20 "Implemented" 0.69
+0 13 15 "Implemented" 0.65
+8 11 21 "Not implemented" 0.9
+0 11 18 "Implemented" 0.71
+1 8 21 "Not implemented" 0.82
+1 11 15 "Implemented" 0.82
+0 8 19 "Implemented" 0.71
+6 19 26 "Not implemented" 0.76
+6 17 27 "Not implemented" 0.54
+7 11 21 "Not implemented" 0.84
+1 13 20 "Implemented" 0.89
+5 12 20 "Not implemented" 0.87
+9 15 23 "Not implemented" 0.91
+0 11 31 "Implemented" 0.72
+4 14 22 "Not implemented" 0.61
+4 9 27 "Not implemented" 0.55
+0 20 22 "Implemented" 0.9
+7 9 10 "Not implemented" 0.8
+9 15 18 "Not implemented" 0.9
+12 19 23 "Not implemented" 0.84
+2 10 26 "Not implemented" 0.68
+0 7 18 "Implemented" 0.71
+2 8 22 "Implemented" 0.58
+1 13 18 "Implemented" 0.85
+7 13 17 "Not implemented" 0.64
+3 12 20 "Implemented" 0.94
+8 20 29 "Not implemented" 0.93
+3 13 32 "Not implemented" 0.66
+0 10 31 "Implemented" 0.84
+2 11 20 "Not implemented" 0.74
+7 19 24 "Not implemented" 0.69
+5 14 23 "Not implemented" 0.7
+8 15 19 "Not implemented" 0.76
+1 18 24 "Implemented" 0.78
+8 17 26 "Not implemented" 0.85
+10 18 21 "Not implemented" 0.64
+1 22 14 "Implemented" 0.72
+8 13 26 "Not implemented" 0.93
+1 21 20 "Implemented" 0.72
+9 17 22 "Not implemented" 0.88
+1 17 23 "Implemented" 0.84
+5 13 21 "Not implemented" 0.63
+7 19 25 "Not implemented" 0.78
+16 25 24 "Not implemented" 0.81
+10 18 18 "Not implemented" 0.84
+5 13 24 "Not implemented" 0.8
+1 13 20 "Implemented" 0.61
+8 15 21 "Not implemented" 0.74
+9 16 18 "Not implemented" 0.84
+9 17 20 "Not implemented" 0.75
+1 15 18 "Implemented" 0.78
+5 15 28 "Not implemented" 0.82
+5 13 27 "Not implemented" 0.72
+0 16 25 "Implemented" 0.74
+6 14 20 "Not implemented" 0.57
+10 13 13 "Not implemented" 0.75
+8 19 27 "Not implemented" 0.93
+8 18 26 "Not implemented" 0.73
+1 23 26 "Implemented" 0.74
+6 19 26 "Not implemented" 0.49
+6 16 26 "Not implemented" 0.71
+10 20 20 "Not implemented" 0.78
+5 16 23 "Not implemented" 0.78
+0 13 25 "Implemented" 0.71
+11 17 25 "Not implemented" 0.74
+4 14 18 "Implemented" 0.91
+0 11 23 "Implemented" 0.56
+6 17 21 "Not implemented" 0.68
+5 10 23 "Not implemented" 1
+11 18 27 "Not implemented" 0.9
+8 23 24 "Not implemented" 0.79
+0 14 22 "Implemented" 0.72
+6 19 15 "Not implemented" 0.72
+6 18 22 "Not implemented" 0.68
+5 10 27 "Not implemented" 0.86
+0 15 17 "Implemented" 0.68
+1 9 19 "Implemented" 0.56
+5 12 22 "Not implemented" 0.85
+6 18 29 "Not implemented" 0.72
+5 13 23 "Not implemented" 0.55
+4 12 25 "Not implemented" 0.64
+8 10 15 "Not implemented" 0.66
+1 13 19 "Implemented" 0.76
+5 21 18 "Implemented" 0.52
+6 17 28 "Not implemented" 0.9
+12 19 22 "Not implemented" 0.84
+4 8 23 "Not implemented" 0.71
+5 14 14 "Not implemented" 0.38
+7 12 18 "Not implemented" 0.75
+2 16 22 "Implemented" 0.8
+2 14 25 "Implemented" 0.79
+3 14 17 "Implemented" 0.85
+2 17 19 "Implemented" 0.73
+3 9 15 "Not implemented" 0.34
+2 11 26 "Not implemented" 0.81
+3 11 19 "Not implemented" 0.71
