@@ -14,33 +14,6 @@ editor_options:
 knitr::opts_chunk$set(echo=TRUE, message = FALSE, warning = FALSE, eval = FALSE, cache = FALSE)
 
 SOLUTIONS <- FALSE
-
-seed <- 1988
-set.seed(seed)
-
-N_hosp <- 210
-N_pat <- rpois(N_hosp, lambda = 15)
-
-
-# Covariates --------------------------------------------------------------
-policy <- rbinom(N_hosp, prob = 0.34, size = 1)
-staff <- rpois(N_hosp, lambda = exp(3 + 0.01 * (N_pat/2)))
-capacity <- rbeta(N_hosp, shape1 = 6, shape2 = 2)
-b0 <- -1
-b1 <- -0.05 # staff slope
-b2 <- -0.5 # policy implemented
-b3 <- -0.1 # interaction
-b4 <- 2.5  # capacity
-mrse <- rbinom(N_hosp, size = N_pat, prob = plogis(b0 + 
-                                                     b1 * staff + 
-                                                     b2 * policy + 
-                                                     b3 * policy * staff +
-                                                     b4 * capacity))
-
-policy_f <- ifelse(policy == 1, "Implemented", "Not implemented")
-policy_f <- factor(policy_f, levels = c("Implemented", "Not implemented"))
-mrse <- data.frame(mrse, total_patients = N_pat, n_staff = staff, policy = policy_f, capacity)
-
 ```
 
 \  
@@ -71,47 +44,58 @@ For the GLM exercises, we'll use the workflow we suggested in the first GLM over
 
 1\. Know your research question!
 
-The researchers who collected this data wanted to understand how decisions made the running of different Intensive Care Unit (ICU) wards affected the prevalence of Multidrug Resistant *Staphylococcus epidermidis* (MRSE, a relative of MRSA) amongst patients (`mrse`). Given data was collected throughout all ICU wards in the UK, the total number of patients in each ward varied by hospital and was also recorded (`total_patients`). Specifically, the researchers wanted to understand three explanatory variables: 1) the number of staff working in an ICU (`staff`); 2) current capacity of the ward (`capacity`, expressed as a proportion of beds currently occupied, given the total number of beds); and 3) whether or not the hospital board had implemented a policy concerning the reduced use of Chlorhexidine bathing (`policy`), as the researchers believed this bathing was, in part, responsible for increasing prevalence of MRSE. Additionally, the researchers felt it was likely that the effectiveness of the policy depended on the number of staff available to implement it (so would require an interaction between `staff` and `policy`). In total, data was collected from 210 ICU wards ($n = 210$), where each observation is from a single ICU ward in a hospital.
+The researchers who collected this data wanted to understand how a policy decision, as well as other covariates, were associated with the prevalence of Multi-drug Resistant *Staphylococcus epidermidis* (MRSE, a relative of MRSA) amongst patients in different Intensive Care Unit (ICU) wards. Data was collected from all 210 ICU wards in the UK and included the total number of patients in each ICU ward (`total_patients`) as well as how many of them were MRSE positive (`mrse`). 
+
+Specifically, the researchers wanted to understand how three explanatory variables were assocaited with the prevalence of MRSE: 1) the number of staff working in an ICU (`staff`); 2) current capacity of the ward (`capacity`, expressed as a proportion of beds currently occupied); and 3) whether or not the respective hospital board had implemented a policy concerning the reduced use of Chlorhexidine bathing (`policy`). Chlorhexidine usage was of primary interest, as the researchers believed this bathing was, in part, responsible for increasing prevalence of MRSE due to overuse leading to anti-microbial resistance (since chlorhexidine is an anti-microbial agent). Additionally, the researchers felt it was likely that the effectiveness of the policy depended on the number of ICU staff to implement it (so would require an interaction between `staff` and `policy`). In total, data was collected from 210 ICU wards ($n = 210$), where each observation is from a single ICU ward in a hospital.
 
 As concisely as possible, write down the research question that can be answered with our analysis.
 
 ```{r Q1, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
-# How do ward capacity, staff numbers, and chlorhexidine policy relate with the proportion of patients infected with MRSE?
+# How do ward capacity, staff numbers, chlorhexidine policy, and an interaction 
+# between chlorhexidine policy and staff numbers, relate with the proportion of 
+# patients infected with MRSE?
 ```
 
 2\. Think about your response variable (the stochastic element).
 
-From the information provided in the brief above, we are already able to determine a suitable distribution to use when fitting the model (as before, ignore that today's class is called $Binomial$ GLMs). Here, we've been told two pieces of information that help us to figure it out.
+From the information provided in the brief above, we are already able to determine a suitable distribution to use when fitting the model (as before, ignore that today's class is called $Binomial$ GLMs). Here, we've been told two pieces of information that help us determine that a $Binomial$ is a sensible distribution:
 
-1. We have a count of "successes" (here, "success" is a patient who is infected with MRSE)
+1. We have a count of "successes" (here, "success" is paradoxically a patient who is infected with MRSE)
 
 2. We have the total number of patients present on the ward.
 
-So, we know the minimum count will be zero but we also know we have an upper bound; We can't have more patients infected with MRSE than we have patients on the ward. While there would be nothing stopping us from using a $Poisson$ distribution - as it would handle to "count" aspect - it would not be useful for addressing the upper bound (i.e. if we have 10 patients, the maximum number of infected patients we could have would be 10). Instead, the more appropriate distribution to use here would be a $Binomial$ distribution to capture the stochasticity of the data.
+So, we know the minimum count of "successes" (i.e. infected patients) will be zero but we also know we have an upper bound; We can't have more patients infected with MRSE than we have patients on the ward. This is the type of data that a $Binomial$ distribution excels in accounting for. Our stochastic element of the model would therefore be:
+
+$y_i \sim Binomial(p_i, k_i)$
+
+Where $y$ is the number of MRSE positive patients in ICU ward $i$, generated according to a $Binomial$ distribution, with probability $p$ and number of trials $k$.
 
 \
 
 3\. Think about the process behind the data (the deterministic element).
 
-As with yesterday's practical, spending a couple of minutes thinking about the process that goes into why some wards may have higher prevalence of MRSE compared to others is mind boggling. We could spend years trying to map out that complexity. Here, the researchers have presented us with a suitably focused research question, so we can skip the "existential crises" phase and jump straight into the modelling. While skipping this is useful for teaching purposes, it really is worth emphasising, again, that this is where the majority of statistical analysis happens. Thinking very carefully about the process being generating the data, and how we want to represent this in a model.
+As with yesterday's practical, spending a couple of minutes thinking about the process that goes into why some wards may have higher prevalence of MRSE compared to others is mind boggling. We could spend years trying to map out that complexity, and indeed that's what lots of researchers try to do. Here, the researchers have presented us with a suitably focused set of covariates and a razor sharp research question, meaning we can skip the "existential crises" phase and jump straight into the modelling. While skipping this is useful for teaching purposes, it really is worth emphasising, again, that this is where the majority of statistical analysis happens. Thinking very carefully about the process behind how the data is "generated" (called the *Data Generating Process*), and how we want to represent this in our models.
 
 \  
 
 4\. Understand the data that you’ve collected (plot it!)
 
-Import the data file 'mrse.txt' into R and take a look at the structure of this dataframe. Given you have never seen this data before, it's really important that you familiarise yourself with any nuances. To help with this, carry out an initial data exploration (using any methods you think will help you get a sense of the data, e.g. `plot()`, `pairs()`, `coplot()`, amongst many other options).
+Import the data file 'mrse.txt' into R and take a look at the structure of this dataframe. Given you have never seen this data before, it's really important that you familiarise yourself with any nuances.
 
 Keep the tips and tricks you used in yesterday's practical and feel free to use them again here.
 
-A bit of advice for visualising $Binomial$ data; it can be easier to visualise if you create a new column in your dataset which is the number of successes, divided by the number of trials (using the terminology of the $Binomial$ distribution). If in doubt, as for help. 
+A bit of advice for visualising $Binomial$ data; it can be easier to visualise if you create a new column in your dataset which is the proportion of success. Calculated as the number of successes divided by the number of trials (using the terminology of the $Binomial$ distribution). If in doubt, as for help. 
 
 Also, do not feel as though you need to replicate the figures shown here. They are included to show how *I* visualised the data, but I am sure many of you will be able to do a better job. The figures shown below are purely to give you inspiration.
 
 
 ```{r}
-mrse$proportion <- mrse$mrse / mrse$total_patients
+icu <- read.table(file= "./data/mrse.txt", header= TRUE)
 
+icu$proportion <- icu$mrse / icu$total_patients
 
+boxplot(icu$proportion ~ icu$policy)
+plot(icu$proportion ~ icu$capacity)
 ```
 
 
