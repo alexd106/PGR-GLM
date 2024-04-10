@@ -11,7 +11,7 @@
 
 
 
-<title>Exercise</title>
+<title>Day 2: Binomial GLMs</title>
 
 <script src="site_libs/header-attrs-2.25/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -45,116 +45,6 @@
 
 
 
-<style type="text/css">
-  code {
-    white-space: pre;
-  }
-  .sourceCode {
-    overflow: visible;
-  }
-</style>
-<style type="text/css" data-origin="pandoc">
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {  background-color: #f8f8f8; }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
-code span.al { color: #ef2929; } /* Alert */
-code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #204a87; } /* Attribute */
-code span.bn { color: #0000cf; } /* BaseN */
-code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4e9a06; } /* Char */
-code span.cn { color: #8f5902; } /* Constant */
-code span.co { color: #8f5902; font-style: italic; } /* Comment */
-code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
-code span.dt { color: #204a87; } /* DataType */
-code span.dv { color: #0000cf; } /* DecVal */
-code span.er { color: #a40000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #0000cf; } /* Float */
-code span.fu { color: #204a87; font-weight: bold; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
-code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
-code span.ot { color: #8f5902; } /* Other */
-code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
-code span.sc { color: #ce5c00; font-weight: bold; } /* SpecialChar */
-code span.ss { color: #4e9a06; } /* SpecialString */
-code span.st { color: #4e9a06; } /* String */
-code span.va { color: #000000; } /* Variable */
-code span.vs { color: #4e9a06; } /* VerbatimString */
-code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
-
-.sourceCode .row {
-  width: 100%;
-}
-.sourceCode {
-  overflow-x: auto;
-}
-.code-folding-btn {
-  margin-right: -30px;
-}
-</style>
-<script>
-// apply pandoc div.sourceCode style to pre.sourceCode instead
-(function() {
-  var sheets = document.styleSheets;
-  for (var i = 0; i < sheets.length; i++) {
-    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
-    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
-    var j = 0;
-    while (j < rules.length) {
-      var rule = rules[j];
-      // check if there is a div.sourceCode rule
-      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
-        j++;
-        continue;
-      }
-      var style = rule.style.cssText;
-      // check if color or background-color is set
-      if (rule.style.color === '' && rule.style.backgroundColor === '') {
-        j++;
-        continue;
-      }
-      // replace div.sourceCode by a pre.sourceCode rule
-      sheets[i].deleteRule(j);
-      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
-    }
-  }
-})();
-</script>
 
 
 
@@ -488,15 +378,17 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Exercise</h1>
+<h1 class="title toc-ignore">Day 2: Binomial GLMs</h1>
 
 </div>
 
 
 <p> </p>
-<div id="exercise-binomial-glm---understanding-mrse"
+<div
+id="binomial-glm---understanding-multi-drug-resistance-staphylococcus-epidermidis"
 class="section level1">
-<h1>Exercise: Binomial GLM - understanding MRSE</h1>
+<h1>Binomial GLM - understanding Multi-drug Resistance
+<em>Staphylococcus epidermidis</em></h1>
 <p> </p>
 <p>For the GLM exercises, we’ll use the workflow we suggested in the
 first GLM overview lecture as a template, specifically:</p>
@@ -512,175 +404,424 @@ first GLM overview lecture as a template, specifically:</p>
 </ol>
 <p><br />
 </p>
-<p>1. Know your research question!</p>
-<p>The researchers who collected this data wanted to understand how
-decisions made the running of different Intensive Care Unit (ICU) wards
-affected the prevalence of Multidrug Resistant <em>Staphylococcus
-epidermidis</em> (MRSE, a relative of MRSA) amongst patients
-(<code>mrse</code>). Given data was collected throughout all ICU wards
-in the UK, the total number of patients in each ward varied by hospital
-and was also recorded (<code>total_patients</code>). Specifically, the
-researchers wanted to understand three explanatory variables: 1) the
-number of staff working in an ICU (<code>staff</code>); 2) current
+<div id="know-your-research-question" class="section level3">
+<h3>1. Know your research question!</h3>
+<p><br />
+</p>
+<p>The researchers who collected this data wanted to understand how a
+policy decision, as well as other covariates, were associated with the
+prevalence of Multi-drug Resistant <em>Staphylococcus epidermidis</em>
+(MRSE, a relative of MRSA) amongst patients in different Intensive Care
+Unit (ICU) wards. Data was collected from all 210 ICU wards in the UK
+and included the total number of patients in each ICU ward
+(<code>total_patients</code>) as well as how many of them were MRSE
+positive (<code>mrse</code>).</p>
+<p>Specifically, the researchers wanted to understand how three
+explanatory variables were associated with the prevalence of MRSE: 1)
+the number of staff working in an ICU (<code>staff</code>); 2) current
 capacity of the ward (<code>capacity</code>, expressed as a proportion
-of beds currently occupied, given the total number of beds); and 3)
-whether or not the hospital board had implemented a policy concerning
-the reduced use of Chlorhexidine bathing (<code>policy</code>), as the
-researchers believed this bathing was, in part, responsible for
-increasing prevalence of MRSE. Additionally, the researchers felt it was
-likely that the effectiveness of the policy depended on the number of
-staff available to implement it (so would require an interaction between
-<code>staff</code> and <code>policy</code>). In total, data was
-collected from 210 ICU wards (<span class="math inline">\(n =
-210\)</span>), where each observation is from a single ICU ward in a
-hospital.</p>
+of beds currently occupied); and 3) whether or not the respective
+hospital board had implemented a policy concerning the reduced use of
+Chlorhexidine bathing (<code>policy</code>). Chlorhexidine usage was of
+primary interest, as the researchers believed this bathing was, in part,
+responsible for increasing prevalence of MRSE due to overuse leading to
+anti-microbial resistance (since chlorhexidine is an anti-microbial
+agent). Additionally, the researchers felt it was likely that the
+effectiveness of the policy depended on the number of ICU staff to
+implement it (so would require an interaction between <code>staff</code>
+and <code>policy</code>). In total, data was collected from 210 ICU
+wards (<span class="math inline">\(n = 210\)</span>), where each
+observation is from a single ICU ward in a hospital.</p>
 <p>As concisely as possible, write down the research question that can
 be answered with our analysis.</p>
-<p>2. Think about your response variable (the stochastic element).</p>
+<p><br />
+</p>
+</div>
+<div id="think-about-your-response-variable-the-stochastic-element."
+class="section level3">
+<h3>2. Think about your response variable (the stochastic element).</h3>
+<p><br />
+</p>
 <p>From the information provided in the brief above, we are already able
 to determine a suitable distribution to use when fitting the model (as
 before, ignore that today’s class is called <span
 class="math inline">\(Binomial\)</span> GLMs). Here, we’ve been told two
-pieces of information that help us to figure it out.</p>
+pieces of information that help us determine that a <span
+class="math inline">\(Binomial\)</span> is a sensible distribution:</p>
 <ol style="list-style-type: decimal">
-<li><p>We have a count of “successes” (here, “success” is a patient who
-is infected with MRSE)</p></li>
+<li><p>We have a count of “successes” (here, “success” is paradoxically
+a patient who is infected with MRSE)</p></li>
 <li><p>We have the total number of patients present on the
 ward.</p></li>
 </ol>
-<p>So, we know the minimum count will be zero but we also know we have
-an upper bound; We can’t have more patients infected with MRSE than we
-have patients on the ward. While there would be nothing stopping us from
-using a <span class="math inline">\(Poisson\)</span> distribution - as
-it would handle to “count” aspect - it would not be useful for
-addressing the upper bound (i.e. if we have 10 patients, the maximum
-number of infected patients we could have would be 10). Instead, the
-more appropriate distribution to use here would be a <span
-class="math inline">\(Binomial\)</span> distribution to capture the
-stochasticity of the data.</p>
+<p>So, we know the minimum count of “successes” (i.e. infected patients)
+will be zero but we also know we have an upper bound; We can’t have more
+patients infected with MRSE than we have patients on the ward. This is
+the type of data that a <span class="math inline">\(Binomial\)</span>
+distribution excels in accounting for. Our stochastic element of the
+model would therefore be:</p>
+<p><span class="math inline">\(y_i \sim Binomial(p_i, k_i)\)</span></p>
+<p>Where <span class="math inline">\(y\)</span> is the number of MRSE
+positive patients in ICU ward <span class="math inline">\(i\)</span>,
+generated according to a <span class="math inline">\(Binomial\)</span>
+distribution, with probability <span class="math inline">\(p\)</span>
+and number of trials <span class="math inline">\(k\)</span>.</p>
 <p><br />
 </p>
-<p>3. Think about the process behind the data (the deterministic
-element).</p>
+</div>
+<div
+id="think-about-the-process-behind-the-data-the-deterministic-element."
+class="section level3">
+<h3>3. Think about the process behind the data (the deterministic
+element).</h3>
+<p><br />
+</p>
 <p>As with yesterday’s practical, spending a couple of minutes thinking
 about the process that goes into why some wards may have higher
 prevalence of MRSE compared to others is mind boggling. We could spend
-years trying to map out that complexity. Here, the researchers have
-presented us with a suitably focused research question, so we can skip
-the “existential crises” phase and jump straight into the modelling.
-While skipping this is useful for teaching purposes, it really is worth
-emphasising, again, that this is where the majority of statistical
-analysis happens. Thinking very carefully about the process being
-generating the data, and how we want to represent this in a model.</p>
-<p> </p>
-<p>4. Understand the data that you’ve collected (plot it!)</p>
-<p>Import the data file ‘mrse.txt’ into R and take a look at the
-structure of this dataframe. Given you have never seen this data before,
-it’s really important that you familiarise yourself with any nuances. To
-help with this, carry out an initial data exploration (using any methods
-you think will help you get a sense of the data,
-e.g. <code>plot()</code>, <code>pairs()</code>, <code>coplot()</code>,
-amongst many other options).</p>
-<p>Keep the tips and tricks you used in yesterday’s practical and feel
-free to use them again here.</p>
-<p>A bit of advice for visualising <span
-class="math inline">\(Binomial\)</span> data; it can be easier to
-visualise if you create a new column in your dataset which is the number
-of successes, divided by the number of trials (using the terminology of
-the <span class="math inline">\(Binomial\)</span> distribution). If in
-doubt, as for help.</p>
-<p>Also, do not feel as though you need to replicate the figures shown
-here. They are included to show how <em>I</em> visualised the data, but
-I am sure many of you will be able to do a better job. The figures shown
-below are purely to give you inspiration.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>mrse<span class="sc">$</span>proportion <span class="ot">&lt;-</span> mrse<span class="sc">$</span>mrse <span class="sc">/</span> mrse<span class="sc">$</span>total_patients</span></code></pre></div>
+years trying to map out that complexity, and indeed that’s what lots of
+researchers try to do. Here, the researchers have presented us with a
+suitably focused set of covariates and a razor sharp research question,
+meaning we can skip the “existential crises” phase and jump straight
+into the modelling. While skipping this is useful for teaching purposes,
+it really is worth emphasising, again, that this is where the majority
+of statistical analysis happens. Thinking very carefully about the
+process behind how the data is “generated” (called the <em>Data
+Generating Process</em>), and how we want to represent this in our
+models is really at the core of modelling.</p>
+<p>For our purposes, the deterministic part we’re interested in is the
+effect of number of staff, current capacity, policy implementation, and
+an interaction between number of staff and policy implementation. With
+this in mind, the deterministic element of our model will be something
+like the equation shown below. Try to fill in the gaps:</p>
+<p><span class="math inline">\(logit(p_i) = \beta_0 + \text{___} \times
+Capacity_i + \beta_2 \times \text{___}_i + \beta_3 \times Staff_i +
+\text{___} \times Staff_i \times Nopolicy_i\)</span></p>
 <p> </p>
 </div>
-<div id="exercise-binomial-proportions-glm---mites-survival"
-class="section level1">
-<h1>Exercise: Binomial (Proportions) GLM - mites survival</h1>
-<p> </p>
-<p>The data for this exercise were collected for an experiment to test
-the toxicity of different chemicals at various concentrations to a
-species of mite. The aim was to determine whether the proportion of
-mites surviving was related to the concentration of the chemical and
-whether this relationship depended on the type of chemical the mites
-were exposed to. We will be using a binomial GLM again for this example,
-but this time we will be using it to model proportion data, from counts
-of “successes” (= mite survival, unless you don’t like mites), and
-“failures” (= mite death).</p>
+<div id="understand-the-data-that-youve-collected-plot-it"
+class="section level3">
+<h3>4. Understand the data that you’ve collected (plot it!)</h3>
+<p><br />
+</p>
+<p>Import the data file ‘mrse.txt’ into R and take a look at the
+structure of this dataframe. Given you have never seen this data before,
+it’s really important that you familiarise yourself with any
+nuances.</p>
+<p>Keep the tips and tricks you used in yesterday’s practical and feel
+free to use them again here; load in the data, check for any covariates
+you need to adjust, plot out the data, etc.</p>
+<p>A bit of advice for visualising <span
+class="math inline">\(Binomial\)</span> data; it can be easier to
+visualise if you create a new column in your dataset which is the
+proportion of success. You can calculate proportion as the number of
+successes divided by the number of trials (using the terminology of the
+<span class="math inline">\(Binomial\)</span> distribution). If in
+doubt, ask for help.</p>
+<p>Keep in mind that to run Binomial GLMs in R, we need both the number
+of successes (here, the number of patients with MRSE) but also the
+number of failures. We have the number with MRSE in the data already
+(<code>mrse</code>) but we don’t have number of failures. Instead we
+have the total number of patients (<code>total_patients</code>). It’s a
+good idea to create a column that contains failures (within context of
+MRSE, think of failure as those patients for whom the detection of MRSE
+“failed”).</p>
+<p>For the figures below, I am using a very commonly used <code>R</code>
+package, called <code>ggplot2</code>. This is entirely personal
+preference. It is entirely acceptable to use <code>base R</code> to do
+your plotting, so do not feel as though you must use
+<code>ggplot2</code>. If, however, you would like to, check out the
+Intro2R book, which contains a chapter on using <code>ggplot2</code>.
+Further, there are multiple ways to visualise data and also what
+questions you might want those figures to answer. The examples I include
+are just that. Examples.</p>
+<p><img src="GLM_2_Binomial_exercise_files/figure-html/Q4-1.png" width="672" /><img src="GLM_2_Binomial_exercise_files/figure-html/Q4-2.png" width="672" /><img src="GLM_2_Binomial_exercise_files/figure-html/Q4-3.png" width="672" /><img src="GLM_2_Binomial_exercise_files/figure-html/Q4-4.png" width="672" /><img src="GLM_2_Binomial_exercise_files/figure-html/Q4-5.png" width="672" /></p>
+<p><br />
+</p>
+</div>
+<div id="combine-into-a-model-that-can-answer-your-question."
+class="section level3">
+<h3>5. Combine into a model that can answer your question.</h3>
+<p><br />
+</p>
+<p>Having gone through the previous steps, it’s now time to run our
+first model. Given we had some practice yesterday, we can start with the
+model we want to actually run:</p>
+<p>Run the model now, using <code>glm()</code>.</p>
 <ul>
-<li>Variables:
+<li>Hints:
 <ul>
-<li><code>ID</code> index of the observations</li>
-<li><code>Concentration</code>: Concentration of the chemical</li>
-<li><code>Toxic</code>: Chemical type</li>
-<li><code>Dead_mites</code>: Number of dead mites in assay</li>
-<li><code>Total</code>: Initial number of mites in assay</li>
-<li><code>Proportion</code>= <code>Dead_mites / Total</code></li>
+<li>We use <code>family =</code> to specify the distribution in a
+<code>glm()</code>
+<ul>
+<li>“Family” is just an alternative way to refer to a distribution.</li>
+</ul></li>
+<li>Remember that for Binomial GLMs we must specify both success and
+failure
+<ul>
+<li>To do so, we use <code>cbind(success, fail)</code> replacing success
+and failure with your respective variables</li>
+</ul></li>
+<li>What is the default link function used by Binomial GLMs?
+<ul>
+<li>How do we specify it?</li>
+<li>Do we need to specify it?</li>
+</ul></li>
+<li>Use <code>?glm</code> if you’re stuck, or ask for help.</li>
 </ul></li>
 </ul>
-<p> </p>
-<p>As in previous exercises, either create a new R script (perhaps call
-it GLM_BinomProps) or continue with your previous R script in your
-RStudio Project. Again, make sure you include any metadata you feel is
-appropriate (title, description of task, date of creation etc) and don’t
-forget to comment out your metadata with a <code>#</code> at the
-beginning of the line.</p>
-<p> </p>
-<p>1. Import the data file ‘DrugsMites.txt’ into R. We want to model the
-variable Toxic as a categorical predictor with 4 levels, so create a new
-variable with Toxic as a factor.</p>
-<p> </p>
-<p> </p>
-<p>2. Perform the usual graphical data exploration, looking for
-outliers, relationships between predictors, and between response and
-predictors etc. You can use the variable <code>Proportion</code> in the
-data frame for these plots.</p>
-<p> </p>
-<p> </p>
-<p>3. In order to model the proportion of mites surviving, create a new
-variable (called something creative like Living_mites for example)
-representing the number of surviving mites by differencing the two
-variables Dead_mites and Total.</p>
-<p> </p>
-<p> </p>
-<p>4. We can now use this new variable when specifying a binomial GLM.
-Recall from the lecture that the response variable should be a data
-frame consisting of two columns, cbind(Living_mites, Dead_mites). Ask if
-in doubt. If you hate mites you could also swap the order of the two
-columns: you would then be modelling the proportion that die.</p>
-<p> </p>
-<p> </p>
-<p>5. Obtain summaries of the model output using the
-<code>summary()</code> function. Make sure you understand the
-mathematical and biological interpretation of the model, by writing down
-the complete model on paper (with distribution and link function). What
-biological hypothesis does each term imply, qualitatively?</p>
-<p> </p>
-<p> </p>
-<p>6. Do you need to check for overdispersion? If so, how do you do
-it?</p>
-<p> </p>
-<p> </p>
-<p>7. Do you need to perform model selection? What is the final
-model?</p>
-<p> </p>
-<p> </p>
-<p>8. Perform model validation: are you satisfied with the model?</p>
-<p> </p>
-<p> </p>
-<p>9. Obtain the fitted values from the model on the scale of the
-response, and plot to aid model interpretation. How do you interpret the
-results?</p>
-<p> </p>
-<p> </p>
-<p>10. (Optional) Include the 95 % CI on the plot above. You will need
-to obtain the fitted values and SE on the scale of the link function,
-calculate the CI and then back-transform.</p>
-<p> </p>
-<p> </p>
-<p>End of the Binomial (Proportions) GLM - mites survival</p>
+<p><br />
+</p>
+</div>
+<div id="check-your-assumptions." class="section level3">
+<h3>6. Check your assumption(s).</h3>
+<p><br />
+</p>
+<p>Having run the model, we now need to check how well this model meets
+the assumptions.</p>
+<p>To do so, we can check the model diagnostic plots, as well as check
+for dispersion. Do so now.</p>
+<p>For the diagnostic plots:</p>
+<ul>
+<li>Residuals vs Fitted
+<ul>
+<li>What kind of pattern would we expect?</li>
+</ul></li>
+<li>Q-Q Residuals
+<ul>
+<li>Are we expecting Normally distribted error with a Poisson
+distribution?</li>
+</ul></li>
+<li>Scale-Location
+<ul>
+<li>What kind of pattern would we expect?</li>
+</ul></li>
+<li>Residuals vs Leverage
+<ul>
+<li>Are any observations having a strong influence on the model
+fit?</li>
+</ul></li>
+</ul>
+<p><img src="GLM_2_Binomial_exercise_files/figure-html/Q6-1.png" width="672" /></p>
+<p><br />
+</p>
+</div>
+<div id="interpret-your-model." class="section level3">
+<h3>7. Interpret your model.</h3>
+<p><br />
+</p>
+<p>Using <code>summary()</code>, go through each <code>Estimate</code>
+and provide an interpretation of what it means scientifically. E.g. what
+does the <code>n_staff</code> <code>Estimate</code> mean?</p>
+<p><br />
+</p>
+</div>
+<div id="create-figures-to-show-predicted-relationships."
+class="section level3">
+<h3>8. Create figures to show predicted relationships.</h3>
+<p><br />
+</p>
+<p>In the <span class="math inline">\(Poisson\)</span> exercise, we
+relied on <code>packages</code> to make our figures for us. In today’s
+exercise, we’ll do these ourselves so that we get the freedom to make
+any aesthetic changes we might want, or to make show predictions
+according to specific circumstances. Doing so, inevitably, will require
+more work on our side though.</p>
+<p>For started, we need a “new” dataset that contains covariate values
+that we want to use to make predictions. In the lecture, I showed a
+trick we can use to do so, by using the <code>expand.grid()</code>
+function. Using this we’ll start off by making a dataset to show the
+relationship for <code>capacity</code>, and then afterwards, do this
+again to show the relationship for the interaction between
+<code>policy</code> and <code>n_staff</code>. Regardless of which
+prediction we are doing, we must provide values for all covariates in
+the model, even those we don’t necessarily want to show. For
+<code>capacity</code>, we can create our fake dataset using the
+following code:</p>
+<pre><code># Create a fake dataset to feed into our model equation
+synth_data &lt;- expand.grid(
+  # Set n_staff to median (22 staff)
+  n_staff = median(icu$n_staff), 
+  # We have to set policy to either Not implemented or Implemented
+  policy = &quot;Implemented&quot;,        
+  capacity = seq(
+    # We create a sequence from the minimum capacity observered
+    from = min(icu$capacity), 
+    # To the maximum capacity observed
+    to = max(icu$capacity),   
+    # And request 20 values across that range
+    length.out = 20))         </code></pre>
+<p>We can then use this new <em>synthetic</em> dataset to create
+predictions of proportion of MRSE positive patients using the
+<code>predict()</code> function. The <code>predict()</code> function
+takes our model equation (with the estimated parameter values) and
+combines this with either the original data (if we did not supply a
+synthetic dataset) or with a synthetic data (if you do supply a
+synthetic dataset) to calculate the expected MRSE proportions, given the
+respective covariate values.</p>
+<pre><code>synth_data$pred &lt;- predict(mod1, newdata = synth_data)</code></pre>
+<p>A hint: we can tell the <code>predict()</code> function to use the
+inverse link function automatically when making the predictions, so we
+don’t need to by setting <code>type = "response"</code> or else we could
+always do this manually by using the inverse link function (here <span
+class="math inline">\(\frac{e^x}{(1+e^x)}\)</span>, or
+<code>plogis()</code> in <code>R</code>) such that our predicted values
+are on the response scale.</p>
+<pre><code>synth_data$pred &lt;- predict(mod1, newdata = synth_data, type = &quot;response&quot;)
+# Or
+synth_data$pred &lt;- plogis(predict(mod1, newdata = synth_data))</code></pre>
+<p>Once done, we can use our new synthetic data and predicted MRSE
+prevalence to create a figure that shows the relationships for
+capacity.</p>
+<pre><code># Plot the raw data
+plot(icu$capacity, icu$proportion, xlab= &quot;Ward capacity&quot;, ylab= &quot;Proportion of patients with MRSE&quot;)
+# And add a line to show our predicted model fit
+lines(synth_data$pred ~ synth_data$capacity, lty = 1, col = 1)</code></pre>
+<p>Your figure should look like:</p>
+<p><img src="GLM_2_Binomial_exercise_files/figure-html/Q8.1-1.png" width="672" /></p>
+<p>Now for the harder part of the model. We’ll need to go through the
+same steps as above, but this time making tweaks to show the interaction
+between <code>policy</code> and <code>n_staff</code>.</p>
+<p>Hint: the biggest “part” here is creating the synthetic data such
+that we can show the <code>n_staff</code> relationship for <em>both</em>
+levels of <code>policy</code>, but doing so, requires only two small
+changes to the <code>expand.grid()</code> code.</p>
+<p>Give it a go, but if you’re struggling, ask for help. This is a tough
+one.</p>
+<p><br />
+</p>
+</div>
+<div id="uncertainty" class="section level3">
+<h3>9. Uncertainty</h3>
+<p><br />
+</p>
+<p>Blah</p>
+<p><br />
+</p>
+</div>
+<div id="the-monkeys-paw" class="section level3">
+<h3>10. The Monkey’s Paw</h3>
+<p><br />
+</p>
+<p>Think back to the very first lecture where we spoke about the four
+broad assumptions. The first was the assumption of <em>Validity</em>.
+For the data that we’ve been modelling here, we’ve constantly spoken
+about how many patients were MRSE positive. But is that accurate? In
+truth, we actually don’t know how many patients were actually MRSE
+positive. All we know is how many <em>tested</em> positive. In order for
+a patient to be declared MRSE positive, there are quite a few tests that
+have to be done, and at minimum number must come back positive before
+declaring MRSE - meaning lots of tests where we can get
+false-negatives.</p>
+<p>So. What we’re actually asking with our models here is not “What
+proportion of patients are MRSE positive?”. Instead, we’re asking “What
+proportion of patients are MRSE positive <em>and also</em> tested
+positive?”. This might seem like a trivial difference, but just as in
+the coffee example in the first lecture, the deterministic process
+underlying why a sample tests positive or not is more complex than
+simply the true MRSE state. How reliable are the tests? Was the lab
+technician tired? Had they just broken up with their partner, and so
+were very distracted when running the test? Was the result correctly
+recorded? Plus no shortage of other variables that influenced the
+probability of whether or not a sample tested positive.</p>
+<p>Mathematically, we would say there are two probabilities at play here
+which combine to give a single probability (and outcome). The
+probability that a patient is actually MRSE positive is multiplied by
+the probability MRSE was detected, given they were MRSE positive. With
+the data we have, it’s impossible to disentangle these two probabilities
+(though there are sampling and corresponding statistical methods to do
+just that), so we’re left explaining the combined probabilities rather
+than the one we’re actually interested in - whether or not a patient is
+MRSE positive.</p>
+<p>This example of violating the assumption of <em>Validity</em> is
+possibly one of the most common ways I see it being broken, and it can
+be really hard to identify. It can be even harder to convince people
+they have broken it. Certainly, there are no statistical tests we can
+perform to test for it, and not much we can do having already collected
+the data. The only way to catch it, is to 1) know about it, and 2) think
+<em>very, very</em> carefully about what the data actually is.</p>
+<p>This is why the first part of your analysis <em>must</em> be sitting
+back and thinking about your data and research question. Without that
+step… The Monkey’s Paw awaits.</p>
+<p><br />
+</p>
+</div>
+<div id="optional-exploring-model-diagnostics" class="section level3">
+<h3>11. (Optional) Exploring model diagnostics</h3>
+<p>As in the <span class="math inline">\(Poisson\)</span> exercise,
+below I include code to simulate a <span
+class="math inline">\(Binomial\)</span> dataset to allow you to explore
+the impact of sample size, model misspecification, and effect size, on
+model diagnostic plots. The <em>Data Generating Process</em> (DGP) for
+the dataset is:</p>
+<p><span class="math inline">\(y_i \sim Binomial(p_i, k_i)\)</span></p>
+<p><span class="math inline">\(logit(p_i) = \beta_0 + \beta_1 \times
+x_{1,i} + \beta_2 \times x_{2,i} + \beta_3\times x_{3,i} + \beta_4
+\times x_{1, i} \times x_{2,i}\)</span></p>
+<p>where you are free to decide what the values for the parameters
+(<span class="math inline">\(\beta_{0,...,4}\)</span>) are. Note that
+given you’ve now run a model that included an interaction, the DGP also
+includes an interaction between <span class="math inline">\(x_1\)</span>
+and <span class="math inline">\(x_2\)</span></p>
+<p>Rerun the simulation and analysis varying the sample size
+(e.g. <code>N &lt;- 1000</code>), the effect sizes
+(e.g. <code>beta_0 &lt;- 10</code>) or the formula of the
+<code>glm()</code> (e.g. remove the interaction). Check what effect this
+has on dispersion and the model diagnostic plots.</p>
+<pre><code># Set your seed to have the randomness be cosnsitent each time you run the code
+# You can change this, or comment it out, if you want to embrase the randomness
+set.seed(1234)
+
+# Set your sample size
+N &lt;- 500
+
+# Set the number of trials
+k &lt;- 10
+
+# Create three continuous covariates
+x1 &lt;- runif(N, 0, 10)
+x2 &lt;- runif(N, 0, 10)
+x3 &lt;- runif(N, 0, 10)
+
+# Set your parameter values
+beta_0 &lt;- 2.5   # This is the intercept (on link scale)
+beta_1 &lt;- 0.2   # This is the slope for the x1 variable (on link scale)
+beta_2 &lt;- -1.3  # This is the slope for the x2 variable (on link scale)
+beta_3 &lt;- 0.4   # This is the slope for the x3 variable (on link scale)
+beta_4 &lt;- 0.05  # The combined effect of x1 and x2 (on link scale)
+
+# Generate your linear predictor on the link scale (i.e. log)
+# We don&#39;t actually need to use log() here (it&#39;s already on the link scale)
+linear_predictor_link &lt;- beta_0 + beta_1 * x1 + beta_2 * x2 + beta_3 * x3 + beta_4 * x1 * x2
+
+# Backtransform your linear predictor to the response scale (i.e. exponentiate)
+linear_predictor_response &lt;- plogis(linear_predictor_link)
+
+# Generate your response variable using a Poisson random number generator (rpois)
+y &lt;- rbinom(N, size = k, prob = linear_predictor_response)
+
+# Note that the above three lines of code are the equivalent to the equations:
+# y ~ Binomial(p, k)
+# logit(p) = beta_0 + beta_1 * x1 + beta_2 * x2 + beta_3 * x3 + beta_4 * x1 * x2
+
+# Store your data in a dataframe
+dat &lt;- data.frame(y, x1, x2, x3)
+
+# Run a Poisson GLM
+fit &lt;- glm(y ~ x1 + x2 + x3 + x1 : x2, 
+           data = dat, 
+           family = poisson)
+
+# See if the model was able to estimate your parameter values 
+# and what the dispersion is
+summary(fit)
+
+# See how well the model diagnostics perform
+par(mfrow = c(2,2))
+plot(fit)</code></pre>
+<p><strong>End of the Binomial GLM - understanding Multi-drug Resistance
+<em>Staphylococcus epidermidis</em></strong></p>
+</div>
 </div>
 
 

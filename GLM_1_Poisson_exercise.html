@@ -11,7 +11,7 @@
 
 
 
-<title>Exercise</title>
+<title>Day 1: Poisson GLMs</title>
 
 <script src="site_libs/header-attrs-2.25/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -378,7 +378,7 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Exercise</h1>
+<h1 class="title toc-ignore">Day 1: Poisson GLMs</h1>
 
 </div>
 
@@ -405,7 +405,9 @@ element).</p></li>
 </ol>
 <p><br />
 </p>
-<p>1. Know your research question!</p>
+<div id="know-your-research-question" class="section level3">
+<h3>1. Know your research question!</h3>
+<p> </p>
 <p>The researchers who collected this data wanted to describe the
 relationships between the number of species (<code>Species</code>)
 present in a plot of land, and how this number was associated with the
@@ -416,7 +418,12 @@ researchers were interested in describing the associations between
 species and the two explanatory variables. In total, the researchers
 collected data from 90 plots of land (<span class="math inline">\(n =
 90\)</span>), where each observation is from a single plot.</p>
-<p>2. Think about your response variable (the stochastic element).</p>
+<p> </p>
+</div>
+<div id="think-about-your-response-variable-the-stochastic-element."
+class="section level3">
+<h3>2. Think about your response variable (the stochastic element).</h3>
+<p> </p>
 <p>From the information provided in the brief above, we are already able
 to determine a suitable distribution to use when fitting the model (the
 fact that this practical is called Poisson GLM may also offer a rather
@@ -436,8 +443,13 @@ a <span class="math inline">\(Poisson\)</span> distribution with rate
 <span class="math inline">\(\lambda\)</span>.</p>
 <p><br />
 </p>
-<p>3. Think about the process behind the data (the deterministic
-element).</p>
+</div>
+<div
+id="think-about-the-process-behind-the-data-the-deterministic-element."
+class="section level3">
+<h3>3. Think about the process behind the data (the deterministic
+element).</h3>
+<p> </p>
 <p>Spare a moment’s thought to how complex the process behind the number
 of plant species present in a plot of land will be. How much sunlight
 does each plot get? How much rainfall? What seeds were already present
@@ -473,7 +485,11 @@ class="math inline">\(\beta_0\)</span>). We are able to specify which
 group becomes our reference and we’ll do this later on, such that
 <code>low</code> is our reference point.</p>
 <p> </p>
-<p>4. Understand the data that you’ve collected (plot it!)</p>
+</div>
+<div id="understand-the-data-that-youve-collected-plot-it"
+class="section level3">
+<h3>4. Understand the data that you’ve collected (plot it!)</h3>
+<p> </p>
 <p>We now get to the part where we’ll actually start using
 <code>R</code>. A plea though - do not underestimate the value in taking
 the time to think carefully about the previous steps. Spending the time
@@ -522,9 +538,13 @@ of doing this is to store the names of the variables of interest in a
 vector <code>VOI&lt;- c("Var1", "Var2", ...)</code> and then use the
 list of variable names to subset the variables that get plotted
 (e.g. <code>pairs(Mydata[, VOI])</code>)</p>
-<p> </p>
 <p><img src="GLM_1_Poisson_exercise_files/figure-html/Q4-1.png" width="672" /><img src="GLM_1_Poisson_exercise_files/figure-html/Q4-2.png" width="672" /></p>
-<p>5. Combine into a model that can answer your question.</p>
+<p> </p>
+</div>
+<div id="combine-into-a-model-that-can-answer-your-question."
+class="section level3">
+<h3>5. Combine into a model that can answer your question.</h3>
+<p> </p>
 <p>Having gone through the previous steps, it’s now time to run our
 first model. Given this is the first practical session, we’ll start with
 a simple model for the sake of pedagogy, where we explore how species
@@ -533,7 +553,11 @@ richness is related with biomass.</p>
 model.</p>
 <p>Hint: You can always use the more complex model, written in steps 2
 and 3, and simplify it to match the first model we’ll run.</p>
-<p>6. Fit the model.</p>
+<p> </p>
+</div>
+<div id="fit-the-model." class="section level3">
+<h3>6. Fit the model.</h3>
+<p> </p>
 <p>To warm up, let’s start by using this simpler model, where we assume
 that the number <code>Species</code> counted in a plot is a function of
 how much <code>Biomass</code> there was. We’ll leave <code>pH</code> out
@@ -556,7 +580,10 @@ of the model for the time being.</p>
 </ul></li>
 </ul>
 <p> </p>
-<p>7. Check your assumption(s).</p>
+</div>
+<div id="check-your-assumptions." class="section level3">
+<h3>7. Check your assumption(s).</h3>
+<p> </p>
 <p>Having run the model, we now need to check how well this model meets
 the assumptions.</p>
 <p>To do so, we can check the model diagnostic plots, as well as check
@@ -583,7 +610,11 @@ fit?</li>
 </ul></li>
 </ul>
 <p><img src="GLM_1_Poisson_exercise_files/figure-html/Q7-1.png" width="672" /></p>
-<p>8. Answer your question</p>
+<p> </p>
+</div>
+<div id="answer-your-question" class="section level3">
+<h3>8. Answer your question</h3>
+<p> </p>
 <p>Hopefully you identified issues that mean we should be very cautious
 with interpreting this model. For now, we’ll put these concerns to rest
 (we will come back to them), and use this model as an opportunity to
@@ -638,11 +669,17 @@ prediction.</p>
 issues). If we stopped here, we’d conclude that biomass has a negative
 association with the number of plant species, while also reporting that
 this model has a variety of issues.</p>
+<p> </p>
 <p>8.6. (Optional): The figure we have produced looks pretty jagged. If
 we wanted a smoother line to be drawn, how would we do so?</p>
+<p> </p>
 <p><img src="GLM_1_Poisson_exercise_files/figure-html/Q8.6-1.png" width="672" /></p>
 <p> </p>
-<p>9. We’ve run a Poisson GLM where <code>Species</code> is explained by
+</div>
+<div id="including-ph-in-the-model" class="section level3">
+<h3>9. Including <code>pH</code> in the model</h3>
+<p> </p>
+<p>We’ve run a Poisson GLM where <code>Species</code> is explained by
 <code>Biomass</code>, but there are two problems. The first is that our
 model diagnostics suggested we are not meating our assumptions well. The
 second is that our initial research question sought to describe the
@@ -653,8 +690,12 @@ address both issues with the appropriate model.</p>
 <code>Species</code> is a function of <code>Biomass</code> and
 <code>pH</code>.</p>
 <p> </p>
-<p>10. With every new model we run, we need to diagnose that model.
-We’ve already done that once, so let’s quickly do it again.</p>
+</div>
+<div id="re-diagnose" class="section level3">
+<h3>10. Re-diagnose</h3>
+<p> </p>
+<p>With every new model we run, we need to diagnose that model. We’ve
+already done that once, so let’s quickly do it again.</p>
 <p>For the diagnostic plots:</p>
 <ul>
 <li>Residuals vs Fitted
@@ -679,52 +720,89 @@ fit?</li>
 </ul></li>
 </ul>
 <p><img src="GLM_1_Poisson_exercise_files/figure-html/Q10-1.png" width="672" /></p>
-<p>11. Now that we’ve fit a model that answers our question and checked
-that we are meeting the assumptions reasonably well, let’s begin the
-process of interpreting what the results mean. For starters, given this
-is a more complex model, let’s take it slowly and make sure we
-understand what each parameter estimate means.</p>
+<p> </p>
+</div>
+<div id="model-interpretation" class="section level3">
+<h3>11. Model interpretation</h3>
+<p> </p>
+<p>Now that we’ve fit a model that answers our question and checked that
+we are meeting the assumptions reasonably well, let’s begin the process
+of interpreting what the results mean. For starters, given this is a
+more complex model, let’s take it slowly and make sure we understand
+what each parameter estimate means.</p>
 <p>Using <code>summary()</code>, identify what each parameter means.</p>
 <p> </p>
+</div>
+<div
+id="create-full-predictions-and-a-figure-to-visualise-your-relationship"
+class="section level3">
+<h3>12. Create full predictions and a figure to visualise your
+relationship</h3>
 <p> </p>
-<p>13. Create full predictions and a figure to visualise your
-relationship</p>
-<p>To visualise the relationship, we can use the same technique that we
-used for the model with just biomass, but now extend it to include the
-differing levels of pH. In addition, rather than manually writing out
-the equation (and possibly making mistakes), we can use the
-<code>predict()</code> function to just do it for us.</p>
-<p>All we need is a dataset that contains values we want to use to make
-predictions (just like how we created “fake” biomass values in section
-8). A trick we can use here is to make use of the
-<code>expand.grid()</code> function, to create a new dataset that has a
-sequence of biomass values, that is replicated for each level of pH. To
-do so, we need to specify the range of values for both
-<code>biomass</code> and <code>ph</code>. We already did this for
-<code>biomass</code>, and it’s pretty easy to do for <code>ph</code> as
-well: <code>c("Low", "Medium", "High")</code>. All together, your code
-might look something like:</p>
-<pre><code>synth_data &lt;- expand.grid(
-  Biomass = seq(from = min(dat$Biomass), to = max(dat$Biomass), length.out = 5), 
-  pH = c(&quot;low&quot;, &quot;mid&quot;, &quot;high&quot;))</code></pre>
-<p>We can then use this new <em>synthetic</em> dataset to create
-predictions of species richness using <code>predict()</code> function.
-The <code>predict()</code> function takes the model equation (with the
-estimated parameter values) and combines this with either the original
-data (if you do not supply a synthetic dataset) or with synthetic data
-(if you do supply a synthetic dataset) to calculate the expected species
-richness, given the respective covariate values.</p>
-<pre><code>synth_data$pred &lt;- predict(sp.glm2, newdata = synth_data)</code></pre>
-<p>A hint: we can tell the <code>predict()</code> function to use the
-inverse link function automatically when making the predictions, so we
-don’t need to by setting <code>type = "response"</code> or else we could
-always do this manually by exponentiating our predicted values (note for
-the tomorrow’s lecture, you shouldn’t use <code>type = "response"</code>
-if you are going to create 95% CI - more tomorrow).</p>
-<pre><code>synth_data$pred &lt;- predict(sp.glm2, newdata = synth_data, type = &quot;response&quot;)</code></pre>
-<p>Once done, use your new synthetic data and predicted species richness
-to create a figure that shows the relationships for pH and biomass.</p>
-<p>14. (Optional) Exploring model diagnostics</p>
+<p>To visualise the relationship, we could use the same technique that
+we used for the model with just biomass and extend it to include the
+differing levels of pH. To do so, however, requires a few steps that we
+cover in more detail in the <span
+class="math inline">\(Binomial\)</span> GLM lecture. Instead, whatwe can
+do is make use of our choice of <code>R</code> packages to create the
+predictions for us.</p>
+<p>Using these packages has the benefit of making our lives simpler but
+there are costs associated with using them. The first, and more
+important for this stage of your learning, is that it obscures and
+mystifies how these predictions are actually made. The second, and more
+important for when you get to making publication quality figures, is
+that these packages lock you into someone else’s aesthetic choices.
+Sometimes, these choices are OK, but for myself I definitely prefer to
+make figures the way I like them. Regardless, these packages are useful,
+and especially early on in analysis I will often use them to get a sense
+of what the predictions look like, before then remaking them according
+to my own tastes.</p>
+<p>For this part of the exercise, we’ll use the <code>ggeffects</code>
+<code>R</code> packages to create the predictions and associated
+figures, but be aware there are alternative options that you may
+prefer.</p>
+<p>To start, we need to install the <code>ggeffects</code> package, and
+then load it. The code to do so is:</p>
+<pre><code>install.packages(&quot;ggeffects&quot;)
+library(ggeffects)</code></pre>
+<p>From there, it’s a relatively easy process to get the figures we
+want. The core function we use is called <code>ggpredict()</code>, for
+which we need to supply the model name, and then the explanatory
+variable we want to create the prediction for, and then plot it.</p>
+<p>Note that there are two nice thing that <code>ggeffects</code> does
+automatically that makes life a little easier. The first is that the
+package will backtransform our linear prediction (<span
+class="math inline">\(\lambda\)</span>) to the response scale, meaning
+the figures are easier to interpret! The second is that it calculates
+and adds in 95% confidence intervals automatically, too. We’ll cover how
+to get 95% confidence intervals in the next lecture, but for now just
+appreciate that it’s being handled for you by
+<code>ggeffects</code>.</p>
+<p>For example, assume we want a figure that shows the predicted
+relationship between Species Richness and Biomass (similar to the one we
+may by hand above), on the response scale, the corresponding code would
+be:</p>
+<pre><code>bio_pred &lt;- ggpredict(sp.glm2, terms = &quot;Biomass&quot;)
+plot(bio_pred)</code></pre>
+<p>Use <code>ggeffects</code> now to create a figure to show the
+prediceted relationships for both covariates in our model.</p>
+<p><img src="GLM_1_Poisson_exercise_files/figure-html/Q12-1.png" width="672" /><img src="GLM_1_Poisson_exercise_files/figure-html/Q12-2.png" width="672" /></p>
+<p>And just like that, we have figures that can show our predicted
+relationships from our model.</p>
+<p>At this point, we’re pretty much done. We started off with a simple
+model which we used diagnostic plots to determine that that version of
+the model had various issues. We resolved those issues by adding in an
+additional explanatory variable (but note this will not always work, and
+there are risks associated with adding variables to a model, see the
+Bernoulli lecture). We then interpreted our results and used these to
+create predictions to make our results more intuitive. All that remains
+is to write up the pre-print, paper, report, blog post, whatever, to
+share our findings with a broader audience.</p>
+<p> </p>
+</div>
+<div id="optional-exploring-model-diagnostics" class="section level3">
+<h3>13. (Optional) Exploring model diagnostics</h3>
+<p> </p>
 <p>One of the most challenging aspects in learning GLMs is determining
 if there is a problem in model diagnostics. Overwhelmingly, this is
 because a lot identifying issues relies on gaining enough experience to
@@ -786,7 +864,7 @@ y &lt;- rpois(N, lambda = linear_predictor_response)
 
 # Note that the above three lines of code are the equivalent to:
 # y ~ Poisson(lambda)
-# log(lambda) = beta_0 + beta_1 * x1 + beta_2 * x2
+# log(lambda) = beta_0 + beta_1 * x1 + beta_2 * x2 + beta_3 * x3
 
 # Store your data in a dataframe
 dat &lt;- data.frame(y, x1, x2, x3)
@@ -805,6 +883,7 @@ par(mfrow = c(2,2))
 plot(fit)</code></pre>
 <p><strong>End of the Poisson GLM - predicting species richness
 exercise</strong></p>
+</div>
 </div>
 
 
