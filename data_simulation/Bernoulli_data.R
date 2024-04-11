@@ -1,7 +1,7 @@
 seed <- 1988
 set.seed(seed)
 
-N <- 50000
+N <- 30000
 
 # Netflix has data on 50000 users who had never seen lord of the rings
 # Want to predict if user will watch lotr
@@ -15,31 +15,23 @@ N <- 50000
 
 # Covariates --------------------------------------------------------------
 age <- round(rgamma(N, shape = 15, rate = 0.5), digits = 0)
-hist(age)
 genre_likes <- rpois(N, lambda = 2)
-hist(genre_likes)
 actor_likes <- rpois(N, lambda = 3)
-hist(actor_likes)
 similar_user_ratings <- rbeta(N, shape1 = 3, shape2 = 1.5)
-hist(similar_user_ratings)
 mean_time_genre <- rnorm(N, mean = 120, sd = 60)
 mean_time_genre <- ifelse(mean_time_genre < 0, 0, mean_time_genre)
-hist(mean_time_genre)
 user_time <- factor(sample(c("Morning", "Afternoon", "Evening"), 
                            size = N, replace = TRUE, 
                            prob = c(0.1, 0.3, 0.6)),
                     levels = c("Morning", "Afternoon", "Evening"))
-plot(user_time)
 user_day <- factor(sample(c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"), 
                           size = N, replace = TRUE, 
                           prob = c(0.11, 0.09, 0.1, 0.12, 0.18, 0.19, 0.21)),
                    levels = c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"))
-plot(user_day)
 user_device <- factor(sample(c("TV", "Mobile Device", "PC", "Gaming Device"), 
                              size = N, replace = TRUE, 
                              prob = c(0.68, 0.14, 0.08, 0.1)),
                       levels = c("TV", "Mobile Device", "PC", "Gaming Device"))
-plot(user_device, xlab = "How users watch")
 
 netflix <- data.frame(age, genre_likes, actor_likes, similar_user_ratings, mean_time_genre, user_time, user_day, user_device)
 
@@ -88,11 +80,12 @@ netflix$Gaming <- ifelse(netflix$user_device == "Gaming Device", 1, 0)
 # PC
 # Gaming
 
-b0 <- -8
-b1 <- 0.05 # age slope
-b2 <- 0.08 # genre_likes slope
-b3 <- 0.1 # actor_likes slope
-b4 <- 2.5  # similar_user_ratings slope
+b0 <- -10
+b1 <- 0.25 # age slope
+b1.1 <- -0.01 # age quadratic
+b2 <- 0.12 # genre_likes slope
+b3 <- 0.08 # actor_likes slope
+b4 <- 13.2  # similar_user_ratings slope
 b5 <- 0.02 # mean_time_genre
 b6 <- 0.2 # Afternoon
 b7 <- 0.8 # Evening
@@ -108,6 +101,7 @@ b16 <- -1.2 # Gaming
 
 netflix$lotr <- rbinom(N, size = 1, prob = plogis(b0 + 
                                                     b1 * netflix$age +
+                                                    b1.1 * netflix$age^2 +
                                                     b2 * netflix$genre_likes + 
                                                     b3 * netflix$actor_likes + 
                                                     b4 * netflix$similar_user_ratings + 
@@ -127,41 +121,53 @@ netflix$lotr <- rbinom(N, size = 1, prob = plogis(b0 +
 
 netflix <- netflix[,c(1:8, 23)]
 
+# Red herring variables ---------------------------------------------------
+netflix$premium <- factor(ifelse(rbinom(nrow(netflix), size = 1, prob = 0.2) == 1, "Premium", "Standard"))
+netflix$fam_members <- rpois(nrow(netflix), lambda = 2)
+netflix$country <- factor(sample(c("USA", "UK", "Germany", "France", "Japan", "New Zealand", "Mexico"), 
+                                 size = nrow(netflix), replace = TRUE, 
+                                 prob = c(0.32, 0.19, 0.16, 0.14, 0.02, 0.05, 0.12)),
+                          levels = c("USA", "UK", "Germany", "France", "Japan", "New Zealand", "Mexico"))
+head(netflix)
+
+test_data <- netflix[15001:30000,]
+netflix <- netflix[1:15000,]
+
 library(ggplot2)
-ggplot(netflix) +
-  geom_jitter(aes(x = age, y = lotr))
+p1 <- ggplot(netflix) +
+  geom_jitter(aes(x = age, y = lotr), alpha = 0.1)
+p2 <- ggplot(netflix) +
+  geom_jitter(aes(x = genre_likes, y = lotr), alpha = 0.1)
+p3 <- ggplot(netflix) +
+  geom_jitter(aes(x = actor_likes, y = lotr), alpha = 0.1)
+p4 <- ggplot(netflix) +
+  geom_jitter(aes(x = similar_user_ratings, y = lotr), alpha = 0.1)
+p5 <- ggplot(netflix) +
+  geom_jitter(aes(x = mean_time_genre, y = lotr), alpha = 0.1)
+p6 <- ggplot(netflix) +
+  geom_jitter(aes(x = user_time, y = lotr), alpha = 0.1)
+p7 <- ggplot(netflix) +
+  geom_jitter(aes(x = user_day, y = lotr), alpha = 0.1)
+p8 <- ggplot(netflix) +
+  geom_jitter(aes(x = user_device, y = lotr), alpha = 0.1)
+p9 <- ggplot(netflix) +
+  geom_jitter(aes(x = premium, y = lotr), alpha = 0.1)
+p10 <- ggplot(netflix) +
+  geom_jitter(aes(x = fam_members, y = lotr), alpha = 0.1)
+p11 <- ggplot(netflix) +
+  geom_jitter(aes(x = country, y = lotr), alpha = 0.1)
 
-panel.hist <- function(x, ...)
-{
-  usr <- par("usr")
-  par(usr = c(usr[1:2], 0, 1.5) )
-  h <- hist(x, plot = FALSE)
-  breaks <- h$breaks; nB <- length(breaks)
-  y <- h$counts; y <- y/max(y)
-  rect(breaks[-nB], 0, breaks[-1], y, col = "cyan", ...)
-}
 
-panel.cor <- function(x, y, digits = 2, prefix = "", cex.cor, ...)
-{
-  par(usr = c(0, 1, 0, 1))
-  r <- abs(cor(x, y))
-  txt <- format(c(r, 0.123456789), digits = digits)[1]
-  txt <- paste0(prefix, txt)
-  if(missing(cex.cor)) cex.cor <- 0.8/strwidth(txt)
-  text(0.5, 0.5, txt, cex = cex.cor * r)
-}
-
-pairs(netflix[,c("age", "genre_likes", "actor_likes", "similar_user_ratings", "mean_time_genre")], 
-      upper.panel = panel.cor, 
-      diag.panel = panel.hist)
-
-#write.table(mrse, "data//mrse.txt", row.names = FALSE)
+library(patchwork)
+p1 + p2 + p3 + p4 + p5 + p6 + p7 + p8 + p9 + p10 + p11
 
 mod1 <- glm(lotr ~ .,
             data = netflix,
             family = binomial)
-
+par(mfrow = c(2,2))
+plot(mod1)
+par(mfrow = c(1,1))
 summary(mod1)
 drop1(mod1)
 
-plot(ggeffects::ggpredict(mod1))
+#write.table(mrse, "data//mrse.txt", row.names = FALSE)
