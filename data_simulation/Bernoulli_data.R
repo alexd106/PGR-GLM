@@ -1,7 +1,7 @@
 seed <- 1988
 set.seed(seed)
 
-N <- 30000
+N <- 10000
 
 # Netflix has data on 50000 users who had never seen lord of the rings
 # Want to predict if user will watch lotr
@@ -34,8 +34,6 @@ user_device <- factor(sample(c("TV", "Mobile Device", "PC", "Gaming Device"),
                       levels = c("TV", "Mobile Device", "PC", "Gaming Device"))
 
 netflix <- data.frame(age, genre_likes, actor_likes, similar_user_ratings, mean_time_genre, user_time, user_day, user_device)
-
-head(netflix)
 
 netflix$similar_user_ratings <- round(netflix$similar_user_ratings, digits = 2)
 netflix$mean_time_genre <- round(netflix$mean_time_genre, digits = 1)
@@ -130,33 +128,42 @@ netflix$country <- factor(sample(c("USA", "UK", "Germany", "France", "Japan", "N
                           levels = c("USA", "UK", "Germany", "France", "Japan", "New Zealand", "Mexico"))
 head(netflix)
 
-test_data <- netflix[15001:30000,]
-netflix <- netflix[1:15000,]
+# test_data <- netflix[15001:30000,]
+# netflix <- netflix[1:15000,]
 
 library(ggplot2)
 p1 <- ggplot(netflix) +
   geom_jitter(aes(x = age, y = lotr), alpha = 0.1)
+
 p2 <- ggplot(netflix) +
   geom_jitter(aes(x = genre_likes, y = lotr), alpha = 0.1)
+
 p3 <- ggplot(netflix) +
   geom_jitter(aes(x = actor_likes, y = lotr), alpha = 0.1)
+
 p4 <- ggplot(netflix) +
   geom_jitter(aes(x = similar_user_ratings, y = lotr), alpha = 0.1)
+
 p5 <- ggplot(netflix) +
   geom_jitter(aes(x = mean_time_genre, y = lotr), alpha = 0.1)
+
 p6 <- ggplot(netflix) +
   geom_jitter(aes(x = user_time, y = lotr), alpha = 0.1)
+
 p7 <- ggplot(netflix) +
   geom_jitter(aes(x = user_day, y = lotr), alpha = 0.1)
+
 p8 <- ggplot(netflix) +
   geom_jitter(aes(x = user_device, y = lotr), alpha = 0.1)
+
 p9 <- ggplot(netflix) +
   geom_jitter(aes(x = premium, y = lotr), alpha = 0.1)
+
 p10 <- ggplot(netflix) +
   geom_jitter(aes(x = fam_members, y = lotr), alpha = 0.1)
+
 p11 <- ggplot(netflix) +
   geom_jitter(aes(x = country, y = lotr), alpha = 0.1)
-
 
 library(patchwork)
 p1 + p2 + p3 + p4 + p5 + p6 + p7 + p8 + p9 + p10 + p11
@@ -167,6 +174,15 @@ mod1 <- glm(lotr ~ .,
 par(mfrow = c(2,2))
 plot(mod1)
 par(mfrow = c(1,1))
+netflix$resid <- resid(mod1, type = "pearson")
+arm::binnedplot(x = netflix$age, y = netflix$resid, nclass = 10)
+arm::binnedplot(x = netflix$fam_members, y = netflix$resid, nclass = 10)
+arm::binnedplot(x = netflix$mean_time_genre, y = netflix$resid, nclass = 10)
+arm::binnedplot(x = netflix$similar_user_ratings, y = netflix$resid, nclass = 10)
+arm::binnedplot(x = netflix$actor_likes, y = netflix$resid, nclass = 10)
+arm::binnedplot(x = netflix$genre_likes, y = netflix$resid, nclass = 10)
+
+
 summary(mod1)
 drop1(mod1)
 
