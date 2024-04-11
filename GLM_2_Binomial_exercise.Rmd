@@ -15,6 +15,7 @@ knitr::opts_chunk$set(echo=TRUE, message = FALSE, warning = FALSE, eval = FALSE,
 
 SOLUTIONS <- FALSE
 
+# Simulating data for time being
 seed <- 1988
 set.seed(seed)
 
@@ -38,7 +39,7 @@ mrse <- rbinom(N_hosp, size = N_pat, prob = plogis(b0 +
                                                      b4 * capacity))
 
 policy_f <- ifelse(policy == 1, "Implemented", "Not implemented")
-df$policy <- factor(df$policy, levels = c("Implemented", "Not implemented"))
+policy <- factor(policy_f, levels = c("Implemented", "Not implemented"))
 mrse <- data.frame(mrse, total_patients = N_pat, n_staff = staff, policy = policy_f, capacity)
 
 ```
@@ -53,9 +54,9 @@ For the GLM exercises, we'll use the workflow we suggested in the first GLM over
 
 1. Know your research question!
 
-2. Think about your response variable (stochastic).
+2. Think about your response variable (stochastic element).
 
-3. Think about the process behind the data (deterministic).
+3. Think about the process behind the data (deterministic element).
 
 4. Understand the data that you’ve collected (plot it!)
 
@@ -76,7 +77,7 @@ The researchers who collected this data wanted to understand how decisions made 
 As concisely as possible, write down the research question that can be answered with our analysis.
 
 ```{r Q1, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
-# How do ward capacity, staff numbers, and chlorhexidine policy relate with the proportion of patients infected with MRSE?
+# How does ward capacity, staffing numbers, and chlorhexidine policy relate with the proportion of patients infected with MRSE?
 ```
 
 2\. Think about your response variable (the stochastic element).
@@ -103,18 +104,51 @@ Import the data file 'mrse.txt' into R and take a look at the structure of this 
 
 Keep the tips and tricks you used in yesterday's practical and feel free to use them again here.
 
-A bit of advice for visualising $Binomial$ data; it can be easier to visualise if you create a new column in your dataset which is the number of successes, divided by the number of trials (using the terminology of the $Binomial$ distribution). If in doubt, as for help. 
+A bit of advice for visualising $Binomial$ data; it can be easier to visualise if you create a new column in your dataset which is the number of infected patients, divided by the total number of patients (or number of successes divided by the total number of trials, using the terminology of the $Binomial$ distribution). If in doubt, ask for help. 
 
-Also, do not feel as though you need to replicate the figures shown here. They are included to show how *I* visualised the data, but I am sure many of you will be able to do a better job. The figures shown below are purely to give you inspiration.
+Also, do not feel as though you need to replicate the figures shown here. They are included to show how *I* visualised the data, but I am sure many of you will be able to do a better job. Experiment and try different methods to visualise the data, and see which ones work for you.
 
-
-```{r}
+```{r Q4, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
 mrse$proportion <- mrse$mrse / mrse$total_patients
 
+# I'll use ggplot to do my visualisations here, but the same figures can be accomplished using base R
+library(ggplot2)
+ggplot(mrse) +
+  geom_point(aes(x = n_staff, y = proportion)) +
+  labs(x = "Number of ward staff",
+       y = "Proportion of MRSE positive\npatients patients") +
+  theme_minimal()
 
+ggplot(mrse) +
+  geom_point(aes(x = capacity, y = proportion)) +
+  labs(x = "Capacity of ward",
+       y = "Proportion of MRSE positive\npatients patients") +
+  theme_minimal()
+
+ggplot(mrse) +
+  geom_boxplot(aes(x = policy, y = proportion)) +
+  labs(x = "Chlorhexidine useage policy",
+       y = "Proportion of MRSE positive\npatients patients") +
+  theme_minimal()
+
+ggplot(mrse) +
+  geom_point(aes(x = n_staff, y = proportion, colour = policy)) +
+  labs(x = "Number of ward staff",
+       colour = "Chlorhexidine useage policy",
+       y = "Proportion of MRSE positive\npatients patients") +
+  theme_minimal()
+
+ggplot(mrse) +
+  geom_point(aes(x = capacity, y = proportion, colour = policy)) +
+  labs(x = "Capacity of ward",
+       colour = "Chlorhexidine useage policy",
+       y = "Proportion of MRSE positive\npatients patients") +
+  theme_minimal()
 ```
 
+5\. Combine into a model that can answer your question.
 
+Our research question includes all three of our explanatory variables, as well as an interaction between the number of staff and policy implementation. Try to write the statistical notation for the model. If in doubt, ask for help.
 
 
 
