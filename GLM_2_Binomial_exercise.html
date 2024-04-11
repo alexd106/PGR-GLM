@@ -627,20 +627,30 @@ exercise, we’ll do these ourselves so that we get the freedom to make
 any aesthetic changes we might want, or to make show predictions
 according to specific circumstances. Doing so, inevitably, will require
 more work on our side though.</p>
-<p>For started, we need a “new” dataset that contains covariate values
-that we want to use to make predictions. In the lecture, I showed a
-trick we can use to do so, by using the <code>expand.grid()</code>
-function. Using this we’ll start off by making a dataset to show the
-relationship for <code>capacity</code>, and then afterwards, do this
-again to show the relationship for the interaction between
-<code>policy</code> and <code>n_staff</code>. Regardless of which
-prediction we are doing, we must provide values for all covariates in
-the model, even those we don’t necessarily want to show. For
-<code>capacity</code>, we can create our fake dataset using the
+<p>For started, we need a “new” dataset that contains an even spread of
+covariate values that we want to use to make predictions. In the
+lecture, I showed a trick we can use to do so; by using the
+<code>expand.grid()</code> function. Using this we’ll start off by
+making a dataset to show the relationship for <code>capacity</code>, and
+then afterwards, do this again to show the relationship for the
+interaction between <code>policy</code> and <code>n_staff</code>.
+Regardless of which prediction we are doing, we must provide values for
+all covariates in the model, even those we don’t necessarily want to
+show. The choice for what values to set covariates to is not necessarily
+trivial, but the convention is to set them to the median. For example,
+for <code>n_staff</code>, we might set all values of this covariate to
+<code>median(icu$n_staff)</code>, but there’s nothing to stop us from
+setting these to values we are particularly interested in. For instance,
+maybe we want to show the predicted relationship of capacity with the
+maximum number of staff if we wanted to show the best case scenario for
+the capacity relationship. Now that we’re creating these predictions by
+hand, rather than relying on <code>R</code> packages, we have the
+freedom to do so.</p>
+<p>For <code>capacity</code>, we can create our fake dataset using the
 following code:</p>
 <pre><code># Create a fake dataset to feed into our model equation
 synth_data &lt;- expand.grid(
-  # Set n_staff to median (22 staff)
+  # Set n_staff to median (22 staff) or any value you think is interesting
   n_staff = median(icu$n_staff), 
   # We have to set policy to either Not implemented or Implemented
   policy = &quot;Implemented&quot;,        
@@ -695,7 +705,69 @@ one.</p>
 <h3>9. Uncertainty</h3>
 <p><br />
 </p>
-<p>Blah</p>
+<p>It’s always important to show uncertainty when visualising (or
+reporting) what our model has estimated. Without uncertainty, we
+essentially tell our reader that we know <em>exactly</em> how the world
+works. Clearly we don’t, we have a crude understanding build upon many
+assumptions. Showing uncertainty, often through confidence intervals, is
+a way to, at the very least, acknowledge that we <em>don’t</em> know the
+exact Truth.</p>
+<p>Including confidence intervals requires that we calculate them. Doing
+so by hand is an absolute pain, but thankfully, <code>R</code> makes
+this relatively easier. All we need to do is tell the
+<code>predict()</code> function to also report standard error for each
+predicted observation, and then convert these to upper and lower 95%
+CI.</p>
+<p>Here’s how we do that for capacity:</p>
+<pre><code># We remake our synthetic data for visualising *capacity*
+synth_data &lt;- expand.grid(
+  n_staff = median(icu$n_staff), 
+  policy = &quot;Implemented&quot;,        
+  capacity = seq(
+    from = min(icu$capacity), 
+    to = max(icu$capacity),   
+    length.out = 20))         
+
+# Now instead of just getting a single column of mean prediction, we ask predict()
+  # for two columns - one for mean prediction and another for standard error.
+  # This means we cannot simply add the predictions, as is, to our synth_data
+  # Instead we store the output to then calculate 95% CI
+# Note that we now include the argument se.fit = TRUE, to get our standard error
+  # We also cannot use type = response anymore, instead we use plogis but later on
+pred &lt;- predict(mod1, newdata = synth_data, se.fit = TRUE)
+
+# Extract the mean Estimate on response scale
+synth_data$pred &lt;- plogis(pred$fit)
+# Subtract SE * 1.96 to get 95% and backtransform for lower 95% CI
+synth_data$low &lt;- plogis(pred$fit - pred$se.fit * 1.96)
+# Add SE * 1.96 to get 95% and backtransform for upper 95% CI
+synth_data$upp &lt;- plogis(pred$fit + pred$se.fit * 1.96)
+
+# Plot the raw data
+plot(icu$capacity, icu$proportion, 
+     xlab = &quot;Ward capacity&quot;, 
+     ylab = &quot;Proportion of patients with MRSE&quot;)
+# As before, add a line to show our predicted model fit
+lines(synth_data$pred ~ synth_data$capacity, lty = 1, col = &quot;black&quot;)
+# Now we add two new dashed lines (lty = 2 for dashed) to show 95% CI
+lines(synth_data$low ~ synth_data$capacity, lty = 2, col = &quot;grey&quot;)
+lines(synth_data$upp ~ synth_data$capacity, lty = 2, col = &quot;grey&quot;)</code></pre>
+<p>Your figure should look like:</p>
+<p><img src="GLM_2_Binomial_exercise_files/figure-html/Q9.1-1.png" width="672" /></p>
+<p>Getting the <code>synth_data</code>, mean estimates and 95% CI is the
+hard part. Once we have these sorted out, we can create a figure however
+we like. The example above looks fairly bland and boring, but we can
+always change this.</p>
+<p>Using your code from the above figure showing capacity, adapt it now
+to visualise the interaction between <code>policy</code> and
+<code>n_staff</code> which includes 95% CI. Below I give an example of
+how I’d visualise the predictions, but you’re free to do this however
+you’d like.</p>
+<p><img src="GLM_2_Binomial_exercise_files/figure-html/Q9.2-1.png" width="672" /></p>
+<p>In my above example figure, notice how predicted relationship for Not
+Implemented is generally below our data? If you’re interesting in why
+that’s the case, try remaking this figure and set capacity (bed
+occupancy) to 100% to see if that changes anything.</p>
 <p><br />
 </p>
 </div>
