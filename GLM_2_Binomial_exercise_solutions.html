@@ -993,20 +993,30 @@ exercise, we’ll do these ourselves so that we get the freedom to make
 any aesthetic changes we might want, or to make show predictions
 according to specific circumstances. Doing so, inevitably, will require
 more work on our side though.</p>
-<p>For started, we need a “new” dataset that contains covariate values
-that we want to use to make predictions. In the lecture, I showed a
-trick we can use to do so, by using the <code>expand.grid()</code>
-function. Using this we’ll start off by making a dataset to show the
-relationship for <code>capacity</code>, and then afterwards, do this
-again to show the relationship for the interaction between
-<code>policy</code> and <code>n_staff</code>. Regardless of which
-prediction we are doing, we must provide values for all covariates in
-the model, even those we don’t necessarily want to show. For
-<code>capacity</code>, we can create our fake dataset using the
+<p>For started, we need a “new” dataset that contains an even spread of
+covariate values that we want to use to make predictions. In the
+lecture, I showed a trick we can use to do so; by using the
+<code>expand.grid()</code> function. Using this we’ll start off by
+making a dataset to show the relationship for <code>capacity</code>, and
+then afterwards, do this again to show the relationship for the
+interaction between <code>policy</code> and <code>n_staff</code>.
+Regardless of which prediction we are doing, we must provide values for
+all covariates in the model, even those we don’t necessarily want to
+show. The choice for what values to set covariates to is not necessarily
+trivial, but the convention is to set them to the median. For example,
+for <code>n_staff</code>, we might set all values of this covariate to
+<code>median(icu$n_staff)</code>, but there’s nothing to stop us from
+setting these to values we are particularly interested in. For instance,
+maybe we want to show the predicted relationship of capacity with the
+maximum number of staff if we wanted to show the best case scenario for
+the capacity relationship. Now that we’re creating these predictions by
+hand, rather than relying on <code>R</code> packages, we have the
+freedom to do so.</p>
+<p>For <code>capacity</code>, we can create our fake dataset using the
 following code:</p>
 <pre><code># Create a fake dataset to feed into our model equation
 synth_data &lt;- expand.grid(
-  # Set n_staff to median (22 staff)
+  # Set n_staff to median (22 staff) or any value you think is interesting
   n_staff = median(icu$n_staff), 
   # We have to set policy to either Not implemented or Implemented
   policy = &quot;Implemented&quot;,        
@@ -1104,7 +1114,135 @@ one.</p>
 <h3>9. Uncertainty</h3>
 <p><br />
 </p>
-<p>Blah</p>
+<p>It’s always important to show uncertainty when visualising (or
+reporting) what our model has estimated. Without uncertainty, we
+essentially tell our reader that we know <em>exactly</em> how the world
+works. Clearly we don’t, we have a crude understanding build upon many
+assumptions. Showing uncertainty, often through confidence intervals, is
+a way to, at the very least, acknowledge that we <em>don’t</em> know the
+exact Truth.</p>
+<p>Including confidence intervals requires that we calculate them. Doing
+so by hand is an absolute pain, but thankfully, <code>R</code> makes
+this relatively easier. All we need to do is tell the
+<code>predict()</code> function to also report standard error for each
+predicted observation, and then convert these to upper and lower 95%
+CI.</p>
+<p>Here’s how we do that for capacity:</p>
+<pre><code># We remake our synthetic data for visualising *capacity*
+synth_data &lt;- expand.grid(
+  n_staff = median(icu$n_staff), 
+  policy = &quot;Implemented&quot;,        
+  capacity = seq(
+    from = min(icu$capacity), 
+    to = max(icu$capacity),   
+    length.out = 20))         
+
+# Now instead of just getting a single column of mean prediction, we ask predict()
+  # for two columns - one for mean prediction and another for standard error.
+  # This means we cannot simply add the predictions, as is, to our synth_data
+  # Instead we store the output to then calculate 95% CI
+# Note that we now include the argument se.fit = TRUE, to get our standard error
+  # We also cannot use type = response anymore, instead we use plogis but later on
+pred &lt;- predict(mod1, newdata = synth_data, se.fit = TRUE)
+
+# Extract the mean Estimate on response scale
+synth_data$pred &lt;- plogis(pred$fit)
+# Subtract SE * 1.96 to get 95% and backtransform for lower 95% CI
+synth_data$low &lt;- plogis(pred$fit - pred$se.fit * 1.96)
+# Add SE * 1.96 to get 95% and backtransform for upper 95% CI
+synth_data$upp &lt;- plogis(pred$fit + pred$se.fit * 1.96)
+
+# Plot the raw data
+plot(icu$capacity, icu$proportion, 
+     xlab = &quot;Ward capacity&quot;, 
+     ylab = &quot;Proportion of patients with MRSE&quot;)
+# As before, add a line to show our predicted model fit
+lines(synth_data$pred ~ synth_data$capacity, lty = 1, col = &quot;black&quot;)
+# Now we add two new dashed lines (lty = 2 for dashed) to show 95% CI
+lines(synth_data$low ~ synth_data$capacity, lty = 2, col = &quot;grey&quot;)
+lines(synth_data$upp ~ synth_data$capacity, lty = 2, col = &quot;grey&quot;)</code></pre>
+<p>Your figure should look like:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a><span class="co"># Create a fake dataset to feed into our model equation</span></span>
+<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a>synth_data <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(</span>
+<span id="cb19-3"><a href="#cb19-3" tabindex="-1"></a>  <span class="co"># Set n_staff to median (22 staff)</span></span>
+<span id="cb19-4"><a href="#cb19-4" tabindex="-1"></a>  <span class="at">n_staff =</span> <span class="fu">median</span>(icu<span class="sc">$</span>n_staff), </span>
+<span id="cb19-5"><a href="#cb19-5" tabindex="-1"></a>  <span class="co"># We have to set policy to either Not implemented or Implemented</span></span>
+<span id="cb19-6"><a href="#cb19-6" tabindex="-1"></a>  <span class="at">policy =</span> <span class="st">&quot;Implemented&quot;</span>,        </span>
+<span id="cb19-7"><a href="#cb19-7" tabindex="-1"></a>  <span class="at">capacity =</span> <span class="fu">seq</span>(</span>
+<span id="cb19-8"><a href="#cb19-8" tabindex="-1"></a>    <span class="co"># We create a sequence from the minimum capacity observered</span></span>
+<span id="cb19-9"><a href="#cb19-9" tabindex="-1"></a>    <span class="at">from =</span> <span class="fu">min</span>(icu<span class="sc">$</span>capacity), </span>
+<span id="cb19-10"><a href="#cb19-10" tabindex="-1"></a>    <span class="co"># To the maximum capacity observed</span></span>
+<span id="cb19-11"><a href="#cb19-11" tabindex="-1"></a>    <span class="at">to =</span> <span class="fu">max</span>(icu<span class="sc">$</span>capacity),   </span>
+<span id="cb19-12"><a href="#cb19-12" tabindex="-1"></a>    <span class="co"># And request 20 values across that range</span></span>
+<span id="cb19-13"><a href="#cb19-13" tabindex="-1"></a>    <span class="at">length.out =</span> <span class="dv">20</span>))         </span>
+<span id="cb19-14"><a href="#cb19-14" tabindex="-1"></a></span>
+<span id="cb19-15"><a href="#cb19-15" tabindex="-1"></a><span class="co"># Get both Estimate and Standard Error for each combination of our synthetic data</span></span>
+<span id="cb19-16"><a href="#cb19-16" tabindex="-1"></a>pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(mod1, <span class="at">newdata =</span> synth_data, <span class="at">se.fit =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb19-17"><a href="#cb19-17" tabindex="-1"></a></span>
+<span id="cb19-18"><a href="#cb19-18" tabindex="-1"></a><span class="co"># Extract the mean Estimate on response scale</span></span>
+<span id="cb19-19"><a href="#cb19-19" tabindex="-1"></a>synth_data<span class="sc">$</span>pred <span class="ot">&lt;-</span> <span class="fu">plogis</span>(pred<span class="sc">$</span>fit)</span>
+<span id="cb19-20"><a href="#cb19-20" tabindex="-1"></a><span class="co"># Subtract SE * 1.96 to get 95% and backtransform for lower 95% CI</span></span>
+<span id="cb19-21"><a href="#cb19-21" tabindex="-1"></a>synth_data<span class="sc">$</span>low <span class="ot">&lt;-</span> <span class="fu">plogis</span>(pred<span class="sc">$</span>fit <span class="sc">-</span> pred<span class="sc">$</span>se.fit <span class="sc">*</span> <span class="fl">1.96</span>)</span>
+<span id="cb19-22"><a href="#cb19-22" tabindex="-1"></a><span class="co"># Add SE * 1.96 to get 95% and backtransform for upper 95% CI</span></span>
+<span id="cb19-23"><a href="#cb19-23" tabindex="-1"></a>synth_data<span class="sc">$</span>upp <span class="ot">&lt;-</span> <span class="fu">plogis</span>(pred<span class="sc">$</span>fit <span class="sc">+</span> pred<span class="sc">$</span>se.fit <span class="sc">*</span> <span class="fl">1.96</span>)</span>
+<span id="cb19-24"><a href="#cb19-24" tabindex="-1"></a></span>
+<span id="cb19-25"><a href="#cb19-25" tabindex="-1"></a><span class="co"># Plot the raw data</span></span>
+<span id="cb19-26"><a href="#cb19-26" tabindex="-1"></a><span class="fu">plot</span>(icu<span class="sc">$</span>capacity, icu<span class="sc">$</span>proportion, </span>
+<span id="cb19-27"><a href="#cb19-27" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;Ward capacity&quot;</span>, </span>
+<span id="cb19-28"><a href="#cb19-28" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">&quot;Proportion of patients with MRSE&quot;</span>)</span>
+<span id="cb19-29"><a href="#cb19-29" tabindex="-1"></a><span class="co"># And add a line to show our predicted model fit</span></span>
+<span id="cb19-30"><a href="#cb19-30" tabindex="-1"></a><span class="fu">lines</span>(synth_data<span class="sc">$</span>pred <span class="sc">~</span> synth_data<span class="sc">$</span>capacity, <span class="at">lty =</span> <span class="dv">1</span>, <span class="at">col =</span> <span class="st">&quot;black&quot;</span>)</span>
+<span id="cb19-31"><a href="#cb19-31" tabindex="-1"></a><span class="fu">lines</span>(synth_data<span class="sc">$</span>low <span class="sc">~</span> synth_data<span class="sc">$</span>capacity, <span class="at">lty =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">&quot;grey&quot;</span>)</span>
+<span id="cb19-32"><a href="#cb19-32" tabindex="-1"></a><span class="fu">lines</span>(synth_data<span class="sc">$</span>upp <span class="sc">~</span> synth_data<span class="sc">$</span>capacity, <span class="at">lty =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">&quot;grey&quot;</span>)</span></code></pre></div>
+<p><img src="GLM_2_Binomial_exercise_solutions_files/figure-html/Q9.1-1.png" width="672" /></p>
+<p>Getting the <code>synth_data</code>, mean estimates and 95% CI is the
+hard part. Once we have these sorted out, we can create a figure however
+we like. The example above looks fairly bland and boring, but we can
+always change this.</p>
+<p>Using your code from the above figure showing capacity, adapt it now
+to visualise the interaction between <code>policy</code> and
+<code>n_staff</code> which includes 95% CI. Below I give an example of
+how I’d visualise the predictions, but you’re free to do this however
+you’d like.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a><span class="fu">library</span>(ggplot2) <span class="co"># not needed if you already had ggplot loaded</span></span>
+<span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a><span class="fu">library</span>(scales)  <span class="co"># to show y-axis in figure as percentage (install.packages(&quot;scales&quot;) if needed)</span></span>
+<span id="cb20-3"><a href="#cb20-3" tabindex="-1"></a></span>
+<span id="cb20-4"><a href="#cb20-4" tabindex="-1"></a><span class="co"># Create synthetic data and predictions</span></span>
+<span id="cb20-5"><a href="#cb20-5" tabindex="-1"></a>synth_data <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">n_staff =</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="fu">min</span>(icu<span class="sc">$</span>n_staff), <span class="at">to =</span> <span class="fu">max</span>(icu<span class="sc">$</span>n_staff), <span class="at">length.out =</span> <span class="dv">20</span>), </span>
+<span id="cb20-6"><a href="#cb20-6" tabindex="-1"></a>                          <span class="at">policy =</span> <span class="fu">c</span>(<span class="st">&quot;Implemented&quot;</span>, <span class="st">&quot;Not implemented&quot;</span>),</span>
+<span id="cb20-7"><a href="#cb20-7" tabindex="-1"></a>                          <span class="at">capacity =</span> <span class="fl">0.5</span>)      </span>
+<span id="cb20-8"><a href="#cb20-8" tabindex="-1"></a></span>
+<span id="cb20-9"><a href="#cb20-9" tabindex="-1"></a><span class="co"># Get both Estimate and Standard Error for each combination of our synthetic data</span></span>
+<span id="cb20-10"><a href="#cb20-10" tabindex="-1"></a>pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(mod1, <span class="at">newdata =</span> synth_data, <span class="at">se.fit =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb20-11"><a href="#cb20-11" tabindex="-1"></a></span>
+<span id="cb20-12"><a href="#cb20-12" tabindex="-1"></a><span class="co"># Extract the mean Estimate on response scale</span></span>
+<span id="cb20-13"><a href="#cb20-13" tabindex="-1"></a>synth_data<span class="sc">$</span>pred <span class="ot">&lt;-</span> <span class="fu">plogis</span>(pred<span class="sc">$</span>fit)</span>
+<span id="cb20-14"><a href="#cb20-14" tabindex="-1"></a><span class="co"># Subtract SE * 1.96 to get 95% and backtransform for lower 95% CI</span></span>
+<span id="cb20-15"><a href="#cb20-15" tabindex="-1"></a>synth_data<span class="sc">$</span>low <span class="ot">&lt;-</span> <span class="fu">plogis</span>(pred<span class="sc">$</span>fit <span class="sc">-</span> pred<span class="sc">$</span>se.fit <span class="sc">*</span> <span class="fl">1.96</span>)</span>
+<span id="cb20-16"><a href="#cb20-16" tabindex="-1"></a><span class="co"># Add SE * 1.96 to get 95% and backtransform for upper 95% CI</span></span>
+<span id="cb20-17"><a href="#cb20-17" tabindex="-1"></a>synth_data<span class="sc">$</span>upp <span class="ot">&lt;-</span> <span class="fu">plogis</span>(pred<span class="sc">$</span>fit <span class="sc">+</span> pred<span class="sc">$</span>se.fit <span class="sc">*</span> <span class="fl">1.96</span>)</span>
+<span id="cb20-18"><a href="#cb20-18" tabindex="-1"></a></span>
+<span id="cb20-19"><a href="#cb20-19" tabindex="-1"></a><span class="co"># Create the figure</span></span>
+<span id="cb20-20"><a href="#cb20-20" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb20-21"><a href="#cb20-21" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> icu, <span class="fu">aes</span>(<span class="at">x =</span> n_staff, <span class="at">y =</span> proportion, <span class="at">colour =</span> policy),</span>
+<span id="cb20-22"><a href="#cb20-22" tabindex="-1"></a>             <span class="at">show.legend =</span> <span class="cn">FALSE</span>, <span class="at">size =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb20-23"><a href="#cb20-23" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data =</span> synth_data, <span class="fu">aes</span>(<span class="at">x =</span> n_staff, <span class="at">y =</span> pred, <span class="at">colour =</span> policy),</span>
+<span id="cb20-24"><a href="#cb20-24" tabindex="-1"></a>             <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb20-25"><a href="#cb20-25" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data =</span> synth_data, <span class="fu">aes</span>(<span class="at">x =</span> n_staff, <span class="at">ymin =</span> low, <span class="at">ymax =</span> upp, <span class="at">fill =</span> policy),</span>
+<span id="cb20-26"><a href="#cb20-26" tabindex="-1"></a>              <span class="at">alpha =</span> <span class="fl">0.3</span>, <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb20-27"><a href="#cb20-27" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>policy) <span class="sc">+</span></span>
+<span id="cb20-28"><a href="#cb20-28" tabindex="-1"></a>  <span class="fu">scale_colour_brewer</span>(<span class="at">palette =</span> <span class="st">&quot;Dark2&quot;</span>) <span class="sc">+</span></span>
+<span id="cb20-29"><a href="#cb20-29" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">&quot;Dark2&quot;</span>) <span class="sc">+</span></span>
+<span id="cb20-30"><a href="#cb20-30" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> percent, <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb20-31"><a href="#cb20-31" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb20-32"><a href="#cb20-32" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Number of ICU staff&quot;</span>,</span>
+<span id="cb20-33"><a href="#cb20-33" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Predicted proportion</span><span class="sc">\n</span><span class="st">of MRSE positive patients&quot;</span>,</span>
+<span id="cb20-34"><a href="#cb20-34" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">&quot;Assuming 50% bed occupancy&quot;</span>)</span></code></pre></div>
+<p><img src="GLM_2_Binomial_exercise_solutions_files/figure-html/Q9.2-1.png" width="672" /></p>
+<p>In my above example figure, notice how predicted relationship for Not
+Implemented is generally below our data? If you’re interesting in why
+that’s the case, try remaking this figure and set capacity (bed
+occupancy) to 100% to see if that changes anything.</p>
 <p><br />
 </p>
 </div>

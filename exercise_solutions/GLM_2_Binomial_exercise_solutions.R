@@ -249,3 +249,73 @@ legend("topright",
  lty= c(1, 1, 1), 
  lwd= c(1, 1, 1))
 
+## ----Q9.1, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.height=8, fig.show= ifelse(TRUE, "asis", "hide")----
+# Create a fake dataset to feed into our model equation
+synth_data <- expand.grid(
+  # Set n_staff to median (22 staff)
+  n_staff = median(icu$n_staff), 
+  # We have to set policy to either Not implemented or Implemented
+  policy = "Implemented",        
+  capacity = seq(
+    # We create a sequence from the minimum capacity observered
+    from = min(icu$capacity), 
+    # To the maximum capacity observed
+    to = max(icu$capacity),   
+    # And request 20 values across that range
+    length.out = 20))         
+
+# Get both Estimate and Standard Error for each combination of our synthetic data
+pred <- predict(mod1, newdata = synth_data, se.fit = TRUE)
+
+# Extract the mean Estimate on response scale
+synth_data$pred <- plogis(pred$fit)
+# Subtract SE * 1.96 to get 95% and backtransform for lower 95% CI
+synth_data$low <- plogis(pred$fit - pred$se.fit * 1.96)
+# Add SE * 1.96 to get 95% and backtransform for upper 95% CI
+synth_data$upp <- plogis(pred$fit + pred$se.fit * 1.96)
+
+# Plot the raw data
+plot(icu$capacity, icu$proportion, 
+     xlab = "Ward capacity", 
+     ylab = "Proportion of patients with MRSE")
+# And add a line to show our predicted model fit
+lines(synth_data$pred ~ synth_data$capacity, lty = 1, col = "black")
+lines(synth_data$low ~ synth_data$capacity, lty = 2, col = "grey")
+lines(synth_data$upp ~ synth_data$capacity, lty = 2, col = "grey")
+
+
+## ----Q9.2, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.height=8, fig.show= ifelse(TRUE, "asis", "hide")----
+library(ggplot2) # not needed if you already had ggplot loaded
+library(scales)  # to show y-axis in figure as percentage (install.packages("scales") if needed)
+
+# Create synthetic data and predictions
+synth_data <- expand.grid(n_staff = seq(from = min(icu$n_staff), to = max(icu$n_staff), length.out = 20), 
+                          policy = c("Implemented", "Not implemented"),
+                          capacity = 0.5)      
+
+# Get both Estimate and Standard Error for each combination of our synthetic data
+pred <- predict(mod1, newdata = synth_data, se.fit = TRUE)
+
+# Extract the mean Estimate on response scale
+synth_data$pred <- plogis(pred$fit)
+# Subtract SE * 1.96 to get 95% and backtransform for lower 95% CI
+synth_data$low <- plogis(pred$fit - pred$se.fit * 1.96)
+# Add SE * 1.96 to get 95% and backtransform for upper 95% CI
+synth_data$upp <- plogis(pred$fit + pred$se.fit * 1.96)
+
+# Create the figure
+ggplot() +
+  geom_point(data = icu, aes(x = n_staff, y = proportion, colour = policy),
+             show.legend = FALSE, size = 0.5) +
+  geom_line(data = synth_data, aes(x = n_staff, y = pred, colour = policy),
+             show.legend = FALSE) +
+  geom_ribbon(data = synth_data, aes(x = n_staff, ymin = low, ymax = upp, fill = policy),
+              alpha = 0.3, show.legend = FALSE) +
+  facet_wrap(~policy) +
+  scale_colour_brewer(palette = "Dark2") +
+  scale_fill_brewer(palette = "Dark2") +
+  scale_y_continuous(labels = percent, limits = c(0,1)) +
+  theme_minimal() +
+  labs(x = "Number of ICU staff",
+       y = "Predicted proportion\nof MRSE positive patients",
+       caption = "Assuming 50% bed occupancy")

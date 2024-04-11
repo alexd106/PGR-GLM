@@ -359,12 +359,14 @@ summary(mod1)
 
 In the $Poisson$ exercise, we relied on `packages` to make our figures for us. In today's exercise, we'll do these ourselves so that we get the freedom to make any aesthetic changes we might want, or to make show predictions according to specific circumstances. Doing so, inevitably, will require more work on our side though.
 
-For started, we need a "new" dataset that contains covariate values that we want to use to make predictions. In the lecture, I showed a trick we can use to do so, by using the `expand.grid()` function. Using this we'll start off by making a dataset to show the relationship for `capacity`, and then afterwards, do this again to show the relationship for the interaction between `policy` and `n_staff`. Regardless of which prediction we are doing, we must provide values for all covariates in the model, even those we don't necessarily want to show. For `capacity`, we can create our fake dataset using the following code:
+For started, we need a "new" dataset that contains an even spread of covariate values that we want to use to make predictions. In the lecture, I showed a trick we can use to do so; by using the `expand.grid()` function. Using this we'll start off by making a dataset to show the relationship for `capacity`, and then afterwards, do this again to show the relationship for the interaction between `policy` and `n_staff`. Regardless of which prediction we are doing, we must provide values for all covariates in the model, even those we don't necessarily want to show. The choice for what values to set covariates to is not necessarily trivial, but the convention is to set them to the median. For example, for `n_staff`, we might set all values of this covariate to `median(icu$n_staff)`, but there's nothing to stop us from setting these to values we are particularly interested in. For instance, maybe we want to show the predicted relationship of capacity with the maximum number of staff if we wanted to show the best case scenario for the capacity relationship. Now that we're creating these predictions by hand, rather than relying on `R` packages, we have the freedom to do so.
+
+For `capacity`, we can create our fake dataset using the following code:
 
 ```
 # Create a fake dataset to feed into our model equation
 synth_data <- expand.grid(
-  # Set n_staff to median (22 staff)
+  # Set n_staff to median (22 staff) or any value you think is interesting
   n_staff = median(icu$n_staff), 
   # We have to set policy to either Not implemented or Implemented
   policy = "Implemented",        
@@ -462,7 +464,128 @@ legend("topright",
 
 \
 
-Blah
+It's always important to show uncertainty when visualising (or reporting) what our model has estimated. Without uncertainty, we essentially tell our reader that we know *exactly* how the world works. Clearly we don't, we have a crude understanding build upon many assumptions. Showing uncertainty, often through confidence intervals, is a way to, at the very least, acknowledge that we *don't* know the exact Truth.
+
+Including confidence intervals requires that we calculate them. Doing so by hand is an absolute pain, but thankfully, `R` makes this relatively easier. All we need to do is tell the `predict()` function to also report standard error for each predicted observation, and then convert these to upper and lower 95% CI.
+
+Here's how we do that for capacity:
+
+```
+# We remake our synthetic data for visualising *capacity*
+synth_data <- expand.grid(
+  n_staff = median(icu$n_staff), 
+  policy = "Implemented",        
+  capacity = seq(
+    from = min(icu$capacity), 
+    to = max(icu$capacity),   
+    length.out = 20))         
+
+# Now instead of just getting a single column of mean prediction, we ask predict()
+  # for two columns - one for mean prediction and another for standard error.
+  # This means we cannot simply add the predictions, as is, to our synth_data
+  # Instead we store the output to then calculate 95% CI
+# Note that we now include the argument se.fit = TRUE, to get our standard error
+  # We also cannot use type = response anymore, instead we use plogis but later on
+pred <- predict(mod1, newdata = synth_data, se.fit = TRUE)
+
+# Extract the mean Estimate on response scale
+synth_data$pred <- plogis(pred$fit)
+# Subtract SE * 1.96 to get 95% and backtransform for lower 95% CI
+synth_data$low <- plogis(pred$fit - pred$se.fit * 1.96)
+# Add SE * 1.96 to get 95% and backtransform for upper 95% CI
+synth_data$upp <- plogis(pred$fit + pred$se.fit * 1.96)
+
+# Plot the raw data
+plot(icu$capacity, icu$proportion, 
+     xlab = "Ward capacity", 
+     ylab = "Proportion of patients with MRSE")
+# As before, add a line to show our predicted model fit
+lines(synth_data$pred ~ synth_data$capacity, lty = 1, col = "black")
+# Now we add two new dashed lines (lty = 2 for dashed) to show 95% CI
+lines(synth_data$low ~ synth_data$capacity, lty = 2, col = "grey")
+lines(synth_data$upp ~ synth_data$capacity, lty = 2, col = "grey")
+```
+
+Your figure should look like:
+
+```{r Q9.1, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.height=8, fig.show= ifelse(TRUE, "asis", "hide")}
+# Create a fake dataset to feed into our model equation
+synth_data <- expand.grid(
+  # Set n_staff to median (22 staff)
+  n_staff = median(icu$n_staff), 
+  # We have to set policy to either Not implemented or Implemented
+  policy = "Implemented",        
+  capacity = seq(
+    # We create a sequence from the minimum capacity observered
+    from = min(icu$capacity), 
+    # To the maximum capacity observed
+    to = max(icu$capacity),   
+    # And request 20 values across that range
+    length.out = 20))         
+
+# Get both Estimate and Standard Error for each combination of our synthetic data
+pred <- predict(mod1, newdata = synth_data, se.fit = TRUE)
+
+# Extract the mean Estimate on response scale
+synth_data$pred <- plogis(pred$fit)
+# Subtract SE * 1.96 to get 95% and backtransform for lower 95% CI
+synth_data$low <- plogis(pred$fit - pred$se.fit * 1.96)
+# Add SE * 1.96 to get 95% and backtransform for upper 95% CI
+synth_data$upp <- plogis(pred$fit + pred$se.fit * 1.96)
+
+# Plot the raw data
+plot(icu$capacity, icu$proportion, 
+     xlab = "Ward capacity", 
+     ylab = "Proportion of patients with MRSE")
+# And add a line to show our predicted model fit
+lines(synth_data$pred ~ synth_data$capacity, lty = 1, col = "black")
+lines(synth_data$low ~ synth_data$capacity, lty = 2, col = "grey")
+lines(synth_data$upp ~ synth_data$capacity, lty = 2, col = "grey")
+```
+
+Getting the `synth_data`, mean estimates and 95% CI is the hard part. Once we have these sorted out, we can create a figure however we like. The example above looks fairly bland and boring, but we can always change this.
+
+Using your code from the above figure showing capacity, adapt it now to visualise the interaction between `policy` and `n_staff` which includes 95% CI. Below I give an example of how I'd visualise the predictions, but you're free to do this however you'd like.
+
+```{r Q9.2, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.height=8, fig.show= ifelse(TRUE, "asis", "hide")}
+library(ggplot2) # not needed if you already had ggplot loaded
+library(scales)  # to show y-axis in figure as percentage (install.packages("scales") if needed)
+
+# Create synthetic data and predictions
+synth_data <- expand.grid(n_staff = seq(from = min(icu$n_staff), to = max(icu$n_staff), length.out = 20), 
+                          policy = c("Implemented", "Not implemented"),
+                          capacity = 0.5)      
+
+# Get both Estimate and Standard Error for each combination of our synthetic data
+pred <- predict(mod1, newdata = synth_data, se.fit = TRUE)
+
+# Extract the mean Estimate on response scale
+synth_data$pred <- plogis(pred$fit)
+# Subtract SE * 1.96 to get 95% and backtransform for lower 95% CI
+synth_data$low <- plogis(pred$fit - pred$se.fit * 1.96)
+# Add SE * 1.96 to get 95% and backtransform for upper 95% CI
+synth_data$upp <- plogis(pred$fit + pred$se.fit * 1.96)
+
+# Create the figure
+ggplot() +
+  geom_point(data = icu, aes(x = n_staff, y = proportion, colour = policy),
+             show.legend = FALSE, size = 0.5) +
+  geom_line(data = synth_data, aes(x = n_staff, y = pred, colour = policy),
+             show.legend = FALSE) +
+  geom_ribbon(data = synth_data, aes(x = n_staff, ymin = low, ymax = upp, fill = policy),
+              alpha = 0.3, show.legend = FALSE) +
+  facet_wrap(~policy) +
+  scale_colour_brewer(palette = "Dark2") +
+  scale_fill_brewer(palette = "Dark2") +
+  scale_y_continuous(labels = percent, limits = c(0,1)) +
+  theme_minimal() +
+  labs(x = "Number of ICU staff",
+       y = "Predicted proportion\nof MRSE positive patients",
+       caption = "Assuming 50% bed occupancy")
+```
+
+
+In my above example figure, notice how predicted relationship for Not Implemented is generally below our data? If you're interesting in why that's the case, try remaking this figure and set capacity (bed occupancy) to 100% to see if that changes anything.
 
 \
 
