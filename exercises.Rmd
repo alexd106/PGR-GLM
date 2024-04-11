@@ -31,19 +31,19 @@ Have fun!
 
 ### Day 1
 
- - [GLM - Poisson exercise](GLM_1_Poisson_exercise.html)
+ - [Poisson GLM exercise](GLM_1_Poisson_exercise.html)
 
 \  
  
 ### Day 2
  
- - [GLM - binomial (proportion data) exercise](GLM_2_BinomialProportions_exercise.html)
+ - [Binomial GLM exercise](GLM_2_Binomial_exercise.html)
  
 \  
 
 ### Day 3
 
- - [GLM - binomial (0/1 data) exercise: Rays maturity](GLM_3_Binomial_RayBin_exercise.html)
+ - [Bernoulli GLM exercise](GLM_3_Bernoulli_exercise.html)
  
 \  
 

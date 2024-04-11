@@ -1,24 +1,3 @@
-## ----Q1, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE----------
-# How does biomass and pH relate to the number of plant species in a given plot of land?
-
-
-## -----------------------------------------------------------------------------
-# y ~ Poisson(lambda)
-# Where
-  # y is the count of species in a given plot
-  # lambda is the rate parameter for the Poisson distribution
-
-
-## ----Q3, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE----------
-# log(lambda) = beta_0 + beta_1 * biomass + beta_2 * midpH + beta_3 * highpH
-# Where
-  # lambda is our linear predictor regressed on the log link scale
-  # beta_0 defaults to low pH when biomass is equal to zero
-  # beta_1 is the slope for biomass
-  # beta_2 is the difference from low pH to mid pH
-  # beta_3 is the difference from low pH to high pH
-
-
 ## ----Q4, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE----------
 sp <- read.table(file= "./data/species.txt", header= TRUE)
 
@@ -57,18 +36,13 @@ sp.glm1 <- glm(Species ~ Biomass,
 
 
 ## ----Q7, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE----------
-par(mfrow = c(2,2))
-plot(sp.glm1)
-par(mfrow = c(1,1))
-summary(sp.glm1)
-
 # Model diagnostic plots:
 # Residuals vs Fitted
   # We see a fairly clear "funnel" pattern. We go from having relatively "little" variation
   # when our predicted values (on the link scale) are small, to "lots" of variation
   # when our predicted values are large, and most of this is happening between predicted
   # values of 2.5 to 3.5 (so over a fairly small range of predicted values)
-  # This is would suggest we're not meeting the assumptions particularly well and
+  # This would suggest we're not meeting the assumptions particularly well and
   # is a good indication that we have overdispersion.
 # Q-Q Residuals
   # We completely ignore this figure for GLMs.
@@ -91,6 +65,11 @@ summary(sp.glm1)
   # As a result, our standard error for our parameter estimates is going to be artificially
   # small. This in turn leads to both 1) risks of our p value being smaller than it should be
   # for Biomass, and 2) any predictions that include uncertainty being too confident.
+
+par(mfrow = c(2,2)) # Show figures in 2 rows and 2 columns
+plot(sp.glm1)       # Plot the model diagnostics
+par(mfrow = c(1,1)) # Reset so only 1 figure is shown
+summary(sp.glm1)    # Get the summary of the model (to check dispersion)
 
 
 ## ----Q8.1, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE--------
@@ -127,30 +106,19 @@ lines(pred_plants ~ biomass_new)
 
 ## ----Q8.6, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE--------
 # We would simply increase the number of biomass values that our seq() code created. Try it out if you're interested.
+biomass_new <- seq(from = min(sp$Biomass), to = max(sp$Biomass), length.out = 50)
+pred_plants <- exp(3.55628 + -0.19598 * biomass_new)
+plot(pred_plants ~ biomass_new)
+lines(pred_plants ~ biomass_new)
 
 
 ## ----Q9, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE----------
-# y_i ~ Poisson(lambda_i)
-# log(lambda_i) = beta_0 + beta_1 * biomass + beta_2 * pHmid + beta_3 * pHhigh
-
-# Remember that for models with categorical variables, models will break that single 
-# categorical column into however many levels there are minus 1. Here 2 columns 
-# are "created" that are used to indicate if an observation is "mid" pH (1 if yes, 0
-# if no), and another to indicate if an observation is "high" pH
-# We don't need to column for "low", because if both "mid" and "high" are 0, then
-# the only option is that it *must* be "low"
-
-
-## ----Q9.1, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE--------
-sp.glm2 <- glm(Species ~ Biomass + pH, family = poisson(link = "log"), data = sp)
+sp.glm2 <- glm(Species ~ Biomass + pH, 
+               family = poisson(link = "log"), 
+               data = sp)
 
 
 ## ----Q10, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE---------
-par(mfrow = c(2,2))
-plot(sp.glm2)
-par(mfrow = c(1,1))
-summary(sp.glm2)
-
 # Model diagnostic plots:
 # Residuals versus Fitted
   # While we do still see a little bit of a funnel, it's a big improvement compared 
@@ -172,38 +140,13 @@ summary(sp.glm2)
   # Not exactly the ideal value of 1 but 0.9 is nothing to get concerned about
   # Also, remember that *underdispersion* is generally not much of an issue
   # Compared to the first model, this is a fantastic improvement
+par(mfrow = c(2,2))
+plot(sp.glm2)
+par(mfrow = c(1,1))
+summary(sp.glm2)
 
 
 ## ----Q11, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE---------
-anova(sp.glm2, test= "Chisq")
-# DEVIANCE COMPONENTS:
-# anova is useful for getting an idea of the relative contributions
-# of each term to explaining the overall variability in the data,
-# using the deviance. Beware that order does matter for all but the last term!
-
-summary(sp.glm2)
-# EXPLAINING PREDICTIONS:
-# to explain patterns in the data, we need to look at the coefficient
-# estimates from the summary of the model.
-
-# TESTING HYPOTHESES:
-
-# To test hyoptheses on the coefficient value being different from zero,
-# look at the Z-test in the summary table
-
-# To test hyoptheses on a predictor explaining a significant porportion of 
-# variation in the data, look at the Chi-sq-test in the anova table
-
-drop1(sp.glm2)
-# VARIABLE SELECTION (SIMPLIFICATION):
-# If we wanted to perform variable selection, we could use AIC to find
-# any variables that we could drop from the model, without it loosing
-# predictive power. In this example, the lowest AIC (the one with the best
-# predictive power) is the full model (i.e. the one where we do not remove
-# any variables)
-
-
-## ----Q12, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE---------
 summary(sp.glm2)
 # "(Intercept)" is the predicted value on the link (log) scale when
 # pH is "low". A hint is that there is no labelled coefficient called
@@ -228,28 +171,13 @@ summary(sp.glm2)
 # (and how I would present it in the methods section of a paper):
 # Species_i ~ Poisson(lambda_i)
 # log(lambda_i) = 2.76 + -0.16 * Biomass_i
-#    + 0.65 * pHmid_i
-#    + 1.13 * pHhigh_i
+#    + 0.65 * pHmid_i + 1.13 * pHhigh_i
 
 
-## ----Q14, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.height=8, fig.show= ifelse(SOLUTIONS, "asis", "hide")----
-synth_data <- expand.grid(Biomass = seq(from = min(sp$Biomass), to = max(sp$Biomass), length.out = 20), 
-                          pH = c("low", "mid", "high"))
-
-synth_data$pred <- predict(sp.glm2, newdata = synth_data, type = "response")
-
-plot(sp$Biomass, sp$Species, col= sp$pH, xlab= "Biomass", ylab= "Number of species")
-
-lines(synth_data$pred[synth_data$pH == "low"] ~ 
-      synth_data$Biomass[synth_data$pH == "low"], lty= 1, col= 1)
-lines(synth_data$pred[synth_data$pH == "mid"] ~ 
-      synth_data$Biomass[synth_data$pH == "mid"], lty= 1, col= 2)
-lines(synth_data$pred[synth_data$pH == "high"] ~ 
-      synth_data$Biomass[synth_data$pH == "high"], lty= 1, col= 3)
-
-legend("topright", 
- legend= c("high", "mid", "low"), 
- col= c(3:1), 
- lty= c(1, 1, 1), 
- lwd= c(1, 1, 1))
+## ----Q12, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE---------
+library(ggeffects)
+bio_pred <- ggpredict(sp.glm2, terms = "Biomass")
+plot(bio_pred)
+ph_pred <- ggpredict(sp.glm2, terms = "pH")
+plot(ph_pred)
 
