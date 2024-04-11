@@ -1,0 +1,1287 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Day 2: Binomial GLMs</title>
+
+<script src="site_libs/header-attrs-2.25/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #204a87; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #204a87; font-weight: bold; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #ce5c00; font-weight: bold; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
+.sourceCode .row {
+  width: 100%;
+}
+.sourceCode {
+  overflow-x: auto;
+}
+.code-folding-btn {
+  margin-right: -30px;
+}
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">PGR-GLM</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li>
+  <a href="setup.html">
+    <span class="fa fa-cog"></span>
+     
+    Setup
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-book"></span>
+     
+    R Book
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="https://intro2r.com">
+        <span class="fa fa-firefox"></span>
+         
+        Web book
+      </a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="https://github.com/alexd106/Rbook/raw/master/docs/Rbook.pdf">
+        <span class="fa fa-file-pdf"></span>
+         
+        PDF book
+      </a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-book"></span>
+     
+    Exercises
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="exercises.html">
+        <span class="fa fa-book"></span>
+         
+        Exercises
+      </a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="exercise_solutions.html">
+        <span class="fa fa-book"></span>
+         
+        Exercise Solutions
+      </a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="data.html">
+    <span class="fa fa-download"></span>
+     
+    Data
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-question-circle"></span>
+     
+    Info
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="syllabus.html">
+        <span class="fa fa-graduation-cap"></span>
+         
+        Syllabus
+      </a>
+    </li>
+    <li>
+      <a href="People.html">
+        <span class="fa fa-user-friends"></span>
+         
+        People
+      </a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="resources.html">
+        <span class="fa fa-book"></span>
+         
+        Resources
+      </a>
+    </li>
+    <li class="dropdown-header">Feedback</li>
+    <li>
+      <a href="People.html">
+        <span class="fa fa-envelope fa-lg"></span>
+         
+        Contact
+      </a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="https://github.com/alexd106/PGR-GLM">
+        <span class="fa fa-github fa-lg"></span>
+         
+        Source code
+      </a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Day 2: Binomial GLMs</h1>
+
+</div>
+
+
+<p> </p>
+<div
+id="binomial-glm---understanding-multi-drug-resistance-staphylococcus-epidermidis"
+class="section level1">
+<h1>Binomial GLM - understanding Multi-drug Resistance
+<em>Staphylococcus epidermidis</em></h1>
+<p> </p>
+<p>For the GLM exercises, we’ll use the workflow we suggested in the
+first GLM overview lecture as a template, specifically:</p>
+<ol style="list-style-type: decimal">
+<li><p>Know your research question!</p></li>
+<li><p>Think about your response variable (stochastic).</p></li>
+<li><p>Think about the process behind the data (deterministic).</p></li>
+<li><p>Understand the data that you’ve collected (plot it!)</p></li>
+<li><p>Combine into a model that can answer your question.</p></li>
+<li><p>Fit the model.</p></li>
+<li><p>Check your assumption(s).</p></li>
+<li><p>Answer your question.</p></li>
+</ol>
+<p><br />
+</p>
+<div id="know-your-research-question" class="section level3">
+<h3>1. Know your research question!</h3>
+<p><br />
+</p>
+<p>The researchers who collected this data wanted to understand how a
+policy decision, as well as other covariates, were associated with the
+prevalence of Multi-drug Resistant <em>Staphylococcus epidermidis</em>
+(MRSE, a relative of MRSA) amongst patients in different Intensive Care
+Unit (ICU) wards. Data was collected from all 210 ICU wards in the UK
+and included the total number of patients in each ICU ward
+(<code>total_patients</code>) as well as how many of them were MRSE
+positive (<code>mrse</code>).</p>
+<p>Specifically, the researchers wanted to understand how three
+explanatory variables were associated with the prevalence of MRSE: 1)
+the number of staff working in an ICU (<code>staff</code>); 2) current
+capacity of the ward (<code>capacity</code>, expressed as a proportion
+of beds currently occupied); and 3) whether or not the respective
+hospital board had implemented a policy concerning the reduced use of
+Chlorhexidine bathing (<code>policy</code>). Chlorhexidine usage was of
+primary interest, as the researchers believed this bathing was, in part,
+responsible for increasing prevalence of MRSE due to overuse leading to
+anti-microbial resistance (since chlorhexidine is an anti-microbial
+agent). Additionally, the researchers felt it was likely that the
+effectiveness of the policy depended on the number of ICU staff to
+implement it (so would require an interaction between <code>staff</code>
+and <code>policy</code>). In total, data was collected from 210 ICU
+wards (<span class="math inline">\(n = 210\)</span>), where each
+observation is from a single ICU ward in a hospital.</p>
+<p>As concisely as possible, write down the research question that can
+be answered with our analysis.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co"># How do ward capacity, staff numbers, chlorhexidine policy, and an interaction </span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="co"># between chlorhexidine policy and staff numbers, relate with the proportion of </span></span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="co"># patients infected with MRSE?</span></span></code></pre></div>
+<p><br />
+</p>
+</div>
+<div id="think-about-your-response-variable-the-stochastic-element."
+class="section level3">
+<h3>2. Think about your response variable (the stochastic element).</h3>
+<p><br />
+</p>
+<p>From the information provided in the brief above, we are already able
+to determine a suitable distribution to use when fitting the model (as
+before, ignore that today’s class is called <span
+class="math inline">\(Binomial\)</span> GLMs). Here, we’ve been told two
+pieces of information that help us determine that a <span
+class="math inline">\(Binomial\)</span> is a sensible distribution:</p>
+<ol style="list-style-type: decimal">
+<li><p>We have a count of “successes” (here, “success” is paradoxically
+a patient who is infected with MRSE)</p></li>
+<li><p>We have the total number of patients present on the
+ward.</p></li>
+</ol>
+<p>So, we know the minimum count of “successes” (i.e. infected patients)
+will be zero but we also know we have an upper bound; We can’t have more
+patients infected with MRSE than we have patients on the ward. This is
+the type of data that a <span class="math inline">\(Binomial\)</span>
+distribution excels in accounting for. Our stochastic element of the
+model would therefore be:</p>
+<p><span class="math inline">\(y_i \sim Binomial(p_i, k_i)\)</span></p>
+<p>Where <span class="math inline">\(y\)</span> is the number of MRSE
+positive patients in ICU ward <span class="math inline">\(i\)</span>,
+generated according to a <span class="math inline">\(Binomial\)</span>
+distribution, with probability <span class="math inline">\(p\)</span>
+and number of trials <span class="math inline">\(k\)</span>.</p>
+<p><br />
+</p>
+</div>
+<div
+id="think-about-the-process-behind-the-data-the-deterministic-element."
+class="section level3">
+<h3>3. Think about the process behind the data (the deterministic
+element).</h3>
+<p><br />
+</p>
+<p>As with yesterday’s practical, spending a couple of minutes thinking
+about the process that goes into why some wards may have higher
+prevalence of MRSE compared to others is mind boggling. We could spend
+years trying to map out that complexity, and indeed that’s what lots of
+researchers try to do. Here, the researchers have presented us with a
+suitably focused set of covariates and a razor sharp research question,
+meaning we can skip the “existential crises” phase and jump straight
+into the modelling. While skipping this is useful for teaching purposes,
+it really is worth emphasising, again, that this is where the majority
+of statistical analysis happens. Thinking very carefully about the
+process behind how the data is “generated” (called the <em>Data
+Generating Process</em>), and how we want to represent this in our
+models is really at the core of modelling.</p>
+<p>For our purposes, the deterministic part we’re interested in is the
+effect of number of staff, current capacity, policy implementation, and
+an interaction between number of staff and policy implementation. With
+this in mind, the deterministic element of our model will be something
+like the equation shown below. Try to fill in the gaps:</p>
+<p><span class="math inline">\(logit(p_i) = \beta_0 + \text{___} \times
+Capacity_i + \beta_2 \times \text{___}_i + \beta_3 \times Staff_i +
+\text{___} \times Staff_i \times Nopolicy_i\)</span></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co"># With the blanks filled in, the equation should be:</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="co"># logit(p_i) = beta_0 + beta_1 * Capacity_i + beta_2 * Nopolicy_i + beta_3 * Staff_i + beta_4 * Staff_i * Nopolicy_i</span></span></code></pre></div>
+<p> </p>
+</div>
+<div id="understand-the-data-that-youve-collected-plot-it"
+class="section level3">
+<h3>4. Understand the data that you’ve collected (plot it!)</h3>
+<p><br />
+</p>
+<p>Import the data file ‘mrse.txt’ into R and take a look at the
+structure of this dataframe. Given you have never seen this data before,
+it’s really important that you familiarise yourself with any
+nuances.</p>
+<p>Keep the tips and tricks you used in yesterday’s practical and feel
+free to use them again here; load in the data, check for any covariates
+you need to adjust, plot out the data, etc.</p>
+<p>A bit of advice for visualising <span
+class="math inline">\(Binomial\)</span> data; it can be easier to
+visualise if you create a new column in your dataset which is the
+proportion of success. You can calculate proportion as the number of
+successes divided by the number of trials (using the terminology of the
+<span class="math inline">\(Binomial\)</span> distribution). If in
+doubt, ask for help.</p>
+<p>Keep in mind that to run Binomial GLMs in R, we need both the number
+of successes (here, the number of patients with MRSE) but also the
+number of failures. We have the number with MRSE in the data already
+(<code>mrse</code>) but we don’t have number of failures. Instead we
+have the total number of patients (<code>total_patients</code>). It’s a
+good idea to create a column that contains failures (within context of
+MRSE, think of failure as those patients for whom the detection of MRSE
+“failed”).</p>
+<p>For the figures below, I am using a very commonly used <code>R</code>
+package, called <code>ggplot2</code>. This is entirely personal
+preference. It is entirely acceptable to use <code>base R</code> to do
+your plotting, so do not feel as though you must use
+<code>ggplot2</code>. If, however, you would like to, check out the
+Intro2R book, which contains a chapter on using <code>ggplot2</code>.
+Further, there are multiple ways to visualise data and also what
+questions you might want those figures to answer. The examples I include
+are just that. Examples.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>icu <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="at">file=</span> <span class="st">&quot;./data/mrse.txt&quot;</span>, <span class="at">header=</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>icu<span class="sc">$</span>proportion <span class="ot">&lt;-</span> icu<span class="sc">$</span>mrse <span class="sc">/</span> icu<span class="sc">$</span>total_patients</span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>icu<span class="sc">$</span>policy <span class="ot">&lt;-</span> <span class="fu">factor</span>(icu<span class="sc">$</span>policy)</span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>icu<span class="sc">$</span>fail <span class="ot">&lt;-</span> icu<span class="sc">$</span>total_patients <span class="sc">-</span> icu<span class="sc">$</span>mrse</span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="fu">str</span>(icu)</span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a><span class="do">## &#39;data.frame&#39;:    210 obs. of  7 variables:</span></span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a><span class="do">##  $ mrse          : int  0 4 6 9 0 7 10 9 11 10 ...</span></span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a><span class="do">##  $ total_patients: int  15 13 10 17 10 18 21 19 18 19 ...</span></span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a><span class="do">##  $ n_staff       : int  24 16 17 23 20 30 22 26 13 27 ...</span></span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a><span class="do">##  $ policy        : Factor w/ 2 levels &quot;Implemented&quot;,..: 1 2 2 2 1 2 2 2 2 2 ...</span></span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a><span class="do">##  $ capacity      : num  0.72 0.86 0.76 0.75 0.66 0.68 0.84 0.67 0.65 0.79 ...</span></span>
+<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a><span class="do">##  $ proportion    : num  0 0.308 0.6 0.529 0 ...</span></span>
+<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a><span class="do">##  $ fail          : int  15 9 4 8 10 11 11 10 7 9 ...</span></span>
+<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a><span class="co"># &#39;data.frame&#39;: 210 obs. of  6 variables:</span></span>
+<span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a><span class="co">#  $ mrse          : int  0 4 6 9 0 7 10 9 11 10 ...</span></span>
+<span id="cb3-18"><a href="#cb3-18" tabindex="-1"></a><span class="co">#  $ total_patients: int  15 13 10 17 10 18 21 19 18 19 ...</span></span>
+<span id="cb3-19"><a href="#cb3-19" tabindex="-1"></a><span class="co">#  $ n_staff       : int  24 16 17 23 20 30 22 26 13 27 ...</span></span>
+<span id="cb3-20"><a href="#cb3-20" tabindex="-1"></a><span class="co">#  $ policy        : Factor w/ 2 levels &quot;Not implemented&quot;,..: 2 1 1 1 2 1 1 1 1 1 ...</span></span>
+<span id="cb3-21"><a href="#cb3-21" tabindex="-1"></a><span class="co">#  $ capacity      : num  0.72 0.86 0.76 0.75 0.66 0.68 0.84 0.67 0.65 0.79 ...</span></span>
+<span id="cb3-22"><a href="#cb3-22" tabindex="-1"></a><span class="co">#  $ proportion    : num  0 0.308 0.6 0.529 0 ...</span></span>
+<span id="cb3-23"><a href="#cb3-23" tabindex="-1"></a><span class="co">#  $ fail          : int  15 9 4 8 10 11 11 10 7 9 ...</span></span>
+<span id="cb3-24"><a href="#cb3-24" tabindex="-1"></a></span>
+<span id="cb3-25"><a href="#cb3-25" tabindex="-1"></a><span class="fu">summary</span>(icu)</span>
+<span id="cb3-26"><a href="#cb3-26" tabindex="-1"></a><span class="do">##       mrse        total_patients     n_staff                  policy   </span></span>
+<span id="cb3-27"><a href="#cb3-27" tabindex="-1"></a><span class="do">##  Min.   : 0.000   Min.   : 7.00   Min.   :10.00   Implemented    : 80  </span></span>
+<span id="cb3-28"><a href="#cb3-28" tabindex="-1"></a><span class="do">##  1st Qu.: 1.000   1st Qu.:12.00   1st Qu.:19.00   Not implemented:130  </span></span>
+<span id="cb3-29"><a href="#cb3-29" tabindex="-1"></a><span class="do">##  Median : 5.000   Median :15.00   Median :22.00                        </span></span>
+<span id="cb3-30"><a href="#cb3-30" tabindex="-1"></a><span class="do">##  Mean   : 4.757   Mean   :15.07   Mean   :21.79                        </span></span>
+<span id="cb3-31"><a href="#cb3-31" tabindex="-1"></a><span class="do">##  3rd Qu.: 8.000   3rd Qu.:18.00   3rd Qu.:25.00                        </span></span>
+<span id="cb3-32"><a href="#cb3-32" tabindex="-1"></a><span class="do">##  Max.   :16.000   Max.   :26.00   Max.   :36.00                        </span></span>
+<span id="cb3-33"><a href="#cb3-33" tabindex="-1"></a><span class="do">##     capacity        proportion           fail      </span></span>
+<span id="cb3-34"><a href="#cb3-34" tabindex="-1"></a><span class="do">##  Min.   :0.3400   Min.   :0.00000   Min.   : 1.00  </span></span>
+<span id="cb3-35"><a href="#cb3-35" tabindex="-1"></a><span class="do">##  1st Qu.:0.6900   1st Qu.:0.07692   1st Qu.: 7.00  </span></span>
+<span id="cb3-36"><a href="#cb3-36" tabindex="-1"></a><span class="do">##  Median :0.7600   Median :0.32576   Median :10.00  </span></span>
+<span id="cb3-37"><a href="#cb3-37" tabindex="-1"></a><span class="do">##  Mean   :0.7517   Mean   :0.31208   Mean   :10.31  </span></span>
+<span id="cb3-38"><a href="#cb3-38" tabindex="-1"></a><span class="do">##  3rd Qu.:0.8500   3rd Qu.:0.50000   3rd Qu.:13.00  </span></span>
+<span id="cb3-39"><a href="#cb3-39" tabindex="-1"></a><span class="do">##  Max.   :1.0000   Max.   :0.87500   Max.   :25.00</span></span>
+<span id="cb3-40"><a href="#cb3-40" tabindex="-1"></a> <span class="co">#      mrse        total_patients     n_staff                  policy   </span></span>
+<span id="cb3-41"><a href="#cb3-41" tabindex="-1"></a> <span class="co"># Min.   : 0.000   Min.   : 7.00   Min.   :10.00   Implemented    : 80  </span></span>
+<span id="cb3-42"><a href="#cb3-42" tabindex="-1"></a> <span class="co"># 1st Qu.: 1.000   1st Qu.:12.00   1st Qu.:19.00   Not implemented:130  </span></span>
+<span id="cb3-43"><a href="#cb3-43" tabindex="-1"></a> <span class="co"># Median : 5.000   Median :15.00   Median :22.00                        </span></span>
+<span id="cb3-44"><a href="#cb3-44" tabindex="-1"></a> <span class="co"># Mean   : 4.757   Mean   :15.07   Mean   :21.79                        </span></span>
+<span id="cb3-45"><a href="#cb3-45" tabindex="-1"></a> <span class="co"># 3rd Qu.: 8.000   3rd Qu.:18.00   3rd Qu.:25.00                        </span></span>
+<span id="cb3-46"><a href="#cb3-46" tabindex="-1"></a> <span class="co"># Max.   :16.000   Max.   :26.00   Max.   :36.00                        </span></span>
+<span id="cb3-47"><a href="#cb3-47" tabindex="-1"></a> <span class="co">#    capacity        proportion           fail      </span></span>
+<span id="cb3-48"><a href="#cb3-48" tabindex="-1"></a> <span class="co"># Min.   :0.3400   Min.   :0.00000   Min.   : 1.00  </span></span>
+<span id="cb3-49"><a href="#cb3-49" tabindex="-1"></a> <span class="co"># 1st Qu.:0.6900   1st Qu.:0.07692   1st Qu.: 7.00  </span></span>
+<span id="cb3-50"><a href="#cb3-50" tabindex="-1"></a> <span class="co"># Median :0.7600   Median :0.32576   Median :10.00  </span></span>
+<span id="cb3-51"><a href="#cb3-51" tabindex="-1"></a> <span class="co"># Mean   :0.7517   Mean   :0.31208   Mean   :10.31  </span></span>
+<span id="cb3-52"><a href="#cb3-52" tabindex="-1"></a> <span class="co"># 3rd Qu.:0.8500   3rd Qu.:0.50000   3rd Qu.:13.00  </span></span>
+<span id="cb3-53"><a href="#cb3-53" tabindex="-1"></a> <span class="co"># Max.   :1.0000   Max.   :0.87500   Max.   :25.00  </span></span>
+<span id="cb3-54"><a href="#cb3-54" tabindex="-1"></a></span>
+<span id="cb3-55"><a href="#cb3-55" tabindex="-1"></a><span class="co"># install.packages(&quot;ggplot2&quot;) # Run this line of code if you do not have ggplot installed</span></span>
+<span id="cb3-56"><a href="#cb3-56" tabindex="-1"></a><span class="co"># Once installed, load the package</span></span>
+<span id="cb3-57"><a href="#cb3-57" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb3-58"><a href="#cb3-58" tabindex="-1"></a></span>
+<span id="cb3-59"><a href="#cb3-59" tabindex="-1"></a><span class="co"># A boxplot for proportion ~ policy</span></span>
+<span id="cb3-60"><a href="#cb3-60" tabindex="-1"></a><span class="co"># In base R: boxplot(icu$proportion ~ icu$policy)</span></span>
+<span id="cb3-61"><a href="#cb3-61" tabindex="-1"></a><span class="co"># In ggplot:</span></span>
+<span id="cb3-62"><a href="#cb3-62" tabindex="-1"></a><span class="fu">ggplot</span>(icu) <span class="sc">+</span></span>
+<span id="cb3-63"><a href="#cb3-63" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> policy, <span class="at">y =</span> proportion))</span></code></pre></div>
+<p><img src="GLM_2_Binomial_exercise_solutions_files/figure-html/Q4-1.png" width="672" /></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="co"># A scatterplot for proportion ~ capacity</span></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="co"># In base R: plot(icu$proportion ~ icu$capacity)</span></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="co"># In ggplot:</span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="fu">ggplot</span>(icu) <span class="sc">+</span></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> capacity, <span class="at">y =</span> proportion))</span></code></pre></div>
+<p><img src="GLM_2_Binomial_exercise_solutions_files/figure-html/Q4-2.png" width="672" /></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="co"># A scatterplot for proportion ~ n_staff, colour by policy</span></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="co"># In base R: plot(icu$proportion ~ icu$n_staff)</span></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>           <span class="co"># points(icu$proportion ~ icu$n_staff, col = icu$policy)</span></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="co"># In ggplot:</span></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="fu">ggplot</span>(icu) <span class="sc">+</span></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> n_staff, <span class="at">y =</span> proportion, <span class="at">colour =</span> policy))</span></code></pre></div>
+<p><img src="GLM_2_Binomial_exercise_solutions_files/figure-html/Q4-3.png" width="672" /></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="co"># A histogram showing varying number of trials</span></span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a><span class="co"># In base R: hist(icu$total_patients)</span></span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a><span class="co"># In ggplot:</span></span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a><span class="fu">ggplot</span>(icu) <span class="sc">+</span></span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> total_patients))</span></code></pre></div>
+<p><img src="GLM_2_Binomial_exercise_solutions_files/figure-html/Q4-4.png" width="672" /></p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="co"># Pairs plot with a few extra fancy things added in</span></span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="co"># To find these &quot;fancy&quot; functions, check out the examples in ?pairs</span></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>panel.cor <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y, <span class="at">digits =</span> <span class="dv">2</span>, <span class="at">prefix =</span> <span class="st">&quot;&quot;</span>, cex.cor, ...)</span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>{</span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>    <span class="fu">par</span>(<span class="at">usr =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>))</span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a>    r <span class="ot">&lt;-</span> <span class="fu">abs</span>(<span class="fu">cor</span>(x, y))</span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a>    txt <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">c</span>(r, <span class="fl">0.123456789</span>), <span class="at">digits =</span> digits)[<span class="dv">1</span>]</span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a>    txt <span class="ot">&lt;-</span> <span class="fu">paste0</span>(prefix, txt)</span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a>    <span class="cf">if</span>(<span class="fu">missing</span>(cex.cor)) cex.cor <span class="ot">&lt;-</span> <span class="fl">0.8</span><span class="sc">/</span><span class="fu">strwidth</span>(txt)</span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a>    <span class="fu">text</span>(<span class="fl">0.5</span>, <span class="fl">0.5</span>, txt, <span class="at">cex =</span> cex.cor <span class="sc">*</span> r)</span>
+<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a>}</span>
+<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a>panel.hist <span class="ot">&lt;-</span> <span class="cf">function</span>(x, ...)</span>
+<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a>{</span>
+<span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a>    usr <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="st">&quot;usr&quot;</span>)</span>
+<span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a>    <span class="fu">par</span>(<span class="at">usr =</span> <span class="fu">c</span>(usr[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>], <span class="dv">0</span>, <span class="fl">1.5</span>) )</span>
+<span id="cb7-17"><a href="#cb7-17" tabindex="-1"></a>    h <span class="ot">&lt;-</span> <span class="fu">hist</span>(x, <span class="at">plot =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb7-18"><a href="#cb7-18" tabindex="-1"></a>    breaks <span class="ot">&lt;-</span> h<span class="sc">$</span>breaks; nB <span class="ot">&lt;-</span> <span class="fu">length</span>(breaks)</span>
+<span id="cb7-19"><a href="#cb7-19" tabindex="-1"></a>    y <span class="ot">&lt;-</span> h<span class="sc">$</span>counts; y <span class="ot">&lt;-</span> y<span class="sc">/</span><span class="fu">max</span>(y)</span>
+<span id="cb7-20"><a href="#cb7-20" tabindex="-1"></a>    <span class="fu">rect</span>(breaks[<span class="sc">-</span>nB], <span class="dv">0</span>, breaks[<span class="sc">-</span><span class="dv">1</span>], y, <span class="at">col =</span> <span class="st">&quot;cyan&quot;</span>, ...)</span>
+<span id="cb7-21"><a href="#cb7-21" tabindex="-1"></a>}</span>
+<span id="cb7-22"><a href="#cb7-22" tabindex="-1"></a></span>
+<span id="cb7-23"><a href="#cb7-23" tabindex="-1"></a><span class="fu">pairs</span>(icu[,<span class="fu">c</span>(<span class="st">&quot;proportion&quot;</span>, <span class="st">&quot;capacity&quot;</span>, <span class="st">&quot;n_staff&quot;</span>)], <span class="at">diag.panel =</span> panel.hist, <span class="at">upper.panel =</span> panel.cor)</span></code></pre></div>
+<p><img src="GLM_2_Binomial_exercise_solutions_files/figure-html/Q4-5.png" width="672" /></p>
+<p><br />
+</p>
+</div>
+<div id="combine-into-a-model-that-can-answer-your-question."
+class="section level3">
+<h3>5. Combine into a model that can answer your question.</h3>
+<p><br />
+</p>
+<p>Having gone through the previous steps, it’s now time to run our
+first model. Given we had some practice yesterday, we can start with the
+model we want to actually run:</p>
+<p>Run the model now, using <code>glm()</code>.</p>
+<ul>
+<li>Hints:
+<ul>
+<li>We use <code>family =</code> to specify the distribution in a
+<code>glm()</code>
+<ul>
+<li>“Family” is just an alternative way to refer to a distribution.</li>
+</ul></li>
+<li>Remember that for Binomial GLMs we must specify both success and
+failure
+<ul>
+<li>To do so, we use <code>cbind(success, fail)</code> replacing success
+and failure with your respective variables</li>
+</ul></li>
+<li>What is the default link function used by Binomial GLMs?
+<ul>
+<li>How do we specify it?</li>
+<li>Do we need to specify it?</li>
+</ul></li>
+<li>Use <code>?glm</code> if you’re stuck, or ask for help.</li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>mod1 <span class="ot">&lt;-</span> <span class="fu">glm</span>(<span class="fu">cbind</span>(mrse, fail) <span class="sc">~</span> n_staff <span class="sc">*</span> policy <span class="sc">+</span> capacity, </span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>            <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&quot;logit&quot;</span>), </span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>            <span class="at">data =</span> icu)</span></code></pre></div>
+<p><br />
+</p>
+</div>
+<div id="check-your-assumptions." class="section level3">
+<h3>6. Check your assumption(s).</h3>
+<p><br />
+</p>
+<p>Having run the model, we now need to check how well this model meets
+the assumptions.</p>
+<p>To do so, we can check the model diagnostic plots, as well as check
+for dispersion. Do so now.</p>
+<p>For the diagnostic plots:</p>
+<ul>
+<li>Residuals vs Fitted
+<ul>
+<li>What kind of pattern would we expect?</li>
+</ul></li>
+<li>Q-Q Residuals
+<ul>
+<li>Are we expecting Normally distribted error with a Poisson
+distribution?</li>
+</ul></li>
+<li>Scale-Location
+<ul>
+<li>What kind of pattern would we expect?</li>
+</ul></li>
+<li>Residuals vs Leverage
+<ul>
+<li>Are any observations having a strong influence on the model
+fit?</li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="co"># Model diagnostic plots:</span></span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="co"># Residuals vs Fitted</span></span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>  <span class="co"># We see some possible patterns going on in the data but for the most part</span></span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>  <span class="co"># we see relatively constant variation. I am slightly concerned about the &quot;pattern&quot;, but </span></span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a>  <span class="co"># I&#39;ll use the Scale-Location plot to help me gauge how if I should be concerned.</span></span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a>  <span class="co"># Specifically, the apparent &quot;pinching&quot; that occurs at a predicted value of ca.</span></span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a>  <span class="co"># -1 (i.e. -1 on the logit link scale, or ca. 25% probability). This may indicate</span></span>
+<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a>  <span class="co"># a problem but it may just be because we don&#39;t have many observations with that</span></span>
+<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a>  <span class="co"># predicted value.</span></span>
+<span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a>  <span class="co"># Note that the &quot;streak&quot; of residuals at the bottom left of the figure, going </span></span>
+<span id="cb9-11"><a href="#cb9-11" tabindex="-1"></a>  <span class="co"># from ca. -2 to -5 (below the dashed line) are instances where we have low</span></span>
+<span id="cb9-12"><a href="#cb9-12" tabindex="-1"></a>  <span class="co"># predicted logit values, hence low probabilities, so we are approaching the lower</span></span>
+<span id="cb9-13"><a href="#cb9-13" tabindex="-1"></a>  <span class="co"># bound of the data (i.e. 0%). In these scenarios, we&#39;re always going to see a &quot;streak&quot;</span></span>
+<span id="cb9-14"><a href="#cb9-14" tabindex="-1"></a>  <span class="co"># of residual values that tend towards 0 residual error.</span></span>
+<span id="cb9-15"><a href="#cb9-15" tabindex="-1"></a><span class="co"># Q-Q Residuals</span></span>
+<span id="cb9-16"><a href="#cb9-16" tabindex="-1"></a>  <span class="co"># We completely ignore this figure for GLMs.</span></span>
+<span id="cb9-17"><a href="#cb9-17" tabindex="-1"></a><span class="co"># Scale-Location</span></span>
+<span id="cb9-18"><a href="#cb9-18" tabindex="-1"></a>  <span class="co"># There seems to be less obvious patterns when we view the data here, compared</span></span>
+<span id="cb9-19"><a href="#cb9-19" tabindex="-1"></a>  <span class="co"># to when we look at the Residuals vs Fitted figure. I am now more comfortable</span></span>
+<span id="cb9-20"><a href="#cb9-20" tabindex="-1"></a>  <span class="co"># that there&#39;s not much going on in the residuals, in terms of patterns.</span></span>
+<span id="cb9-21"><a href="#cb9-21" tabindex="-1"></a><span class="co"># Residuals vs Leverage</span></span>
+<span id="cb9-22"><a href="#cb9-22" tabindex="-1"></a>  <span class="co"># We&#39;re really only using this to check for values close to a Cook&#39;s distance of 1</span></span>
+<span id="cb9-23"><a href="#cb9-23" tabindex="-1"></a>  <span class="co"># For this plot, we can just make out the 0.5 dashed line in the top right, so </span></span>
+<span id="cb9-24"><a href="#cb9-24" tabindex="-1"></a>  <span class="co"># we have no highly influential points in the data.</span></span>
+<span id="cb9-25"><a href="#cb9-25" tabindex="-1"></a><span class="co"># Overall, the diagnostic plots look ok. Not perfect, but good enough that I&#39;d be </span></span>
+<span id="cb9-26"><a href="#cb9-26" tabindex="-1"></a>  <span class="co"># comfortable interpreting the results.</span></span>
+<span id="cb9-27"><a href="#cb9-27" tabindex="-1"></a></span>
+<span id="cb9-28"><a href="#cb9-28" tabindex="-1"></a><span class="co"># To do a quick and crude check for dispersion, we can use the information from summary()</span></span>
+<span id="cb9-29"><a href="#cb9-29" tabindex="-1"></a>  <span class="co"># We take residual deviance and divide by the degrees of freedom, so for this model:</span></span>
+<span id="cb9-30"><a href="#cb9-30" tabindex="-1"></a>  <span class="co"># 229.78/205 = 1.12</span></span>
+<span id="cb9-31"><a href="#cb9-31" tabindex="-1"></a>  <span class="co"># We have very, very slight overdispersion but nothing that causes me concern!</span></span>
+<span id="cb9-32"><a href="#cb9-32" tabindex="-1"></a></span>
+<span id="cb9-33"><a href="#cb9-33" tabindex="-1"></a><span class="co"># From these diagnostic checks, I see no issue for why we can&#39;t proceed with interpretation.</span></span>
+<span id="cb9-34"><a href="#cb9-34" tabindex="-1"></a></span>
+<span id="cb9-35"><a href="#cb9-35" tabindex="-1"></a><span class="co"># While you might be suspicious that the first model we ran apparently has no issues. </span></span>
+<span id="cb9-36"><a href="#cb9-36" tabindex="-1"></a>  <span class="co"># This does happen with real analysis. The risk when this happens, though, is that </span></span>
+<span id="cb9-37"><a href="#cb9-37" tabindex="-1"></a>  <span class="co"># sometimes researchers feel compelled to run alternative models to try and &quot;break&quot; </span></span>
+<span id="cb9-38"><a href="#cb9-38" tabindex="-1"></a>  <span class="co"># things, or think &quot;maybe we can get away with adding a bit more complexity&quot;. I&#39;d </span></span>
+<span id="cb9-39"><a href="#cb9-39" tabindex="-1"></a>  <span class="co"># argue neither are appropriate. We set out to answer a question and we&#39;ve now confirmed,</span></span>
+<span id="cb9-40"><a href="#cb9-40" tabindex="-1"></a>  <span class="co"># to the best of our ability, that our model is sound. There might be other issues</span></span>
+<span id="cb9-41"><a href="#cb9-41" tabindex="-1"></a>  <span class="co"># (e.g. the assumption of validity) but this model is perfectly adequate for </span></span>
+<span id="cb9-42"><a href="#cb9-42" tabindex="-1"></a>  <span class="co"># doing what we wanted it to do. We&#39;re more than justified in running this one</span></span>
+<span id="cb9-43"><a href="#cb9-43" tabindex="-1"></a>  <span class="co"># model without torturing ourselves further.</span></span>
+<span id="cb9-44"><a href="#cb9-44" tabindex="-1"></a></span>
+<span id="cb9-45"><a href="#cb9-45" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>)) <span class="co"># Show figures in 2 rows and 2 columns</span></span>
+<span id="cb9-46"><a href="#cb9-46" tabindex="-1"></a><span class="fu">plot</span>(mod1)          <span class="co"># Plot the model diagnostics</span></span></code></pre></div>
+<p><img src="GLM_2_Binomial_exercise_solutions_files/figure-html/Q6-1.png" width="672" /></p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>)) <span class="co"># Reset so only 1 figure is shown</span></span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="fu">summary</span>(mod1)       <span class="co"># Get the summary of the model (to check dispersion)</span></span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a><span class="do">## Call:</span></span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a><span class="do">## glm(formula = cbind(mrse, fail) ~ n_staff * policy + capacity, </span></span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a><span class="do">##     family = binomial(link = &quot;logit&quot;), data = icu)</span></span>
+<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a><span class="do">## Coefficients:</span></span>
+<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a><span class="do">##                               Estimate Std. Error z value Pr(&gt;|z|)    </span></span>
+<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a><span class="do">## (Intercept)                   -1.90007    0.60588  -3.136  0.00171 ** </span></span>
+<span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a><span class="do">## n_staff                       -0.12192    0.02744  -4.442 8.90e-06 ***</span></span>
+<span id="cb10-12"><a href="#cb10-12" tabindex="-1"></a><span class="do">## policyNot implemented          1.04076    0.58723   1.772  0.07634 .  </span></span>
+<span id="cb10-13"><a href="#cb10-13" tabindex="-1"></a><span class="do">## capacity                       2.37859    0.34223   6.950 3.65e-12 ***</span></span>
+<span id="cb10-14"><a href="#cb10-14" tabindex="-1"></a><span class="do">## n_staff:policyNot implemented  0.07109    0.02930   2.426  0.01525 *  </span></span>
+<span id="cb10-15"><a href="#cb10-15" tabindex="-1"></a><span class="do">## ---</span></span>
+<span id="cb10-16"><a href="#cb10-16" tabindex="-1"></a><span class="do">## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span>
+<span id="cb10-17"><a href="#cb10-17" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb10-18"><a href="#cb10-18" tabindex="-1"></a><span class="do">## (Dispersion parameter for binomial family taken to be 1)</span></span>
+<span id="cb10-19"><a href="#cb10-19" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb10-20"><a href="#cb10-20" tabindex="-1"></a><span class="do">##     Null deviance: 898.62  on 209  degrees of freedom</span></span>
+<span id="cb10-21"><a href="#cb10-21" tabindex="-1"></a><span class="do">## Residual deviance: 229.78  on 205  degrees of freedom</span></span>
+<span id="cb10-22"><a href="#cb10-22" tabindex="-1"></a><span class="do">## AIC: 741.84</span></span>
+<span id="cb10-23"><a href="#cb10-23" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb10-24"><a href="#cb10-24" tabindex="-1"></a><span class="do">## Number of Fisher Scoring iterations: 5</span></span></code></pre></div>
+<p><br />
+</p>
+</div>
+<div id="interpret-your-model." class="section level3">
+<h3>7. Interpret your model.</h3>
+<p><br />
+</p>
+<p>Using <code>summary()</code>, go through each <code>Estimate</code>
+and provide an interpretation of what it means scientifically. E.g. what
+does the <code>n_staff</code> <code>Estimate</code> mean?</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="fu">summary</span>(mod1)</span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a><span class="do">## Call:</span></span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a><span class="do">## glm(formula = cbind(mrse, fail) ~ n_staff * policy + capacity, </span></span>
+<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a><span class="do">##     family = binomial(link = &quot;logit&quot;), data = icu)</span></span>
+<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a><span class="do">## Coefficients:</span></span>
+<span id="cb11-8"><a href="#cb11-8" tabindex="-1"></a><span class="do">##                               Estimate Std. Error z value Pr(&gt;|z|)    </span></span>
+<span id="cb11-9"><a href="#cb11-9" tabindex="-1"></a><span class="do">## (Intercept)                   -1.90007    0.60588  -3.136  0.00171 ** </span></span>
+<span id="cb11-10"><a href="#cb11-10" tabindex="-1"></a><span class="do">## n_staff                       -0.12192    0.02744  -4.442 8.90e-06 ***</span></span>
+<span id="cb11-11"><a href="#cb11-11" tabindex="-1"></a><span class="do">## policyNot implemented          1.04076    0.58723   1.772  0.07634 .  </span></span>
+<span id="cb11-12"><a href="#cb11-12" tabindex="-1"></a><span class="do">## capacity                       2.37859    0.34223   6.950 3.65e-12 ***</span></span>
+<span id="cb11-13"><a href="#cb11-13" tabindex="-1"></a><span class="do">## n_staff:policyNot implemented  0.07109    0.02930   2.426  0.01525 *  </span></span>
+<span id="cb11-14"><a href="#cb11-14" tabindex="-1"></a><span class="do">## ---</span></span>
+<span id="cb11-15"><a href="#cb11-15" tabindex="-1"></a><span class="do">## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span>
+<span id="cb11-16"><a href="#cb11-16" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb11-17"><a href="#cb11-17" tabindex="-1"></a><span class="do">## (Dispersion parameter for binomial family taken to be 1)</span></span>
+<span id="cb11-18"><a href="#cb11-18" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb11-19"><a href="#cb11-19" tabindex="-1"></a><span class="do">##     Null deviance: 898.62  on 209  degrees of freedom</span></span>
+<span id="cb11-20"><a href="#cb11-20" tabindex="-1"></a><span class="do">## Residual deviance: 229.78  on 205  degrees of freedom</span></span>
+<span id="cb11-21"><a href="#cb11-21" tabindex="-1"></a><span class="do">## AIC: 741.84</span></span>
+<span id="cb11-22"><a href="#cb11-22" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb11-23"><a href="#cb11-23" tabindex="-1"></a><span class="do">## Number of Fisher Scoring iterations: 5</span></span>
+<span id="cb11-24"><a href="#cb11-24" tabindex="-1"></a><span class="co">#                               Estimate Std. Error z value Pr(&gt;|z|)    </span></span>
+<span id="cb11-25"><a href="#cb11-25" tabindex="-1"></a><span class="co"># (Intercept)                   -1.90007    0.60588  -3.136  0.00171 ** </span></span>
+<span id="cb11-26"><a href="#cb11-26" tabindex="-1"></a><span class="co"># n_staff                       -0.12192    0.02744  -4.442 8.90e-06 ***</span></span>
+<span id="cb11-27"><a href="#cb11-27" tabindex="-1"></a><span class="co"># policyNot implemented          1.04076    0.58723   1.772  0.07634 .  </span></span>
+<span id="cb11-28"><a href="#cb11-28" tabindex="-1"></a><span class="co"># capacity                       2.37859    0.34223   6.950 3.65e-12 ***</span></span>
+<span id="cb11-29"><a href="#cb11-29" tabindex="-1"></a><span class="co"># n_staff:policyNot implemented  0.07109    0.02930   2.426  0.01525 *  </span></span>
+<span id="cb11-30"><a href="#cb11-30" tabindex="-1"></a></span>
+<span id="cb11-31"><a href="#cb11-31" tabindex="-1"></a><span class="co"># (Intercept)</span></span>
+<span id="cb11-32"><a href="#cb11-32" tabindex="-1"></a>  <span class="co"># This is the predicted value (on the link scale) when all other covariates</span></span>
+<span id="cb11-33"><a href="#cb11-33" tabindex="-1"></a>  <span class="co"># are set to zero. For &quot;policy&quot;, this is when the policy *was* implemented. We know</span></span>
+<span id="cb11-34"><a href="#cb11-34" tabindex="-1"></a>  <span class="co"># that because the &quot;policy&quot; Estimate (further down) is for &quot;Not implemented&quot;, </span></span>
+<span id="cb11-35"><a href="#cb11-35" tabindex="-1"></a>  <span class="co"># meaning R has &quot;created&quot; a column of data called &quot;Not implemented&quot; and used 1 to </span></span>
+<span id="cb11-36"><a href="#cb11-36" tabindex="-1"></a>  <span class="co"># mean &quot;Yes&quot; and 0 to mean &quot;No&quot;. Why did R choose &quot;Implemented&quot; to be our reference? </span></span>
+<span id="cb11-37"><a href="#cb11-37" tabindex="-1"></a>  <span class="co"># Because &quot;I&quot; is before &quot;N&quot; in the alphabet.</span></span>
+<span id="cb11-38"><a href="#cb11-38" tabindex="-1"></a>  <span class="co"># The Estimate value of -1.9 means that when capacity is 0, n_staff</span></span>
+<span id="cb11-39"><a href="#cb11-39" tabindex="-1"></a>  <span class="co"># is 0, and the policy was not implemented, we estimate -1.9 patients would be</span></span>
+<span id="cb11-40"><a href="#cb11-40" tabindex="-1"></a>  <span class="co"># MRSE positive (on the link scale).</span></span>
+<span id="cb11-41"><a href="#cb11-41" tabindex="-1"></a><span class="co"># n_staff</span></span>
+<span id="cb11-42"><a href="#cb11-42" tabindex="-1"></a>  <span class="co"># This is the predicted slope for n_staff on the link scale *when the policy was</span></span>
+<span id="cb11-43"><a href="#cb11-43" tabindex="-1"></a>  <span class="co"># implemented. This caveat comes about because we have an interaction between </span></span>
+<span id="cb11-44"><a href="#cb11-44" tabindex="-1"></a>  <span class="co"># policy and n_staff. This means we interpret this Estimate as: for every additional</span></span>
+<span id="cb11-45"><a href="#cb11-45" tabindex="-1"></a>  <span class="co"># member of staff in a ward *when the policy was implemented*, the proportion </span></span>
+<span id="cb11-46"><a href="#cb11-46" tabindex="-1"></a>  <span class="co"># of patients with MRSE *decreases* by -0.12 (we know it decreases because the</span></span>
+<span id="cb11-47"><a href="#cb11-47" tabindex="-1"></a>  <span class="co"># estimate is negative).</span></span>
+<span id="cb11-48"><a href="#cb11-48" tabindex="-1"></a><span class="co"># policyNot implemented</span></span>
+<span id="cb11-49"><a href="#cb11-49" tabindex="-1"></a>  <span class="co"># This is the difference between when the policy is *not implemented*, compared</span></span>
+<span id="cb11-50"><a href="#cb11-50" tabindex="-1"></a>  <span class="co"># to when it is implemented. Here, the value of 1.04 means that when the policy</span></span>
+<span id="cb11-51"><a href="#cb11-51" tabindex="-1"></a>  <span class="co"># is not implemented, we would expect *more* patients to be MRSE positive.</span></span>
+<span id="cb11-52"><a href="#cb11-52" tabindex="-1"></a>  <span class="co"># Specifically, -1.90007 + 1.04076 (Intercept + policyNot implemented).</span></span>
+<span id="cb11-53"><a href="#cb11-53" tabindex="-1"></a>  <span class="co"># This would imply the policy is effective.</span></span>
+<span id="cb11-54"><a href="#cb11-54" tabindex="-1"></a><span class="co"># capacity</span></span>
+<span id="cb11-55"><a href="#cb11-55" tabindex="-1"></a>  <span class="co"># This is the slope for ward capacity. For every additional unit increase in capacity</span></span>
+<span id="cb11-56"><a href="#cb11-56" tabindex="-1"></a>  <span class="co"># the number of MRSE patients *increases* by 2.37. We need to be a little careful</span></span>
+<span id="cb11-57"><a href="#cb11-57" tabindex="-1"></a>  <span class="co"># here and remind ourselves what a unit increase in capacity represents. Capacity</span></span>
+<span id="cb11-58"><a href="#cb11-58" tabindex="-1"></a>  <span class="co"># is the proportion of beds occupied in a ward, meaning it can vary between 0</span></span>
+<span id="cb11-59"><a href="#cb11-59" tabindex="-1"></a>  <span class="co"># and 1. So a unit increase is going from 0% to 100% - from nothing to everything.</span></span>
+<span id="cb11-60"><a href="#cb11-60" tabindex="-1"></a>  <span class="co"># If we wanted the capacity Estimate to be more intuitive, we could multiple the</span></span>
+<span id="cb11-61"><a href="#cb11-61" tabindex="-1"></a>  <span class="co"># explanatory variable (in our mrse dataframe) by 100 and rerun our analysis. </span></span>
+<span id="cb11-62"><a href="#cb11-62" tabindex="-1"></a>  <span class="co"># If we did so, a unit increase would become an increase in 1%, rather than 100%.</span></span>
+<span id="cb11-63"><a href="#cb11-63" tabindex="-1"></a><span class="co"># n_staff:policyNot implemented</span></span>
+<span id="cb11-64"><a href="#cb11-64" tabindex="-1"></a>  <span class="co"># This is our interaction, which in this case, is the difference in slope </span></span>
+<span id="cb11-65"><a href="#cb11-65" tabindex="-1"></a>  <span class="co"># between the slope for n_staff when the policy was implemented (n_staff Estimate) </span></span>
+<span id="cb11-66"><a href="#cb11-66" tabindex="-1"></a>  <span class="co"># with the compared to the slope for n_staff when we do not implement the policy.</span></span>
+<span id="cb11-67"><a href="#cb11-67" tabindex="-1"></a>  <span class="co"># *Importantly*, the slope is not 0.07109. Remember, it&#39;s the difference in slope</span></span>
+<span id="cb11-68"><a href="#cb11-68" tabindex="-1"></a>  <span class="co"># compared to the slope for n_staff when the policy was implemented. Here, the</span></span>
+<span id="cb11-69"><a href="#cb11-69" tabindex="-1"></a>  <span class="co"># slope is: -0.12192 + 0.07109 = -0.05083</span></span></code></pre></div>
+<p><br />
+</p>
+</div>
+<div id="create-figures-to-show-predicted-relationships."
+class="section level3">
+<h3>8. Create figures to show predicted relationships.</h3>
+<p><br />
+</p>
+<p>In the <span class="math inline">\(Poisson\)</span> exercise, we
+relied on <code>packages</code> to make our figures for us. In today’s
+exercise, we’ll do these ourselves so that we get the freedom to make
+any aesthetic changes we might want, or to make show predictions
+according to specific circumstances. Doing so, inevitably, will require
+more work on our side though.</p>
+<p>For started, we need a “new” dataset that contains covariate values
+that we want to use to make predictions. In the lecture, I showed a
+trick we can use to do so, by using the <code>expand.grid()</code>
+function. Using this we’ll start off by making a dataset to show the
+relationship for <code>capacity</code>, and then afterwards, do this
+again to show the relationship for the interaction between
+<code>policy</code> and <code>n_staff</code>. Regardless of which
+prediction we are doing, we must provide values for all covariates in
+the model, even those we don’t necessarily want to show. For
+<code>capacity</code>, we can create our fake dataset using the
+following code:</p>
+<pre><code># Create a fake dataset to feed into our model equation
+synth_data &lt;- expand.grid(
+  # Set n_staff to median (22 staff)
+  n_staff = median(icu$n_staff), 
+  # We have to set policy to either Not implemented or Implemented
+  policy = &quot;Implemented&quot;,        
+  capacity = seq(
+    # We create a sequence from the minimum capacity observered
+    from = min(icu$capacity), 
+    # To the maximum capacity observed
+    to = max(icu$capacity),   
+    # And request 20 values across that range
+    length.out = 20))         </code></pre>
+<p>We can then use this new <em>synthetic</em> dataset to create
+predictions of proportion of MRSE positive patients using the
+<code>predict()</code> function. The <code>predict()</code> function
+takes our model equation (with the estimated parameter values) and
+combines this with either the original data (if we did not supply a
+synthetic dataset) or with a synthetic data (if you do supply a
+synthetic dataset) to calculate the expected MRSE proportions, given the
+respective covariate values.</p>
+<pre><code>synth_data$pred &lt;- predict(mod1, newdata = synth_data)</code></pre>
+<p>A hint: we can tell the <code>predict()</code> function to use the
+inverse link function automatically when making the predictions, so we
+don’t need to by setting <code>type = "response"</code> or else we could
+always do this manually by using the inverse link function (here <span
+class="math inline">\(\frac{e^x}{(1+e^x)}\)</span>, or
+<code>plogis()</code> in <code>R</code>) such that our predicted values
+are on the response scale.</p>
+<pre><code>synth_data$pred &lt;- predict(mod1, newdata = synth_data, type = &quot;response&quot;)
+# Or
+synth_data$pred &lt;- plogis(predict(mod1, newdata = synth_data))</code></pre>
+<p>Once done, we can use our new synthetic data and predicted MRSE
+prevalence to create a figure that shows the relationships for
+capacity.</p>
+<pre><code># Plot the raw data
+plot(icu$capacity, icu$proportion, xlab= &quot;Ward capacity&quot;, ylab= &quot;Proportion of patients with MRSE&quot;)
+# And add a line to show our predicted model fit
+lines(synth_data$pred ~ synth_data$capacity, lty = 1, col = 1)</code></pre>
+<p>Your figure should look like:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="co"># Create a fake dataset to feed into our model equation</span></span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a>synth_data <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(</span>
+<span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a>  <span class="co"># Set n_staff to median (22 staff)</span></span>
+<span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a>  <span class="at">n_staff =</span> <span class="fu">median</span>(icu<span class="sc">$</span>n_staff), </span>
+<span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a>  <span class="co"># We have to set policy to either Not implemented or Implemented</span></span>
+<span id="cb16-6"><a href="#cb16-6" tabindex="-1"></a>  <span class="at">policy =</span> <span class="st">&quot;Implemented&quot;</span>,        </span>
+<span id="cb16-7"><a href="#cb16-7" tabindex="-1"></a>  <span class="at">capacity =</span> <span class="fu">seq</span>(</span>
+<span id="cb16-8"><a href="#cb16-8" tabindex="-1"></a>    <span class="co"># We create a sequence from the minimum capacity observered</span></span>
+<span id="cb16-9"><a href="#cb16-9" tabindex="-1"></a>    <span class="at">from =</span> <span class="fu">min</span>(icu<span class="sc">$</span>capacity), </span>
+<span id="cb16-10"><a href="#cb16-10" tabindex="-1"></a>    <span class="co"># To the maximum capacity observed</span></span>
+<span id="cb16-11"><a href="#cb16-11" tabindex="-1"></a>    <span class="at">to =</span> <span class="fu">max</span>(icu<span class="sc">$</span>capacity),   </span>
+<span id="cb16-12"><a href="#cb16-12" tabindex="-1"></a>    <span class="co"># And request 20 values across that range</span></span>
+<span id="cb16-13"><a href="#cb16-13" tabindex="-1"></a>    <span class="at">length.out =</span> <span class="dv">20</span>))         </span>
+<span id="cb16-14"><a href="#cb16-14" tabindex="-1"></a></span>
+<span id="cb16-15"><a href="#cb16-15" tabindex="-1"></a><span class="co"># Get predictions on the response scale</span></span>
+<span id="cb16-16"><a href="#cb16-16" tabindex="-1"></a>synth_data<span class="sc">$</span>pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(mod1, <span class="at">newdata =</span> synth_data, <span class="at">type =</span> <span class="st">&quot;response&quot;</span>)</span>
+<span id="cb16-17"><a href="#cb16-17" tabindex="-1"></a><span class="co"># Or</span></span>
+<span id="cb16-18"><a href="#cb16-18" tabindex="-1"></a><span class="co"># synth_data$pred &lt;- plogis(predict(mod1, newdata = synth_data))</span></span>
+<span id="cb16-19"><a href="#cb16-19" tabindex="-1"></a></span>
+<span id="cb16-20"><a href="#cb16-20" tabindex="-1"></a><span class="co"># Plot the raw data</span></span>
+<span id="cb16-21"><a href="#cb16-21" tabindex="-1"></a><span class="fu">plot</span>(icu<span class="sc">$</span>capacity, icu<span class="sc">$</span>proportion, <span class="at">xlab=</span> <span class="st">&quot;Ward capacity&quot;</span>, <span class="at">ylab=</span> <span class="st">&quot;Proportion of patients with MRSE&quot;</span>)</span>
+<span id="cb16-22"><a href="#cb16-22" tabindex="-1"></a><span class="co"># And add a line to show our predicted model fit</span></span>
+<span id="cb16-23"><a href="#cb16-23" tabindex="-1"></a><span class="fu">lines</span>(synth_data<span class="sc">$</span>pred <span class="sc">~</span> synth_data<span class="sc">$</span>capacity, <span class="at">lty =</span> <span class="dv">1</span>, <span class="at">col =</span> <span class="dv">1</span>)</span></code></pre></div>
+<p><img src="GLM_2_Binomial_exercise_solutions_files/figure-html/Q8.1-1.png" width="672" /></p>
+<p>Now for the harder part of the model. We’ll need to go through the
+same steps as above, but this time making tweaks to show the interaction
+between <code>policy</code> and <code>n_staff</code>.</p>
+<p>Hint: the biggest “part” here is creating the synthetic data such
+that we can show the <code>n_staff</code> relationship for <em>both</em>
+levels of <code>policy</code>, but doing so, requires only two small
+changes to the <code>expand.grid()</code> code.</p>
+<p>Give it a go, but if you’re struggling, ask for help. This is a tough
+one.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="co"># Create a fake dataset to feed into our model equation</span></span>
+<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a>synth_data <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">n_staff =</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="fu">min</span>(icu<span class="sc">$</span>n_staff), <span class="at">to =</span> <span class="fu">max</span>(icu<span class="sc">$</span>n_staff), <span class="at">length.out =</span> <span class="dv">20</span>), </span>
+<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a>                          <span class="at">policy =</span> <span class="fu">c</span>(<span class="st">&quot;Implemented&quot;</span>, <span class="st">&quot;Not implemented&quot;</span>),</span>
+<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a>                          <span class="at">capacity =</span> <span class="fl">0.5</span>)</span>
+<span id="cb17-5"><a href="#cb17-5" tabindex="-1"></a></span>
+<span id="cb17-6"><a href="#cb17-6" tabindex="-1"></a>synth_data<span class="sc">$</span>pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(mod1, <span class="at">newdata =</span> synth_data, <span class="at">type =</span> <span class="st">&quot;response&quot;</span>)</span>
+<span id="cb17-7"><a href="#cb17-7" tabindex="-1"></a></span>
+<span id="cb17-8"><a href="#cb17-8" tabindex="-1"></a><span class="fu">plot</span>(icu<span class="sc">$</span>n_staff, icu<span class="sc">$</span>proportion, <span class="at">col=</span> icu<span class="sc">$</span>policy, <span class="at">xlab=</span> <span class="st">&quot;Number of staff&quot;</span>, <span class="at">ylab=</span> <span class="st">&quot;Proportion of patients with MRSE&quot;</span>)</span>
+<span id="cb17-9"><a href="#cb17-9" tabindex="-1"></a></span>
+<span id="cb17-10"><a href="#cb17-10" tabindex="-1"></a><span class="fu">lines</span>(synth_data<span class="sc">$</span>pred[synth_data<span class="sc">$</span>policy <span class="sc">==</span> <span class="st">&quot;Implemented&quot;</span>] <span class="sc">~</span> </span>
+<span id="cb17-11"><a href="#cb17-11" tabindex="-1"></a>      synth_data<span class="sc">$</span>n_staff[synth_data<span class="sc">$</span>policy <span class="sc">==</span> <span class="st">&quot;Implemented&quot;</span>], <span class="at">lty=</span> <span class="dv">1</span>, <span class="at">col=</span> <span class="dv">1</span>)</span>
+<span id="cb17-12"><a href="#cb17-12" tabindex="-1"></a><span class="fu">lines</span>(synth_data<span class="sc">$</span>pred[synth_data<span class="sc">$</span>policy <span class="sc">==</span> <span class="st">&quot;Not implemented&quot;</span>] <span class="sc">~</span> </span>
+<span id="cb17-13"><a href="#cb17-13" tabindex="-1"></a>      synth_data<span class="sc">$</span>n_staff[synth_data<span class="sc">$</span>policy <span class="sc">==</span> <span class="st">&quot;Not implemented&quot;</span>], <span class="at">lty=</span> <span class="dv">1</span>, <span class="at">col=</span> <span class="dv">2</span>)</span>
+<span id="cb17-14"><a href="#cb17-14" tabindex="-1"></a></span>
+<span id="cb17-15"><a href="#cb17-15" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;topright&quot;</span>, </span>
+<span id="cb17-16"><a href="#cb17-16" tabindex="-1"></a> <span class="at">legend=</span> <span class="fu">c</span>(<span class="st">&quot;Implemented&quot;</span>, <span class="st">&quot;Not implemented&quot;</span>), </span>
+<span id="cb17-17"><a href="#cb17-17" tabindex="-1"></a> <span class="at">col=</span> <span class="fu">c</span>(<span class="dv">2</span><span class="sc">:</span><span class="dv">1</span>), </span>
+<span id="cb17-18"><a href="#cb17-18" tabindex="-1"></a> <span class="at">lty=</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>), </span>
+<span id="cb17-19"><a href="#cb17-19" tabindex="-1"></a> <span class="at">lwd=</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>))</span></code></pre></div>
+<p><img src="GLM_2_Binomial_exercise_solutions_files/figure-html/Q8.2-1.png" width="672" /></p>
+<p><br />
+</p>
+</div>
+<div id="uncertainty" class="section level3">
+<h3>9. Uncertainty</h3>
+<p><br />
+</p>
+<p>Blah</p>
+<p><br />
+</p>
+</div>
+<div id="the-monkeys-paw" class="section level3">
+<h3>10. The Monkey’s Paw</h3>
+<p><br />
+</p>
+<p>Think back to the very first lecture where we spoke about the four
+broad assumptions. The first was the assumption of <em>Validity</em>.
+For the data that we’ve been modelling here, we’ve constantly spoken
+about how many patients were MRSE positive. But is that accurate? In
+truth, we actually don’t know how many patients were actually MRSE
+positive. All we know is how many <em>tested</em> positive. In order for
+a patient to be declared MRSE positive, there are quite a few tests that
+have to be done, and at minimum number must come back positive before
+declaring MRSE - meaning lots of tests where we can get
+false-negatives.</p>
+<p>So. What we’re actually asking with our models here is not “What
+proportion of patients are MRSE positive?”. Instead, we’re asking “What
+proportion of patients are MRSE positive <em>and also</em> tested
+positive?”. This might seem like a trivial difference, but just as in
+the coffee example in the first lecture, the deterministic process
+underlying why a sample tests positive or not is more complex than
+simply the true MRSE state. How reliable are the tests? Was the lab
+technician tired? Had they just broken up with their partner, and so
+were very distracted when running the test? Was the result correctly
+recorded? Plus no shortage of other variables that influenced the
+probability of whether or not a sample tested positive.</p>
+<p>Mathematically, we would say there are two probabilities at play here
+which combine to give a single probability (and outcome). The
+probability that a patient is actually MRSE positive is multiplied by
+the probability MRSE was detected, given they were MRSE positive. With
+the data we have, it’s impossible to disentangle these two probabilities
+(though there are sampling and corresponding statistical methods to do
+just that), so we’re left explaining the combined probabilities rather
+than the one we’re actually interested in - whether or not a patient is
+MRSE positive.</p>
+<p>This example of violating the assumption of <em>Validity</em> is
+possibly one of the most common ways I see it being broken, and it can
+be really hard to identify. It can be even harder to convince people
+they have broken it. Certainly, there are no statistical tests we can
+perform to test for it, and not much we can do having already collected
+the data. The only way to catch it, is to 1) know about it, and 2) think
+<em>very, very</em> carefully about what the data actually is.</p>
+<p>This is why the first part of your analysis <em>must</em> be sitting
+back and thinking about your data and research question. Without that
+step… The Monkey’s Paw awaits.</p>
+<p><br />
+</p>
+</div>
+<div id="optional-exploring-model-diagnostics" class="section level3">
+<h3>11. (Optional) Exploring model diagnostics</h3>
+<p>As in the <span class="math inline">\(Poisson\)</span> exercise,
+below I include code to simulate a <span
+class="math inline">\(Binomial\)</span> dataset to allow you to explore
+the impact of sample size, model misspecification, and effect size, on
+model diagnostic plots. The <em>Data Generating Process</em> (DGP) for
+the dataset is:</p>
+<p><span class="math inline">\(y_i \sim Binomial(p_i, k_i)\)</span></p>
+<p><span class="math inline">\(logit(p_i) = \beta_0 + \beta_1 \times
+x_{1,i} + \beta_2 \times x_{2,i} + \beta_3\times x_{3,i} + \beta_4
+\times x_{1, i} \times x_{2,i}\)</span></p>
+<p>where you are free to decide what the values for the parameters
+(<span class="math inline">\(\beta_{0,...,4}\)</span>) are. Note that
+given you’ve now run a model that included an interaction, the DGP also
+includes an interaction between <span class="math inline">\(x_1\)</span>
+and <span class="math inline">\(x_2\)</span></p>
+<p>Rerun the simulation and analysis varying the sample size
+(e.g. <code>N &lt;- 1000</code>), the effect sizes
+(e.g. <code>beta_0 &lt;- 10</code>) or the formula of the
+<code>glm()</code> (e.g. remove the interaction). Check what effect this
+has on dispersion and the model diagnostic plots.</p>
+<pre><code># Set your seed to have the randomness be cosnsitent each time you run the code
+# You can change this, or comment it out, if you want to embrase the randomness
+set.seed(1234)
+
+# Set your sample size
+N &lt;- 500
+
+# Set the number of trials
+k &lt;- 10
+
+# Create three continuous covariates
+x1 &lt;- runif(N, 0, 10)
+x2 &lt;- runif(N, 0, 10)
+x3 &lt;- runif(N, 0, 10)
+
+# Set your parameter values
+beta_0 &lt;- 2.5   # This is the intercept (on link scale)
+beta_1 &lt;- 0.2   # This is the slope for the x1 variable (on link scale)
+beta_2 &lt;- -1.3  # This is the slope for the x2 variable (on link scale)
+beta_3 &lt;- 0.4   # This is the slope for the x3 variable (on link scale)
+beta_4 &lt;- 0.05  # The combined effect of x1 and x2 (on link scale)
+
+# Generate your linear predictor on the link scale (i.e. log)
+# We don&#39;t actually need to use log() here (it&#39;s already on the link scale)
+linear_predictor_link &lt;- beta_0 + beta_1 * x1 + beta_2 * x2 + beta_3 * x3 + beta_4 * x1 * x2
+
+# Backtransform your linear predictor to the response scale (i.e. exponentiate)
+linear_predictor_response &lt;- plogis(linear_predictor_link)
+
+# Generate your response variable using a Poisson random number generator (rpois)
+y &lt;- rbinom(N, size = k, prob = linear_predictor_response)
+
+# Note that the above three lines of code are the equivalent to the equations:
+# y ~ Binomial(p, k)
+# logit(p) = beta_0 + beta_1 * x1 + beta_2 * x2 + beta_3 * x3 + beta_4 * x1 * x2
+
+# Store your data in a dataframe
+dat &lt;- data.frame(y, x1, x2, x3)
+
+# Run a Poisson GLM
+fit &lt;- glm(y ~ x1 + x2 + x3 + x1 : x2, 
+           data = dat, 
+           family = poisson)
+
+# See if the model was able to estimate your parameter values 
+# and what the dispersion is
+summary(fit)
+
+# See how well the model diagnostics perform
+par(mfrow = c(2,2))
+plot(fit)</code></pre>
+<p><strong>End of the Binomial GLM - understanding Multi-drug Resistance
+<em>Staphylococcus epidermidis</em></strong></p>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
