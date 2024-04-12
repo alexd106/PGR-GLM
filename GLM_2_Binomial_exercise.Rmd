@@ -236,7 +236,7 @@ For the diagnostic plots:
 + Residuals vs Fitted
   * What kind of pattern would we expect?
 + Q-Q Residuals
-  * Are we expecting Normally distribted error with a Poisson distribution?
+  * Are we expecting Normally distributed error with a Poisson distribution?
 + Scale-Location
   * What kind of pattern would we expect?
 + Residuals vs Leverage
