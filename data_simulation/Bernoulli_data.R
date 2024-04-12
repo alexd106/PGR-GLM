@@ -1,9 +1,9 @@
 seed <- 1988
 set.seed(seed)
 
-N <- 30000
+N <- 15000
 
-# Netflix has data on 50000 users who had never seen lord of the rings
+# Netflix has data on 15000 users who had never seen lord of the rings
 # Want to predict if user will watch lotr
 # Based on:
   # Age
@@ -124,14 +124,17 @@ netflix <- netflix[,c(1:8, 23)]
 # Red herring variables ---------------------------------------------------
 netflix$premium <- factor(ifelse(rbinom(nrow(netflix), size = 1, prob = 0.2) == 1, "Premium", "Standard"))
 netflix$fam_members <- rpois(nrow(netflix), lambda = 2)
-netflix$country <- factor(sample(c("USA", "UK", "Germany", "France", "Japan", "New Zealand", "Mexico"), 
+netflix$country <- factor(sample(c("US", "UK", "DE", "FR", "JP", "NZ", "MX"), 
                                  size = nrow(netflix), replace = TRUE, 
                                  prob = c(0.32, 0.19, 0.16, 0.14, 0.02, 0.05, 0.12)),
-                          levels = c("USA", "UK", "Germany", "France", "Japan", "New Zealand", "Mexico"))
+                          levels = c("US", "UK", "DE", "FR", "JP", "NZ", "MX"))
+
+library(ids)
+netflix$user <- uuid(n = nrow(netflix))
 head(netflix)
 
-test_data <- netflix[15001:30000,]
-netflix <- netflix[1:15000,]
+netflix <- netflix[,c("user", "lotr", "premium", "age", "genre_likes", "actor_likes", "similar_user_ratings",
+                      "mean_time_genre", "user_time", "user_day", "user_device", "fam_members", "country")]
 
 library(ggplot2)
 p1 <- ggplot(netflix) +
@@ -161,7 +164,9 @@ p11 <- ggplot(netflix) +
 library(patchwork)
 p1 + p2 + p3 + p4 + p5 + p6 + p7 + p8 + p9 + p10 + p11
 
-mod1 <- glm(lotr ~ .,
+# Full model
+mod1 <- glm(lotr ~ age + genre_likes + actor_likes + similar_user_ratings + mean_time_genre + user_time + user_day + user_device +
+              premium + fam_members + country,
             data = netflix,
             family = binomial)
 par(mfrow = c(2,2))
@@ -170,4 +175,20 @@ par(mfrow = c(1,1))
 summary(mod1)
 drop1(mod1)
 
-#write.table(mrse, "data//mrse.txt", row.names = FALSE)
+plot(ggeffects::ggpredict(mod1, terms = c("age [all]")))
+
+# True model
+library(mgcv)
+mod2 <- gam(lotr ~ s(age, bs = "cr", k = 20) + genre_likes + actor_likes + similar_user_ratings + mean_time_genre + user_time + user_day + user_device,
+            data = netflix,
+            family = binomial,
+            method = "REML")
+par(mfrow = c(2,2))
+plot(mod2)
+par(mfrow = c(1,1))
+summary(mod2)
+drop1(mod2)
+
+plot(ggeffects::ggpredict(mod2, terms = c("age [all]")))
+
+# write.table(netflix, "data//netflix.txt", row.names = FALSE)
