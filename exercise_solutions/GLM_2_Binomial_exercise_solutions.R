@@ -249,7 +249,6 @@ legend("topright",
  lty= c(1, 1, 1), 
  lwd= c(1, 1, 1))
 
-
 ## ----Q9.1, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.height=8, fig.show= ifelse(TRUE, "asis", "hide")----
 # Create a fake dataset to feed into our model equation
 synth_data <- expand.grid(
@@ -320,4 +319,3 @@ ggplot() +
   labs(x = "Number of ICU staff",
        y = "Predicted proportion\nof MRSE positive patients",
        caption = "Assuming 50% bed occupancy")
-

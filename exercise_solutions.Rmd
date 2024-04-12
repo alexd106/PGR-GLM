@@ -35,8 +35,8 @@ cat(sep="\n\n")
 
 
 ```{r sol_lm2, results='asis', eval = isTRUE(show_text_lm2)}
-link_name <- "GLM - binomial (proportion data) exercise"
-file_name <- "GLM_2_BinomialProportions_exercise_solutions"
+link_name <- "Binomial GLM exercise"
+file_name <- "GLM_2_Binomial_exercise_solutions"
 paste0("- [", link_name, "](", file_name, ".html)") %>%
 cat(sep="\n\n")
 ```
@@ -46,8 +46,8 @@ cat(sep="\n\n")
 ### Day 3
 
 ```{r sol_lm1, results='asis', eval = isTRUE(show_text_lm1)}
-link_name <- "GLM - Bernoulli (0/1 data) exercise: Rays maturity"
-file_name <- "GLM_2_Bernoulli_RayBin_exercise_solutions"
+link_name <- "Bernoulli GLM exercise"
+file_name <- "GLM_3_Bernoulli_exercise_solutions"
 paste0("- [", link_name, "](", file_name, ".html)") %>%
 cat(sep="\n\n")
 ```
