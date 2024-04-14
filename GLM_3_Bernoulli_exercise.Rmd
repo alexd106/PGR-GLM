@@ -888,6 +888,20 @@ p1 + p2 + p3 + p4 + p5 + p6 +
   plot_layout(guides = "collect", axis_titles = "collect", design = design_layout)
 ```
 
+Using your figures, what type of user should Netflix use targeted adverts on, to increase the probability that they watch LoTR?
+
+```{r Q9.1, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
+# Netflix should target:
+  # Users watching on TV or PC
+  # Users under the age of 40
+  # Users for whom >75% of similar users liked LoTR
+  # Users who have spent > 200 hours on average watching fantasy
+# The following do have help making a prediction but are weak
+  # Users who have liked > 5 fantasy films
+  # Users who have liked > 7.5 films with same actors
+  # Users with no family members on their account
+```
+
 
 \
 
@@ -985,5 +999,4 @@ binnedplot(dat$resid, x = z2, nclass = 5, xlab = "z2")
 binnedplot(dat$resid, x = z3, nclass = 5, xlab = "z3")
 ```
 
-
-**End of the Binomial GLM - understanding Multi-drug Resistance *Staphylococcus epidermidis***
+**End of the Bernoulli GLM - predicting Lord of the Rings viewership***
