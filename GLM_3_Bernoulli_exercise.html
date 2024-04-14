@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Day 3: Bernoulli GLMs</title>
+
+<script src="site_libs/header-attrs-2.25/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">PGR-GLM</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li>
+  <a href="setup.html">
+    <span class="fa fa-cog"></span>
+     
+    Setup
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-book"></span>
+     
+    R Book
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="https://intro2r.com">
+        <span class="fa fa-firefox"></span>
+         
+        Web book
+      </a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="https://github.com/alexd106/Rbook/raw/master/docs/Rbook.pdf">
+        <span class="fa fa-file-pdf"></span>
+         
+        PDF book
+      </a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-book"></span>
+     
+    Exercises
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="exercises.html">
+        <span class="fa fa-book"></span>
+         
+        Exercises
+      </a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="exercise_solutions.html">
+        <span class="fa fa-book"></span>
+         
+        Exercise Solutions
+      </a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="data.html">
+    <span class="fa fa-download"></span>
+     
+    Data
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-question-circle"></span>
+     
+    Info
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="syllabus.html">
+        <span class="fa fa-graduation-cap"></span>
+         
+        Syllabus
+      </a>
+    </li>
+    <li>
+      <a href="People.html">
+        <span class="fa fa-user-friends"></span>
+         
+        People
+      </a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="resources.html">
+        <span class="fa fa-book"></span>
+         
+        Resources
+      </a>
+    </li>
+    <li class="dropdown-header">Feedback</li>
+    <li>
+      <a href="People.html">
+        <span class="fa fa-envelope fa-lg"></span>
+         
+        Contact
+      </a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="https://github.com/alexd106/PGR-GLM">
+        <span class="fa fa-github fa-lg"></span>
+         
+        Source code
+      </a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Day 3: Bernoulli GLMs</h1>
+
+</div>
+
+
+<p> </p>
+<div
+id="bernoulli-glm---predicting-if-netflix-users-will-watch-lord-of-the-rings-the-fellowship-of-the-ring"
+class="section level1">
+<h1>Bernoulli GLM - Predicting if Netflix users will watch Lord of the
+Rings: The Fellowship of the Ring</h1>
+<p> </p>
+<p>For the GLM exercises, we’ll use the workflow we suggested in the
+first GLM overview lecture as a template, specifically:</p>
+<ol style="list-style-type: decimal">
+<li><p>Know your research question!</p></li>
+<li><p>Think about your response variable (stochastic).</p></li>
+<li><p>Think about the process behind the data (deterministic).</p></li>
+<li><p>Understand the data that you’ve collected (plot it!)</p></li>
+<li><p>Combine into a model that can answer your question.</p></li>
+<li><p>Fit the model.</p></li>
+<li><p>Check your assumption(s).</p></li>
+<li><p>Answer your question.</p></li>
+</ol>
+<p><br />
+</p>
+<div id="know-your-research-question" class="section level3">
+<h3>1. Know your research question!</h3>
+<p><br />
+</p>
+<p>For this final exercise, we’ll do something that’s, hopefully, a bit
+fun and silly. We’re going to work with a relatively small Netflix
+dataset, where we’re going to try and <em>predict</em> if a user will
+will watch Lord of the Rings: The Fellowship of the Ring. I will admit
+to a number of ulterior motivations in ending the course using this
+dataset.</p>
+<ol style="list-style-type: decimal">
+<li><p>There is a common misconception that Machine Learning is for
+predicting and Statistics is for understanding. I want to show that this
+distinction is meaningless. In truth, machine learning is, in general,
+statistics performed (or in some cases developed) by computer
+scientists. For example, the GLMs you’ve learned to use on this course
+are often called Supervised Machine Learning Models in Machine Learning
+courses. The distinction between the two methods largely comes down to
+who is teaching you (and who taught them). Indeed, some “classic”
+machine learning methods such as Random Forest models are just GLMs with
+a few extra bells and whistles in much the same way that some “classic”
+statistical methods such as Mixed Effects models are just GLMs with a
+few extra bells and whistles.</p></li>
+<li><p>Because people tend to think of there being some sort of
+distinction between Machine Learning and Statistics, it can result in
+people, such as yourselves, not realising they have skill-sets that lots
+of employers (including non-academic) are looking for. By using this
+Netflix example I want to show that, having taken this course, your
+employment options have broadened.</p></li>
+<li><p>In the final and corresponding <span
+class="math inline">\(Bernoulli\)</span> GLM lecture, I showed an
+example where AIC fails miserably. In doing so, I’m at risk of leaving
+you with the impression that AIC (and also other forms of model and
+variable selection) should never be used. Therefore, in this exercise
+we’re going to use an example where AIC is wonderfully well suited for
+helping achieve our objective. It will also give me an opportunity to
+talk a little more about how AIC works, and also the controversy and
+differing opinions on AIC.</p></li>
+<li><p>I really like Lord of the Rings.</p></li>
+</ol>
+<p>While this exercise takes on an industry focus, this is not specific
+to <span class="math inline">\(Bernoulli\)</span> GLMs. Indeed, like all
+GLMs and LMs, <span class="math inline">\(Bernoulli\)</span> GLMs can be
+used for any of the three broad purposes we described in the first
+lecture: Causal inference, prediction or description.</p>
+<p>The data you’ve been provided includes various information that
+Netflix has on hand about their users, for the purposes of predicting if
+a user will watch Lord of the Rings (LoTR). To do so, our response
+variable if whether not a given viewer watched LoTR (1) or not (0).</p>
+<p>The covariates we have are: * <code>user</code> - a unique user ID *
+<code>lotr</code> - if that user watched LoTR on Netflix *
+<code>premium</code> - if the user has Netflix Premium or Standard *
+<code>age</code> - the age of the user at the time of data collection *
+<code>genre_likes</code> - how many fantasy films/shows the user had
+previously liked * <code>actor_likes</code> - how many films/shows the
+user had previously liked that included cast members of LoTR *
+<code>similar_user_ratins</code> - what lotr of “similar” users had
+liked LoTR (“similar” is undefined) * <code>mean_time_genre</code> -
+what is the average length of time users watch fantasy media *
+<code>user_time</code> - Time of day for user at time of data collection
+(<code>Morning</code>, <code>Afternoon</code> and <code>Evening</code>)
+* <code>user_day</code> - Day of week for user at time of data
+collection (<code>Monday</code>, <code>Tuesday</code>, etc.) *
+<code>user_device</code> - Type of device user was logged in from
+(<code>TV</code>, <code>PC</code>, <code>Mobile Device</code> and
+<code>Gaming Device</code>) * <code>fam_members</code> - Number of
+family member accounts tied to subscription * <code>country</code> -
+Country of subscription</p>
+<p>As concisely as possible, write down the research question that can
+be answered with our analysis, keeping in mind that Netflix are not
+interested in understanding causation or writing a scientific paper,
+they want predictive power.</p>
+<p><br />
+</p>
+</div>
+<div id="think-about-your-response-variable-the-stochastic-element."
+class="section level3">
+<h3>2. Think about your response variable (the stochastic element).</h3>
+<p><br />
+</p>
+<p>From the information provided in the description above, we can
+determine that a <span class="math inline">\(Bernoulli\)</span>
+distribution is a sensible one to use here; our data is 0 (user did not
+watch LoTR) or 1 (user did watch LoTR). Our stochastic element of the
+model would therefore be:</p>
+<p><span class="math inline">\(y_i \sim Bernoulli(p_i)\)</span></p>
+<p>Where <span class="math inline">\(y\)</span> is if user <span
+class="math inline">\(i\)</span> watched LoTR or not, generated
+according to a <span class="math inline">\(Bernoulli\)</span>
+distribution, with probability <span
+class="math inline">\(p\)</span>.</p>
+<p><br />
+</p>
+</div>
+<div
+id="think-about-the-process-behind-the-data-the-deterministic-element."
+class="section level3">
+<h3>3. Think about the process behind the data (the deterministic
+element).</h3>
+<p><br />
+</p>
+<p>Just like the drinking coffee example from the first lecture, the
+<em>Data Generating Process</em> (DGP) for whether or not someone
+watches a particular film on Netflix is going to be incredibly complex.
+A nuance here is that our objective and intended use for this analysis
+is prediction. When that’s the case, we can be a bit more relaxed about
+understanding the deep complexity underlying the DGP and instead feel
+relatively comfortable adding any and all covariates for which we have
+data, with an important caveat. We must be confident that we are not
+including any covariates which have no conceivable connection to our
+response. For example, we wouldn’t want to include average sea surface
+temperature because it shouldn’t give us any predictive power. But if
+we’re unlucky, it may be correlated (by pure chance) with LoTR
+viewership and thus we may think it helps us do predictions (see <a
+href="https://www.tylervigen.com/spurious-correlations">this</a> website
+for fun examples of such spurious correlations).</p>
+<p>In this dataset, Netflix have collected covariates for the explicit
+purpose of predicting viewership, so we can be confident that at least
+<em>someone</em> thinks these variables might give us some predictive
+power and aren’t spurious correlations.</p>
+<p>With that said, our model will still have a deterministic equation
+that describes the associations. Given how many variables we have it
+would be cruel to task you with writing the equation out in full for a
+model that contains all of those covariates. Instead, assume our model
+was <code>lotr ~ age + user_time</code>. Use this simplified version of
+the model to write out the equation that would underpin it. Note that
+<code>age</code> is a continuous variable, and <code>user_time</code> is
+a categorical variable with the levels <code>Morning</code>,
+<code>Afternoon</code> and <code>Evening</code>.</p>
+<p>For this equation, I’m not giving any hints so the difficulty does
+spike here. If you’re struggling, ask for help. It really is worthwhile
+learning how the syntax <code>lotr ~ age + user_time</code> is
+translated into an equation, especially when you’re ready to go beyond
+GLMs.</p>
+<p><span class="math inline">\(logit(p_i) = \text{___}\)</span></p>
+<p> </p>
+</div>
+<div id="understand-the-data-that-youve-collected-plot-it"
+class="section level3">
+<h3>4. Understand the data that you’ve collected (plot it!)</h3>
+<p><br />
+</p>
+<p>Import the data file ‘netflix.txt’ into R. Take a look at the
+structure of the data and create plots that you feel will help you (and
+others) understand the data.</p>
+<p>Keep the tips and tricks you used in yesterday’s practical and feel
+free to use them again here; load in the data, check for any covariates
+you need to adjust, plot out the data, etc.</p>
+<p>A bit of advice for visualising <span
+class="math inline">\(Bernoulli\)</span> data; adding a little noise to
+the x and y-axis values for each point (i.e. jittering) helps immensely
+for visualising. To do so using <code>base</code> <code>R</code>, the
+code would be:</p>
+<pre><code>plot(jitter(my_data$y) ~ my_data$x)</code></pre>
+<p>As in yesterday’s lecture and exercise, the my figures below are
+produced using <code>ggplot2</code> and are included purely for
+inspiration. I am also using an additional package,
+<code>patchwork</code>, to stitch together multiple figures into a
+single panel.</p>
+<p><img src="GLM_3_Bernoulli_exercise_files/figure-html/Q4-1.png" width="672" /><img src="GLM_3_Bernoulli_exercise_files/figure-html/Q4-2.png" width="672" /><img src="GLM_3_Bernoulli_exercise_files/figure-html/Q4-3.png" width="672" /></p>
+<p><br />
+</p>
+</div>
+<div id="combine-into-a-model-that-can-answer-your-question."
+class="section level3">
+<h3>5. Combine into a model that can answer your question.</h3>
+<p><br />
+</p>
+<p>Having gone through the previous steps, it’s now time to run our
+model. Keep in mind that with this model, our objective is prediction,
+so we’ll be running a model that includes all available covariates
+excluding one; <code>user_id</code> as including just this one covariate
+will require <strong>15,000</strong> parameters be estimated. We don’t
+want that, nor do we have the sample size to support it.</p>
+<p>Run the full model (not including <code>user_id</code>), using
+<code>glm()</code>.</p>
+<ul>
+<li>Hints:
+<ul>
+<li>Because <span class="math inline">\(Bernoulli\)</span> is really
+just a special case of the <span class="math inline">\(Binomial\)</span>
+distribution, we specify <code>family = binomial</code></li>
+<li>Do we need to specify number of success and number of failures like
+we did for <span class="math inline">\(Binomial\)</span> GLMs?</li>
+<li>What is the default link function used by <span
+class="math inline">\(Bernoulli\)</span> GLMs?</li>
+</ul></li>
+</ul>
+<p><br />
+</p>
+</div>
+<div id="variable-selection" class="section level3">
+<h3>6. Variable selection</h3>
+<p>Given that in the lecture I showed an instance where AIC and variable
+selection failed quite miserably, in this exercise, I wanted to include
+a scenario where it performs very well.</p>
+<p>Note that this discussion below is also true for Likelihood Ratio
+Testing (LRT). In fact, AIC ends up being the equivalent to LRT, where
+the P-value threshold to 0.187 rather than 0.05 (see Sutherland et al.,
+<a href="https://doi.org/10.1098/rspb.2023.1261%5D">2023</a>).</p>
+<p>For that, we need to have a brief discussion about how AIC works,
+starting with how it is calculated:</p>
+<p><span class="math inline">\(AIC = 2K -
+2ln(\mathcal{\hat{L}})\)</span></p>
+<p>where <span class="math inline">\(K\)</span> is the number of
+parameters in our model, <span class="math inline">\(ln\)</span> is the
+natural log, and <span class="math inline">\(\mathcal{\hat{L}}\)</span>
+is the maximum likelihood value for our given model. (Note that in
+practice <span class="math inline">\(-2ln(\mathcal{\hat{L}})\)</span> is
+used in model fitting for reasons that are not important here).</p>
+<p>Think back to the <span class="math inline">\(Poisson\)</span> GLM
+lecture where we walked through how <span
+class="math inline">\(\mathcal{\hat{L}}\)</span> was derived. In that
+example, we were just trying different values for each parameter until
+we hit the “sweet spot” - where our predicted values were closest to our
+observed values using a particular combination of parameter values.
+Basically, <span class="math inline">\(\mathcal{\hat{L}}\)</span> is a
+value that reflects how well a combination of parameter values results
+in predicted values that are as close as possible to our actual response
+variable.</p>
+<p>Where AIC comes in, is that it uses this <span
+class="math inline">\(\mathcal{\hat{L}}\)</span> value and asks; “Are
+all of these parameters needed to get to the best fit?” That’s why AIC
+include the <span class="math inline">\(2K\)</span> bit. Each parameter
+has a “cost” associated with it of <span class="math inline">\(+2
+AIC\)</span> units; AIC is a fit-versus-cost trade-off. If the cost of
+including a parameter in our model does not sufficiently improve our
+likelihood, then it is considered to be uninformative, and AIC tells us
+it’s not worth including in the model. The conventional threshold is
+that if the difference when removing a variable from a model is less
+than or equal to <span class="math inline">\(2 \Delta AIC\)</span>
+(where <span class="math inline">\(\Delta\)</span> just means
+difference), then the covariate can be removed.</p>
+<p>Going through this process, we are left with the most parsimonious
+model; the model that has a desired level of accuracy (or prediction)
+that uses the fewest variables as possible to do so. This is why some
+statisticians (myself included) tend to think of AIC as a “with-in
+sample predictive” tool. (Contrast this with “out-of sample prediction”
+where we use a new dataset to see how well our model predicts the
+response variable of that <em>new</em> dataset.) All that means is; AIC
+is a tool that evaluates the predictive ability of a model, in
+predicting the data that you used to fit the model. With this view of
+AIC, a parsimonious model simply represents a model that has “good”
+predictive ability. Importantly, however, such models are not intended
+to offer insights into causation. Indeed, for causal inference, AIC can
+be quite harmful.</p>
+<p>For example, consider the following scenario. We are interested in
+the association between ice cream sales and shark attacks. There is no
+direct causal relationship between these two variables. Instead, it is
+the number of beach visitors that determines <em>both</em> ice cream
+sales and shark attacks.</p>
+<p>Regardless of causal mechanisms, finding a set of parameter values
+that captures the association between ice cream sales and shark attacks
+is trivial for <code>glm()</code>. This is what <code>glm()</code> is
+designed to do after all - estimate associations. If we were to use AIC
+on this hypothetical model it would strongly support including ice cream
+sales in the model, because knowing how many ice creams have been sold
+is pretty much telling us how many people were at the beach.</p>
+<p>Test it out if your skeptical:</p>
+<pre><code>set.seed(123) # set seed so results are consistent
+N &lt;- 200 # 200 beaches
+visitors &lt;- rpois(N, lambda = 10) # generate 200 visitor counts
+# Note that icecream does not appear when simulating shark, just visitors
+shark &lt;- rbinom(N, size = 1, prob = plogis(-4 + 0.2 * visitors)) # shark attack
+# Note that shark does not appear when simulating icecream, just visitors
+icecream &lt;- rpois(N, lambda = exp(-5 + 0.5 * visitors)) # number of ice creams
+dat &lt;- data.frame(visitors, shark, icecream) # combine into dataset
+mod1 &lt;- glm(shark ~ icecream, family = binomial, data = dat) # run bernoulli glm
+drop1(mod1) # use AIC to do variable selection
+# AIC of full model: 167.29
+# AIC of model without icecream: 171.08</code></pre>
+<p>The upside of this is that including <code>icecream</code> is very
+useful if we want to make predictions of shark attacks. For example, if
+there are two beaches, the first with very few ice cream sales, and the
+second with lots. Which beach is more at risk of shark attacks? Clearly
+we can predict the second beach is at higher risk, we just don’t know
+<em>why</em> (based on the model).</p>
+<p>With that in mind, my view is that AIC is most useful, and least
+risky, when used for prediction modelling. There are alternatives to
+AIC, but AIC is still useful never-the-less. Let’s use AIC and variable
+selection now in order to determine which covariates give us predictive
+power, and which we can simply ignore when trying to make accurate
+predictions.</p>
+<p>Starting off with the full model and using <code>drop1()</code>,
+which covariates can be removed without reducing our predictive
+power?</p>
+<p>Using <code>drop1()</code> to identify which covariates can be
+removed, refit that model.</p>
+<p><br />
+</p>
+</div>
+<div id="check-your-assumptions." class="section level3">
+<h3>7. Check your assumption(s).</h3>
+<p><br />
+</p>
+<p>As always, we want to check how well we’re meeting the assumptions
+(which we can test).</p>
+<p>Start off by using the methods that have served us well for the <span
+class="math inline">\(Poisson\)</span> adn <span
+class="math inline">\(Binomial\)</span> GLMs,
+(e.g. <code>plot(mod2)</code> and <code>summary()</code>). Are these
+plots useful? Can we calculate dispersion for a <span
+class="math inline">\(Bernoulli\)</span> GLM?</p>
+<p><img src="GLM_3_Bernoulli_exercise_files/figure-html/Q7-1.png" width="672" /></p>
+<p><br />
+</p>
+<p>The diagnostics tests we’ve used up to this point have largely failed
+us for Bernoulli GLMs. As such we need to think of alternative ways to
+try and check our assumptions. In this instance, we can use the method
+we discussed in the lecture where we extract the Pearson residuals from
+the model, and plot these against our explanatory covariates.</p>
+<p>Extracting residuals is a pretty easy process. To do so, we use the
+code:</p>
+<pre><code>netflix$resid &lt;- resid(mod2, type = &quot;pearson&quot;)</code></pre>
+<p>With the above code, we’re simply adding a new column to our original
+dataset that contains the Pearson residual error for each observation
+(<span class="math inline">\(i\)</span>) based on the model that you fit
+(here, called <code>mod2</code>). Now we need to load a package and use
+the appropriate function to make plotting residuals and diagnosing a bit
+easier: <code>binnedplot</code> from the <code>arm</code> package.</p>
+<p>Using these plots, identify any covariates you think we should be
+concerned about, and why.</p>
+<p>Hints: * For categorical variables, we can force these to be numeric,
+and therefore use <code>binnedplot()</code> by doing
+<code>binnedplot(y = dat$resid, x = as.numeric(dat$category), nclass = 3, xlab = "My categorical variable")</code></p>
+<p><img src="GLM_3_Bernoulli_exercise_files/figure-html/Q7.1-1.png" width="672" /><img src="GLM_3_Bernoulli_exercise_files/figure-html/Q7.1-2.png" width="672" /></p>
+<p><br />
+</p>
+</div>
+<div id="interpret-your-model." class="section level3">
+<h3>8. Interpret your model.</h3>
+<p><br />
+</p>
+<p>Having now fit our most parsimonious model, let’s see what we’ve
+learnt from it. Use <code>summary()</code> to pull up the coefficients
+table and answer the following questions:</p>
+<ul>
+<li>How many parameters have been estimated by this model?</li>
+<li>How might we want to change data collection methods to make the
+model more efficient in terms of the number of parameters?</li>
+<li>What does the <code>user_dayFriday</code> Estimate represent?</li>
+<li>For every additional family member (<code>fam_members</code>), how
+much does the log odds ratio increase by?</li>
+</ul>
+<p><br />
+</p>
+</div>
+<div id="create-figures-to-show-predicted-relationships."
+class="section level3">
+<h3>9. Create figures to show predicted relationships.</h3>
+<p><br />
+</p>
+<p>We’re now in a position to show our predicted relationships. To do
+so, we’re going to recycle the method we used in the <span
+class="math inline">\(Binomial\)</span> GLM exercise.</p>
+<p>For these predictions, Netflix are especially interested in
+identifying which type of user to give targeted adverts to on
+<strong>Sunday afternoons</strong>, such that they are more likely to
+watch LoTR. For us, this means we want to make our predictions specific
+to Sunday afternoons.</p>
+<p>So you don’t have to flip back to the <span
+class="math inline">\(Binomial\)</span> GLM exercise, here’s the code we
+used to make our predictions in yesterdays exercise.</p>
+<pre><code># Create a fake dataset to feed into our model equation
+synth_data &lt;- expand.grid(
+  n_staff = median(netflix$n_staff), 
+  policy = &quot;Implemented&quot;,        
+  capacity = seq(
+    from = min(netflix$capacity), 
+    to = max(netflix$capacity),   
+    length.out = 20))   
+synth_data$pred &lt;- predict(mod1, newdata = synth_data, se.fit = TRUE)
+synth_data$pred &lt;- plogis(pred$fit)
+synth_data$low &lt;- plogis(pred$fit - pred$se.fit * 1.96)
+synth_data$upp &lt;- plogis(pred$fit + pred$se.fit * 1.96)</code></pre>
+<p>Adapt this code for our current model (i.e. add in the relevant
+covariates to <code>expand.grid()</code>) to show the relationships for
+<code>age</code>, <code>genre_likes</code>, <code>actor_likes</code>,
+<code>similar_user_ratings</code>, <code>mean_time_genre</code>,
+<code>user_device</code> and <code>family members</code></p>
+<p>Your figures should resemble (but need not match exactly):</p>
+<p><img src="GLM_3_Bernoulli_exercise_files/figure-html/Q9-1.png" width="672" /></p>
+<p><br />
+</p>
+</div>
+<div id="the-monkeys-paw" class="section level3">
+<h3>10. The Monkey’s Paw</h3>
+<p><br />
+</p>
+<p>Having now fit the model and generated predicted relationships to
+allow Netflix to do targeted advertising, stop. Have a think again about
+the data. At the end of yesterday’s exercise I explained how that
+dataset and model had broken the assumption of validity. Can you think
+of any issues here? Were there any assumptions we broke but that got
+left behind? What are the consequences of breaking any such
+assumptions?</p>
+<p><br />
+</p>
+</div>
+<div id="optional-exploring-model-diagnostics" class="section level3">
+<h3>11. (Optional) Exploring model diagnostics</h3>
+<p>As in previous exercises, below I include code to simulate a <span
+class="math inline">\(Bernoulli\)</span> dataset to allow you to explore
+the impact of sample size, model misspecification, and effect size, on
+model diagnostic plots. The <em>Data Generating Process</em> (DGP) for
+the dataset is:</p>
+<p><span class="math inline">\(y_i \sim Bernoulli(p_i)\)</span></p>
+<p><span class="math inline">\(logit(p_i) = \beta_0 + \beta_1 \times
+x_{1,i} + \beta_2 \times x_{2,i} + \beta_3\times x_{3,i} + \beta_4
+\times x_{1, i} \times x_{2,i}\)</span></p>
+<p>where you are free to decide what the values for the parameters
+(<span class="math inline">\(\beta_{0,...,4}\)</span>) are.</p>
+<p>I am also including three additional covariates (<span
+class="math inline">\(Z_{1,...,3}\)</span>) which have no effect
+what-so-ever on <span class="math inline">\(p\)</span>.</p>
+<p>Rerun the simulation and analysis varying the sample size
+(e.g. <code>N &lt;- 1000</code>), the effect sizes
+(e.g. <code>beta_0 &lt;- 10</code>) or the formula of the
+<code>glm()</code> (e.g. remove the interaction). Check what effect this
+has on the generic diagnostic plots as well as the
+<code>binnedplots()</code> from the <code>arm</code> package.</p>
+<pre><code># Set your seed to have the randomness be cosnsitent each time you run the code
+# You can change this, or comment it out, if you want to embrase the randomness
+set.seed(1234)
+
+# Set your sample size
+N &lt;- 500
+
+# Set the number of trials (must be 1 for Bernoulli)
+k &lt;- 1
+
+# Create three continuous covariates
+x1 &lt;- runif(N, 0, 10)
+x2 &lt;- runif(N, 0, 10)
+x3 &lt;- runif(N, 0, 10)
+
+# Set your parameter values
+beta_0 &lt;- 2.5   # This is the intercept (on link scale)
+beta_1 &lt;- 0.2   # This is the slope for the x1 variable (on link scale)
+beta_2 &lt;- -1.3  # This is the slope for the x2 variable (on link scale)
+beta_3 &lt;- 0.4   # This is the slope for the x3 variable (on link scale)
+beta_4 &lt;- 0.05  # The combined effect of x1 and x2 (on link scale)
+
+# Generate your linear predictor on the link scale (i.e. log)
+# We don&#39;t actually need to use log() here (it&#39;s already on the link scale)
+linear_predictor_link &lt;- beta_0 + beta_1 * x1 + beta_2 * x2 + beta_3 * x3 + beta_4 * x1 * x2
+
+# Backtransform your linear predictor to the response scale (i.e. exponentiate)
+linear_predictor_response &lt;- plogis(linear_predictor_link)
+
+# Generate your response variable using a Poisson random number generator (rpois)
+y &lt;- rbinom(N, size = k, prob = linear_predictor_response)
+
+# Note that the above three lines of code are the equivalent to the equations:
+# y ~ Bernoulli(p)
+# logit(p) = beta_0 + beta_1 * x1 + beta_2 * x2 + beta_3 * x3 + beta_4 * x1 * x2
+
+# Having simulated the data, we now include three additional covariates that do nothing
+z1 &lt;- rbeta(N, shape1 = 10, shape2 = 3)
+z2 &lt;- rgamma(N, shape = 15, rate = 2)
+z3 &lt;- runif(N, min = 0, max = 100)
+
+# Store your data in a dataframe
+dat &lt;- data.frame(y, x1, x2, x3, z1, z2, z3)
+
+# Run a Bernoulli GLM
+fit &lt;- glm(y ~ x1 + x2 + x3 + x1 : x2 + z1 + z2 + z3, 
+           data = dat, 
+           family = binomial)
+
+# See if the model was able to estimate your parameter values 
+# and what the dispersion is
+summary(fit)
+
+# See how well the model diagnostics perform
+par(mfrow = c(2,2))
+plot(fit)
+
+# See how AIC reacts to the meaningless variables
+drop1(fit)
+
+# Check residuals using the binnedplots
+dat$resid &lt;- resid(fit, type = &quot;pearson&quot;)
+library(arm)
+binnedplot(dat$resid, x = x1, nclass = 5, xlab = &quot;x1&quot;)
+binnedplot(dat$resid, x = x2, nclass = 5, xlab = &quot;x2&quot;)
+binnedplot(dat$resid, x = x3, nclass = 5, xlab = &quot;x3&quot;)
+binnedplot(dat$resid, x = z1, nclass = 5, xlab = &quot;z1&quot;)
+binnedplot(dat$resid, x = z2, nclass = 5, xlab = &quot;z2&quot;)
+binnedplot(dat$resid, x = z3, nclass = 5, xlab = &quot;z3&quot;)</code></pre>
+<p><strong>End of the Binomial GLM - understanding Multi-drug Resistance
+<em>Staphylococcus epidermidis</em></strong></p>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

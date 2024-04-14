@@ -48,23 +48,17 @@ For the GLM exercises, we'll use the workflow we suggested in the first GLM over
 
 For this final exercise, we'll do something that's, hopefully, a bit fun and silly. We're going to work with a relatively small Netflix dataset, where we're going to try and *predict* if a user will will watch Lord of the Rings: The Fellowship of the Ring. I will admit to a number of ulterior motivations in ending the course using this dataset.
 
-1. There is a common misconception that Machine Learning is for predicting and Statistics is for understanding. I want to show that this distinction is meaningless. In truth, machine learning is statistics; just performed (or in some cases developed) by computer scientists. For example, the GLMs you've learned about on this course are also called Supervised Machine Learning Models. The distinction between the two methods is meaningless, so I wanted to use an example where we do prediction to show just that.
+1. There is a common misconception that Machine Learning is for predicting and Statistics is for understanding. I want to show that this distinction is meaningless. In truth, machine learning is, in general, statistics performed (or in some cases developed) by computer scientists. For example, the GLMs you've learned to use on this course are often called Supervised Machine Learning Models in Machine Learning courses. The distinction between the two methods largely comes down to who is teaching you (and who taught them). Indeed, some "classic" machine learning methods such as Random Forest models are just GLMs with a few extra bells and whistles in much the same way that some "classic" statistical methods such as Mixed Effects models are just GLMs with a few extra bells and whistles.
 
-2. Because people tend to think of there being some sort of distinction between Machine Learning and Statistics, it can lead to people with highly desirable skills, not even realising they have the exact skills that lots of employers are looking for (including non-academic). By using this Netflix example I want to show that, having taken this course, your employment options have broadened.
+2. Because people tend to think of there being some sort of distinction between Machine Learning and Statistics, it can result in people, such as yourselves, not realising they have skill-sets that lots of employers (including non-academic) are looking for. By using this Netflix example I want to show that, having taken this course, your employment options have broadened.
 
-3. In the final lecture, I show an example where AIC fails miserably. In doing so, I'm at risk of leaving you with the impression that AIC should never be used. Here, we use an example where AIC is wonderfully well suited for helping us in our objective.
+3. In the final and corresponding $Bernoulli$ GLM lecture, I showed an example where AIC fails miserably. In doing so, I'm at risk of leaving you with the impression that AIC (and also other forms of model and variable selection) should never be used. Therefore, in this exercise we're going to use an example where AIC is wonderfully well suited for helping achieve our objective. It will also give me an opportunity to talk a little more about how AIC works, and also the controversy and differing opinions on AIC.
 
-4. I think this helps understand how information that corporations collect about you can be used and also how the methods you use are part of the Artificial Intelligence hype train that we're currently on. However, to be clear and to avoid underselling some of the more advanced Machine Learning models, some Machine Learning models are far more sophisticated than the GLMs we've been running on this course.
+4. I really like Lord of the Rings.
 
-5. I really like Lord of the Rings.
+While this exercise takes on an industry focus, this is not specific to $Bernoulli$ GLMs. Indeed, like all GLMs and LMs, $Bernoulli$ GLMs can be used for any of the three broad purposes we described in the first lecture: Causal inference, prediction or description.
 
-6. Like, a lot.
-
-> While this exercise takes on an industry focus, this is not specific to $Bernoulli$ GLMs. $Bernoulli$ GLMs can be used to answer a variety of research questions in the same way as GLMs using $Poisson$, $Binomial$, and any other distribution.
-
-The data you've been provided includes various information that Netflix has on hand about their users, for the purposes of predicting which films, shows or media users will engage with. Netflix are not interested in understanding causation or writing a scientific paper, they want predictive power.
-
-For this dataset, the objective is predicting which type of user, who has never seen Lord of the Rings (LoTR), are more or less likely to watch LoTR. To do so, our response variable if whether not a given viewer watched LoTR (1) or not (0).
+The data you've been provided includes various information that Netflix has on hand about their users, for the purposes of predicting if a user will watch Lord of the Rings (LoTR). To do so, our response variable if whether not a given viewer watched LoTR (1) or not (0).
 
 The covariates we have are:
 * `user` - a unique user ID
@@ -81,10 +75,10 @@ The covariates we have are:
 * `fam_members` - Number of family member accounts tied to subscription
 * `country` - Country of subscription
 
-As concisely as possible, write down the research question that can be answered with our analysis.
+As concisely as possible, write down the research question that can be answered with our analysis, keeping in mind that Netflix are not interested in understanding causation or writing a scientific paper, they want predictive power. 
 
 ```{r Q1, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
-# Using the available covariates, can Lord of the Ring engagement be predicted?
+# Using the available covariates, can Lord of the Rings engagement be predicted and can we make this prediction as efficient as possible?
 ```
 
 \
@@ -93,7 +87,7 @@ As concisely as possible, write down the research question that can be answered 
 
 \
 
-From the information provided in the description above, we can determine that a $Bernoulli$ is a sensible distribution to use here; our data is 0 (user did not watch LoTR) or 1 (user did watch LoTR). Our stochastic element of the model would therefore be:
+From the information provided in the description above, we can determine that a $Bernoulli$ distribution is a sensible one to use here; our data is 0 (user did not watch LoTR) or 1 (user did watch LoTR). Our stochastic element of the model would therefore be:
 
 $y_i \sim Bernoulli(p_i)$
 
@@ -105,11 +99,13 @@ Where $y$ is if user $i$ watched LoTR or not, generated according to a $Bernoull
 
 \
 
-Just like the drinking coffee example from the first lecture, the *Data Generating Process* (DGP) for whether or not and why someone watches a partnetflixlar film on Netflix or not is going to be incredibly complex. A nuance here is that objective and intended use for this analysis is prediction. When that's the case, we can be a bit more relaxed about the DGP and add any and all covariates for which we have data, with an important caveat. We must be relatively comfortable that we have not included any covariates which have no conceivable connection to our response. For example, we wouldn't want to include average sea surface temperature because, hopefully obviously, it won't give us any true predictive power. But if we're unlucky, it may be correlated (by pure chance) with LoTR viewership. In this data, Netflix have collected the data and covariates for the explicit purpose of trying to predict, so we can be confident that at least *someone* thinks these variables might give us some predictive power.
+Just like the drinking coffee example from the first lecture, the *Data Generating Process* (DGP) for whether or not someone watches a particular film on Netflix is going to be incredibly complex. A nuance here is that our objective and intended use for this analysis is prediction. When that's the case, we can be a bit more relaxed about understanding the deep complexity underlying the DGP and instead feel relatively comfortable adding any and all covariates for which we have data, with an important caveat. We must be confident that we are not including any covariates which have no conceivable connection to our response. For example, we wouldn't want to include average sea surface temperature because it shouldn't give us any predictive power. But if we're unlucky, it may be correlated (by pure chance) with LoTR viewership and thus we may think it helps us do predictions (see [this](https://www.tylervigen.com/spurious-correlations) website for fun examples of such spurious correlations).
 
-With that said, our model will still have a deterministic equation that describes the associations. Given how many variables we have it would be cruel to task you with writing the equation out in full. Instead, assume our model was `lotr ~ age + user_time`. Use this to write out the equation that would underpin this model. As a reminder, `age` is a continuous variable, and `user_time` is a categorical variable with the levels `Morning`, `Afternoon` and `Evening`.
+In this dataset, Netflix have collected covariates for the explicit purpose of predicting viewership, so we can be confident that at least *someone* thinks these variables might give us some predictive power and aren't spurious correlations.
 
-For this equation, I'm not giving any hints so the diffnetflixlt does spike here. If you're struggling, ask for help. It really is worthwhile learning how the syntax `lotr ~ age + user_time` is translated into an equation.
+With that said, our model will still have a deterministic equation that describes the associations. Given how many variables we have it would be cruel to task you with writing the equation out in full for a model that contains all of those covariates. Instead, assume our model was `lotr ~ age + user_time`. Use this simplified version of the model to write out the equation that would underpin it. Note that `age` is a continuous variable, and `user_time` is a categorical variable with the levels `Morning`, `Afternoon` and `Evening`.
+
+For this equation, I'm not giving any hints so the difficulty does spike here. If you're struggling, ask for help. It really is worthwhile learning how the syntax `lotr ~ age + user_time` is translated into an equation, especially when you're ready to go beyond GLMs.
 
 $logit(p_i) = \text{___}$
 
@@ -129,17 +125,17 @@ $logit(p_i) = \text{___}$
 
 \
 
-Import the data file 'netflix.txt' into R and take a look at the structure of this dataframe and create plots you feel will help you (and others) understand the data.
+Import the data file 'netflix.txt' into R. Take a look at the structure of the data and create plots that you feel will help you (and others) understand the data.
 
 Keep the tips and tricks you used in yesterday's practical and feel free to use them again here; load in the data, check for any covariates you need to adjust, plot out the data, etc.
 
-A bit of advice for visualising $Bernoulli$ data; adding a little noise to the x and y-axis values for each point (i.e. jittering) helps immensely for visualising. To do so, the code would be:
+A bit of advice for visualising $Bernoulli$ data; adding a little noise to the x and y-axis values for each point (i.e. jittering) helps immensely for visualising. To do so using `base` `R`, the code would be:
 
 ```
 plot(jitter(my_data$y) ~ my_data$x)
 ```
 
-As in yesterday's lectures, the figures below are produced using `ggplot2` and are included purely for inspiration. I am also using an additional package, `patchwork`, to stitch together multiple figures into a single panel.
+As in yesterday's lecture and exercise, the my figures below are produced using `ggplot2` and are included purely for inspiration. I am also using an additional package, `patchwork`, to stitch together multiple figures into a single panel.
 
 ```{r Q4, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
 netflix <- read.table(file= "./data/netflix.txt", header = TRUE)
@@ -213,7 +209,7 @@ p1 <- ggplot(netflix) +
   geom_col(aes(x = premium, y = lotr), linetype = 1,
            alpha = 0.8, colour = "#E50914") +
   labs(x = "Subscription type",
-       y = "Total number of\nLord of The Ring views") +  
+       y = "Total number of\nLord of The Rings views") +  
   theme_classic() +
   annotation_raster(logo, 
                     xmin = 0.5, xmax = 1,
@@ -227,7 +223,7 @@ p2 <- ggplot(netflix) +
   scale_y_continuous(labels = function(y) ifelse(y == 0, "No", ifelse(y == 1, "Yes", y)),
                      breaks = c(0, 1)) +
   labs(x = "User age",
-       y = "Viewed\nLord of The Ring") +
+       y = "Viewed\nLord of The Rings") +
   theme_classic()
 
 # A scatterplot for lotr ~ genre_likes, jittered
@@ -238,7 +234,7 @@ p3 <- ggplot(netflix) +
   scale_y_continuous(labels = function(y) ifelse(y == 0, "No", ifelse(y == 1, "Yes", y)),
                      breaks = c(0, 1)) +
   labs(x = "Number of fantasy likes",
-       y = "Viewed\nLord of The Ring") +
+       y = "Viewed\nLord of The Rings") +
   theme_classic()
 
 # A scatterplot for lotr ~ actor_likes, jittered
@@ -249,7 +245,7 @@ p4 <- ggplot(netflix) +
   scale_y_continuous(labels = function(y) ifelse(y == 0, "No", ifelse(y == 1, "Yes", y)),
                      breaks = c(0, 1)) +
   labs(x = "Number of films with same actor liked",
-       y = "Viewed\nLord of The Ring") +
+       y = "Viewed\nLord of The Rings") +
   theme_classic()
 
 # Using the patchwork package I stich p1 to p4 together into a single figure
@@ -257,16 +253,13 @@ p4 <- ggplot(netflix) +
 
 # A scatterplot for lotr ~ similar_user_ratings, jittered
 p5 <- ggplot(netflix) +
-  annotation_raster(logo, 
-                    xmin = -0.05, xmax = 0.25,
-                    ymin = 0.7, ymax = 1.4) +
   geom_jitter(aes(x = similar_user_ratings, y = lotr), 
               width = 0, height = 0.3,
               colour = "#E50914", alpha = 0.05) +
   scale_y_continuous(labels = function(y) ifelse(y == 0, "No", ifelse(y == 1, "Yes", y)),
                      breaks = c(0, 1)) +
   labs(x = "Proportion of similar users who liked LoTR",
-       y = "Viewed\nLord of The Ring") +
+       y = "Viewed\nLord of The Rings") +
   theme_classic()
 
 
@@ -278,7 +271,7 @@ p6 <- ggplot(netflix) +
   scale_y_continuous(labels = function(y) ifelse(y == 0, "No", ifelse(y == 1, "Yes", y)),
                      breaks = c(0, 1)) +
   labs(x = "Mean time spent watching fantasy films",
-       y = "Viewed\nLord of The Ring") +
+       y = "Viewed\nLord of The Rings") +
   theme_classic()
 
 # A scatterplot for lotr ~ user_time, jittered
@@ -289,7 +282,7 @@ p7 <- ggplot(netflix) +
   scale_y_continuous(labels = function(y) ifelse(y == 0, "No", ifelse(y == 1, "Yes", y)),
                      breaks = c(0, 1)) +
   labs(x = "Time of day",
-       y = "Viewed\nLord of The Ring") +
+       y = "Viewed\nLord of The Rings") +
   theme_classic()
 
 # A scatterplot for lotr ~ user_day, jittered
@@ -300,8 +293,9 @@ p8 <- ggplot(netflix) +
   scale_y_continuous(labels = function(y) ifelse(y == 0, "No", ifelse(y == 1, "Yes", y)),
                      breaks = c(0, 1)) +
   labs(x = "Day of week",
-       y = "Viewed\nLord of The Ring") +
-  theme_classic()
+       y = "Viewed\nLord of The Rings") +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 30, vjust = 0.5, hjust = 0.3))
 
 
 # Using the patchwork package I stich p1 to p4 together into a single figure
@@ -311,14 +305,14 @@ p8 <- ggplot(netflix) +
 p9 <- ggplot(netflix) +
     annotation_raster(logo,
                       xmin = 8.3, xmax = 9.6,
-                      ymin = -0.3, ymax = 0.5) +
+                      ymin = -0.3, ymax = 0.3) +
   geom_jitter(aes(x = fam_members, y = lotr), 
               width = 0.3, height = 0.3,
               colour = "#E50914", alpha = 0.05) +
   scale_y_continuous(labels = function(y) ifelse(y == 0, "No", ifelse(y == 1, "Yes", y)),
                      breaks = c(0, 1)) +
   labs(x = "Number of accounts",
-       y = "Viewed\nLord of The Ring") +
+       y = "Viewed\nLord of The Rings") +
   theme_classic()
   
 # A scatterplot for lotr ~ user_device, jittered
@@ -329,7 +323,7 @@ p10 <- ggplot(netflix) +
   scale_y_continuous(labels = function(y) ifelse(y == 0, "No", ifelse(y == 1, "Yes", y)),
                      breaks = c(0, 1)) +
   labs(x = "User device",
-       y = "Viewed\nLord of The Ring") +
+       y = "Viewed\nLord of The Rings") +
   theme_classic()
 
 # A scatterplot for lotr ~ country, jittered
@@ -340,11 +334,11 @@ p11 <- ggplot(netflix) +
   scale_y_continuous(labels = function(y) ifelse(y == 0, "No", ifelse(y == 1, "Yes", y)),
                      breaks = c(0, 1)) +
   labs(x = "Country of registration",
-       y = "Viewed\nLord of The Ring") +
+       y = "Viewed\nLord of The Rings") +
   theme_classic()
 
 # Using the patchwork package I stich p1 to p4 together into a single figure
-p9 / (p10 + p11)
+(p10 + p11) / p9
 ```
 
 \
@@ -353,9 +347,9 @@ p9 / (p10 + p11)
 
 \
 
-Having gone through the previous steps, it's now time to run our first model. We'll now run a model using all covariates that we've been provided.
+Having gone through the previous steps, it's now time to run our model. Keep in mind that with this model, our objective is prediction, so we'll be running a model that includes all available covariates excluding one; `user_id` as including just this one covariate will require **15,000** parameters be estimated. We don't want that, nor do we have the sample size to support it.
 
-Run the model now, using `glm()`.
+Run the full model (not including `user_id`), using `glm()`.
 
 * Hints:
   + Because $Bernoulli$ is really just a special case of the $Binomial$ distribution, we specify `family = binomial`
@@ -371,369 +365,529 @@ mod1 <- glm(lotr ~ premium + age + genre_likes + actor_likes + similar_user_rati
 
 \
 
-### 6. Check your assumption(s).
+### 6. Variable selection
+
+Given that in the lecture I showed an instance where AIC and variable selection failed quite miserably, in this exercise, I wanted to include a scenario where it performs very well.
+
+Note that this discussion below is also true for Likelihood Ratio Testing (LRT). In fact, AIC ends up being the equivalent to LRT, where the P-value threshold to 0.187 rather than 0.05 (see Sutherland et al., [2023](https://doi.org/10.1098/rspb.2023.1261])).
+
+For that, we need to have a brief discussion about how AIC works, starting with how it is calculated:
+
+$AIC = 2K - 2ln(\mathcal{\hat{L}})$
+
+where $K$ is the number of parameters in our model, $ln$ is the natural log, and $\mathcal{\hat{L}}$ is the maximum likelihood value for our given model. (Note that in practice $-2ln(\mathcal{\hat{L}})$ is used in model fitting for reasons that are not important here).
+
+Think back to the $Poisson$ GLM lecture where we walked through how $\mathcal{\hat{L}}$ was derived. In that example, we were just trying different values for each parameter until we hit the "sweet spot" - where our predicted values were closest to our observed values using a particular combination of parameter values. Basically, $\mathcal{\hat{L}}$ is a value that reflects how well a combination of parameter values results in predicted values that are as close as possible to our actual response variable.
+
+Where AIC comes in, is that it uses this $\mathcal{\hat{L}}$ value and asks; "Are all of these parameters needed to get to the best fit?" That's why AIC include the $2K$ bit. Each parameter has a "cost" associated with it of $+2 AIC$ units; AIC is a fit-versus-cost trade-off. If the cost of including a parameter in our model does not sufficiently improve our likelihood, then it is considered to be uninformative, and AIC tells us it's not worth including in the model. The conventional threshold is that if the difference when removing a variable from a model is less than or equal to $2 \Delta AIC$ (where $\Delta$ just means difference), then the covariate can be removed.
+
+Going through this process, we are left with the most parsimonious model; the model that has a desired level of accuracy (or prediction) that uses the fewest variables as possible to do so. This is why some statisticians (myself included) tend to think of AIC as a "with-in sample predictive" tool. (Contrast this with "out-of sample prediction" where we use a new dataset to see how well our model predicts the response variable of that *new* dataset.) All that means is; AIC is a tool that evaluates the predictive ability of a model, in predicting the data that you used to fit the model. With this view of AIC, a parsimonious model simply represents a model that has "good" predictive ability. Importantly, however, such models are not intended to offer insights into causation. Indeed, for causal inference, AIC can be quite harmful.
+
+For example, consider the following scenario. We are interested in the association between ice cream sales and shark attacks. There is no direct causal relationship between these two variables. Instead, it is the number of beach visitors that determines *both* ice cream sales and shark attacks. 
+
+Regardless of causal mechanisms, finding a set of parameter values that captures the association between ice cream sales and shark attacks is trivial for `glm()`. This is what `glm()` is designed to do after all - estimate associations. If we were to use AIC on this hypothetical model it would strongly support including ice cream sales in the model, because knowing how many ice creams have been sold is pretty much telling us how many people were at the beach.
+
+Test it out if your skeptical:
+
+```
+set.seed(123) # set seed so results are consistent
+N <- 200 # 200 beaches
+visitors <- rpois(N, lambda = 10) # generate 200 visitor counts
+# Note that icecream does not appear when simulating shark, just visitors
+shark <- rbinom(N, size = 1, prob = plogis(-4 + 0.2 * visitors)) # shark attack
+# Note that shark does not appear when simulating icecream, just visitors
+icecream <- rpois(N, lambda = exp(-5 + 0.5 * visitors)) # number of ice creams
+dat <- data.frame(visitors, shark, icecream) # combine into dataset
+mod1 <- glm(shark ~ icecream, family = binomial, data = dat) # run bernoulli glm
+drop1(mod1) # use AIC to do variable selection
+# AIC of full model: 167.29
+# AIC of model without icecream: 171.08
+```
+
+The upside of this is that including `icecream` is very useful if we want to make predictions of shark attacks. For example, if there are two beaches, the first with very few ice cream sales, and the second with lots. Which beach is more at risk of shark attacks? Clearly we can predict the second beach is at higher risk, we just don't know *why* (based on the model).
+
+With that in mind, my view is that AIC is most useful, and least risky, when used for prediction modelling. There are alternatives to AIC, but AIC is still useful never-the-less. Let's use AIC and variable selection now in order to determine which covariates give us predictive power, and which we can simply ignore when trying to make accurate predictions.
+
+Starting off with the full model and using `drop1()`, which covariates can be removed without reducing our predictive power?
+
+```{r Q6.1, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
+drop1(mod1)
+# Model:
+# lotr ~ premium + age + genre_likes + actor_likes + similar_user_ratings + 
+#     mean_time_genre + user_time + user_day + user_device + fam_members + 
+#     country
+#                      Df Deviance     AIC
+# <none>                    8535.3  8585.3
+# premium               1   8535.3  8583.3
+# age                   1  14997.9 15045.9
+# genre_likes           1   8576.9  8624.9
+# actor_likes           1   8552.1  8600.1
+# similar_user_ratings  1  15360.9 15408.9
+# mean_time_genre       1  10091.2 10139.2
+# user_time             2   8677.9  8723.9
+# user_day              6   9012.2  9050.2
+# user_device           3   9154.8  9198.8
+# fam_members           1   8535.4  8583.4
+# country               6   8543.7  8581.7
+
+# From this, we're looking for when removing a covariate lowers AIC by 2 units
+  # From the above model, these include:
+  # premium
+  # country
+# fam_members is right on the threshold with a DeltaAIC of 1.9
+  # There's just enough information in fam_members to warrant leaving it in the 
+  # model
+```
+
+Using `drop1()` to identify which covariates can be removed, refit that model.
+
+```{r Q6.2, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
+mod2 <- glm(lotr ~ age + genre_likes + actor_likes + similar_user_ratings +
+              mean_time_genre + user_time + user_day + user_device + fam_members, 
+            family = binomial(link = "logit"), 
+            data = netflix)
+```
+
 
 \
 
-Having run the model, we want to check how well we're meeting the assumptions.
+### 7. Check your assumption(s).
 
-To do so, we can check the model diagnostic plots, as well as check for dispersion. Do so now.
+\
 
-For the diagnostic plots:
+As always, we want to check how well we're meeting the assumptions (which we can test).
 
-+ Residuals vs Fitted
-  * What kind of pattern would we expect?
-+ Q-Q Residuals
-  * Are we expecting Normally distributed error with a Poisson distribution?
-+ Scale-Location
-  * What kind of pattern would we expect?
-+ Residuals vs Leverage
-  * Are any observations having a strong influence on the model fit?
+Start off by using the methods that have served us well for the $Poisson$ adn $Binomial$ GLMs, (e.g. `plot(mod2)` and `summary()`). Are these plots useful? Can we calculate dispersion for a $Bernoulli$ GLM?
 
-```{r Q6, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
+```{r Q7, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
 # Model diagnostic plots:
 # Residuals vs Fitted
-  # We see some possible patterns going on in the data but for the most part
-  # we see relatively constant variation. I am slightly concerned about the "pattern", but 
-  # I'll use the Scale-Location plot to help me gauge how if I should be concerned.
-  # Specifically, the apparent "pinching" that occurs at a predicted value of ca.
-  # -1 (i.e. -1 on the logit link scale, or ca. 25% probability). This may indicate
-  # a problem but it may just be because we don't have many observations with that
-  # predicted value.
-  # Note that the "streak" of residuals at the bottom left of the figure, going 
-  # from ca. -2 to -5 (below the dashed line) are instances where we have low
-  # predicted logit values, hence low probabilities, so we are approaching the lower
-  # bound of the data (i.e. 0%). In these scenarios, we're always going to see a "streak"
-  # of residual values that tend towards 0 residual error.
+  # Normally we want to see no weird patterns, but Bernoulli's always have weird 
+  # patterns. This figure is now pretty useless.
 # Q-Q Residuals
   # We completely ignore this figure for GLMs.
 # Scale-Location
-  # There seems to be less obvious patterns when we view the data here, compared
-  # to when we look at the Residuals vs Fitted figure. I am now more comfortable
-  # that there's not much going on in the residuals, in terms of patterns.
+  # Uselss for Bernoulli GLMs
 # Residuals vs Leverage
-  # We're really only using this to check for values close to a Cook's distance of 1
-  # For this plot, we can just make out the 0.5 dashed line in the top right, so 
-  # we have no highly influential points in the data.
-# Overall, the diagnostic plots look ok. Not perfect, but good enough that I'd be 
-  # comfortable interpreting the results.
+  # Still useful, even for Bernoulli GLMs. We don't want any points to be close
+  # to a Cook's distance of 1. Here we're pretty safe.
+# Overall, the diagnostic plots are not useful for Bernoulli GlMs, other than
+  # the Residuals vs Leverage check (which had no issue).
 
-# To do a quick and crude check for dispersion, we can use the information from summary()
-  # We take residual deviance and divide by the degrees of freedom, so for this model:
-  # 229.78/205 = 1.12
-  # We have very, very slight overdispersion but nothing that causes me concern!
+# Ideally we would do a check for over-dispersion, but we can't do this Bernoulli's,
+  # so we ignore over-dispersion
 
-# From these diagnostic checks, I see no issue for why we can't proceed with interpretation.
-
-# While you might be suspicious that the first model we ran apparently has no issues. 
-  # This does happen with real analysis. The risk when this happens, though, is that 
-  # sometimes researchers feel compelled to run alternative models to try and "break" 
-  # things, or think "maybe we can get away with adding a bit more complexity". I'd 
-  # argue neither are appropriate. We set out to answer a question and we've now confirmed,
-  # to the best of our ability, that our model is sound. There might be other issues
-  # (e.g. the assumption of validity) but this model is perfectly adequate for 
-  # doing what we wanted it to do. We're more than justified in running this one
-  # model without torturing ourselves further.
+# We're now in a position where we don't really know how well our model has performed
+  # with the above checks. What to do?
 
 par(mfrow = c(2,2)) # Show figures in 2 rows and 2 columns
-plot(mod1)          # Plot the model diagnostics
+plot(mod1, col = ifelse(netflix$lotr == 1, "red", "black")) # Plot diagnostics
 par(mfrow = c(1,1)) # Reset so only 1 figure is shown
-summary(mod1)       # Get the summary of the model (to check dispersion)
+summary(mod1)       # Get the summary of the model (to check dispersion?)
 ```
 
 \
 
-### 7. Interpret your model.
+The diagnostics tests we've used up to this point have largely failed us for Bernoulli GLMs. As such we need to think of alternative ways to try and check our assumptions. In this instance, we can use the method we discussed in the lecture where we extract the Pearson residuals from the model, and plot these against our explanatory covariates.
 
-\
+Extracting residuals is a pretty easy process. To do so, we use the code:
 
-Using `summary()`, go through each `Estimate` and provide an interpretation of what it means scientifically. E.g. what does the `n_staff` `Estimate` mean?
+```
+netflix$resid <- resid(mod2, type = "pearson")
+```
 
-```{r Q7, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
-summary(mod1)
-#                               Estimate Std. Error z value Pr(>|z|)    
-# (Intercept)                   -1.90007    0.60588  -3.136  0.00171 ** 
-# n_staff                       -0.12192    0.02744  -4.442 8.90e-06 ***
-# policyNot implemented          1.04076    0.58723   1.772  0.07634 .  
-# capacity                       2.37859    0.34223   6.950 3.65e-12 ***
-# n_staff:policyNot implemented  0.07109    0.02930   2.426  0.01525 *  
+With the above code, we're simply adding a new column to our original dataset that contains the Pearson residual error for each observation ($i$) based on the model that you fit (here, called `mod2`). Now we need to load a package and use the appropriate function to make plotting residuals and diagnosing a bit easier: `binnedplot` from the `arm` package.
 
-# (Intercept)
-  # This is the predicted value (on the link scale) when all other covariates
-  # are set to zero. For "policy", this is when the policy *was* implemented. We know
-  # that because the "policy" Estimate (further down) is for "Not implemented", 
-  # meaning R has "created" a column of data called "Not implemented" and used 1 to 
-  # mean "Yes" and 0 to mean "No". Why did R choose "Implemented" to be our reference? 
-  # Because "I" is before "N" in the alphabet.
-  # The Estimate value of -1.9 means that when capacity is 0, n_staff
-  # is 0, and the policy was not implemented, we estimate -1.9 patients would be
-  # MRSE positive (on the link scale).
-# n_staff
-  # This is the predicted slope for n_staff on the link scale *when the policy was
-  # implemented. This caveat comes about because we have an interaction between 
-  # policy and n_staff. This means we interpret this Estimate as: for every additional
-  # member of staff in a ward *when the policy was implemented*, the lotr 
-  # of patients with MRSE *decreases* by -0.12 (we know it decreases because the
-  # estimate is negative).
-# policyNot implemented
-  # This is the difference between when the policy is *not implemented*, compared
-  # to when it is implemented. Here, the value of 1.04 means that when the policy
-  # is not implemented, we would expect *more* patients to be MRSE positive.
-  # Specifically, -1.90007 + 1.04076 (Intercept + policyNot implemented).
-  # This would imply the policy is effective.
-# capacity
-  # This is the slope for ward capacity. For every additional unit increase in capacity
-  # the number of MRSE patients *increases* by 2.37. We need to be a little careful
-  # here and remind ourselves what a unit increase in capacity represents. Capacity
-  # is the lotr of beds occupied in a ward, meaning it can vary between 0
-  # and 1. So a unit increase is going from 0% to 100% - from nothing to everything.
-  # If we wanted the capacity Estimate to be more intuitive, we could multiple the
-  # explanatory variable (in our mrse dataframe) by 100 and rerun our analysis. 
-  # If we did so, a unit increase would become an increase in 1%, rather than 100%.
-# n_staff:policyNot implemented
-  # This is our interaction, which in this case, is the difference in slope 
-  # between the slope for n_staff when the policy was implemented (n_staff Estimate) 
-  # with the compared to the slope for n_staff when we do not implement the policy.
-  # *Importantly*, the slope is not 0.07109. Remember, it's the difference in slope
-  # compared to the slope for n_staff when the policy was implemented. Here, the
-  # slope is: -0.12192 + 0.07109 = -0.05083
+Using these plots, identify any covariates you think we should be concerned about, and why.
+
+Hints:
+* For categorical variables, we can force these to be numeric, and therefore use `binnedplot()` by doing `binnedplot(y = dat$resid, x = as.numeric(dat$category), nclass = 3, xlab = "My categorical variable")`
+
+```{r Q7.1, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
+# Extract residuals from model
+netflix$resid <- resid(mod2, type = "pearson")
+
+# Using binnedplot() from arm package
+library(arm)
+
+# For categorical covariates in the model
+par(mfrow = c(2,2))
+# We convert the categories to numeric using as.numeric()
+binnedplot(y = netflix$resid, x = as.numeric(netflix$user_time), nclass = 3, xlab = "User time")
+# Pretty good. Nothing that is concerning
+binnedplot(y = netflix$resid, x = as.numeric(netflix$user_day), nclass = 7, xlab = "User day")
+# Pretty good also if slightly too negative
+binnedplot(y = netflix$resid, x = as.numeric(netflix$user_device), nclass = 8, xlab = "User device")
+# We have to set nclass = 8 to get a bin for each device (4 device types)
+# But plot suggests no issues
+
+par(mfrow = c(3,2))
+# For continuous covariates in the model
+binnedplot(y = netflix$resid, x = netflix$age, nclass = 6, xlab = "Age")
+# Very likely that age is not a linear effect
+  # We go from lots of negative, to lots of positive error
+  # Model is struggling to deal with age
+  # Assumption of linearity with age is likely broken here
+binnedplot(y = netflix$resid, x = netflix$genre_likes, nclass = 4, xlab = "Genre likes")
+# Pretty good - mostly evenly spread around 0
+binnedplot(y = netflix$resid, x = netflix$actor_likes, nclass = 4, xlab = "Actor likes")
+# Pretty good - all points within bounds
+  # Slightly more negative than we might like but ok
+binnedplot(y = netflix$resid, x = netflix$similar_user_ratings, nclass = 4, xlab = "Similar ratings")
+# Mostly ok. At low similar rating we are below bounds, but not terribly
+binnedplot(y = netflix$resid, x = netflix$mean_time_genre, nclass = 4, xlab = "Mean time spent watching fantasy")
+# Pretty good. At 100 hours of watch time, we are ever-so-slightly below line but it's ok
+binnedplot(y = netflix$resid, x = netflix$fam_members, nclass = 4, xlab = "Number of family members")
+# Pretty good
 ```
 
 \
 
-### 8. Create figures to show predicted relationships.
+### 8. Interpret your model.
 
 \
 
-In the $Poisson$ exercise, we relied on `packages` to make our figures for us. In today's exercise, we'll do these ourselves so that we get the freedom to make any aesthetic changes we might want, or to make show predictions according to specific circumstances. Doing so, inevitably, will require more work on our side though.
+Having now fit our most parsimonious model, let's see what we've learnt from it. Use `summary()` to pull up the coefficients table and answer the following questions:
 
-For started, we need a "new" dataset that contains an even spread of covariate values that we want to use to make predictions. In the lecture, I showed a trick we can use to do so; by using the `expand.grid()` function. Using this we'll start off by making a dataset to show the relationship for `capacity`, and then afterwards, do this again to show the relationship for the interaction between `policy` and `n_staff`. Regardless of which prediction we are doing, we must provide values for all covariates in the model, even those we don't necessarily want to show. The choice for what values to set covariates to is not necessarily trivial, but the convention is to set them to the median. For example, for `n_staff`, we might set all values of this covariate to `median(netflix$n_staff)`, but there's nothing to stop us from setting these to values we are partnetflixlarly interested in. For instance, maybe we want to show the predicted relationship of capacity with the maximum number of staff if we wanted to show the best case scenario for the capacity relationship. Now that we're creating these predictions by hand, rather than relying on `R` packages, we have the freedom to do so.
+* How many parameters have been estimated by this model?
+* How might we want to change data collection methods to make the model more efficient in terms of the number of parameters?
+* What does the `user_dayFriday` Estimate represent?
+* For every additional family member (`fam_members`), how much does the log odds ratio increase by?
 
-For `capacity`, we can create our fake dataset using the following code:
+```{r Q8, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
+summary(mod2)
+# Coefficients:
+#                            Estimate Std. Error z value Pr(>|z|)    
+# (Intercept)              -2.2170365  0.2170986 -10.212  < 2e-16 ***
+# age                      -0.3437752  0.0065373 -52.587  < 2e-16 ***
+# genre_likes               0.1249627  0.0195066   6.406 1.49e-10 ***
+# actor_likes               0.0643134  0.0160260   4.013 5.99e-05 ***
+# similar_user_ratings     12.9650321  0.2390317  54.240  < 2e-16 ***
+# mean_time_genre           0.0192068  0.0005529  34.740  < 2e-16 ***
+# user_timeAfternoon        0.1658946  0.0994637   1.668   0.0953 .  
+# user_timeEvening          0.7851001  0.0937494   8.374  < 2e-16 ***
+# user_dayTuesday          -0.2761958  0.1211418  -2.280   0.0226 *  
+# user_dayWednesday        -0.5379722  0.1184921  -4.540 5.62e-06 ***
+# user_dayThursday         -0.8373645  0.1137974  -7.358 1.86e-13 ***
+# user_dayFriday           -0.0553916  0.1033254  -0.536   0.5919    
+# user_daySaturday          0.2520935  0.1026561   2.456   0.0141 *  
+# user_daySunday            1.0829502  0.1027404  10.541  < 2e-16 ***
+# user_deviceMobile Device -0.9108165  0.1132527  -8.042 8.81e-16 ***
+# user_devicePC             1.1081704  0.1304357   8.496  < 2e-16 ***
+# user_deviceTV             1.0054722  0.0918184  10.951  < 2e-16 ***
+# fam_members              -0.0055314  0.0191144  -0.289   0.7723    
+
+# How many parameters have been estimated by this model?
+  # There are a total of 18 parameters in this model. The number of parameters is
+
+# How might we want to change data collection methods to make the model more efficient in terms of the number of parameters?
+  # We have more parameter than covariates because of the categorical variables
+  # So just three covariates (user_time, user_day and user_device) are using 11 parameters
+  # Two of these (user_time and user_day) could be expressed as numbers but there 
+  # are two complications if we do so.
+  # For user_time, we have not been provided with the actual time, just a broad
+  # window. So we'd need more accurate information to resolve this.
+  # For user_day, we can already convert this to numeric, e.g. Monday = 1,
+  # Sunday = 7 but this does create an issue. Because weeks are cyclical, the 
+  # predicted probability to watch LoTR on Sunday needs to match up, in some manner,
+  # with the predicated probability to watch LoTR on Monday.
+  # There are techniques to do this, but we don't have the time to cover them on
+  # this course. In such cases, having day of week as a categorical is actually a
+  # pretty good work-around. If you're interested in the alternative way, look up
+  # cyclical splines in Generalised Additive Models.
+
+# * What does the `user_dayFriday` `Estimate` represent?
+  # Hopefully this is starting to become second nature at this point. This is the 
+  # difference in logit value for Friday, compared to Monday (our reference level).
+  # For Friday, this model would predict a user is *less* likely to watch LoTR
+  # than on Monday (changing the intercept by -0.0553916).
+  # If your summary table looks different, it's most likely because you did not
+  # set Monday to be your reference in user_day and Morning to be your reference
+  # in user_time (or you set the user_device reference to something other than
+  # Gaming Device). It's absolutely fine if so - all it means is that your
+  # Estimate values will be different but, importantly, the effects will be exactly 
+  # the same.
+  # The corresponding P-value indicates that there's a 59% chance that this difference
+  # is actually 0.
+
+# * For every additional family member (`fam_members`), how much does the log odds 
+# ratio increase by?
+  # Adding one more family member decreases the logit value to watch LoTR by
+  # -0.0055314. According to this model, single people are *very* slightly more 
+  # likely to watch LoTR.
+```
+
+\
+
+### 9. Create figures to show predicted relationships.
+
+\
+
+We're now in a position to show our predicted relationships. To do so, we're going to recycle the method we used in the $Binomial$ GLM exercise.
+
+For these predictions, Netflix are especially interested in identifying which type of user to give targeted adverts to on **Sunday afternoons**, such that they are more likely to watch LoTR. For us, this means we want to make our predictions specific to Sunday afternoons.
+
+So you don't have to flip back to the $Binomial$ GLM exercise, here's the code we used to make our predictions in yesterdays exercise.
 
 ```
 # Create a fake dataset to feed into our model equation
-synth_data <- expand.grid(
-  # Set n_staff to median (22 staff) or any value you think is interesting
-  n_staff = median(netflix$n_staff), 
-  # We have to set policy to either Not implemented or Implemented
-  policy = "Implemented",        
-  capacity = seq(
-    # We create a sequence from the minimum capacity observered
-    from = min(netflix$capacity), 
-    # To the maximum capacity observed
-    to = max(netflix$capacity),   
-    # And request 20 values across that range
-    length.out = 20))         
-```
-
-We can then use this new *synthetic* dataset to create predictions of lotr of MRSE positive patients using the `predict()` function. The `predict()` function takes our model equation (with the estimated parameter values) and combines this with either the original data (if we did not supply a synthetic dataset) or with a synthetic data (if you do supply a synthetic dataset) to calculate the expected MRSE lotrs, given the respective covariate values.
-
-```
-synth_data$pred <- predict(mod1, newdata = synth_data)
-```
-
-A hint: we can tell the `predict()` function to use the inverse link function automatically when making the predictions, so we don't need to by setting `type = "response"` or else we could always do this manually by using the inverse link function (here $\frac{e^x}{(1+e^x)}$, or `plogis()` in `R`) such that our predicted values are on the response scale. 
-
-```
-synth_data$pred <- predict(mod1, newdata = synth_data, type = "response")
-# Or
-synth_data$pred <- plogis(predict(mod1, newdata = synth_data))
-```
-
-Once done, we can use our new synthetic data and predicted MRSE prevalence to create a figure that shows the relationships for capacity.
-
-```
-# Plot the raw data
-plot(netflix$capacity, netflix$lotr, xlab= "Ward capacity", ylab= "lotr of patients with MRSE")
-# And add a line to show our predicted model fit
-lines(synth_data$pred ~ synth_data$capacity, lty = 1, col = 1)
-```
-
-Your figure should look like:
-
-```{r Q8.1, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.height=8, fig.show= ifelse(TRUE, "asis", "hide")}
-# Create a fake dataset to feed into our model equation
-synth_data <- expand.grid(
-  # Set n_staff to median (22 staff)
-  n_staff = median(netflix$n_staff), 
-  # We have to set policy to either Not implemented or Implemented
-  policy = "Implemented",        
-  capacity = seq(
-    # We create a sequence from the minimum capacity observered
-    from = min(netflix$capacity), 
-    # To the maximum capacity observed
-    to = max(netflix$capacity),   
-    # And request 20 values across that range
-    length.out = 20))         
-
-# Get predictions on the response scale
-synth_data$pred <- predict(mod1, newdata = synth_data, type = "response")
-# Or
-# synth_data$pred <- plogis(predict(mod1, newdata = synth_data))
-
-# Plot the raw data
-plot(netflix$capacity, netflix$lotr, xlab= "Ward capacity", ylab= "lotr of patients with MRSE")
-# And add a line to show our predicted model fit
-lines(synth_data$pred ~ synth_data$capacity, lty = 1, col = 1)
-```
-
-Now for the harder part of the model. We'll need to go through the same steps as above, but this time making tweaks to show the interaction between `policy` and `n_staff`.
-
-Hint: the biggest "part" here is creating the synthetic data such that we can show the `n_staff` relationship for *both* levels of `policy`, but doing so, requires only two small changes to the `expand.grid()` code.
-
-Give it a go, but if you're struggling, ask for help. This is a tough one.
-
-```{r Q8.2, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.height=8, fig.show= ifelse(SOLUTIONS, "asis", "hide")}
-# Create a fake dataset to feed into our model equation
-synth_data <- expand.grid(n_staff = seq(from = min(netflix$n_staff), to = max(netflix$n_staff), length.out = 20), 
-                          policy = c("Implemented", "Not implemented"),
-                          capacity = 0.5)
-
-synth_data$pred <- predict(mod1, newdata = synth_data, type = "response")
-
-plot(netflix$n_staff, netflix$lotr, col= netflix$policy, xlab= "Number of staff", ylab= "lotr of patients with MRSE")
-
-lines(synth_data$pred[synth_data$policy == "Implemented"] ~ 
-      synth_data$n_staff[synth_data$policy == "Implemented"], lty= 1, col= 1)
-lines(synth_data$pred[synth_data$policy == "Not implemented"] ~ 
-      synth_data$n_staff[synth_data$policy == "Not implemented"], lty= 1, col= 2)
-
-legend("topright", 
- legend= c("Implemented", "Not implemented"), 
- col= c(2:1), 
- lty= c(1, 1, 1), 
- lwd= c(1, 1, 1))
-```
-
-\
-
-### 9. Uncertainty
-
-\
-
-It's always important to show uncertainty when visualising (or reporting) what our model has estimated. Without uncertainty, we essentially tell our reader that we know *exactly* how the world works. Clearly we don't, we have a crude understanding build upon many assumptions. Showing uncertainty, often through confidence intervals, is a way to, at the very least, acknowledge that we *don't* know the exact Truth.
-
-Including confidence intervals requires that we calculate them. Doing so by hand is an absolute pain, but thankfully, `R` makes this relatively easier. All we need to do is tell the `predict()` function to also report standard error for each predicted observation, and then convert these to upper and lower 95% CI.
-
-Here's how we do that for capacity:
-
-```
-# We remake our synthetic data for visualising *capacity*
 synth_data <- expand.grid(
   n_staff = median(netflix$n_staff), 
   policy = "Implemented",        
   capacity = seq(
     from = min(netflix$capacity), 
     to = max(netflix$capacity),   
-    length.out = 20))         
-
-# Now instead of just getting a single column of mean prediction, we ask predict()
-  # for two columns - one for mean prediction and another for standard error.
-  # This means we cannot simply add the predictions, as is, to our synth_data
-  # Instead we store the output to then calculate 95% CI
-# Note that we now include the argument se.fit = TRUE, to get our standard error
-  # We also cannot use type = response anymore, instead we use plogis but later on
-pred <- predict(mod1, newdata = synth_data, se.fit = TRUE)
-
-# Extract the mean Estimate on response scale
+    length.out = 20))   
+synth_data$pred <- predict(mod1, newdata = synth_data, se.fit = TRUE)
 synth_data$pred <- plogis(pred$fit)
-# Subtract SE * 1.96 to get 95% and backtransform for lower 95% CI
 synth_data$low <- plogis(pred$fit - pred$se.fit * 1.96)
-# Add SE * 1.96 to get 95% and backtransform for upper 95% CI
+synth_data$upp <- plogis(pred$fit + pred$se.fit * 1.96)
+```
+
+Adapt this code for our current model (i.e. add in the relevant covariates to `expand.grid()`) to show the relationships for `age`, `genre_likes`, `actor_likes`, `similar_user_ratings`, `mean_time_genre`, `user_device` and `family members`
+
+Your figures should resemble (but need not match exactly):
+
+```{r Q9, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.height=8, fig.show= ifelse(TRUE, "asis", "hide")}
+
+# Load packages for plotting
+library(ggplot2)
+library(scales)
+library(patchwork)
+
+###### Age ########
+
+synth_data <- expand.grid(
+  user_time = "Afternoon",
+  user_day = "Sunday",
+  # Age is variable of interest for prediction
+  age = seq(from = min(netflix$age), to = max(netflix$age), length.out = 50),
+  # Will vary this across user device at the same time
+  user_device = c("Gaming Device", "Mobile Device", "PC", "TV"),
+  genre_likes = median(netflix$genre_likes), 
+  actor_likes = median(netflix$actor_likes),    
+  similar_user_ratings = median(netflix$similar_user_ratings),
+  mean_time_genre = median(netflix$mean_time_genre),
+  fam_members = median(netflix$fam_members)
+)
+
+# Get mean prediction and 95% CI on the response scale
+pred <- predict(mod2, newdata = synth_data, se.fit = TRUE)
+synth_data$pred <- plogis(pred$fit)
+synth_data$low <- plogis(pred$fit - pred$se.fit * 1.96)
 synth_data$upp <- plogis(pred$fit + pred$se.fit * 1.96)
 
-# Plot the raw data
-plot(netflix$capacity, netflix$lotr, 
-     xlab = "Ward capacity", 
-     ylab = "lotr of patients with MRSE")
-# As before, add a line to show our predicted model fit
-lines(synth_data$pred ~ synth_data$capacity, lty = 1, col = "black")
-# Now we add two new dashed lines (lty = 2 for dashed) to show 95% CI
-lines(synth_data$low ~ synth_data$capacity, lty = 2, col = "grey")
-lines(synth_data$upp ~ synth_data$capacity, lty = 2, col = "grey")
-```
-
-Your figure should look like:
-
-```{r Q9.1, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.height=8, fig.show= ifelse(TRUE, "asis", "hide")}
-# Create a fake dataset to feed into our model equation
-synth_data <- expand.grid(
-  # Set n_staff to median (22 staff)
-  n_staff = median(netflix$n_staff), 
-  # We have to set policy to either Not implemented or Implemented
-  policy = "Implemented",        
-  capacity = seq(
-    # We create a sequence from the minimum capacity observered
-    from = min(netflix$capacity), 
-    # To the maximum capacity observed
-    to = max(netflix$capacity),   
-    # And request 20 values across that range
-    length.out = 20))         
-
-# Get both Estimate and Standard Error for each combination of our synthetic data
-pred <- predict(mod1, newdata = synth_data, se.fit = TRUE)
-
-# Extract the mean Estimate on response scale
-synth_data$pred <- plogis(pred$fit)
-# Subtract SE * 1.96 to get 95% and backtransform for lower 95% CI
-synth_data$low <- plogis(pred$fit - pred$se.fit * 1.96)
-# Add SE * 1.96 to get 95% and backtransform for upper 95% CI
-synth_data$upp <- plogis(pred$fit + pred$se.fit * 1.96)
-
-# Plot the raw data
-plot(netflix$capacity, netflix$lotr, 
-     xlab = "Ward capacity", 
-     ylab = "lotr of patients with MRSE")
-# And add a line to show our predicted model fit
-lines(synth_data$pred ~ synth_data$capacity, lty = 1, col = "black")
-lines(synth_data$low ~ synth_data$capacity, lty = 2, col = "grey")
-lines(synth_data$upp ~ synth_data$capacity, lty = 2, col = "grey")
-```
-
-Getting the `synth_data`, mean estimates and 95% CI is the hard part. Once we have these sorted out, we can create a figure however we like. The example above looks fairly bland and boring, but we can always change this.
-
-Using your code from the above figure showing capacity, adapt it now to visualise the interaction between `policy` and `n_staff` which includes 95% CI. Below I give an example of how I'd visualise the predictions, but you're free to do this however you'd like.
-
-```{r Q9.2, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE, fig.height=8, fig.show= ifelse(TRUE, "asis", "hide")}
-library(ggplot2) # not needed if you already had ggplot loaded
-library(scales)  # to show y-axis in figure as percentage (install.packages("scales") if needed)
-
-# Create synthetic data and predictions
-synth_data <- expand.grid(n_staff = seq(from = min(netflix$n_staff), to = max(netflix$n_staff), length.out = 20), 
-                          policy = c("Implemented", "Not implemented"),
-                          capacity = 0.5)      
-
-# Get both Estimate and Standard Error for each combination of our synthetic data
-pred <- predict(mod1, newdata = synth_data, se.fit = TRUE)
-
-# Extract the mean Estimate on response scale
-synth_data$pred <- plogis(pred$fit)
-# Subtract SE * 1.96 to get 95% and backtransform for lower 95% CI
-synth_data$low <- plogis(pred$fit - pred$se.fit * 1.96)
-# Add SE * 1.96 to get 95% and backtransform for upper 95% CI
-synth_data$upp <- plogis(pred$fit + pred$se.fit * 1.96)
-
-# Create the figure
-ggplot() +
-  geom_point(data = netflix, aes(x = n_staff, y = lotr, colour = policy),
-             show.legend = FALSE, size = 0.5) +
-  geom_line(data = synth_data, aes(x = n_staff, y = pred, colour = policy),
-             show.legend = FALSE) +
-  geom_ribbon(data = synth_data, aes(x = n_staff, ymin = low, ymax = upp, fill = policy),
-              alpha = 0.3, show.legend = FALSE) +
-  facet_wrap(~policy) +
-  scale_colour_brewer(palette = "Dark2") +
+# Plot for age
+p1 <- ggplot(synth_data, aes(x = age, y = pred, ymin = low, ymax = upp, 
+                       colour = user_device, fill = user_device)) +
+  geom_ribbon(alpha = 0.3) +
+  geom_line() +
+  scale_color_brewer(palette = "Dark2") +
   scale_fill_brewer(palette = "Dark2") +
   scale_y_continuous(labels = percent, limits = c(0,1)) +
   theme_minimal() +
-  labs(x = "Number of netflix staff",
-       y = "Predicted lotr\nof MRSE positive patients",
-       caption = "Assuming 50% bed occupancy")
+  labs(x = "Age of user",
+       y = "Predicted probability to watch LoTR",
+       colour = "User device",
+       fill = "User device")
+
+###### Genre likes ########
+
+synth_data <- expand.grid(
+  user_time = "Afternoon",
+  user_day = "Sunday",
+  # genre_likes is variable of interest for prediction
+  genre_likes = seq(from = min(netflix$genre_likes), to = max(netflix$genre_likes), length.out = 50),
+  # Will vary this across user device at the same time
+  user_device = c("Gaming Device", "Mobile Device", "PC", "TV"),
+  age = median(netflix$age), 
+  actor_likes = median(netflix$actor_likes),    
+  similar_user_ratings = median(netflix$similar_user_ratings),
+  mean_time_genre = median(netflix$mean_time_genre),
+  fam_members = median(netflix$fam_members)
+)
+
+# Get mean prediction and 95% CI on the response scale
+pred <- predict(mod2, newdata = synth_data, se.fit = TRUE)
+synth_data$pred <- plogis(pred$fit)
+synth_data$low <- plogis(pred$fit - pred$se.fit * 1.96)
+synth_data$upp <- plogis(pred$fit + pred$se.fit * 1.96)
+
+# Plot for genre_likes
+p2 <- ggplot(synth_data, aes(x = genre_likes, y = pred, ymin = low, ymax = upp, 
+                       colour = user_device, fill = user_device)) +
+  geom_ribbon(alpha = 0.3) +
+  geom_line() +
+  scale_color_brewer(palette = "Dark2") +
+  scale_fill_brewer(palette = "Dark2") +
+  scale_y_continuous(labels = percent, limits = c(0,1)) +
+  theme_minimal() +
+  labs(x = "Number of fantasy\nmedia liked",
+       y = "Predicted probability to watch LoTR",
+       colour = "User device",
+       fill = "User device")
+
+###### Actor likes ########
+
+synth_data <- expand.grid(
+  user_time = "Afternoon",
+  user_day = "Sunday",
+  # actor_likes is variable of interest for prediction
+  actor_likes = seq(from = min(netflix$actor_likes), to = max(netflix$actor_likes), length.out = 50),
+  # Will vary this across user device at the same time
+  user_device = c("Gaming Device", "Mobile Device", "PC", "TV"),
+  age = median(netflix$age), 
+  genre_likes = median(netflix$genre_likes),    
+  similar_user_ratings = median(netflix$similar_user_ratings),
+  mean_time_genre = median(netflix$mean_time_genre),
+  fam_members = median(netflix$fam_members)
+)
+
+# Get mean prediction and 95% CI on the response scale
+pred <- predict(mod2, newdata = synth_data, se.fit = TRUE)
+synth_data$pred <- plogis(pred$fit)
+synth_data$low <- plogis(pred$fit - pred$se.fit * 1.96)
+synth_data$upp <- plogis(pred$fit + pred$se.fit * 1.96)
+
+# Plot for actor_likes
+p3 <- ggplot(synth_data, aes(x = actor_likes, y = pred, ymin = low, ymax = upp, 
+                       colour = user_device, fill = user_device)) +
+  geom_ribbon(alpha = 0.3) +
+  geom_line() +
+  scale_color_brewer(palette = "Dark2") +
+  scale_fill_brewer(palette = "Dark2") +
+  scale_y_continuous(labels = percent, limits = c(0,1)) +
+  theme_minimal() +
+  labs(x = "Number of media with\ncast member liked",
+       y = "Predicted probability to watch LoTR",
+       colour = "User device",
+       fill = "User device")
+
+###### similar_user_ratings ########
+
+synth_data <- expand.grid(
+  user_time = "Afternoon",
+  user_day = "Sunday",
+  # similar_user_ratings is variable of interest for prediction
+  similar_user_ratings = seq(from = min(netflix$similar_user_ratings), 
+                             to = max(netflix$similar_user_ratings), 
+                             length.out = 50),
+  # Will vary this across user device at the same time
+  user_device = c("Gaming Device", "Mobile Device", "PC", "TV"),
+  genre_likes = median(netflix$genre_likes), 
+  actor_likes = median(netflix$actor_likes),    
+  age = median(netflix$age),
+  mean_time_genre = median(netflix$mean_time_genre),
+  fam_members = median(netflix$fam_members)
+)
+
+# Get mean prediction and 95% CI on the response scale
+pred <- predict(mod2, newdata = synth_data, se.fit = TRUE)
+synth_data$pred <- plogis(pred$fit)
+synth_data$low <- plogis(pred$fit - pred$se.fit * 1.96)
+synth_data$upp <- plogis(pred$fit + pred$se.fit * 1.96)
+
+# Plot for similar_user_ratings
+p4 <- ggplot(synth_data, aes(x = similar_user_ratings, y = pred, ymin = low, ymax = upp, 
+                       colour = user_device, fill = user_device)) +
+  geom_ribbon(alpha = 0.3) +
+  geom_line() +
+  scale_color_brewer(palette = "Dark2") +
+  scale_fill_brewer(palette = "Dark2") +
+  scale_y_continuous(labels = percent, limits = c(0,1)) +
+  theme_minimal() +
+  labs(x = "Proportion of similar\nusers who liked LoTR",
+       y = "Predicted probability to watch LoTR",
+       colour = "User device",
+       fill = "User device")
+
+###### mean_time_genre ########
+
+synth_data <- expand.grid(
+  user_time = "Afternoon",
+  user_day = "Sunday",
+  # mean_time_genre is variable of interest for prediction
+  mean_time_genre = seq(from = min(netflix$mean_time_genre), 
+                        to = max(netflix$mean_time_genre), 
+                        length.out = 50),
+  # Will vary this across user device at the same time
+  user_device = c("Gaming Device", "Mobile Device", "PC", "TV"),
+  genre_likes = median(netflix$genre_likes), 
+  actor_likes = median(netflix$actor_likes),    
+  similar_user_ratings = median(netflix$similar_user_ratings),
+  age = median(netflix$age),
+  fam_members = median(netflix$fam_members)
+)
+
+# Get mean prediction and 95% CI on the response scale
+pred <- predict(mod2, newdata = synth_data, se.fit = TRUE)
+synth_data$pred <- plogis(pred$fit)
+synth_data$low <- plogis(pred$fit - pred$se.fit * 1.96)
+synth_data$upp <- plogis(pred$fit + pred$se.fit * 1.96)
+
+# Plot for mean_time_genre
+p5 <- ggplot(synth_data, aes(x = mean_time_genre, y = pred, ymin = low, ymax = upp, 
+                       colour = user_device, fill = user_device)) +
+  geom_ribbon(alpha = 0.3) +
+  geom_line() +
+  scale_color_brewer(palette = "Dark2") +
+  scale_fill_brewer(palette = "Dark2") +
+  scale_y_continuous(labels = percent, limits = c(0,1)) +
+  theme_minimal() +
+  labs(x = "Mean time spent\nwatching fantasy",
+       y = "Predicted probability to watch LoTR",
+       colour = "User device",
+       fill = "User device")
+
+###### fam_members ########
+
+synth_data <- expand.grid(
+  user_time = "Afternoon",
+  user_day = "Sunday",
+  # fam_members is variable of interest for prediction
+  fam_members = seq(from = min(netflix$fam_members), 
+                    to = max(netflix$fam_members), 
+                    length.out = 50),
+  # Will vary this across user device at the same time
+  user_device = c("Gaming Device", "Mobile Device", "PC", "TV"),
+  genre_likes = median(netflix$genre_likes), 
+  actor_likes = median(netflix$actor_likes),    
+  similar_user_ratings = median(netflix$similar_user_ratings),
+  mean_time_genre = median(netflix$mean_time_genre),
+  age = median(netflix$age)
+)
+
+# Get mean prediction and 95% CI on the response scale
+pred <- predict(mod2, newdata = synth_data, se.fit = TRUE)
+synth_data$pred <- plogis(pred$fit)
+synth_data$low <- plogis(pred$fit - pred$se.fit * 1.96)
+synth_data$upp <- plogis(pred$fit + pred$se.fit * 1.96)
+
+# Plot for fam_members
+p6 <- ggplot(synth_data, aes(x = fam_members, y = pred, ymin = low, ymax = upp, 
+                       colour = user_device, fill = user_device)) +
+  geom_ribbon(alpha = 0.3) +
+  geom_line() +
+  scale_color_brewer(palette = "Dark2") +
+  scale_fill_brewer(palette = "Dark2") +
+  scale_y_continuous(labels = percent, limits = c(0,1)) +
+  theme_minimal() +
+  labs(x = "Number of family members",
+       y = "Predicted probability to watch LoTR",
+       colour = "User device",
+       fill = "User device")
+
+# Add all multiples into a single figure
+design_layout <- "
+AB
+CD
+EF
+"
+p1 + p2 + p3 + p4 + p5 + p6 + 
+  plot_annotation(title = "Users to target") + 
+  plot_layout(guides = "collect", axis_titles = "collect", design = design_layout)
 ```
 
-
-In my above example figure, notice how predicted relationship for Not Implemented is generally below our data? If you're interesting in why that's the case, try remaking this figure and set capacity (bed occupancy) to 100% to see if that changes anything.
 
 \
 
@@ -741,29 +895,23 @@ In my above example figure, notice how predicted relationship for Not Implemente
 
 \
 
-Think back to the very first lecture where we spoke about the four broad assumptions. The first was the assumption of *Validity*. For the data that we've been modelling here, we've constantly spoken about how many patients were MRSE positive. But is that accurate? In truth, we actually don't know how many patients were actually MRSE positive. All we know is how many *tested* positive. In order for a patient to be declared MRSE positive, there are quite a few tests that have to be done, and at minimum number must come back positive before declaring MRSE - meaning lots of tests where we can get false-negatives.
-
-So. What we're actually asking with our models here is not "What lotr of patients are MRSE positive?". Instead, we're asking "What lotr of patients are MRSE positive *and also* tested positive?". This might seem like a trivial difference, but just as in the coffee example in the first lecture, the deterministic process underlying why a sample tests positive or not is more complex than simply the true MRSE state. How reliable are the tests? Was the lab technician tired? Had they just broken up with their partner, and so were very distracted when running the test? Was the result correctly recorded? Plus no shortage of other variables that influenced the probability of whether or not a sample tested positive.
-
-Mathematically, we would say there are two probabilities at play here which combine to give a single probability (and outcome). The probability that a patient is actually MRSE positive is multiplied by the probability MRSE was detected, given they were MRSE positive. With the data we have, it's impossible to disentangle these two probabilities (though there are sampling and corresponding statistical methods to do just that), so we're left explaining the combined probabilities rather than the one we're actually interested in - whether or not a patient is MRSE positive.
-
-This example of violating the assumption of *Validity* is possibly one of the most common ways I see it being broken, and it can be really hard to identify. It can be even harder to convince people they have broken it. Certainly, there are no statistical tests we can perform to test for it, and not much we can do having already collected the data. The only way to catch it, is to 1) know about it, and 2) think *very, very* carefully about what the data actually is. 
-
-This is why the first part of your analysis *must* be sitting back and thinking about your data and research question. Without that step... The Monkey's Paw awaits.
+Having now fit the model and generated predicted relationships to allow Netflix to do targeted advertising, stop. Have a think again about the data. At the end of yesterday's exercise I explained how that dataset and model had broken the assumption of validity. Can you think of any issues here? Were there any assumptions we broke but that got left behind? What are the consequences of breaking any such assumptions?
 
 \
 
 ### 11. (Optional) Exploring model diagnostics
 
-As in the $Poisson$ exercise, below I include code to simulate a $Binomial$ dataset to allow you to explore the impact of sample size, model misspecification, and effect size, on model diagnostic plots. The *Data Generating Process* (DGP) for the dataset is:
+As in previous exercises, below I include code to simulate a $Bernoulli$ dataset to allow you to explore the impact of sample size, model misspecification, and effect size, on model diagnostic plots. The *Data Generating Process* (DGP) for the dataset is:
 
-$y_i \sim Binomial(p_i, k_i)$
+$y_i \sim Bernoulli(p_i)$
 
 $logit(p_i) = \beta_0 + \beta_1 \times x_{1,i} + \beta_2 \times x_{2,i} + \beta_3\times x_{3,i} + \beta_4 \times x_{1, i} \times x_{2,i}$
 
-where you are free to decide what the values for the parameters ($\beta_{0,...,4}$) are. Note that given you've now run a model that included an interaction, the DGP also includes an interaction between $x_1$ and $x_2$
+where you are free to decide what the values for the parameters ($\beta_{0,...,4}$) are.
 
-Rerun the simulation and analysis varying the sample size (e.g. `N <- 1000`), the effect sizes (e.g. `beta_0 <- 10`) or the formula of the `glm()` (e.g. remove the interaction). Check what effect this has on dispersion and the model diagnostic plots.
+I am also including three additional covariates ($Z_{1,...,3}$) which have no effect what-so-ever on $p$.
+
+Rerun the simulation and analysis varying the sample size (e.g. `N <- 1000`), the effect sizes (e.g. `beta_0 <- 10`) or the formula of the `glm()` (e.g. remove the interaction). Check what effect this has on the generic diagnostic plots as well as the `binnedplots()` from the `arm` package.
 
 ```
 # Set your seed to have the randomness be cosnsitent each time you run the code
@@ -773,8 +921,8 @@ set.seed(1234)
 # Set your sample size
 N <- 500
 
-# Set the number of trials
-k <- 10
+# Set the number of trials (must be 1 for Bernoulli)
+k <- 1
 
 # Create three continuous covariates
 x1 <- runif(N, 0, 10)
@@ -799,16 +947,21 @@ linear_predictor_response <- plogis(linear_predictor_link)
 y <- rbinom(N, size = k, prob = linear_predictor_response)
 
 # Note that the above three lines of code are the equivalent to the equations:
-# y ~ Binomial(p, k)
+# y ~ Bernoulli(p)
 # logit(p) = beta_0 + beta_1 * x1 + beta_2 * x2 + beta_3 * x3 + beta_4 * x1 * x2
 
-# Store your data in a dataframe
-dat <- data.frame(y, x1, x2, x3)
+# Having simulated the data, we now include three additional covariates that do nothing
+z1 <- rbeta(N, shape1 = 10, shape2 = 3)
+z2 <- rgamma(N, shape = 15, rate = 2)
+z3 <- runif(N, min = 0, max = 100)
 
-# Run a Poisson GLM
-fit <- glm(y ~ x1 + x2 + x3 + x1 : x2, 
+# Store your data in a dataframe
+dat <- data.frame(y, x1, x2, x3, z1, z2, z3)
+
+# Run a Bernoulli GLM
+fit <- glm(y ~ x1 + x2 + x3 + x1 : x2 + z1 + z2 + z3, 
            data = dat, 
-           family = poisson)
+           family = binomial)
 
 # See if the model was able to estimate your parameter values 
 # and what the dispersion is
@@ -817,6 +970,19 @@ summary(fit)
 # See how well the model diagnostics perform
 par(mfrow = c(2,2))
 plot(fit)
+
+# See how AIC reacts to the meaningless variables
+drop1(fit)
+
+# Check residuals using the binnedplots
+dat$resid <- resid(fit, type = "pearson")
+library(arm)
+binnedplot(dat$resid, x = x1, nclass = 5, xlab = "x1")
+binnedplot(dat$resid, x = x2, nclass = 5, xlab = "x2")
+binnedplot(dat$resid, x = x3, nclass = 5, xlab = "x3")
+binnedplot(dat$resid, x = z1, nclass = 5, xlab = "z1")
+binnedplot(dat$resid, x = z2, nclass = 5, xlab = "z2")
+binnedplot(dat$resid, x = z3, nclass = 5, xlab = "z3")
 ```
 
 
