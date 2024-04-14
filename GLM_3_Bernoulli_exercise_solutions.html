@@ -791,54 +791,55 @@ single panel.</p>
 <span id="cb4-108"><a href="#cb4-108" tabindex="-1"></a></span>
 <span id="cb4-109"><a href="#cb4-109" tabindex="-1"></a><span class="co"># Not needed but downloading netflix icon to add to figure to give that corporate feel</span></span>
 <span id="cb4-110"><a href="#cb4-110" tabindex="-1"></a><span class="co"># If you want to do this, you&#39;ll need to install the `png` package</span></span>
-<span id="cb4-111"><a href="#cb4-111" tabindex="-1"></a>logo <span class="ot">&lt;-</span> png<span class="sc">::</span><span class="fu">readPNG</span>(<span class="st">&quot;./images/netflix.png&quot;</span>)</span>
-<span id="cb4-112"><a href="#cb4-112" tabindex="-1"></a></span>
-<span id="cb4-113"><a href="#cb4-113" tabindex="-1"></a><span class="co"># Bar chart showing total number of views according to account type</span></span>
-<span id="cb4-114"><a href="#cb4-114" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(netflix) <span class="sc">+</span></span>
-<span id="cb4-115"><a href="#cb4-115" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">x =</span> premium, <span class="at">y =</span> lotr), <span class="at">linetype =</span> <span class="dv">1</span>,</span>
-<span id="cb4-116"><a href="#cb4-116" tabindex="-1"></a>           <span class="at">alpha =</span> <span class="fl">0.8</span>, <span class="at">colour =</span> <span class="st">&quot;#E50914&quot;</span>) <span class="sc">+</span></span>
-<span id="cb4-117"><a href="#cb4-117" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Subscription type&quot;</span>,</span>
-<span id="cb4-118"><a href="#cb4-118" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Total number of</span><span class="sc">\n</span><span class="st">Lord of The Rings views&quot;</span>) <span class="sc">+</span>  </span>
-<span id="cb4-119"><a href="#cb4-119" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span></span>
-<span id="cb4-120"><a href="#cb4-120" tabindex="-1"></a>  <span class="fu">annotation_raster</span>(logo, </span>
-<span id="cb4-121"><a href="#cb4-121" tabindex="-1"></a>                    <span class="at">xmin =</span> <span class="fl">0.5</span>, <span class="at">xmax =</span> <span class="dv">1</span>,</span>
-<span id="cb4-122"><a href="#cb4-122" tabindex="-1"></a>                    <span class="at">ymin =</span> <span class="dv">4000</span>, <span class="at">ymax =</span> <span class="dv">6000</span>)</span>
-<span id="cb4-123"><a href="#cb4-123" tabindex="-1"></a></span>
-<span id="cb4-124"><a href="#cb4-124" tabindex="-1"></a><span class="co"># A scatterplot for lotr ~ age, jittered</span></span>
-<span id="cb4-125"><a href="#cb4-125" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(netflix) <span class="sc">+</span></span>
-<span id="cb4-126"><a href="#cb4-126" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="fu">aes</span>(<span class="at">x =</span> age, <span class="at">y =</span> lotr), </span>
-<span id="cb4-127"><a href="#cb4-127" tabindex="-1"></a>              <span class="at">width =</span> <span class="dv">0</span>, <span class="at">height =</span> <span class="fl">0.3</span>,</span>
-<span id="cb4-128"><a href="#cb4-128" tabindex="-1"></a>              <span class="at">colour =</span> <span class="st">&quot;#E50914&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.05</span>) <span class="sc">+</span></span>
-<span id="cb4-129"><a href="#cb4-129" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> <span class="cf">function</span>(y) <span class="fu">ifelse</span>(y <span class="sc">==</span> <span class="dv">0</span>, <span class="st">&quot;No&quot;</span>, <span class="fu">ifelse</span>(y <span class="sc">==</span> <span class="dv">1</span>, <span class="st">&quot;Yes&quot;</span>, y)),</span>
-<span id="cb4-130"><a href="#cb4-130" tabindex="-1"></a>                     <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>)) <span class="sc">+</span></span>
-<span id="cb4-131"><a href="#cb4-131" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;User age&quot;</span>,</span>
-<span id="cb4-132"><a href="#cb4-132" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Viewed</span><span class="sc">\n</span><span class="st">Lord of The Rings&quot;</span>) <span class="sc">+</span></span>
-<span id="cb4-133"><a href="#cb4-133" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span>
-<span id="cb4-134"><a href="#cb4-134" tabindex="-1"></a></span>
-<span id="cb4-135"><a href="#cb4-135" tabindex="-1"></a><span class="co"># A scatterplot for lotr ~ genre_likes, jittered</span></span>
-<span id="cb4-136"><a href="#cb4-136" tabindex="-1"></a>p3 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(netflix) <span class="sc">+</span></span>
-<span id="cb4-137"><a href="#cb4-137" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="fu">aes</span>(<span class="at">x =</span> genre_likes, <span class="at">y =</span> lotr), </span>
-<span id="cb4-138"><a href="#cb4-138" tabindex="-1"></a>              <span class="at">width =</span> <span class="fl">0.3</span>, <span class="at">height =</span> <span class="fl">0.3</span>,</span>
-<span id="cb4-139"><a href="#cb4-139" tabindex="-1"></a>              <span class="at">colour =</span> <span class="st">&quot;#E50914&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.05</span>) <span class="sc">+</span></span>
-<span id="cb4-140"><a href="#cb4-140" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> <span class="cf">function</span>(y) <span class="fu">ifelse</span>(y <span class="sc">==</span> <span class="dv">0</span>, <span class="st">&quot;No&quot;</span>, <span class="fu">ifelse</span>(y <span class="sc">==</span> <span class="dv">1</span>, <span class="st">&quot;Yes&quot;</span>, y)),</span>
-<span id="cb4-141"><a href="#cb4-141" tabindex="-1"></a>                     <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>)) <span class="sc">+</span></span>
-<span id="cb4-142"><a href="#cb4-142" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Number of fantasy likes&quot;</span>,</span>
-<span id="cb4-143"><a href="#cb4-143" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Viewed</span><span class="sc">\n</span><span class="st">Lord of The Rings&quot;</span>) <span class="sc">+</span></span>
-<span id="cb4-144"><a href="#cb4-144" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span>
-<span id="cb4-145"><a href="#cb4-145" tabindex="-1"></a></span>
-<span id="cb4-146"><a href="#cb4-146" tabindex="-1"></a><span class="co"># A scatterplot for lotr ~ actor_likes, jittered</span></span>
-<span id="cb4-147"><a href="#cb4-147" tabindex="-1"></a>p4 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(netflix) <span class="sc">+</span></span>
-<span id="cb4-148"><a href="#cb4-148" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="fu">aes</span>(<span class="at">x =</span> actor_likes, <span class="at">y =</span> lotr), </span>
-<span id="cb4-149"><a href="#cb4-149" tabindex="-1"></a>              <span class="at">width =</span> <span class="fl">0.3</span>, <span class="at">height =</span> <span class="fl">0.3</span>,</span>
-<span id="cb4-150"><a href="#cb4-150" tabindex="-1"></a>              <span class="at">colour =</span> <span class="st">&quot;#E50914&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.05</span>) <span class="sc">+</span></span>
-<span id="cb4-151"><a href="#cb4-151" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> <span class="cf">function</span>(y) <span class="fu">ifelse</span>(y <span class="sc">==</span> <span class="dv">0</span>, <span class="st">&quot;No&quot;</span>, <span class="fu">ifelse</span>(y <span class="sc">==</span> <span class="dv">1</span>, <span class="st">&quot;Yes&quot;</span>, y)),</span>
-<span id="cb4-152"><a href="#cb4-152" tabindex="-1"></a>                     <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>)) <span class="sc">+</span></span>
-<span id="cb4-153"><a href="#cb4-153" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Number of films with same actor liked&quot;</span>,</span>
-<span id="cb4-154"><a href="#cb4-154" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Viewed</span><span class="sc">\n</span><span class="st">Lord of The Rings&quot;</span>) <span class="sc">+</span></span>
-<span id="cb4-155"><a href="#cb4-155" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span>
-<span id="cb4-156"><a href="#cb4-156" tabindex="-1"></a></span>
-<span id="cb4-157"><a href="#cb4-157" tabindex="-1"></a><span class="co"># Using the patchwork package I stich p1 to p4 together into a single figure</span></span>
-<span id="cb4-158"><a href="#cb4-158" tabindex="-1"></a>(p1 <span class="sc">+</span> p2) <span class="sc">/</span> (p3 <span class="sc">+</span> p4)</span></code></pre></div>
+<span id="cb4-111"><a href="#cb4-111" tabindex="-1"></a><span class="fu">library</span>(png)</span>
+<span id="cb4-112"><a href="#cb4-112" tabindex="-1"></a>logo <span class="ot">&lt;-</span> <span class="fu">readPNG</span>(<span class="st">&quot;./images/netflix.png&quot;</span>)</span>
+<span id="cb4-113"><a href="#cb4-113" tabindex="-1"></a></span>
+<span id="cb4-114"><a href="#cb4-114" tabindex="-1"></a><span class="co"># Bar chart showing total number of views according to account type</span></span>
+<span id="cb4-115"><a href="#cb4-115" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(netflix) <span class="sc">+</span></span>
+<span id="cb4-116"><a href="#cb4-116" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">x =</span> premium, <span class="at">y =</span> lotr), <span class="at">linetype =</span> <span class="dv">1</span>,</span>
+<span id="cb4-117"><a href="#cb4-117" tabindex="-1"></a>           <span class="at">alpha =</span> <span class="fl">0.8</span>, <span class="at">colour =</span> <span class="st">&quot;#E50914&quot;</span>) <span class="sc">+</span></span>
+<span id="cb4-118"><a href="#cb4-118" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Subscription type&quot;</span>,</span>
+<span id="cb4-119"><a href="#cb4-119" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Total number of</span><span class="sc">\n</span><span class="st">Lord of The Rings views&quot;</span>) <span class="sc">+</span>  </span>
+<span id="cb4-120"><a href="#cb4-120" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span></span>
+<span id="cb4-121"><a href="#cb4-121" tabindex="-1"></a>  <span class="fu">annotation_raster</span>(logo, </span>
+<span id="cb4-122"><a href="#cb4-122" tabindex="-1"></a>                    <span class="at">xmin =</span> <span class="fl">0.5</span>, <span class="at">xmax =</span> <span class="dv">1</span>,</span>
+<span id="cb4-123"><a href="#cb4-123" tabindex="-1"></a>                    <span class="at">ymin =</span> <span class="dv">4000</span>, <span class="at">ymax =</span> <span class="dv">6000</span>)</span>
+<span id="cb4-124"><a href="#cb4-124" tabindex="-1"></a></span>
+<span id="cb4-125"><a href="#cb4-125" tabindex="-1"></a><span class="co"># A scatterplot for lotr ~ age, jittered</span></span>
+<span id="cb4-126"><a href="#cb4-126" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(netflix) <span class="sc">+</span></span>
+<span id="cb4-127"><a href="#cb4-127" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="fu">aes</span>(<span class="at">x =</span> age, <span class="at">y =</span> lotr), </span>
+<span id="cb4-128"><a href="#cb4-128" tabindex="-1"></a>              <span class="at">width =</span> <span class="dv">0</span>, <span class="at">height =</span> <span class="fl">0.3</span>,</span>
+<span id="cb4-129"><a href="#cb4-129" tabindex="-1"></a>              <span class="at">colour =</span> <span class="st">&quot;#E50914&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.05</span>) <span class="sc">+</span></span>
+<span id="cb4-130"><a href="#cb4-130" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> <span class="cf">function</span>(y) <span class="fu">ifelse</span>(y <span class="sc">==</span> <span class="dv">0</span>, <span class="st">&quot;No&quot;</span>, <span class="fu">ifelse</span>(y <span class="sc">==</span> <span class="dv">1</span>, <span class="st">&quot;Yes&quot;</span>, y)),</span>
+<span id="cb4-131"><a href="#cb4-131" tabindex="-1"></a>                     <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb4-132"><a href="#cb4-132" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;User age&quot;</span>,</span>
+<span id="cb4-133"><a href="#cb4-133" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Viewed</span><span class="sc">\n</span><span class="st">Lord of The Rings&quot;</span>) <span class="sc">+</span></span>
+<span id="cb4-134"><a href="#cb4-134" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span>
+<span id="cb4-135"><a href="#cb4-135" tabindex="-1"></a></span>
+<span id="cb4-136"><a href="#cb4-136" tabindex="-1"></a><span class="co"># A scatterplot for lotr ~ genre_likes, jittered</span></span>
+<span id="cb4-137"><a href="#cb4-137" tabindex="-1"></a>p3 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(netflix) <span class="sc">+</span></span>
+<span id="cb4-138"><a href="#cb4-138" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="fu">aes</span>(<span class="at">x =</span> genre_likes, <span class="at">y =</span> lotr), </span>
+<span id="cb4-139"><a href="#cb4-139" tabindex="-1"></a>              <span class="at">width =</span> <span class="fl">0.3</span>, <span class="at">height =</span> <span class="fl">0.3</span>,</span>
+<span id="cb4-140"><a href="#cb4-140" tabindex="-1"></a>              <span class="at">colour =</span> <span class="st">&quot;#E50914&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.05</span>) <span class="sc">+</span></span>
+<span id="cb4-141"><a href="#cb4-141" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> <span class="cf">function</span>(y) <span class="fu">ifelse</span>(y <span class="sc">==</span> <span class="dv">0</span>, <span class="st">&quot;No&quot;</span>, <span class="fu">ifelse</span>(y <span class="sc">==</span> <span class="dv">1</span>, <span class="st">&quot;Yes&quot;</span>, y)),</span>
+<span id="cb4-142"><a href="#cb4-142" tabindex="-1"></a>                     <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb4-143"><a href="#cb4-143" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Number of fantasy likes&quot;</span>,</span>
+<span id="cb4-144"><a href="#cb4-144" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Viewed</span><span class="sc">\n</span><span class="st">Lord of The Rings&quot;</span>) <span class="sc">+</span></span>
+<span id="cb4-145"><a href="#cb4-145" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span>
+<span id="cb4-146"><a href="#cb4-146" tabindex="-1"></a></span>
+<span id="cb4-147"><a href="#cb4-147" tabindex="-1"></a><span class="co"># A scatterplot for lotr ~ actor_likes, jittered</span></span>
+<span id="cb4-148"><a href="#cb4-148" tabindex="-1"></a>p4 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(netflix) <span class="sc">+</span></span>
+<span id="cb4-149"><a href="#cb4-149" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="fu">aes</span>(<span class="at">x =</span> actor_likes, <span class="at">y =</span> lotr), </span>
+<span id="cb4-150"><a href="#cb4-150" tabindex="-1"></a>              <span class="at">width =</span> <span class="fl">0.3</span>, <span class="at">height =</span> <span class="fl">0.3</span>,</span>
+<span id="cb4-151"><a href="#cb4-151" tabindex="-1"></a>              <span class="at">colour =</span> <span class="st">&quot;#E50914&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.05</span>) <span class="sc">+</span></span>
+<span id="cb4-152"><a href="#cb4-152" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> <span class="cf">function</span>(y) <span class="fu">ifelse</span>(y <span class="sc">==</span> <span class="dv">0</span>, <span class="st">&quot;No&quot;</span>, <span class="fu">ifelse</span>(y <span class="sc">==</span> <span class="dv">1</span>, <span class="st">&quot;Yes&quot;</span>, y)),</span>
+<span id="cb4-153"><a href="#cb4-153" tabindex="-1"></a>                     <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb4-154"><a href="#cb4-154" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Number of films with same actor liked&quot;</span>,</span>
+<span id="cb4-155"><a href="#cb4-155" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Viewed</span><span class="sc">\n</span><span class="st">Lord of The Rings&quot;</span>) <span class="sc">+</span></span>
+<span id="cb4-156"><a href="#cb4-156" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span>
+<span id="cb4-157"><a href="#cb4-157" tabindex="-1"></a></span>
+<span id="cb4-158"><a href="#cb4-158" tabindex="-1"></a><span class="co"># Using the patchwork package I stich p1 to p4 together into a single figure</span></span>
+<span id="cb4-159"><a href="#cb4-159" tabindex="-1"></a>(p1 <span class="sc">+</span> p2) <span class="sc">/</span> (p3 <span class="sc">+</span> p4)</span></code></pre></div>
 <p><img src="GLM_3_Bernoulli_exercise_solutions_files/figure-html/Q4-1.png" width="672" /></p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a></span>
 <span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="co"># A scatterplot for lotr ~ similar_user_ratings, jittered</span></span>

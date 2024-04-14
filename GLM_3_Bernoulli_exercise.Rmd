@@ -202,7 +202,8 @@ library(patchwork)
 
 # Not needed but downloading netflix icon to add to figure to give that corporate feel
 # If you want to do this, you'll need to install the `png` package
-logo <- png::readPNG("./images/netflix.png")
+library(png)
+logo <- readPNG("./images/netflix.png")
 
 # Bar chart showing total number of views according to account type
 p1 <- ggplot(netflix) +
