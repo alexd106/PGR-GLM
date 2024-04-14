@@ -78,7 +78,8 @@ The covariates we have are:
 As concisely as possible, write down the research question that can be answered with our analysis, keeping in mind that Netflix are not interested in understanding causation or writing a scientific paper, they want predictive power. 
 
 ```{r Q1, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
-# Using the available covariates, can Lord of the Rings engagement be predicted and can we make this prediction as efficient as possible?
+# Using the available covariates, can Lord of the Rings engagement be predicted 
+# and can we make this prediction as efficient as possible?
 ```
 
 \
@@ -482,9 +483,9 @@ Start off by using the methods that have served us well for the $Poisson$ adn $B
   # with the above checks. What to do?
 
 par(mfrow = c(2,2)) # Show figures in 2 rows and 2 columns
-plot(mod1, col = ifelse(netflix$lotr == 1, "red", "black")) # Plot diagnostics
+plot(mod2, col = ifelse(netflix$lotr == 1, "red", "black")) # Plot diagnostics
 par(mfrow = c(1,1)) # Reset so only 1 figure is shown
-summary(mod1)       # Get the summary of the model (to check dispersion?)
+summary(mod2)       # Get the summary of the model (to check dispersion?)
 ```
 
 \
@@ -557,27 +558,6 @@ Having now fit our most parsimonious model, let's see what we've learnt from it.
 
 ```{r Q8, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
 summary(mod2)
-# Coefficients:
-#                            Estimate Std. Error z value Pr(>|z|)    
-# (Intercept)              -2.2170365  0.2170986 -10.212  < 2e-16 ***
-# age                      -0.3437752  0.0065373 -52.587  < 2e-16 ***
-# genre_likes               0.1249627  0.0195066   6.406 1.49e-10 ***
-# actor_likes               0.0643134  0.0160260   4.013 5.99e-05 ***
-# similar_user_ratings     12.9650321  0.2390317  54.240  < 2e-16 ***
-# mean_time_genre           0.0192068  0.0005529  34.740  < 2e-16 ***
-# user_timeAfternoon        0.1658946  0.0994637   1.668   0.0953 .  
-# user_timeEvening          0.7851001  0.0937494   8.374  < 2e-16 ***
-# user_dayTuesday          -0.2761958  0.1211418  -2.280   0.0226 *  
-# user_dayWednesday        -0.5379722  0.1184921  -4.540 5.62e-06 ***
-# user_dayThursday         -0.8373645  0.1137974  -7.358 1.86e-13 ***
-# user_dayFriday           -0.0553916  0.1033254  -0.536   0.5919    
-# user_daySaturday          0.2520935  0.1026561   2.456   0.0141 *  
-# user_daySunday            1.0829502  0.1027404  10.541  < 2e-16 ***
-# user_deviceMobile Device -0.9108165  0.1132527  -8.042 8.81e-16 ***
-# user_devicePC             1.1081704  0.1304357   8.496  < 2e-16 ***
-# user_deviceTV             1.0054722  0.0918184  10.951  < 2e-16 ***
-# fam_members              -0.0055314  0.0191144  -0.289   0.7723    
-
 # How many parameters have been estimated by this model?
   # There are a total of 18 parameters in this model. The number of parameters is
 
@@ -617,6 +597,26 @@ summary(mod2)
   # -0.0055314. According to this model, single people are *very* slightly more 
   # likely to watch LoTR.
 ```
+
+If you don't use P-values, and want a less cluttered summary table, the `arm` package (that we used to do `binnedplot()`) also includes a function called `display()`, which gives a less cluttered summary of a model fit. 
+
+Give it a shot if you're interested.
+
+```{r}
+display(mod2)
+
+# display() includes a reminder of the model you ran,
+# The parameters and their estimate (coef.est), where
+# coefficient is another name for parameter estimate.
+# The standard error for each parameter (coef.se).
+# An indicator of how many samples were used in fitting (n = )
+# An indicator of how many parameters were estimated by the model (k = )
+# And a report of residual deviance and null deviance.
+
+# Personally, I prefer display() for being more concise and removing 
+# information I do not care about
+```
+
 
 \
 
