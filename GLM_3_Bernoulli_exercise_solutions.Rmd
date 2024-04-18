@@ -61,18 +61,29 @@ While this exercise takes on an industry focus, this is not specific to $Bernoul
 The data you've been provided includes various information that Netflix has on hand about their users, for the purposes of predicting if a user will watch Lord of the Rings (LoTR). To do so, our response variable if whether not a given viewer watched LoTR (1) or not (0).
 
 The covariates we have are:
-* `user` - a unique user ID
+
 * `lotr` - if that user watched LoTR on Netflix
+
 * `premium` - if the user has Netflix Premium or Standard
+
 * `age` - the age of the user at the time of data collection
+
 * `genre_likes` - how many fantasy films/shows the user had previously liked
+
 * `actor_likes` - how many films/shows the user had previously liked that included cast members of LoTR
+
 * `similar_user_ratins` - what lotr of "similar" users had liked LoTR ("similar" is undefined)
+
 * `mean_time_genre` - what is the average length of time users watch fantasy media
+
 * `user_time` - Time of day for user at time of data collection (`Morning`, `Afternoon` and `Evening`)
+
 * `user_day` - Day of week for user at time of data collection (`Monday`, `Tuesday`, etc.)
+
 * `user_device` - Type of device user was logged in from (`TV`, `PC`, `Mobile Device` and `Gaming Device`)
+
 * `fam_members` - Number of family member accounts tied to subscription
+
 * `country` - Country of subscription
 
 As concisely as possible, write down the research question that can be answered with our analysis, keeping in mind that Netflix are not interested in understanding causation or writing a scientific paper, they want predictive power. 
@@ -100,13 +111,13 @@ Where $y$ is if user $i$ watched LoTR or not, generated according to a $Bernoull
 
 \
 
-Just like the drinking coffee example from the first lecture, the *Data Generating Process* (DGP) for whether or not someone watches a particular film on Netflix is going to be incredibly complex. A nuance here is that our objective and intended use for this analysis is prediction. When that's the case, we can be a bit more relaxed about understanding the deep complexity underlying the DGP and instead feel relatively comfortable adding any and all covariates for which we have data, with an important caveat. We must be confident that we are not including any covariates which have no conceivable connection to our response. For example, we wouldn't want to include average sea surface temperature because it shouldn't give us any predictive power. But if we're unlucky, it may be correlated (by pure chance) with LoTR viewership and thus we may think it helps us do predictions (see [this](https://www.tylervigen.com/spurious-correlations) website for fun examples of such spurious correlations).
+Just like the drinking coffee example from the first lecture, the *Data Generating Process* (DGP) for whether or not someone watches a particular film on Netflix is going to be incredibly complex. A nuance here is that our objective for this analysis, and intended use, is prediction. When that's the case, we can be a bit more relaxed about understanding the deep complexity underlying the DGP and instead feel relatively comfortable adding any and all covariates for which we have data, with an important caveat. We must be confident that we are not including any covariates which have no conceivable connection to our response (i.e. variables which may be spuriously correlated, that is correlated by pure chance). For example, we wouldn't want to include the number of springbok observed by that day in Kruger National Park as a covariate, because it shouldn't give us any predictive power. The only way it would is if we're unlucky; it may be correlated (by pure chance) with LoTR viewership and thus we may think it helps us do predictions (see [this](https://www.tylervigen.com/spurious-correlations) website for fun examples of such spurious correlations).
 
-In this dataset, Netflix have collected covariates for the explicit purpose of predicting viewership, so we can be confident that at least *someone* thinks these variables might give us some predictive power and aren't spurious correlations.
+In this dataset, Netflix have collected a total of 11 covariates with the explicit purpose of predicting viewership, so we can be confident that at least *someone* thinks these variables might give us some predictive power and aren't spurious correlations. That said, it is still important to convince yourself of this.
 
-With that said, our model will still have a deterministic equation that describes the associations. Given how many variables we have it would be cruel to task you with writing the equation out in full for a model that contains all of those covariates. Instead, assume our model was `lotr ~ age + user_time`. Use this simplified version of the model to write out the equation that would underpin it. Note that `age` is a continuous variable, and `user_time` is a categorical variable with the levels `Morning`, `Afternoon` and `Evening`.
+Our model will, nevertheless, still have a deterministic equation that describes the associations that we're going to exploit to make predictions. Given that we have 11 covariates that we could include in the model, would be cruel to task you with writing the equation out in full for a model that contained all of these covariates. Instead, assume our model was `lotr ~ age + user_time`. Use this simplified version of the model to write out the equation that would underpin it. Note that `age` is a continuous variable, and `user_time` is a categorical variable with the levels `Morning`, `Afternoon` and `Evening`.
 
-For this equation, I'm not giving any hints so the difficulty does spike here. If you're struggling, ask for help. It really is worthwhile learning how the syntax `lotr ~ age + user_time` is translated into an equation, especially when you're ready to go beyond GLMs.
+For this equation I'm not giving any hints; so the difficulty does spike here. If you're struggling, ask for help. It really is worthwhile learning how the syntax `lotr ~ age + user_time` is translated into an equation, especially when you're ready to go beyond GLMs.
 
 $logit(p_i) = \text{___}$
 
@@ -126,72 +137,49 @@ $logit(p_i) = \text{___}$
 
 \
 
-Import the data file 'netflix.txt' into R. Take a look at the structure of the data and create plots that you feel will help you (and others) understand the data.
+Import the data file 'netflix.txt' into R. Take a look at the structure of the response variable and covariates. A special note here is that a few of our covariates have a natural order to them, for instance, `user_day` is day of the week. Consider if you want to alter this variable such that the levels in these factors follow a natural order (e.g. Monday to Sunday) to make interpretation more intuitive rather than leaving these in alphabetical order.
 
-Keep the tips and tricks you used in yesterday's practical and feel free to use them again here; load in the data, check for any covariates you need to adjust, plot out the data, etc.
+```{r Q4, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
+# Load in the data
+netflix <- read.table(file= "./data/netflix.txt", header = TRUE)
+
+# Check the structure of the data
+# When we do so, we can see a few covariates have been read in a characters
+# We want to convert these to factors, and impart an order to some of them
+# Including an order will make our figures more legible and our results more
+# intuitive.
+str(netflix)
+
+# Change variables from characters to factors
+# These factors have no particular order to them
+  # so I am happy to just leave these in alphabetical order
+netflix$premium <- factor(netflix$premium)
+netflix$user_device <- factor(netflix$user_device)
+netflix$country <- factor(netflix$country)
+
+# For time and day, however, I do want the natural order to be implemented
+# To do so, we use the levels = argument, and specify the order we want
+# by writing it out within the c() function.
+# Note you cannot have typos here - be sure of your spelling
+netflix$user_time <- factor(netflix$user_time, 
+                            levels = c("Morning", "Afternoon", "Evening"))
+netflix$user_day <- factor(netflix$user_day, 
+                           levels = c("Monday", "Tuesday", "Wednesday", 
+                                      "Thursday", "Friday", "Saturday", 
+                                      "Sunday"))
+```
 
 A bit of advice for visualising $Bernoulli$ data; adding a little noise to the x and y-axis values for each point (i.e. jittering) helps immensely for visualising. To do so using `base` `R`, the code would be:
 
 ```
 plot(jitter(my_data$y) ~ my_data$x)
+# To add more noise:
+plot(jitter(my_data$y, 20) ~ my_data$x)
 ```
 
-As in yesterday's lecture and exercise, the my figures below are produced using `ggplot2` and are included purely for inspiration. I am also using an additional package, `patchwork`, to stitch together multiple figures into a single panel.
+As in yesterday's lecture and exercise, my figures below are produced using `ggplot2` and are included purely for inspiration. In today's document, I am also using an additional package, `patchwork`, to stitch together multiple figures into a single panel. If you would like to use `ggplot2`, there is a dedicated chapter that explains the underlying logic of `ggplot2` in the Intro2R book.
 
-```{r Q4, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
-netflix <- read.table(file= "./data/netflix.txt", header = TRUE)
-
-# Change variables from characters to factors
-netflix$user <- factor(netflix$user)
-netflix$premium <- factor(netflix$premium)
-netflix$user_time <- factor(netflix$user_time, levels = c("Morning", "Afternoon", "Evening"))
-netflix$user_day <- factor(netflix$user_day, 
-                           levels = c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"))
-netflix$user_device <- factor(netflix$user_device)
-netflix$country <- factor(netflix$country)
-
-str(netflix)
-# 'data.frame':	15000 obs. of  13 variables:
-#  $ user                : Factor w/ 15000 levels "0014074f-9304-4349-b1df-565122630bfa",..: 13625 2447 4081 ...
-#  $ lotr                : int  0 1 1 1 0 0 0 0 0 1 ...
-#  $ premium             : Factor w/ 2 levels "Premium","Standard": 2 2 2 2 2 2 2 2 2 1 ...
-#  $ age                 : int  30 26 27 39 37 37 43 40 36 38 ...
-#  $ genre_likes         : int  2 2 2 2 0 2 1 5 2 5 ...
-#  $ actor_likes         : int  3 2 4 0 4 3 2 0 4 6 ...
-#  $ similar_user_ratings: num  0.62 0.67 0.92 0.75 0.46 0.59 0.77 0.62 0.67 0.54 ...
-#  $ mean_time_genre     : num  38.3 66.9 118.4 217.4 127.8 ...
-#  $ user_time           : Factor w/ 3 levels "Afternoon","Evening",..: 1 2 1 1 2 1 2 2 2 3 ...
-#  $ user_day            : Factor w/ 7 levels "Friday","Monday",..: 5 2 3 4 1 3 1 4 3 3 ...
-#  $ user_device         : Factor w/ 4 levels "Gaming Device",..: 4 4 4 4 4 4 4 4 1 2 ...
-#  $ fam_members         : int  3 3 2 0 1 2 1 2 2 1 ...
-#  $ country             : Factor w/ 7 levels "DE","FR","JP",..: 2 6 7 5 7 6 2 6 6 4 ...
-
-summary(netflix)
- #                                   user            lotr            premium           age         genre_likes   
- # 0014074f-9304-4349-b1df-565122630bfa:    1   Min.   :0.0000   Premium : 3001   Min.   : 7.00   Min.   :0.000  
- # 0017781d-22a6-41d1-9c61-10427b20f846:    1   1st Qu.:0.0000   Standard:11999   1st Qu.:24.00   1st Qu.:1.000  
- # 001f0d02-282e-4812-87b3-723e978da027:    1   Median :1.0000                    Median :29.00   Median :2.000  
- # 0021ddf2-ef09-4abe-b27d-d3fa74fd92b7:    1   Mean   :0.5278                    Mean   :29.98   Mean   :1.998  
- # 0023c3d4-ba8f-4716-8c30-6d6859c77b85:    1   3rd Qu.:1.0000                    3rd Qu.:35.00   3rd Qu.:3.000  
- # 00295ab4-6930-4d7e-b678-b10a65c0f234:    1   Max.   :1.0000                    Max.   :79.00   Max.   :9.000  
- # (Other)                             :14994                                                                    
- #  actor_likes     similar_user_ratings mean_time_genre     user_time         user_day           user_device   
- # Min.   : 0.000   Min.   :0.0300       Min.   :  0.0   Afternoon:4419   Friday   :2724   Gaming Device: 1535  
- # 1st Qu.: 2.000   1st Qu.:0.5300       1st Qu.: 79.9   Evening  :9104   Monday   :1698   Mobile Device: 2066  
- # Median : 3.000   Median :0.6900       Median :120.1   Morning  :1477   Saturday :2792   PC           : 1223  
- # Mean   : 2.973   Mean   :0.6661       Mean   :120.5                    Sunday   :3150   TV           :10176  
- # 3rd Qu.: 4.000   3rd Qu.:0.8300       3rd Qu.:160.3                    Thursday :1805                        
- # Max.   :12.000   Max.   :1.0000       Max.   :344.2                    Tuesday  :1352                        
- #                                                                        Wednesday:1479                        
- #  fam_members    country  
- # Min.   :0.000   DE:2476  
- # 1st Qu.:1.000   FR:2119  
- # Median :2.000   JP: 302  
- # Mean   :1.992   MX:1753  
- # 3rd Qu.:3.000   NZ: 728  
- # Max.   :9.000   UK:2825  
- #                 US:4797  
-
+```{r Q4.1, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
 # install.packages("ggplot2") # Run this line of code if you do not have ggplot installed
 # Once installed, load the package
 library(ggplot2)
@@ -201,17 +189,18 @@ library(ggplot2)
 # Once installed, load the package
 library(patchwork)
 
-# Not needed but downloading netflix icon to add to figure to give that corporate feel
+# Not needed but I'm downloading netflix icon to add to figure to give that corporate feel
 # If you want to do this, you'll need to install the `png` package
 library(png)
 logo <- readPNG("./images/netflix.png")
 
 # Bar chart showing total number of views according to account type
 p1 <- ggplot(netflix) +
-  geom_col(aes(x = premium, y = lotr), linetype = 1,
-           alpha = 0.8, colour = "#E50914") +
+  geom_jitter(aes(x = premium, y = lotr), 
+              width = 0.3, height = 0.3,
+              colour = "#E50914", alpha = 0.05) +
   labs(x = "Subscription type",
-       y = "Total number of\nLord of The Rings views") +  
+       y = "Viewed\nLord of The Rings") +  
   theme_classic() +
   annotation_raster(logo, 
                     xmin = 0.5, xmax = 1,
@@ -349,9 +338,9 @@ p11 <- ggplot(netflix) +
 
 \
 
-Having gone through the previous steps, it's now time to run our model. Keep in mind that with this model, our objective is prediction, so we'll be running a model that includes all available covariates excluding one; `user_id` as including just this one covariate will require **15,000** parameters be estimated. We don't want that, nor do we have the sample size to support it.
+Having gone through the previous steps, it's now time to run our model. Keep in mind that with this model, our objective is prediction, so it would make sense to use all covariates at our disposal. Keep in mind, with predictive modelling, we don't care why a covariate influences our response - we just want it to be repeatable, as this means we can predict it again in the future. 
 
-Run the full model (not including `user_id`), using `glm()`.
+Run the full model, using `glm()`.
 
 * Hints:
   + Because $Bernoulli$ is really just a special case of the $Binomial$ distribution, we specify `family = binomial`
@@ -371,25 +360,27 @@ mod1 <- glm(lotr ~ premium + age + genre_likes + actor_likes + similar_user_rati
 
 Given that in the lecture I showed an instance where AIC and variable selection failed quite miserably, in this exercise, I wanted to include a scenario where it performs very well.
 
-Note that this discussion below is also true for Likelihood Ratio Testing (LRT). In fact, AIC ends up being the equivalent to LRT, where the P-value threshold to 0.187 rather than 0.05 (see Sutherland et al., [2023](https://doi.org/10.1098/rspb.2023.1261])).
+Note that this discussion below is also true for the alternative method we've shown to do variable selection: Likelihood Ratio Testing (LRT). In fact, AIC ends up being the equivalent to LRT, where the P-value threshold to 0.187 rather than 0.05 (for more information, see Sutherland et al., [2023](https://doi.org/10.1098/rspb.2023.1261])).
 
-For that, we need to have a brief discussion about how AIC works, starting with how it is calculated:
+Given we didn't have enough time to go into how AIC works during the lectures, I'll use this as an oppurtunity to explain it in a bit more detail - starting with how it is calculated:
 
 $AIC = 2K - 2ln(\mathcal{\hat{L}})$
 
-where $K$ is the number of parameters in our model, $ln$ is the natural log, and $\mathcal{\hat{L}}$ is the maximum likelihood value for our given model. (Note that in practice $-2ln(\mathcal{\hat{L}})$ is used in model fitting for reasons that are not important here).
+where $K$ is the number of parameters in our model, $ln$ is the natural log, and $\mathcal{\hat{L}}$ is the maximum likelihood value for our given model.
 
-Think back to the $Poisson$ GLM lecture where we walked through how $\mathcal{\hat{L}}$ was derived. In that example, we were just trying different values for each parameter until we hit the "sweet spot" - where our predicted values were closest to our observed values using a particular combination of parameter values. Basically, $\mathcal{\hat{L}}$ is a value that reflects how well a combination of parameter values results in predicted values that are as close as possible to our actual response variable.
+Think back to the $Poisson$ GLM lecture where we walked through how a likelihood value ($\mathcal{\hat{L}}$) was derived. In that example, we were just trying different values for each parameter until we hit the "sweet spot" - where our predicted values of number of birds were closest to our observed values - using a given combination of parameter values.
 
-Where AIC comes in, is that it uses this $\mathcal{\hat{L}}$ value and asks; "Are all of these parameters needed to get to the best fit?" That's why AIC include the $2K$ bit. Each parameter has a "cost" associated with it of $+2 AIC$ units; AIC is a fit-versus-cost trade-off. If the cost of including a parameter in our model does not sufficiently improve our likelihood, then it is considered to be uninformative, and AIC tells us it's not worth including in the model. The conventional threshold is that if the difference when removing a variable from a model is less than or equal to $2 \Delta AIC$ (where $\Delta$ just means difference), then the covariate can be removed.
+AIC uses this $\mathcal{\hat{L}}$ value and asks; "For this likelihood value, do we really need all of these parameters?" That's why AIC includes the $2K$ bit; Each parameter has a "cost" associated with it of $+2 AIC$ units. AIC is a fit versus cost trade-off measure. If the cost of including a parameter in our model does not sufficiently improve our likelihood, then it is considered to be uninformative and AIC tells us "it's not worth including in the model". The conventional threshold is that if the difference in AIC of two models is greater than, or equal to, $2 AIC$ units, then we would conclude that the lower scoring model has sufficient support as the most parsimonious model. 
 
-Going through this process, we are left with the most parsimonious model; the model that has a desired level of accuracy (or prediction) that uses the fewest variables as possible to do so. This is why some statisticians (myself included) tend to think of AIC as a "with-in sample predictive" tool. (Contrast this with "out-of sample prediction" where we use a new dataset to see how well our model predicts the response variable of that *new* dataset.) All that means is; AIC is a tool that evaluates the predictive ability of a model, in predicting the data that you used to fit the model. With this view of AIC, a parsimonious model simply represents a model that has "good" predictive ability. Importantly, however, such models are not intended to offer insights into causation. Indeed, for causal inference, AIC can be quite harmful.
+(Note, the difference in AIC between two models is often referred to in papers and some software as $\Delta AIC$, where $\Delta$ just means difference from the lowest [i.e. "better"] AIC scoring model and the model you are comparing it to.)
+
+If we go through this process, fitting various models and removing variables that increase AIC above 2 units, we are left with the most parsimonious model. "The most parsimonious model" just means that the model has the best (of the models considered) level of accuracy (or prediction) and uses the fewest covariates as possible to do so. This is why some statisticians (myself included) tend to think of AIC as a "with-in sample predictive" tool. If you take this view, then AIC is simply a tool that evaluates the predictive ability of a model; Specifically, in predicting the data that you used to fit the model. With this view of AIC, a parsimonious model simply represents a model that has "good" predictive ability. Importantly, however, such models are not intended to offer insights into causation. Indeed, for causal inference, AIC can be quite harmful.
 
 For example, consider the following scenario. We are interested in the association between ice cream sales and shark attacks. There is no direct causal relationship between these two variables. Instead, it is the number of beach visitors that determines *both* ice cream sales and shark attacks. 
 
 Regardless of causal mechanisms, finding a set of parameter values that captures the association between ice cream sales and shark attacks is trivial for `glm()`. This is what `glm()` is designed to do after all - estimate associations. If we were to use AIC on this hypothetical model it would strongly support including ice cream sales in the model, because knowing how many ice creams have been sold is pretty much telling us how many people were at the beach.
 
-Test it out if your skeptical:
+Test it out if your skeptical (and also run a Bernoulli GLM!):
 
 ```
 set.seed(123) # set seed so results are consistent
@@ -406,42 +397,28 @@ drop1(mod1) # use AIC to do variable selection
 # AIC of model without icecream: 171.08
 ```
 
-The upside of this is that including `icecream` is very useful if we want to make predictions of shark attacks. For example, if there are two beaches, the first with very few ice cream sales, and the second with lots. Which beach is more at risk of shark attacks? Clearly we can predict the second beach is at higher risk, we just don't know *why* (based on the model).
+The upside of this is that including `icecream` is very useful if we want to make predictions of shark attacks. For example, if there are two beaches, the first with very few ice cream sales, and the second with lots. Which beach do you think is at higher risk of shark attacks?
 
-With that in mind, my view is that AIC is most useful, and least risky, when used for prediction modelling. There are alternatives to AIC, but AIC is still useful never-the-less. Let's use AIC and variable selection now in order to determine which covariates give us predictive power, and which we can simply ignore when trying to make accurate predictions.
+With that in mind, my view is that AIC is most useful, and least risky, when used for predictive modelling. There are alternatives to AIC, but AIC is still useful never-the-less. Let's use AIC and variable selection now in order to determine which covariates give us predictive power, and which we can simply ignore when trying to make accurate predictions.
 
 Starting off with the full model and using `drop1()`, which covariates can be removed without reducing our predictive power?
 
 ```{r Q6.1, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
 drop1(mod1)
-# Model:
-# lotr ~ premium + age + genre_likes + actor_likes + similar_user_ratings + 
-#     mean_time_genre + user_time + user_day + user_device + fam_members + 
-#     country
-#                      Df Deviance     AIC
-# <none>                    8535.3  8585.3
-# premium               1   8535.3  8583.3
-# age                   1  14997.9 15045.9
-# genre_likes           1   8576.9  8624.9
-# actor_likes           1   8552.1  8600.1
-# similar_user_ratings  1  15360.9 15408.9
-# mean_time_genre       1  10091.2 10139.2
-# user_time             2   8677.9  8723.9
-# user_day              6   9012.2  9050.2
-# user_device           3   9154.8  9198.8
-# fam_members           1   8535.4  8583.4
-# country               6   8543.7  8581.7
 
-# From this, we're looking for when removing a covariate lowers AIC by 2 units
+# From the output, we're looking for when removing a covariate lowers AIC by 2 units
+# If this happens, it means removing that covariate improves predictive power
   # From the above model, these include:
   # premium
   # country
-# fam_members is right on the threshold with a DeltaAIC of 1.9
-  # There's just enough information in fam_members to warrant leaving it in the 
-  # model
+  # fam_members
+# fam_members is right on the threshold with a DeltaAIC of 2
+  # Be aware there is some controversy in such cases
+  # My personal view is that, based on the penalisation of 2k (from the AIC 
+  # equation), variables with exactly 2 AIC are not informative
 ```
 
-Using `drop1()` to identify which covariates can be removed, refit that model.
+Using `drop1()` to identify which covariates can be removed, refit the $Bernoulli$ GLM such that it reflects the most parsimonious model identified by `drop1()`.
 
 ```{r Q6.2, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
 mod2 <- glm(lotr ~ age + genre_likes + actor_likes + similar_user_ratings +
@@ -459,7 +436,7 @@ mod2 <- glm(lotr ~ age + genre_likes + actor_likes + similar_user_ratings +
 
 As always, we want to check how well we're meeting the assumptions (which we can test).
 
-Start off by using the methods that have served us well for the $Poisson$ adn $Binomial$ GLMs, (e.g. `plot(mod2)` and `summary()`). Are these plots useful? Can we calculate dispersion for a $Bernoulli$ GLM?
+Start off by using the methods that have served us well for the $Poisson$ and $Binomial$ GLMs, (e.g. `plot(mod2)` and `summary()`). Are these plots useful? Can we calculate dispersion for a $Bernoulli$ GLM?
 
 ```{r Q7, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
 # Model diagnostic plots:
@@ -469,7 +446,7 @@ Start off by using the methods that have served us well for the $Poisson$ adn $B
 # Q-Q Residuals
   # We completely ignore this figure for GLMs.
 # Scale-Location
-  # Uselss for Bernoulli GLMs
+  # Useless for Bernoulli GLMs
 # Residuals vs Leverage
   # Still useful, even for Bernoulli GLMs. We don't want any points to be close
   # to a Cook's distance of 1. Here we're pretty safe.
@@ -490,9 +467,9 @@ summary(mod2)       # Get the summary of the model (to check dispersion?)
 
 \
 
-The diagnostics tests we've used up to this point have largely failed us for Bernoulli GLMs. As such we need to think of alternative ways to try and check our assumptions. In this instance, we can use the method we discussed in the lecture where we extract the Pearson residuals from the model, and plot these against our explanatory covariates.
+The diagnostics tests we've used up to this point have largely failed us for $Bernoulli$ GLMs. As such we need to think of alternative ways to try and check our assumptions. In this instance, we can use the method we discussed in the lecture, where we extract the Pearson residuals from the model and plot these against our explanatory covariates.
 
-Extracting residuals is a pretty easy process. To do so, we use the code:
+Extracting residuals is a pretty easy process. To do so, we use the code (making sure to specify that we want Pearson residuals):
 
 ```
 netflix$resid <- resid(mod2, type = "pearson")
@@ -500,10 +477,20 @@ netflix$resid <- resid(mod2, type = "pearson")
 
 With the above code, we're simply adding a new column to our original dataset that contains the Pearson residual error for each observation ($i$) based on the model that you fit (here, called `mod2`). Now we need to load a package and use the appropriate function to make plotting residuals and diagnosing a bit easier: `binnedplot` from the `arm` package.
 
-Using these plots, identify any covariates you think we should be concerned about, and why.
+```
+binnedplot(y = dat$resid, x = dat$covariate1), nclass = 10, xlab = "My covariate")
+```
 
 Hints:
-* For categorical variables, we can force these to be numeric, and therefore use `binnedplot()` by doing `binnedplot(y = dat$resid, x = as.numeric(dat$category), nclass = 3, xlab = "My categorical variable")`
+* The `nclass` argument is how many bins you want created for your covariate. As a general rule, you as many as possible to help you detect trends, but not so many that there isn't much data going into them.
+ + Play around with `nclass` to see what effect it has.
+* For categorical variables, we can force these to be numeric, and therefore use `binnedplot()`, by doing:
+
+```
+binnedplot(y = dat$resid, x = as.numeric(dat$category), nclass = 3, xlab = "My categorical variable")
+```
+
+Using these plots, identify any covariates you think we should be concerned about, and why.
 
 ```{r Q7.1, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
 # Extract residuals from model
@@ -512,35 +499,30 @@ netflix$resid <- resid(mod2, type = "pearson")
 # Using binnedplot() from arm package
 library(arm)
 
+# For the most part, the figures below show no substantial issues, with one exception
+# It looks very likely that age is not a linear effect. We can see some evidence of 
+  # this as we go from lots of negative, to lots of positive error with only a single
+  # bin actually contained within our bounds.
+  # Clearly, the linear trend we've fit is struggling to deal with age and it seems
+  # very likely that the assumption of linearity with age is broken
+
+# What should we do now?
+
+
 # For categorical covariates in the model
 par(mfrow = c(2,2))
-# We convert the categories to numeric using as.numeric()
 binnedplot(y = netflix$resid, x = as.numeric(netflix$user_time), nclass = 3, xlab = "User time")
-# Pretty good. Nothing that is concerning
 binnedplot(y = netflix$resid, x = as.numeric(netflix$user_day), nclass = 7, xlab = "User day")
-# Pretty good also if slightly too negative
-binnedplot(y = netflix$resid, x = as.numeric(netflix$user_device), nclass = 8, xlab = "User device")
-# We have to set nclass = 8 to get a bin for each device (4 device types)
-# But plot suggests no issues
+binnedplot(y = netflix$resid, x = as.numeric(netflix$user_device), nclass = 4, xlab = "User device")
 
 par(mfrow = c(3,2))
 # For continuous covariates in the model
 binnedplot(y = netflix$resid, x = netflix$age, nclass = 6, xlab = "Age")
-# Very likely that age is not a linear effect
-  # We go from lots of negative, to lots of positive error
-  # Model is struggling to deal with age
-  # Assumption of linearity with age is likely broken here
 binnedplot(y = netflix$resid, x = netflix$genre_likes, nclass = 4, xlab = "Genre likes")
-# Pretty good - mostly evenly spread around 0
 binnedplot(y = netflix$resid, x = netflix$actor_likes, nclass = 4, xlab = "Actor likes")
-# Pretty good - all points within bounds
-  # Slightly more negative than we might like but ok
 binnedplot(y = netflix$resid, x = netflix$similar_user_ratings, nclass = 4, xlab = "Similar ratings")
-# Mostly ok. At low similar rating we are below bounds, but not terribly
 binnedplot(y = netflix$resid, x = netflix$mean_time_genre, nclass = 4, xlab = "Mean time spent watching fantasy")
-# Pretty good. At 100 hours of watch time, we are ever-so-slightly below line but it's ok
 binnedplot(y = netflix$resid, x = netflix$fam_members, nclass = 4, xlab = "Number of family members")
-# Pretty good
 ```
 
 \
@@ -840,52 +822,13 @@ p5 <- ggplot(synth_data, aes(x = mean_time_genre, y = pred, ymin = low, ymax = u
        colour = "User device",
        fill = "User device")
 
-###### fam_members ########
-
-synth_data <- expand.grid(
-  user_time = "Afternoon",
-  user_day = "Sunday",
-  # fam_members is variable of interest for prediction
-  fam_members = seq(from = min(netflix$fam_members), 
-                    to = max(netflix$fam_members), 
-                    length.out = 50),
-  # Will vary this across user device at the same time
-  user_device = c("Gaming Device", "Mobile Device", "PC", "TV"),
-  genre_likes = median(netflix$genre_likes), 
-  actor_likes = median(netflix$actor_likes),    
-  similar_user_ratings = median(netflix$similar_user_ratings),
-  mean_time_genre = median(netflix$mean_time_genre),
-  age = median(netflix$age)
-)
-
-# Get mean prediction and 95% CI on the response scale
-pred <- predict(mod2, newdata = synth_data, se.fit = TRUE)
-synth_data$pred <- plogis(pred$fit)
-synth_data$low <- plogis(pred$fit - pred$se.fit * 1.96)
-synth_data$upp <- plogis(pred$fit + pred$se.fit * 1.96)
-
-# Plot for fam_members
-p6 <- ggplot(synth_data, aes(x = fam_members, y = pred, ymin = low, ymax = upp, 
-                       colour = user_device, fill = user_device)) +
-  geom_ribbon(alpha = 0.3) +
-  geom_line() +
-  scale_color_brewer(palette = "Dark2") +
-  scale_fill_brewer(palette = "Dark2") +
-  scale_y_continuous(labels = percent, limits = c(0,1)) +
-  theme_minimal() +
-  labs(x = "Number of family members",
-       y = "Predicted probability to watch LoTR",
-       colour = "User device",
-       fill = "User device")
-
 # Add all multiples into a single figure
 design_layout <- "
-AB
-CD
-EF
+AA
+BC
+DE
 "
-p1 + p2 + p3 + p4 + p5 + p6 + 
-  plot_annotation(title = "Users to target") + 
+p1 + p2 + p3 + p4 + p5 + 
   plot_layout(guides = "collect", axis_titles = "collect", design = design_layout)
 ```
 
@@ -894,13 +837,13 @@ Using your figures, what type of user should Netflix use targeted adverts on, to
 ```{r Q9.1, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
 # Netflix should target:
   # Users watching on TV or PC
-  # Users under the age of 40
+  # Users over the age of 40
+    # (but remember that we think it's very likely this is non-linear)
   # Users for whom >75% of similar users liked LoTR
   # Users who have spent > 200 hours on average watching fantasy
-# The following do have help making a prediction but are weak
+# The following do help making a prediction but are weak
   # Users who have liked > 5 fantasy films
   # Users who have liked > 7.5 films with same actors
-  # Users with no family members on their account
 ```
 
 
@@ -958,7 +901,7 @@ linear_predictor_link <- beta_0 + beta_1 * x1 + beta_2 * x2 + beta_3 * x3 + beta
 # Backtransform your linear predictor to the response scale (i.e. exponentiate)
 linear_predictor_response <- plogis(linear_predictor_link)
 
-# Generate your response variable using a Poisson random number generator (rpois)
+# Generate your response variable using a Bernoulli random number generator (rbinom)
 y <- rbinom(N, size = k, prob = linear_predictor_response)
 
 # Note that the above three lines of code are the equivalent to the equations:

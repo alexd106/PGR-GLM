@@ -78,9 +78,14 @@ netflix$Gaming <- ifelse(netflix$user_device == "Gaming Device", 1, 0)
 # PC
 # Gaming
 
-b0 <- -10
-b1 <- 0.25 # age slope
-b1.1 <- -0.01 # age quadratic
+b0 <- -15
+# Sine wave for age
+A <- 0.5       # amplitude
+omega <- 0.15 # rate of change
+gamma <- pi-0.5  # starting phase
+b1 <- -1    # "offset"
+
+# Remaining linear parameters
 b2 <- 0.12 # genre_likes slope
 b3 <- 0.08 # actor_likes slope
 b4 <- 13.2  # similar_user_ratings slope
@@ -98,8 +103,10 @@ b15 <- 0.2 # PC
 b16 <- -1.2 # Gaming
 
 netflix$lotr <- rbinom(N, size = 1, prob = plogis(b0 + 
-                                                    b1 * netflix$age +
-                                                    b1.1 * netflix$age^2 +
+                                                    # Sine wave for age
+                                                    (b1 + (A + sin(omega * netflix$age + gamma))) +
+                                                    
+                                                    # Remaining linear effects
                                                     b2 * netflix$genre_likes + 
                                                     b3 * netflix$actor_likes + 
                                                     b4 * netflix$similar_user_ratings + 
@@ -125,84 +132,97 @@ netflix$country <- factor(sample(c("US", "UK", "DE", "FR", "JP", "NZ", "MX"),
                                  prob = c(0.32, 0.19, 0.16, 0.14, 0.02, 0.05, 0.12)),
                           levels = c("US", "UK", "DE", "FR", "JP", "NZ", "MX"))
 
-library(ids)
-netflix$user <- uuid(n = nrow(netflix))
-head(netflix)
-
-netflix <- netflix[,c("user", "lotr", "premium", "age", "genre_likes", "actor_likes", "similar_user_ratings",
+netflix <- netflix[,c("lotr", "premium", "age", "genre_likes", "actor_likes", "similar_user_ratings",
                       "mean_time_genre", "user_time", "user_day", "user_device", "fam_members", "country")]
+# 
+# library(ggplot2)
+# p1 <- ggplot(netflix) +
+#   geom_jitter(aes(x = age, y = lotr), alpha = 0.1)
+# 
+# p2 <- ggplot(netflix) +
+#   geom_jitter(aes(x = genre_likes, y = lotr), alpha = 0.1)
+# 
+# p3 <- ggplot(netflix) +
+#   geom_jitter(aes(x = actor_likes, y = lotr), alpha = 0.1)
+# 
+# p4 <- ggplot(netflix) +
+#   geom_jitter(aes(x = similar_user_ratings, y = lotr), alpha = 0.1)
+# 
+# p5 <- ggplot(netflix) +
+#   geom_jitter(aes(x = mean_time_genre, y = lotr), alpha = 0.1)
+# 
+# p6 <- ggplot(netflix) +
+#   geom_jitter(aes(x = user_time, y = lotr), alpha = 0.1)
+# 
+# p7 <- ggplot(netflix) +
+#   geom_jitter(aes(x = user_day, y = lotr), alpha = 0.1)
+# 
+# p8 <- ggplot(netflix) +
+#   geom_jitter(aes(x = user_device, y = lotr), alpha = 0.1)
+# 
+# p9 <- ggplot(netflix) +
+#   geom_jitter(aes(x = premium, y = lotr), alpha = 0.1)
+# 
+# p10 <- ggplot(netflix) +
+#   geom_jitter(aes(x = fam_members, y = lotr), alpha = 0.1)
+# 
+# p11 <- ggplot(netflix) +
+#   geom_jitter(aes(x = country, y = lotr), alpha = 0.1)
+# 
+# library(patchwork)
+# p1 + p2 + p3 + p4 + p5 + p6 + p7 + p8 + p9 + p10 + p11
 
-library(ggplot2)
-p1 <- ggplot(netflix) +
-  geom_jitter(aes(x = age, y = lotr), alpha = 0.1)
+# # Full model
+# mod1 <- glm(lotr ~ age + genre_likes + actor_likes + similar_user_ratings + mean_time_genre + user_time + user_day + user_device +
+#               premium + fam_members + country,
+#             data = netflix,
+#             family = binomial)
+# par(mfrow = c(2,2))
+# plot(mod1)
+# par(mfrow = c(1,1))
+# netflix$resid <- resid(mod1, type = "pearson")
+# par(mfrow = c(2,3))
+# arm::binnedplot(x = netflix$age, y = netflix$resid, xlab = "Age", nclass = 10)
+# arm::binnedplot(x = netflix$fam_members, y = netflix$resid, xlab = "N Family", nclass = 10)
+# arm::binnedplot(x = netflix$mean_time_genre, y = netflix$resid, xlab = "Mean time", nclass = 10)
+# arm::binnedplot(x = netflix$similar_user_ratings, y = netflix$resid, xlab = "User rating", nclass = 10)
+# arm::binnedplot(x = netflix$actor_likes, y = netflix$resid, xlab = "Actor likes", nclass = 10)
+# arm::binnedplot(x = netflix$genre_likes, y = netflix$resid, xlab = "Genre likes", nclass = 10)
+# 
+# 
+# summary(mod1)
+# drop1(mod1)
+# 
+# plot(ggeffects::ggpredict(mod1, terms = c("age [all]")))
+# plot(ggeffects::ggpredict(mod1))
 
-p2 <- ggplot(netflix) +
-  geom_jitter(aes(x = genre_likes, y = lotr), alpha = 0.1)
-
-p3 <- ggplot(netflix) +
-  geom_jitter(aes(x = actor_likes, y = lotr), alpha = 0.1)
-
-p4 <- ggplot(netflix) +
-  geom_jitter(aes(x = similar_user_ratings, y = lotr), alpha = 0.1)
-
-p5 <- ggplot(netflix) +
-  geom_jitter(aes(x = mean_time_genre, y = lotr), alpha = 0.1)
-
-p6 <- ggplot(netflix) +
-  geom_jitter(aes(x = user_time, y = lotr), alpha = 0.1)
-
-p7 <- ggplot(netflix) +
-  geom_jitter(aes(x = user_day, y = lotr), alpha = 0.1)
-
-p8 <- ggplot(netflix) +
-  geom_jitter(aes(x = user_device, y = lotr), alpha = 0.1)
-
-p9 <- ggplot(netflix) +
-  geom_jitter(aes(x = premium, y = lotr), alpha = 0.1)
-
-p10 <- ggplot(netflix) +
-  geom_jitter(aes(x = fam_members, y = lotr), alpha = 0.1)
-
-p11 <- ggplot(netflix) +
-  geom_jitter(aes(x = country, y = lotr), alpha = 0.1)
-
-library(patchwork)
-p1 + p2 + p3 + p4 + p5 + p6 + p7 + p8 + p9 + p10 + p11
-
-# Full model
-mod1 <- glm(lotr ~ age + genre_likes + actor_likes + similar_user_ratings + mean_time_genre + user_time + user_day + user_device +
-              premium + fam_members + country,
+mod2 <- glm(lotr ~ age + genre_likes + actor_likes + similar_user_ratings + mean_time_genre + user_time + user_day + user_device,
             data = netflix,
             family = binomial)
-par(mfrow = c(2,2))
-plot(mod1)
-par(mfrow = c(1,1))
-netflix$resid <- resid(mod1, type = "pearson")
-arm::binnedplot(x = netflix$age, y = netflix$resid, nclass = 10)
-arm::binnedplot(x = netflix$fam_members, y = netflix$resid, nclass = 10)
-arm::binnedplot(x = netflix$mean_time_genre, y = netflix$resid, nclass = 10)
-arm::binnedplot(x = netflix$similar_user_ratings, y = netflix$resid, nclass = 10)
-arm::binnedplot(x = netflix$actor_likes, y = netflix$resid, nclass = 10)
-arm::binnedplot(x = netflix$genre_likes, y = netflix$resid, nclass = 10)
-
-
-summary(mod1)
-drop1(mod1)
-
-plot(ggeffects::ggpredict(mod1, terms = c("age [all]")))
-
-# True model
-library(mgcv)
-mod2 <- gam(lotr ~ s(age, bs = "cr", k = 20) + genre_likes + actor_likes + similar_user_ratings + mean_time_genre + user_time + user_day + user_device,
-            data = netflix,
-            family = binomial,
-            method = "REML")
-par(mfrow = c(2,2))
-plot(mod2)
-par(mfrow = c(1,1))
+plot(ggeffects::ggpredict(mod2))
 summary(mod2)
-drop1(mod2)
+# netflix$resid <- resid(mod2, type = "pearson")
+# 
+# par(mfrow = c(2,3))
+# arm::binnedplot(x = netflix$age, y = netflix$resid, xlab = "Age", nclass = 10)
+# arm::binnedplot(x = netflix$fam_members, y = netflix$resid, xlab = "N Family", nclass = 10)
+# arm::binnedplot(x = netflix$mean_time_genre, y = netflix$resid, xlab = "Mean time", nclass = 10)
+# arm::binnedplot(x = netflix$similar_user_ratings, y = netflix$resid, xlab = "User rating", nclass = 10)
+# arm::binnedplot(x = netflix$actor_likes, y = netflix$resid, xlab = "Actor likes", nclass = 10)
+# arm::binnedplot(x = netflix$genre_likes, y = netflix$resid, xlab = "Genre likes", nclass = 10)
 
-plot(ggeffects::ggpredict(mod2, terms = c("age [all]")))
-
-# write.table(netflix, "data//netflix.txt", row.names = FALSE)
+# # True model
+# library(mgcv)
+# mod2 <- gam(lotr ~ s(age, bs = "cr", k = 20) + genre_likes + actor_likes + similar_user_ratings + mean_time_genre + user_time + user_day + user_device,
+#             data = netflix,
+#             family = binomial,
+#             method = "REML")
+# par(mfrow = c(2,2))
+# plot(mod2)
+# par(mfrow = c(1,1))
+# summary(mod2)
+# drop1(mod2)
+# 
+# plot(ggeffects::ggpredict(mod2, terms = c("age [all]")))
+# 
+write.table(netflix, "data//netflix.txt", row.names = FALSE)

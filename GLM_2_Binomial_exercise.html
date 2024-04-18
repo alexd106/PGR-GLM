@@ -589,7 +589,7 @@ for dispersion. Do so now.</p>
 </ul></li>
 <li>Q-Q Residuals
 <ul>
-<li>Are we expecting Normally distributed error with a Poisson
+<li>Are we expecting Normally distributed error with a Binomial
 distribution?</li>
 </ul></li>
 <li>Scale-Location
@@ -869,7 +869,7 @@ linear_predictor_link &lt;- beta_0 + beta_1 * x1 + beta_2 * x2 + beta_3 * x3 + b
 # Backtransform your linear predictor to the response scale (i.e. exponentiate)
 linear_predictor_response &lt;- plogis(linear_predictor_link)
 
-# Generate your response variable using a Poisson random number generator (rpois)
+# Generate your response variable using a Binomial random number generator (rbinom)
 y &lt;- rbinom(N, size = k, prob = linear_predictor_response)
 
 # Note that the above three lines of code are the equivalent to the equations:
@@ -879,10 +879,10 @@ y &lt;- rbinom(N, size = k, prob = linear_predictor_response)
 # Store your data in a dataframe
 dat &lt;- data.frame(y, x1, x2, x3)
 
-# Run a Poisson GLM
+# Run a Binomial GLM
 fit &lt;- glm(y ~ x1 + x2 + x3 + x1 : x2, 
            data = dat, 
-           family = poisson)
+           family = binomial)
 
 # See if the model was able to estimate your parameter values 
 # and what the dispersion is

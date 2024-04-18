@@ -45,6 +45,116 @@
 
 
 
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #204a87; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #204a87; font-weight: bold; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #ce5c00; font-weight: bold; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
+.sourceCode .row {
+  width: 100%;
+}
+.sourceCode {
+  overflow-x: auto;
+}
+.code-folding-btn {
+  margin-right: -30px;
+}
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
 
 
 
@@ -453,25 +563,33 @@ lecture: Causal inference, prediction or description.</p>
 Netflix has on hand about their users, for the purposes of predicting if
 a user will watch Lord of the Rings (LoTR). To do so, our response
 variable if whether not a given viewer watched LoTR (1) or not (0).</p>
-<p>The covariates we have are: * <code>user</code> - a unique user ID *
-<code>lotr</code> - if that user watched LoTR on Netflix *
-<code>premium</code> - if the user has Netflix Premium or Standard *
-<code>age</code> - the age of the user at the time of data collection *
-<code>genre_likes</code> - how many fantasy films/shows the user had
-previously liked * <code>actor_likes</code> - how many films/shows the
-user had previously liked that included cast members of LoTR *
-<code>similar_user_ratins</code> - what lotr of “similar” users had
-liked LoTR (“similar” is undefined) * <code>mean_time_genre</code> -
-what is the average length of time users watch fantasy media *
-<code>user_time</code> - Time of day for user at time of data collection
-(<code>Morning</code>, <code>Afternoon</code> and <code>Evening</code>)
-* <code>user_day</code> - Day of week for user at time of data
-collection (<code>Monday</code>, <code>Tuesday</code>, etc.) *
-<code>user_device</code> - Type of device user was logged in from
+<p>The covariates we have are:</p>
+<ul>
+<li><p><code>lotr</code> - if that user watched LoTR on Netflix</p></li>
+<li><p><code>premium</code> - if the user has Netflix Premium or
+Standard</p></li>
+<li><p><code>age</code> - the age of the user at the time of data
+collection</p></li>
+<li><p><code>genre_likes</code> - how many fantasy films/shows the user
+had previously liked</p></li>
+<li><p><code>actor_likes</code> - how many films/shows the user had
+previously liked that included cast members of LoTR</p></li>
+<li><p><code>similar_user_ratins</code> - what lotr of “similar” users
+had liked LoTR (“similar” is undefined)</p></li>
+<li><p><code>mean_time_genre</code> - what is the average length of time
+users watch fantasy media</p></li>
+<li><p><code>user_time</code> - Time of day for user at time of data
+collection (<code>Morning</code>, <code>Afternoon</code> and
+<code>Evening</code>)</p></li>
+<li><p><code>user_day</code> - Day of week for user at time of data
+collection (<code>Monday</code>, <code>Tuesday</code>, etc.)</p></li>
+<li><p><code>user_device</code> - Type of device user was logged in from
 (<code>TV</code>, <code>PC</code>, <code>Mobile Device</code> and
-<code>Gaming Device</code>) * <code>fam_members</code> - Number of
-family member accounts tied to subscription * <code>country</code> -
-Country of subscription</p>
+<code>Gaming Device</code>)</p></li>
+<li><p><code>fam_members</code> - Number of family member accounts tied
+to subscription</p></li>
+<li><p><code>country</code> - Country of subscription</p></li>
+</ul>
 <p>As concisely as possible, write down the research question that can
 be answered with our analysis, keeping in mind that Netflix are not
 interested in understanding causation or writing a scientific paper,
@@ -508,32 +626,37 @@ element).</h3>
 <p>Just like the drinking coffee example from the first lecture, the
 <em>Data Generating Process</em> (DGP) for whether or not someone
 watches a particular film on Netflix is going to be incredibly complex.
-A nuance here is that our objective and intended use for this analysis
+A nuance here is that our objective for this analysis, and intended use,
 is prediction. When that’s the case, we can be a bit more relaxed about
 understanding the deep complexity underlying the DGP and instead feel
 relatively comfortable adding any and all covariates for which we have
 data, with an important caveat. We must be confident that we are not
 including any covariates which have no conceivable connection to our
-response. For example, we wouldn’t want to include average sea surface
-temperature because it shouldn’t give us any predictive power. But if
-we’re unlucky, it may be correlated (by pure chance) with LoTR
-viewership and thus we may think it helps us do predictions (see <a
-href="https://www.tylervigen.com/spurious-correlations">this</a> website
-for fun examples of such spurious correlations).</p>
-<p>In this dataset, Netflix have collected covariates for the explicit
-purpose of predicting viewership, so we can be confident that at least
-<em>someone</em> thinks these variables might give us some predictive
-power and aren’t spurious correlations.</p>
-<p>With that said, our model will still have a deterministic equation
-that describes the associations. Given how many variables we have it
-would be cruel to task you with writing the equation out in full for a
-model that contains all of those covariates. Instead, assume our model
-was <code>lotr ~ age + user_time</code>. Use this simplified version of
-the model to write out the equation that would underpin it. Note that
-<code>age</code> is a continuous variable, and <code>user_time</code> is
-a categorical variable with the levels <code>Morning</code>,
-<code>Afternoon</code> and <code>Evening</code>.</p>
-<p>For this equation, I’m not giving any hints so the difficulty does
+response (i.e. variables which may be spuriously correlated, that is
+correlated by pure chance). For example, we wouldn’t want to include the
+number of springbok observed by that day in Kruger National Park as a
+covariate, because it shouldn’t give us any predictive power. The only
+way it would is if we’re unlucky; it may be correlated (by pure chance)
+with LoTR viewership and thus we may think it helps us do predictions
+(see <a href="https://www.tylervigen.com/spurious-correlations">this</a>
+website for fun examples of such spurious correlations).</p>
+<p>In this dataset, Netflix have collected a total of 11 covariates with
+the explicit purpose of predicting viewership, so we can be confident
+that at least <em>someone</em> thinks these variables might give us some
+predictive power and aren’t spurious correlations. That said, it is
+still important to convince yourself of this.</p>
+<p>Our model will, nevertheless, still have a deterministic equation
+that describes the associations that we’re going to exploit to make
+predictions. Given that we have 11 covariates that we could include in
+the model, would be cruel to task you with writing the equation out in
+full for a model that contained all of these covariates. Instead, assume
+our model was <code>lotr ~ age + user_time</code>. Use this simplified
+version of the model to write out the equation that would underpin it.
+Note that <code>age</code> is a continuous variable, and
+<code>user_time</code> is a categorical variable with the levels
+<code>Morning</code>, <code>Afternoon</code> and
+<code>Evening</code>.</p>
+<p>For this equation I’m not giving any hints; so the difficulty does
 spike here. If you’re struggling, ask for help. It really is worthwhile
 learning how the syntax <code>lotr ~ age + user_time</code> is
 translated into an equation, especially when you’re ready to go beyond
@@ -547,23 +670,28 @@ class="section level3">
 <p><br />
 </p>
 <p>Import the data file ‘netflix.txt’ into R. Take a look at the
-structure of the data and create plots that you feel will help you (and
-others) understand the data.</p>
-<p>Keep the tips and tricks you used in yesterday’s practical and feel
-free to use them again here; load in the data, check for any covariates
-you need to adjust, plot out the data, etc.</p>
+structure of the response variable and covariates. A special note here
+is that a few of our covariates have a natural order to them, for
+instance, <code>user_day</code> is day of the week. Consider if you want
+to alter this variable such that the levels in these factors follow a
+natural order (e.g. Monday to Sunday) to make interpretation more
+intuitive rather than leaving these in alphabetical order.</p>
 <p>A bit of advice for visualising <span
 class="math inline">\(Bernoulli\)</span> data; adding a little noise to
 the x and y-axis values for each point (i.e. jittering) helps immensely
 for visualising. To do so using <code>base</code> <code>R</code>, the
 code would be:</p>
-<pre><code>plot(jitter(my_data$y) ~ my_data$x)</code></pre>
-<p>As in yesterday’s lecture and exercise, the my figures below are
-produced using <code>ggplot2</code> and are included purely for
-inspiration. I am also using an additional package,
+<pre><code>plot(jitter(my_data$y) ~ my_data$x)
+# To add more noise:
+plot(jitter(my_data$y, 20) ~ my_data$x)</code></pre>
+<p>As in yesterday’s lecture and exercise, my figures below are produced
+using <code>ggplot2</code> and are included purely for inspiration. In
+today’s document, I am also using an additional package,
 <code>patchwork</code>, to stitch together multiple figures into a
-single panel.</p>
-<p><img src="GLM_3_Bernoulli_exercise_files/figure-html/Q4-1.png" width="672" /><img src="GLM_3_Bernoulli_exercise_files/figure-html/Q4-2.png" width="672" /><img src="GLM_3_Bernoulli_exercise_files/figure-html/Q4-3.png" width="672" /></p>
+single panel. If you would like to use <code>ggplot2</code>, there is a
+dedicated chapter that explains the underlying logic of
+<code>ggplot2</code> in the Intro2R book.</p>
+<p><img src="GLM_3_Bernoulli_exercise_files/figure-html/Q4.1-1.png" width="672" /><img src="GLM_3_Bernoulli_exercise_files/figure-html/Q4.1-2.png" width="672" /><img src="GLM_3_Bernoulli_exercise_files/figure-html/Q4.1-3.png" width="672" /></p>
 <p><br />
 </p>
 </div>
@@ -574,12 +702,11 @@ class="section level3">
 </p>
 <p>Having gone through the previous steps, it’s now time to run our
 model. Keep in mind that with this model, our objective is prediction,
-so we’ll be running a model that includes all available covariates
-excluding one; <code>user_id</code> as including just this one covariate
-will require <strong>15,000</strong> parameters be estimated. We don’t
-want that, nor do we have the sample size to support it.</p>
-<p>Run the full model (not including <code>user_id</code>), using
-<code>glm()</code>.</p>
+so it would make sense to use all covariates at our disposal. Keep in
+mind, with predictive modelling, we don’t care why a covariate
+influences our response - we just want it to be repeatable, as this
+means we can predict it again in the future.</p>
+<p>Run the full model, using <code>glm()</code>.</p>
 <ul>
 <li>Hints:
 <ul>
@@ -600,56 +727,59 @@ class="math inline">\(Bernoulli\)</span> GLMs?</li>
 <p>Given that in the lecture I showed an instance where AIC and variable
 selection failed quite miserably, in this exercise, I wanted to include
 a scenario where it performs very well.</p>
-<p>Note that this discussion below is also true for Likelihood Ratio
-Testing (LRT). In fact, AIC ends up being the equivalent to LRT, where
-the P-value threshold to 0.187 rather than 0.05 (see Sutherland et al.,
-<a href="https://doi.org/10.1098/rspb.2023.1261%5D">2023</a>).</p>
-<p>For that, we need to have a brief discussion about how AIC works,
-starting with how it is calculated:</p>
+<p>Note that this discussion below is also true for the alternative
+method we’ve shown to do variable selection: Likelihood Ratio Testing
+(LRT). In fact, AIC ends up being the equivalent to LRT, where the
+P-value threshold to 0.187 rather than 0.05 (for more information, see
+Sutherland et al., <a
+href="https://doi.org/10.1098/rspb.2023.1261%5D">2023</a>).</p>
+<p>Given we didn’t have enough time to go into how AIC works during the
+lectures, I’ll use this as an oppurtunity to explain it in a bit more
+detail - starting with how it is calculated:</p>
 <p><span class="math inline">\(AIC = 2K -
 2ln(\mathcal{\hat{L}})\)</span></p>
 <p>where <span class="math inline">\(K\)</span> is the number of
 parameters in our model, <span class="math inline">\(ln\)</span> is the
 natural log, and <span class="math inline">\(\mathcal{\hat{L}}\)</span>
-is the maximum likelihood value for our given model. (Note that in
-practice <span class="math inline">\(-2ln(\mathcal{\hat{L}})\)</span> is
-used in model fitting for reasons that are not important here).</p>
+is the maximum likelihood value for our given model.</p>
 <p>Think back to the <span class="math inline">\(Poisson\)</span> GLM
-lecture where we walked through how <span
-class="math inline">\(\mathcal{\hat{L}}\)</span> was derived. In that
+lecture where we walked through how a likelihood value (<span
+class="math inline">\(\mathcal{\hat{L}}\)</span>) was derived. In that
 example, we were just trying different values for each parameter until
-we hit the “sweet spot” - where our predicted values were closest to our
-observed values using a particular combination of parameter values.
-Basically, <span class="math inline">\(\mathcal{\hat{L}}\)</span> is a
-value that reflects how well a combination of parameter values results
-in predicted values that are as close as possible to our actual response
-variable.</p>
-<p>Where AIC comes in, is that it uses this <span
-class="math inline">\(\mathcal{\hat{L}}\)</span> value and asks; “Are
-all of these parameters needed to get to the best fit?” That’s why AIC
-include the <span class="math inline">\(2K\)</span> bit. Each parameter
-has a “cost” associated with it of <span class="math inline">\(+2
-AIC\)</span> units; AIC is a fit-versus-cost trade-off. If the cost of
-including a parameter in our model does not sufficiently improve our
-likelihood, then it is considered to be uninformative, and AIC tells us
-it’s not worth including in the model. The conventional threshold is
-that if the difference when removing a variable from a model is less
-than or equal to <span class="math inline">\(2 \Delta AIC\)</span>
-(where <span class="math inline">\(\Delta\)</span> just means
-difference), then the covariate can be removed.</p>
-<p>Going through this process, we are left with the most parsimonious
-model; the model that has a desired level of accuracy (or prediction)
-that uses the fewest variables as possible to do so. This is why some
-statisticians (myself included) tend to think of AIC as a “with-in
-sample predictive” tool. (Contrast this with “out-of sample prediction”
-where we use a new dataset to see how well our model predicts the
-response variable of that <em>new</em> dataset.) All that means is; AIC
-is a tool that evaluates the predictive ability of a model, in
-predicting the data that you used to fit the model. With this view of
-AIC, a parsimonious model simply represents a model that has “good”
-predictive ability. Importantly, however, such models are not intended
-to offer insights into causation. Indeed, for causal inference, AIC can
-be quite harmful.</p>
+we hit the “sweet spot” - where our predicted values of number of birds
+were closest to our observed values - using a given combination of
+parameter values.</p>
+<p>AIC uses this <span class="math inline">\(\mathcal{\hat{L}}\)</span>
+value and asks; “For this likelihood value, do we really need all of
+these parameters?” That’s why AIC includes the <span
+class="math inline">\(2K\)</span> bit; Each parameter has a “cost”
+associated with it of <span class="math inline">\(+2 AIC\)</span> units.
+AIC is a fit versus cost trade-off measure. If the cost of including a
+parameter in our model does not sufficiently improve our likelihood,
+then it is considered to be uninformative and AIC tells us “it’s not
+worth including in the model”. The conventional threshold is that if the
+difference in AIC of two models is greater than, or equal to, <span
+class="math inline">\(2 AIC\)</span> units, then we would conclude that
+the lower scoring model has sufficient support as the most parsimonious
+model.</p>
+<p>(Note, the difference in AIC between two models is often referred to
+in papers and some software as <span class="math inline">\(\Delta
+AIC\)</span>, where <span class="math inline">\(\Delta\)</span> just
+means difference from the lowest [i.e. “better”] AIC scoring model and
+the model you are comparing it to.)</p>
+<p>If we go through this process, fitting various models and removing
+variables that increase AIC above 2 units, we are left with the most
+parsimonious model. “The most parsimonious model” just means that the
+model has the best (of the models considered) level of accuracy (or
+prediction) and uses the fewest covariates as possible to do so. This is
+why some statisticians (myself included) tend to think of AIC as a
+“with-in sample predictive” tool. If you take this view, then AIC is
+simply a tool that evaluates the predictive ability of a model;
+Specifically, in predicting the data that you used to fit the model.
+With this view of AIC, a parsimonious model simply represents a model
+that has “good” predictive ability. Importantly, however, such models
+are not intended to offer insights into causation. Indeed, for causal
+inference, AIC can be quite harmful.</p>
 <p>For example, consider the following scenario. We are interested in
 the association between ice cream sales and shark attacks. There is no
 direct causal relationship between these two variables. Instead, it is
@@ -662,7 +792,7 @@ designed to do after all - estimate associations. If we were to use AIC
 on this hypothetical model it would strongly support including ice cream
 sales in the model, because knowing how many ice creams have been sold
 is pretty much telling us how many people were at the beach.</p>
-<p>Test it out if your skeptical:</p>
+<p>Test it out if your skeptical (and also run a Bernoulli GLM!):</p>
 <pre><code>set.seed(123) # set seed so results are consistent
 N &lt;- 200 # 200 beaches
 visitors &lt;- rpois(N, lambda = 10) # generate 200 visitor counts
@@ -678,11 +808,10 @@ drop1(mod1) # use AIC to do variable selection
 <p>The upside of this is that including <code>icecream</code> is very
 useful if we want to make predictions of shark attacks. For example, if
 there are two beaches, the first with very few ice cream sales, and the
-second with lots. Which beach is more at risk of shark attacks? Clearly
-we can predict the second beach is at higher risk, we just don’t know
-<em>why</em> (based on the model).</p>
+second with lots. Which beach do you think is at higher risk of shark
+attacks?</p>
 <p>With that in mind, my view is that AIC is most useful, and least
-risky, when used for prediction modelling. There are alternatives to
+risky, when used for predictive modelling. There are alternatives to
 AIC, but AIC is still useful never-the-less. Let’s use AIC and variable
 selection now in order to determine which covariates give us predictive
 power, and which we can simply ignore when trying to make accurate
@@ -691,7 +820,9 @@ predictions.</p>
 which covariates can be removed without reducing our predictive
 power?</p>
 <p>Using <code>drop1()</code> to identify which covariates can be
-removed, refit that model.</p>
+removed, refit the <span class="math inline">\(Bernoulli\)</span> GLM
+such that it reflects the most parsimonious model identified by
+<code>drop1()</code>.</p>
 <p><br />
 </p>
 </div>
@@ -702,7 +833,7 @@ removed, refit that model.</p>
 <p>As always, we want to check how well we’re meeting the assumptions
 (which we can test).</p>
 <p>Start off by using the methods that have served us well for the <span
-class="math inline">\(Poisson\)</span> adn <span
+class="math inline">\(Poisson\)</span> and <span
 class="math inline">\(Binomial\)</span> GLMs,
 (e.g. <code>plot(mod2)</code> and <code>summary()</code>). Are these
 plots useful? Can we calculate dispersion for a <span
@@ -711,12 +842,13 @@ class="math inline">\(Bernoulli\)</span> GLM?</p>
 <p><br />
 </p>
 <p>The diagnostics tests we’ve used up to this point have largely failed
-us for Bernoulli GLMs. As such we need to think of alternative ways to
-try and check our assumptions. In this instance, we can use the method
-we discussed in the lecture where we extract the Pearson residuals from
-the model, and plot these against our explanatory covariates.</p>
+us for <span class="math inline">\(Bernoulli\)</span> GLMs. As such we
+need to think of alternative ways to try and check our assumptions. In
+this instance, we can use the method we discussed in the lecture, where
+we extract the Pearson residuals from the model and plot these against
+our explanatory covariates.</p>
 <p>Extracting residuals is a pretty easy process. To do so, we use the
-code:</p>
+code (making sure to specify that we want Pearson residuals):</p>
 <pre><code>netflix$resid &lt;- resid(mod2, type = &quot;pearson&quot;)</code></pre>
 <p>With the above code, we’re simply adding a new column to our original
 dataset that contains the Pearson residual error for each observation
@@ -724,11 +856,16 @@ dataset that contains the Pearson residual error for each observation
 (here, called <code>mod2</code>). Now we need to load a package and use
 the appropriate function to make plotting residuals and diagnosing a bit
 easier: <code>binnedplot</code> from the <code>arm</code> package.</p>
+<pre><code>binnedplot(y = dat$resid, x = dat$covariate1), nclass = 10, xlab = &quot;My covariate&quot;)</code></pre>
+<p>Hints: * The <code>nclass</code> argument is how many bins you want
+created for your covariate. As a general rule, you as many as possible
+to help you detect trends, but not so many that there isn’t much data
+going into them. + Play around with <code>nclass</code> to see what
+effect it has. * For categorical variables, we can force these to be
+numeric, and therefore use <code>binnedplot()</code>, by doing:</p>
+<pre><code>binnedplot(y = dat$resid, x = as.numeric(dat$category), nclass = 3, xlab = &quot;My categorical variable&quot;)</code></pre>
 <p>Using these plots, identify any covariates you think we should be
 concerned about, and why.</p>
-<p>Hints: * For categorical variables, we can force these to be numeric,
-and therefore use <code>binnedplot()</code> by doing
-<code>binnedplot(y = dat$resid, x = as.numeric(dat$category), nclass = 3, xlab = "My categorical variable")</code></p>
 <p><img src="GLM_3_Bernoulli_exercise_files/figure-html/Q7.1-1.png" width="672" /><img src="GLM_3_Bernoulli_exercise_files/figure-html/Q7.1-2.png" width="672" /></p>
 <p><br />
 </p>
@@ -748,6 +885,24 @@ model more efficient in terms of the number of parameters?</li>
 <li>For every additional family member (<code>fam_members</code>), how
 much does the log odds ratio increase by?</li>
 </ul>
+<p>If you don’t use P-values, and want a less cluttered summary table,
+the <code>arm</code> package (that we used to do
+<code>binnedplot()</code>) also includes a function called
+<code>display()</code>, which gives a less cluttered summary of a model
+fit.</p>
+<p>Give it a shot if you’re interested.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">display</span>(mod2)</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a><span class="co"># display() includes a reminder of the model you ran,</span></span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a><span class="co"># The parameters and their estimate (coef.est), where</span></span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a><span class="co"># coefficient is another name for parameter estimate.</span></span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a><span class="co"># The standard error for each parameter (coef.se).</span></span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a><span class="co"># An indicator of how many samples were used in fitting (n = )</span></span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a><span class="co"># An indicator of how many parameters were estimated by the model (k = )</span></span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a><span class="co"># And a report of residual deviance and null deviance.</span></span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a><span class="co"># Personally, I prefer display() for being more concise and removing </span></span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a><span class="co"># information I do not care about</span></span></code></pre></div>
 <p><br />
 </p>
 </div>
@@ -856,7 +1011,7 @@ linear_predictor_link &lt;- beta_0 + beta_1 * x1 + beta_2 * x2 + beta_3 * x3 + b
 # Backtransform your linear predictor to the response scale (i.e. exponentiate)
 linear_predictor_response &lt;- plogis(linear_predictor_link)
 
-# Generate your response variable using a Poisson random number generator (rpois)
+# Generate your response variable using a Bernoulli random number generator (rbinom)
 y &lt;- rbinom(N, size = k, prob = linear_predictor_response)
 
 # Note that the above three lines of code are the equivalent to the equations:

@@ -74,42 +74,41 @@ summary(sp.glm1)    # Get the summary of the model (to check dispersion)
 
 ## ----Q8.1, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE--------
 # On the link scale, how many plants would you predict if a plot had 0 kg of biomass?
-3.55628 + -0.19598 * 0 # = 3.55628
+3.5545494 + -0.1953352 * 0 # = 3.554549
 # On the link scale, how many plants would you predict if a plot had 2.5 kg of biomass?
-3.55628 + -0.19598 * 2.5 # = 3.06633
+3.5545494 + -0.1953352 * 2.5 # = 3.066211
 # On the link scale, how many plants would you predict if a plot had 5 kg of biomass?
-3.55628 + -0.19598 * 5 # = 2.57638
+3.5545494 + -0.1953352 * 5 # = 2.577873
 
 
 ## ----Q8.2, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE--------
 # On the response scale, how many plants would you predict if a plot had 0 kg of biomass?
-exp(3.55628 + -0.19598 * 0) # = 35.0
+exp(3.5545494 + -0.1953352 * 0) # = 35.0
 # On the response scale, how many plants would you predict if a plot had 5 kg of biomass?
-exp(3.55628 + -0.19598 * 5) # = 13.1
+exp(3.5545494 + -0.1953352 * 5) # = 13.2
 # On the response scale, how many plants would you predict if a plot had 10 kg of biomass?
-exp(3.55628 + -0.19598 * 10) # = 4.9
+exp(3.5545494 + -0.1953352 * 10) # = 5.0
 
 
 ## ----Q8.3, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE--------
-biomass_new <- seq(from = min(sp$Biomass), to = max(sp$Biomass), length.out = 5)
-biomass_new
+new_richness <- data.frame(Biomass = seq(from = min(sp$Biomass), 
+                                        to = max(sp$Biomass), 
+                                        length.out = 5))
+new_richness
 
 
 ## ----Q8.4, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE--------
-pred_plants <- exp(3.55628 + -0.19598 * biomass_new)
+new_richness$pred <- exp(3.5545494 + -0.1953352 * new_richness$Biomass)
+new_richness
 
 
 ## ----Q8.5, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE--------
-plot(pred_plants ~ biomass_new)
-lines(pred_plants ~ biomass_new)
+plot(new_richness$pred ~ new_richness$Biomass)
+lines(new_richness$pred ~ new_richness$Biomass)
 
 
 ## ----Q8.6, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE--------
 # We would simply increase the number of biomass values that our seq() code created. Try it out if you're interested.
-biomass_new <- seq(from = min(sp$Biomass), to = max(sp$Biomass), length.out = 50)
-pred_plants <- exp(3.55628 + -0.19598 * biomass_new)
-plot(pred_plants ~ biomass_new)
-lines(pred_plants ~ biomass_new)
 
 
 ## ----Q9, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE----------
@@ -147,7 +146,6 @@ summary(sp.glm2)
 
 
 ## ----Q11, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE---------
-summary(sp.glm2)
 # "(Intercept)" is the predicted value on the link (log) scale when
 # pH is "low". A hint is that there is no labelled coefficient called
 # "pHlow".
@@ -172,6 +170,7 @@ summary(sp.glm2)
 # Species_i ~ Poisson(lambda_i)
 # log(lambda_i) = 2.76 + -0.16 * Biomass_i
 #    + 0.65 * pHmid_i + 1.13 * pHhigh_i
+summary(sp.glm2)
 
 
 ## ----Q12, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE---------

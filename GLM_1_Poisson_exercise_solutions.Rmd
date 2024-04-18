@@ -244,7 +244,13 @@ summary(sp.glm1)    # Get the summary of the model (to check dispersion)
 
 Hopefully you identified issues that mean we should be very cautious with interpreting this model. For now, we'll put these concerns to rest (we will come back to them), and use this model as an opportunity to practice making predictions (and therefore answering our research question).
 
-8.1.\ Go back to your equation that you wrote for question 5. Using `summary()`, replace the place-holder letters (e.g. $\beta_0$) with the values estimated for these parameter from your model. Using this updated equation, make the following predictions:
+8.1.\ Go back to your equation that you wrote for question 5. We're going to combine the information from `summary()` with the equation we wrote in section 5 to allow us to make predictions. As a reminder, the statistical notation for the deterministic element of the model with just Biomass is:
+
+$log(\lambda_i) = \beta_0 + \beta_1 \times Biomass_i$
+
+where $\beta_0$ was the intercept and $\beta_1$ was the slope for biomass.
+
+Replace $\beta_0$ and $\beta_1$ now, using your parameter estimates from `summary()`, and use this updated equation to make the following predictions:
 
 * On the link scale, how many plants would you predict if a plot had 0 kg of biomass?
 
@@ -254,14 +260,14 @@ Hopefully you identified issues that mean we should be very cautious with interp
 
 ```{r Q8.1, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
 # On the link scale, how many plants would you predict if a plot had 0 kg of biomass?
-3.55628 + -0.19598 * 0 # = 3.55628
+3.5545494 + -0.1953352 * 0 # = 3.554549
 # On the link scale, how many plants would you predict if a plot had 2.5 kg of biomass?
-3.55628 + -0.19598 * 2.5 # = 3.06633
+3.5545494 + -0.1953352 * 2.5 # = 3.066211
 # On the link scale, how many plants would you predict if a plot had 5 kg of biomass?
-3.55628 + -0.19598 * 5 # = 2.57638
+3.5545494 + -0.1953352 * 5 # = 2.577873
 ```
 
-8.2.\ Now, let's make predictions on the response scale. To go from the $log$ link scale, to the response scale, we take our predictions and apply the inverse link function to them. The inverse link function of $log$ is $e$ (or exponential, or `exp()`). Predict, on the response scale, how many plant species we would expect if:
+8.2.\ To make interpreting these predictions easier and more intuitive, let's make the predictions on the response scale. To go from the $log$ link scale, to the response scale, we take our predictions and apply the inverse link function to them. The inverse link function of $log$ is $e$ (or exponential, or `exp()`). Predict, on the response scale, how many plant species we would expect if:
 
 * On the response scale, how many plants would you predict if a plot had 0 kg of biomass?
 
@@ -271,33 +277,58 @@ Hopefully you identified issues that mean we should be very cautious with interp
 
 ```{r Q8.2, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
 # On the response scale, how many plants would you predict if a plot had 0 kg of biomass?
-exp(3.55628 + -0.19598 * 0) # = 35.0
+exp(3.5545494 + -0.1953352 * 0) # = 35.0
 # On the response scale, how many plants would you predict if a plot had 5 kg of biomass?
-exp(3.55628 + -0.19598 * 5) # = 13.1
+exp(3.5545494 + -0.1953352 * 5) # = 13.2
 # On the response scale, how many plants would you predict if a plot had 10 kg of biomass?
-exp(3.55628 + -0.19598 * 10) # = 4.9
+exp(3.5545494 + -0.1953352 * 10) # = 5.0
 ```
 
-8.3.\ Using this approach, we get a series of snapshot predictions over different values of Biomass. That's useful in and of itself, but we can make this a bit easier for readers to interpret by showing this in a figure. To do so, rather copy-and-pasting our equation and substituting in different value of biomass, why not use `R` to make this a bit easier for us? Begin by using `seq()` to create a sequence of 5 biomass values that range from the minimum we observed in the data, to the maximum, and store this variable.
+8.3.\ Using this approach, we get a series of snapshot predictions over different values of Biomass. That's useful in and of itself, but we can make this a bit easier for readers to interpret by showing this in a figure. 
 
-Hint: do not add this new biomass variable to your original dataset.
+To do so, rather copy-and-pasting our equation and substituting in different value of biomass, why not use `R` to make this a bit easier for us? 
+
+Let's start by creating an entirely new dataset that contains a column called `Biomass`. If we wanted to, we could just plug our previous biomass values in but an alternative that gives us more flexibility would be to use the `seq()` function to create any number of `Biomass` values we desired. All we need to supply is the minimum and maximum values that we want to consider, and how many values we want returned to us.
+
+The other thing we need to do is to put this into a dataframe. The function `data.frame()` makes this trivially easy. All we need to do is say what the column is going to be called (here `Biomass`) and what the values for the column are. The `seq()` function can handle what the values are, so specifying the column name is all we need to do - and it's dead easy. The example below shows all of this done in a single line of `R` code.
+
+```
+new_richness <- data.frame(Biomass = seq(from = min(sp$Biomass), 
+                                        to = max(sp$Biomass), 
+                                        length.out = 5))
+```
+
+Use this now to create your own "synthetic" data set to do predictions with.
 
 ```{r Q8.3, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
-biomass_new <- seq(from = min(sp$Biomass), to = max(sp$Biomass), length.out = 5)
-biomass_new
+new_richness <- data.frame(Biomass = seq(from = min(sp$Biomass), 
+                                        to = max(sp$Biomass), 
+                                        length.out = 5))
+new_richness
 ```
 
-8.4.\ Once you have this variable (or "vector"), use it to make 5 simultaneous predictions of how many plant species we would expect to find, on the response scale. Store the output in another variable.
+8.4.\ Once you have this data frame, use it to make 5 simultaneous predictions of how many plant species we would expect to find, on the response scale. Store the output in a new column of the `new_richness` dataset.
 
 ```{r Q8.4, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
-pred_plants <- exp(3.55628 + -0.19598 * biomass_new)
+new_richness$pred <- exp(3.5545494 + -0.1953352 * new_richness$Biomass)
+new_richness
 ```
 
-8.5.\ With both of these new variables, create a plot to show our prediction.
+An option available to use is, rather than doing this predictions by "hand", we can use a function called `predict()`. This function becomes especially useful when we have more complicated models, where we really don't want to have to write out the equation by hand, but also for when we want to make more customised figures. We'll use `predict()` more tomorrow, but for now, let's use it in this relatively simple example. 
+
+We just need to supply `predict()` with our new "synthetic" dataset (i.e. `new_richness` from above) along with our model object (e.g. `sp.glm1`). The code to do so is then:
+
+```
+pred_plants <- exp(predict(sp.glm1, new_biomass))
+```
+
+8.5.\ With both this new dataset, create a plot to show our prediction.
+
+For this, you can either use your "hand made" predictions, or the predictions using `predict()`.
 
 ```{r Q8.5, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
-plot(pred_plants ~ biomass_new)
-lines(pred_plants ~ biomass_new)
+plot(new_richness$pred ~ new_richness$Biomass)
+lines(new_richness$pred ~ new_richness$Biomass)
 ```
 
 And with that, we have a prediction (from our model which we know has issues). If we stopped here, we'd conclude that biomass has a negative association with the number of plant species, while also reporting that this model has a variety of issues.
@@ -310,10 +341,6 @@ And with that, we have a prediction (from our model which we know has issues). I
 
 ```{r Q8.6, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
 # We would simply increase the number of biomass values that our seq() code created. Try it out if you're interested.
-biomass_new <- seq(from = min(sp$Biomass), to = max(sp$Biomass), length.out = 50)
-pred_plants <- exp(3.55628 + -0.19598 * biomass_new)
-plot(pred_plants ~ biomass_new)
-lines(pred_plants ~ biomass_new)
 ```
 
 \  
@@ -391,7 +418,6 @@ Now that we've fit a model that answers our question and checked that we are mee
 Using `summary()`, identify what each parameter means.
 
 ```{r Q11, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
-summary(sp.glm2)
 # "(Intercept)" is the predicted value on the link (log) scale when
 # pH is "low". A hint is that there is no labelled coefficient called
 # "pHlow".
@@ -416,6 +442,7 @@ summary(sp.glm2)
 # Species_i ~ Poisson(lambda_i)
 # log(lambda_i) = 2.76 + -0.16 * Biomass_i
 #    + 0.65 * pHmid_i + 1.13 * pHhigh_i
+summary(sp.glm2)
 ```
 
 \  
@@ -424,9 +451,9 @@ summary(sp.glm2)
 
 \  
 
-To visualise the relationship, we could use the same technique that we used for the model with just biomass and extend it to include the differing levels of pH. To do so, however, requires a few steps that we cover in more detail in the $Binomial$ GLM lecture. Instead, whatwe can do is make use of our choice of `R` packages to create the predictions for us.
+To visualise the relationship, we could use the same technique that we used for the model with just biomass and extend it to include the differing levels of pH. To do so, however, requires a few steps that we cover in more detail in the $Binomial$ GLM exercise tomorrow. For today, what we can do is make use of some `R` packages that make visualising our predictions easy.
 
-Using these packages has the benefit of making our lives simpler but there are costs associated with using them. The first, and more important for this stage of your learning, is that it obscures and mystifies how these predictions are actually made. The second, and more important for when you get to making publication quality figures, is that these packages lock you into someone else's aesthetic choices. Sometimes, these choices are OK, but for myself I definitely prefer to make figures the way I like them. Regardless, these packages are useful, and especially early on in analysis I will often use them to get a sense of what the predictions look like, before then remaking them according to my own tastes.
+While using these packages has the benefit of making our lives simpler but there are costs associated with using them. The first, and more important for this stage of your learning, is that it obscures and mystifies how these predictions are actually made. The second and more important, for when you get to making publication quality figures, is that these packages lock you into someone else's aesthetic choices. Sometimes, these choices are OK, but for myself I definitely prefer to make figures the way I like them. Regardless, these packages are useful, and especially early on in analysis I will often use them to get a sense of what the predictions look like, before then remaking them according to my own tastes.
 
 For this part of the exercise, we'll use the `ggeffects` `R` packages to create the predictions and associated figures, but be aware there are alternative options that you may prefer.
 
@@ -448,7 +475,7 @@ bio_pred <- ggpredict(sp.glm2, terms = "Biomass")
 plot(bio_pred)
 ```
 
-Use `ggeffects` now to create a figure to show the prediceted relationships for both covariates in our model.
+Use `ggeffects` now to create a figure to show the predicted relationships for both covariates in our model.
 
 ```{r Q12, eval=TRUE, echo=SOLUTIONS, results=SOLUTIONS, collapse=TRUE}
 library(ggeffects)
@@ -459,6 +486,8 @@ plot(ph_pred)
 ```
 
 And just like that, we have figures that can show our predicted relationships from our model.
+
+### Summary
 
 At this point, we're pretty much done. We started off with a simple model which we used diagnostic plots to determine that that version of the model had various issues. We resolved those issues by adding in an additional explanatory variable (but note this will not always work, and there are risks associated with adding variables to a model, see the Bernoulli lecture). We then interpreted our results and used these to create predictions to make our results more intuitive. All that remains is to write up the pre-print, paper, report, blog post, whatever, to share our findings with a broader audience.
 

@@ -620,11 +620,20 @@ with interpreting this model. For now, we’ll put these concerns to rest
 (we will come back to them), and use this model as an opportunity to
 practice making predictions (and therefore answering our research
 question).</p>
-<p>8.1. Go back to your equation that you wrote for question 5. Using
-<code>summary()</code>, replace the place-holder letters (e.g. <span
-class="math inline">\(\beta_0\)</span>) with the values estimated for
-these parameter from your model. Using this updated equation, make the
-following predictions:</p>
+<p>8.1. Go back to your equation that you wrote for question 5. We’re
+going to combine the information from <code>summary()</code> with the
+equation we wrote in section 5 to allow us to make predictions. As a
+reminder, the statistical notation for the deterministic element of the
+model with just Biomass is:</p>
+<p><span class="math inline">\(log(\lambda_i) = \beta_0 + \beta_1 \times
+Biomass_i\)</span></p>
+<p>where <span class="math inline">\(\beta_0\)</span> was the intercept
+and <span class="math inline">\(\beta_1\)</span> was the slope for
+biomass.</p>
+<p>Replace <span class="math inline">\(\beta_0\)</span> and <span
+class="math inline">\(\beta_1\)</span> now, using your parameter
+estimates from <code>summary()</code>, and use this updated equation to
+make the following predictions:</p>
 <ul>
 <li><p>On the link scale, how many plants would you predict if a plot
 had 0 kg of biomass?</p></li>
@@ -633,7 +642,8 @@ had 2.5 kg of biomass?</p></li>
 <li><p>On the link scale, how many plants would you predict if a plot
 had 5 kg of biomass?</p></li>
 </ul>
-<p>8.2. Now, let’s make predictions on the response scale. To go from
+<p>8.2. To make interpreting these predictions easier and more
+intuitive, let’s make the predictions on the response scale. To go from
 the <span class="math inline">\(log\)</span> link scale, to the response
 scale, we take our predictions and apply the inverse link function to
 them. The inverse link function of <span
@@ -652,18 +662,50 @@ plot had 10 kg of biomass?</p></li>
 <p>8.3. Using this approach, we get a series of snapshot predictions
 over different values of Biomass. That’s useful in and of itself, but we
 can make this a bit easier for readers to interpret by showing this in a
-figure. To do so, rather copy-and-pasting our equation and substituting
-in different value of biomass, why not use <code>R</code> to make this a
-bit easier for us? Begin by using <code>seq()</code> to create a
-sequence of 5 biomass values that range from the minimum we observed in
-the data, to the maximum, and store this variable.</p>
-<p>Hint: do not add this new biomass variable to your original
-dataset.</p>
-<p>8.4. Once you have this variable (or “vector”), use it to make 5
-simultaneous predictions of how many plant species we would expect to
-find, on the response scale. Store the output in another variable.</p>
-<p>8.5. With both of these new variables, create a plot to show our
+figure.</p>
+<p>To do so, rather copy-and-pasting our equation and substituting in
+different value of biomass, why not use <code>R</code> to make this a
+bit easier for us?</p>
+<p>Let’s start by creating an entirely new dataset that contains a
+column called <code>Biomass</code>. If we wanted to, we could just plug
+our previous biomass values in but an alternative that gives us more
+flexibility would be to use the <code>seq()</code> function to create
+any number of <code>Biomass</code> values we desired. All we need to
+supply is the minimum and maximum values that we want to consider, and
+how many values we want returned to us.</p>
+<p>The other thing we need to do is to put this into a dataframe. The
+function <code>data.frame()</code> makes this trivially easy. All we
+need to do is say what the column is going to be called (here
+<code>Biomass</code>) and what the values for the column are. The
+<code>seq()</code> function can handle what the values are, so
+specifying the column name is all we need to do - and it’s dead easy.
+The example below shows all of this done in a single line of
+<code>R</code> code.</p>
+<pre><code>new_richness &lt;- data.frame(Biomass = seq(from = min(sp$Biomass), 
+                                        to = max(sp$Biomass), 
+                                        length.out = 5))</code></pre>
+<p>Use this now to create your own “synthetic” data set to do
+predictions with.</p>
+<p>8.4. Once you have this data frame, use it to make 5 simultaneous
+predictions of how many plant species we would expect to find, on the
+response scale. Store the output in a new column of the
+<code>new_richness</code> dataset.</p>
+<p>An option available to use is, rather than doing this predictions by
+“hand”, we can use a function called <code>predict()</code>. This
+function becomes especially useful when we have more complicated models,
+where we really don’t want to have to write out the equation by hand,
+but also for when we want to make more customised figures. We’ll use
+<code>predict()</code> more tomorrow, but for now, let’s use it in this
+relatively simple example.</p>
+<p>We just need to supply <code>predict()</code> with our new
+“synthetic” dataset (i.e. <code>new_richness</code> from above) along
+with our model object (e.g. <code>sp.glm1</code>). The code to do so is
+then:</p>
+<pre><code>pred_plants &lt;- exp(predict(sp.glm1, new_biomass))</code></pre>
+<p>8.5. With both this new dataset, create a plot to show our
 prediction.</p>
+<p>For this, you can either use your “hand made” predictions, or the
+predictions using <code>predict()</code>.</p>
 <p><img src="GLM_1_Poisson_exercise_files/figure-html/Q8.5-1.png" width="672" /></p>
 <p>And with that, we have a prediction (from our model which we know has
 issues). If we stopped here, we’d conclude that biomass has a negative
@@ -673,7 +715,6 @@ this model has a variety of issues.</p>
 <p>8.6. (Optional): The figure we have produced looks pretty jagged. If
 we wanted a smoother line to be drawn, how would we do so?</p>
 <p> </p>
-<p><img src="GLM_1_Poisson_exercise_files/figure-html/Q8.6-1.png" width="672" /></p>
 <p> </p>
 </div>
 <div id="including-ph-in-the-model" class="section level3">
@@ -743,14 +784,14 @@ relationship</h3>
 we used for the model with just biomass and extend it to include the
 differing levels of pH. To do so, however, requires a few steps that we
 cover in more detail in the <span
-class="math inline">\(Binomial\)</span> GLM lecture. Instead, whatwe can
-do is make use of our choice of <code>R</code> packages to create the
-predictions for us.</p>
-<p>Using these packages has the benefit of making our lives simpler but
-there are costs associated with using them. The first, and more
-important for this stage of your learning, is that it obscures and
-mystifies how these predictions are actually made. The second, and more
-important for when you get to making publication quality figures, is
+class="math inline">\(Binomial\)</span> GLM exercise tomorrow. For
+today, what we can do is make use of some <code>R</code> packages that
+make visualising our predictions easy.</p>
+<p>While using these packages has the benefit of making our lives
+simpler but there are costs associated with using them. The first, and
+more important for this stage of your learning, is that it obscures and
+mystifies how these predictions are actually made. The second and more
+important, for when you get to making publication quality figures, is
 that these packages lock you into someone else’s aesthetic choices.
 Sometimes, these choices are OK, but for myself I definitely prefer to
 make figures the way I like them. Regardless, these packages are useful,
@@ -785,10 +826,13 @@ be:</p>
 <pre><code>bio_pred &lt;- ggpredict(sp.glm2, terms = &quot;Biomass&quot;)
 plot(bio_pred)</code></pre>
 <p>Use <code>ggeffects</code> now to create a figure to show the
-prediceted relationships for both covariates in our model.</p>
+predicted relationships for both covariates in our model.</p>
 <p><img src="GLM_1_Poisson_exercise_files/figure-html/Q12-1.png" width="672" /><img src="GLM_1_Poisson_exercise_files/figure-html/Q12-2.png" width="672" /></p>
 <p>And just like that, we have figures that can show our predicted
 relationships from our model.</p>
+</div>
+<div id="summary" class="section level3">
+<h3>Summary</h3>
 <p>At this point, we’re pretty much done. We started off with a simple
 model which we used diagnostic plots to determine that that version of
 the model had various issues. We resolved those issues by adding in an
