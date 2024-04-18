@@ -11,10 +11,10 @@
 
 
 
-<title>Exercise</title>
+<title>Day 1: Poisson GLMs</title>
 
-<script src="site_libs/header-attrs-2.8/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.25/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -31,8 +31,8 @@
        pre:not([class]) { background-color: white }</style>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <script src="site_libs/navigation-1.1/codefolding.js"></script>
-<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -42,6 +42,7 @@
   div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
   ul.task-list{list-style: none;}
     </style>
+
 
 
 
@@ -71,6 +72,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -128,11 +132,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -161,8 +169,8 @@ $(document).ready(function () {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -170,16 +178,9 @@ $(document).ready(function () {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -226,7 +227,7 @@ $(document).ready(function () {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -237,21 +238,21 @@ $(document).ready(function () {
       <ul class="nav navbar-nav">
         <li>
   <a href="index.html">
-    <span class="fas fa-home"></span>
+    <span class="fa fa-home"></span>
      
     Home
   </a>
 </li>
 <li>
   <a href="setup.html">
-    <span class="fas fa-cog"></span>
+    <span class="fa fa-cog"></span>
      
     Setup
   </a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    <span class="fas fa-book"></span>
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-book"></span>
      
     R Book
      
@@ -260,7 +261,7 @@ $(document).ready(function () {
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="https://intro2r.com">
-        <span class="fas fa-firefox"></span>
+        <span class="fa fa-firefox"></span>
          
         Web book
       </a>
@@ -268,7 +269,7 @@ $(document).ready(function () {
     <li class="divider"></li>
     <li>
       <a href="https://github.com/alexd106/Rbook/raw/master/docs/Rbook.pdf">
-        <span class="fas fa-file-pdf"></span>
+        <span class="fa fa-file-pdf"></span>
          
         PDF book
       </a>
@@ -276,8 +277,8 @@ $(document).ready(function () {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    <span class="fas fa-book"></span>
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-book"></span>
      
     Exercises
      
@@ -286,7 +287,7 @@ $(document).ready(function () {
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="exercises.html">
-        <span class="fas fa-book"></span>
+        <span class="fa fa-book"></span>
          
         Exercises
       </a>
@@ -294,7 +295,7 @@ $(document).ready(function () {
     <li class="divider"></li>
     <li>
       <a href="exercise_solutions.html">
-        <span class="fas fa-book"></span>
+        <span class="fa fa-book"></span>
          
         Exercise Solutions
       </a>
@@ -303,14 +304,14 @@ $(document).ready(function () {
 </li>
 <li>
   <a href="data.html">
-    <span class="fas fa-download"></span>
+    <span class="fa fa-download"></span>
      
     Data
   </a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    <span class="fas fa-question-circle"></span>
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-question-circle"></span>
      
     Info
      
@@ -319,14 +320,14 @@ $(document).ready(function () {
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="syllabus.html">
-        <span class="fas fa-graduation-cap"></span>
+        <span class="fa fa-graduation-cap"></span>
          
         Syllabus
       </a>
     </li>
     <li>
       <a href="People.html">
-        <span class="fas fa-user-friends"></span>
+        <span class="fa fa-user-friends"></span>
          
         People
       </a>
@@ -334,7 +335,7 @@ $(document).ready(function () {
     <li class="divider"></li>
     <li>
       <a href="resources.html">
-        <span class="fas fa-book"></span>
+        <span class="fa fa-book"></span>
          
         Resources
       </a>
@@ -342,7 +343,7 @@ $(document).ready(function () {
     <li class="dropdown-header">Feedback</li>
     <li>
       <a href="People.html">
-        <span class="fas fa-envelope fa-lg"></span>
+        <span class="fa fa-envelope fa-lg"></span>
          
         Contact
       </a>
@@ -350,7 +351,7 @@ $(document).ready(function () {
     <li class="divider"></li>
     <li>
       <a href="https://github.com/alexd106/PGR-GLM">
-        <span class="fas fa-github fa-lg"></span>
+        <span class="fa fa-github fa-lg"></span>
          
         Source code
       </a>
@@ -368,7 +369,7 @@ $(document).ready(function () {
 <div id="header">
 
 <div class="btn-group pull-right float-right">
-<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
 <ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
 <li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
 <li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
@@ -377,113 +378,556 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Exercise</h1>
+<h1 class="title toc-ignore">Day 1: Poisson GLMs</h1>
 
 </div>
 
 
 <p> </p>
-<div id="exercise-poisson-glm---predicting-species-richness" class="section level1">
+<div id="exercise-poisson-glm---predicting-species-richness"
+class="section level1">
 <h1>Exercise: Poisson GLM - predicting species richness</h1>
 <p> </p>
-<p>The data for this exercise were collected during an experiment which investigated the relationship between the number of plant species and plant biomass grown in plots with 3 controlled pH treatments: low, medium and high pH. The research seeks to find out if increasing biomass has an effect on species richness, and if this effect could be modulated by pH. Therefore, <code>Species</code> is the response variable and <code>pH</code> and <code>Biomass</code> are explanatory variables. Because the number of species is a count (positive and integer), we will attempt to fit a Poisson distribution to these data.</p>
+<p>For the GLM exercises, we’ll use the workflow we suggested in the LM
+lectures, and expanded upon in the GLM introduction lecture, as a
+template, specifically:</p>
+<ol style="list-style-type: decimal">
+<li><p>Know your research question!</p></li>
+<li><p>Think about your response variable (stochastic element).</p></li>
+<li><p>Think about the process behind the data (deterministic
+element).</p></li>
+<li><p>Understand the data that you’ve collected (plot it!)</p></li>
+<li><p>Combine into a model that can answer your question.</p></li>
+<li><p>Fit the model.</p></li>
+<li><p>Check your assumption(s).</p></li>
+<li><p>Repeat steps 6 and 7 as required.</p></li>
+<li><p>Answer your question.</p></li>
+</ol>
+<p><br />
+</p>
+<div id="know-your-research-question" class="section level3">
+<h3>1. Know your research question!</h3>
 <p> </p>
-<p>1. As in previous exercises, either create a new R script (perhaps call it GLM_Poisson) or continue with your previous R script in your RStudio Project. Again, make sure you include any metadata you feel is appropriate (title, description of task, date of creation etc) and don’t forget to comment out your metadata with a <code>#</code> at the beginning of the line.</p>
+<p>The researchers who collected this data wanted to describe the
+relationships between the number of species (<code>Species</code>)
+present in a plot of land, and how this number was associated with the
+overall plant biomass (<code>Biomass</code>, i.e. what was the overall
+weight of plants in the plot of land), and the pH of the soil
+(<code>pH</code>, categorised into “High”, “Medium” and “Low”). The
+researchers were interested in describing the associations between
+species and the two explanatory variables. In total, the researchers
+collected data from 90 plots of land (<span class="math inline">\(n =
+90\)</span>), where each observation is from a single plot.</p>
 <p> </p>
-<p>2. Import the data file ‘species.txt’ into R and take a look at the structure of this dataframe. Start with an initial data exploration (using <code>pairs()</code> and <code>coplot()</code>?). Do you see any imbalance of concern between the predictors? Do you foresee any problem for the model to answer the initial question?</p>
+</div>
+<div id="think-about-your-response-variable-the-stochastic-element."
+class="section level3">
+<h3>2. Think about your response variable (the stochastic element).</h3>
+<p> </p>
+<p>From the information provided in the brief above, we are already able
+to determine a suitable distribution to use when fitting the model (the
+fact that this practical is called Poisson GLM may also offer a rather
+cryptic hint…). The relevant information comes from the description of
+<code>Species</code> indicating that this variable is a count, which
+implies 1) the minimum value is 0 [we cannot have -1 species], and 2)
+the response variable will be measured in integers [we cannot count 3.14
+plants]. With this information alone, we can already deduce the
+<em>stochastic</em> element of our model (i.e. the error) should be
+adequately described by specifying a <span
+class="math inline">\(Poisson\)</span> distribution.</p>
+<p>Therefore, the stochastic element of our model will be:</p>
+<p><span class="math inline">\(y_i \sim Poisson(\lambda_i)\)</span></p>
+<p>Where <span class="math inline">\(y\)</span> is the count of species
+in a plot <span class="math inline">\(i\)</span>, generated according to
+a <span class="math inline">\(Poisson\)</span> distribution with rate
+<span class="math inline">\(\lambda\)</span>.</p>
+<p><br />
+</p>
+</div>
+<div
+id="think-about-the-process-behind-the-data-the-deterministic-element."
+class="section level3">
+<h3>3. Think about the process behind the data (the deterministic
+element).</h3>
+<p> </p>
+<p>Spare a moment’s thought to how complex the process behind the number
+of plant species present in a plot of land will be. How much sunlight
+does each plot get? How much rainfall? What seeds were already present
+in the soil before data collection started? Why were <em>those</em>
+seeds present and not others? Why did some of them germinate in time for
+us to count them?</p>
+<p>We don’t have any data to try and explain this variation, yet it will
+still be there (this is what we are tasking the stochastic part of the
+model to deal with).</p>
+<p>For our purposes, the deterministic part we’re interested in is what
+role plant biomass and soil pH plays in determining species richness.
+With this in mind, the deterministic element of our model will be:</p>
+<p><span class="math inline">\(log(\lambda_i) = \beta_0 + \beta_1 \times
+Biomass_i + \beta_2 \times midpH_i + \beta_3 \times
+highpH_i\)</span></p>
+<p>Where <span class="math inline">\(\lambda\)</span> is our linear
+predictor regressed on the <span class="math inline">\(log\)</span> link
+scale, where <span class="math inline">\(\beta_0\)</span> is the
+intercept (which defaults to low pH), <span
+class="math inline">\(\beta_1\)</span> is the slope for biomass, <span
+class="math inline">\(\beta_2\)</span> is the difference from low pH
+(<span class="math inline">\(\beta_0\)</span>) to mid pH, and <span
+class="math inline">\(\beta_3\)</span> is the difference from low pH to
+high pH.</p>
+<p>Remember that for categorical variables, <code>R</code> will convert
+these into a series of columns with 1 indicating an observation belongs
+to a group and 0 indicating the converse. One of the groups will not
+have a column (the group that has the lowest alphanumerical value,
+e.g. for a categorical variable with groups <code>A</code> and
+<code>B</code>, <code>A</code> would be first), and it is this group
+that becomes the intercept (<span
+class="math inline">\(\beta_0\)</span>). We are able to specify which
+group becomes our reference and we’ll do this later on, such that
+<code>low</code> is our reference point.</p>
+<p> </p>
+</div>
+<div id="understand-the-data-that-youve-collected-plot-it"
+class="section level3">
+<h3>4. Understand the data that you’ve collected (plot it!)</h3>
+<p> </p>
+<p>We now get to the part where we’ll actually start using
+<code>R</code>. A plea though - do not underestimate the value in taking
+the time to think carefully about the previous steps. Spending the time
+thinking about those questions makes your life that much easier. I’d
+estimate that for my own work, I spend at least 60% of my time thinking
+before doing anything with data or <code>R</code>. It really is that
+important.</p>
+<p>4.1. Get R ready to go</p>
+<p>As in previous exercises, either create a new R script (perhaps call
+it GLM_Poisson) or continue with your previous R script in your RStudio
+Project. Again, make sure you include any metadata you feel is
+appropriate (title, description of task, date of creation etc) and don’t
+forget to comment out your metadata with a <code>#</code> at the
+beginning of the line.</p>
+<p>4.2. Data exploration</p>
+<p>Import the data file ‘species.txt’ into R and take a look at the
+structure of this dataframe. Given you have never seen this data before,
+it’s really important that you familiarise yourself with any nuances. To
+help with this, carry out an initial data exploration (using any methods
+you think will help you get a sense of the data,
+e.g. <code>plot()</code>, <code>pairs()</code>, <code>coplot()</code>,
+amongst many other options).</p>
+<p>While doing this, ask yourself:</p>
+<ul>
+<li>Do any of the variables need to be adjusted? (e.g. are factors
+recognised as such?)</li>
+<li>Do any factors need to be “re-levelled”, such that it is read “Low”,
+“Medium”High” (or any order we may prefer)?
+<ul>
+<li>Hint: check <code>?factor</code> and look at the <code>levels</code>
+argument</li>
+<li>Hint: it might make sense for <code>low</code> pH to be our
+reference level</li>
+</ul></li>
+<li>Are there any relationships you can already see by eye alone?</li>
+<li>Are there any imbalances in any of the explanatory variables?</li>
+<li>Are there any observations that seem like they may be a data entry
+mistake?</li>
+</ul>
+<p>If using <code>pairs()</code> to create a plot of the variables of
+interest, rather than creating a plot with every single variable in our
+dataset, we may prefer to restrict the plot to the variables we are
+actually interested in (this is redundant for this dataset but it’s
+worth keeping this trick in mind for larger datasets). An effective way
+of doing this is to store the names of the variables of interest in a
+vector <code>VOI&lt;- c("Var1", "Var2", ...)</code> and then use the
+list of variable names to subset the variables that get plotted
+(e.g. <code>pairs(Mydata[, VOI])</code>)</p>
+<p><img src="GLM_1_Poisson_exercise_files/figure-html/Q4-1.png" width="672" /><img src="GLM_1_Poisson_exercise_files/figure-html/Q4-2.png" width="672" /></p>
+<p> </p>
+</div>
+<div id="combine-into-a-model-that-can-answer-your-question."
+class="section level3">
+<h3>5. Combine into a model that can answer your question.</h3>
+<p> </p>
+<p>Having gone through the previous steps, it’s now time to run our
+first model. Given this is the first practical session, we’ll start with
+a simple model for the sake of pedagogy, where we explore how species
+richness is related with biomass.</p>
+<p>Write the equation (not the <code>R</code> code) for this simplified
+model.</p>
+<p>Hint: You can always use the more complex model, written in steps 2
+and 3, and simplify it to match the first model we’ll run.</p>
+<p> </p>
+</div>
+<div id="fit-the-model." class="section level3">
+<h3>6. Fit the model.</h3>
+<p> </p>
+<p>To warm up, let’s start by using this simpler model, where we assume
+that the number <code>Species</code> counted in a plot is a function of
+how much <code>Biomass</code> there was. We’ll leave <code>pH</code> out
+of the model for the time being.</p>
+<p>Run the model now, using <code>glm()</code>.</p>
 <ul>
 <li>Hints:
 <ul>
-<li>the Poisson model uses a log-link, therefore the equation of the model (the linear predictor) will predict the expected number of plant species on the log scale.</li>
-<li>for a corresponding data exploration it would make sense to use the log of the response.</li>
-<li>check that the format of pH is appropriate and that the reference level is what you want.</li>
-<li>restrict the plot to the variables you actually need</li>
-<li>an effective way of doing this is to store the names of the variables of interest in a vector <code>VOI&lt;- c("Var1", "Var2", ...)</code></li>
-<li>and then use the naming method for subsetting the data set <code>Mydata[, VOI]</code></li>
+<li>We use <code>family =</code> to specify the distribution in a
+<code>glm()</code>
+<ul>
+<li>“Family” is just an alternative way to refer to a distribution.</li>
+</ul></li>
+<li>What is the default link function used by Poisson GLMs?
+<ul>
+<li>How do we specify it?</li>
+<li>Do we need to specify it?</li>
+</ul></li>
+<li>Use <code>?glm</code> if you’re stuck, or ask for help.</li>
 </ul></li>
 </ul>
 <p> </p>
-<p><img src="GLM_1_Poisson_exercise_files/figure-html/Q2-1.png" width="672" /><img src="GLM_1_Poisson_exercise_files/figure-html/Q2-2.png" width="672" /></p>
+</div>
+<div id="check-your-assumptions." class="section level3">
+<h3>7. Check your assumption(s).</h3>
 <p> </p>
-<p>3. To warm up, let’s start with a simple Poisson GLM (using <code>glm</code>) including only <code>Biomass</code> as a predictor.</p>
+<p>Having run the model, we now need to check how well this model meets
+the assumptions.</p>
+<p>To do so, we can check the model diagnostic plots, as well as check
+for dispersion. Do so now.</p>
+<p>For the diagnostic plots:</p>
 <ul>
-<li>Hints:
+<li>Residuals vs Fitted
 <ul>
-<li>take some time to think what the appropriate response variable is!</li>
-<li>if in doubt, make sure to ask someone to help clear this with you.</li>
-<li>remember to specify the assumed distribution of the data in <code>glm()</code></li>
+<li>What kind of pattern would we expect?</li>
+</ul></li>
+<li>Q-Q Residuals
+<ul>
+<li>Are we expecting Normally distribted error with a Poisson
+distribution?</li>
+</ul></li>
+<li>Scale-Location
+<ul>
+<li>What kind of pattern would we expect?</li>
+</ul></li>
+<li>Residuals vs Leverage
+<ul>
+<li>Are any observations having a strong influence on the model
+fit?</li>
 </ul></li>
 </ul>
+<p><img src="GLM_1_Poisson_exercise_files/figure-html/Q7-1.png" width="672" /></p>
 <p> </p>
+</div>
+<div id="answer-your-question" class="section level3">
+<h3>8. Answer your question</h3>
 <p> </p>
-<p>4. Obtain summaries of the model output using the <code>summary()</code> function. Make sure you understand the mathematical and biological interpretation of the model, by writing down the complete model on paper.</p>
-<p> </p>
-<p> </p>
-<p>5. According to this model, what would be the predicted value (by hand) on the link scale log(mu) when Biomass= 5? What would this become on the response scale, i.e. the number of species?</p>
-<p> </p>
-<p> </p>
-<p>6. Now, specify a more useful Poisson GLM (using <code>glm</code>) to match the stated research questions.</p>
-<p> </p>
-<p> </p>
-<p>7. Obtain summaries of the model output using the <code>summary()</code> and the ANOVA of the model.</p>
+<p>Hopefully you identified issues that mean we should be very cautious
+with interpreting this model. For now, we’ll put these concerns to rest
+(we will come back to them), and use this model as an opportunity to
+practice making predictions (and therefore answering our research
+question).</p>
+<p>8.1. Go back to your equation that you wrote for question 5. We’re
+going to combine the information from <code>summary()</code> with the
+equation we wrote in section 5 to allow us to make predictions. As a
+reminder, the statistical notation for the deterministic element of the
+model with just Biomass is:</p>
+<p><span class="math inline">\(log(\lambda_i) = \beta_0 + \beta_1 \times
+Biomass_i\)</span></p>
+<p>where <span class="math inline">\(\beta_0\)</span> was the intercept
+and <span class="math inline">\(\beta_1\)</span> was the slope for
+biomass.</p>
+<p>Replace <span class="math inline">\(\beta_0\)</span> and <span
+class="math inline">\(\beta_1\)</span> now, using your parameter
+estimates from <code>summary()</code>, and use this updated equation to
+make the following predictions:</p>
 <ul>
-<li>Which of the <code>drop1()</code> or <code>anova()</code> functions would you choose to use if you wanted to
-<ul>
-<li>look at deviance components?</li>
-<li>explain the predictions?</li>
-<li>test hypotheses?</li>
-<li>simplify the model?</li>
-</ul></li>
-<li>Is the effect of the interaction significant?</li>
+<li><p>On the link scale, how many plants would you predict if a plot
+had 0 kg of biomass?</p></li>
+<li><p>On the link scale, how many plants would you predict if a plot
+had 2.5 kg of biomass?</p></li>
+<li><p>On the link scale, how many plants would you predict if a plot
+had 5 kg of biomass?</p></li>
 </ul>
+<p>8.2. To make interpreting these predictions easier and more
+intuitive, let’s make the predictions on the response scale. To go from
+the <span class="math inline">\(log\)</span> link scale, to the response
+scale, we take our predictions and apply the inverse link function to
+them. The inverse link function of <span
+class="math inline">\(log\)</span> is <span
+class="math inline">\(e\)</span> (or exponential, or
+<code>exp()</code>). Predict, on the response scale, how many plant
+species we would expect if:</p>
+<ul>
+<li><p>On the response scale, how many plants would you predict if a
+plot had 0 kg of biomass?</p></li>
+<li><p>On the response scale, how many plants would you predict if a
+plot had 5 kg of biomass?</p></li>
+<li><p>On the response scale, how many plants would you predict if a
+plot had 10 kg of biomass?</p></li>
+</ul>
+<p>8.3. Using this approach, we get a series of snapshot predictions
+over different values of Biomass. That’s useful in and of itself, but we
+can make this a bit easier for readers to interpret by showing this in a
+figure.</p>
+<p>To do so, rather copy-and-pasting our equation and substituting in
+different value of biomass, why not use <code>R</code> to make this a
+bit easier for us?</p>
+<p>Let’s start by creating an entirely new dataset that contains a
+column called <code>Biomass</code>. If we wanted to, we could just plug
+our previous biomass values in but an alternative that gives us more
+flexibility would be to use the <code>seq()</code> function to create
+any number of <code>Biomass</code> values we desired. All we need to
+supply is the minimum and maximum values that we want to consider, and
+how many values we want returned to us.</p>
+<p>The other thing we need to do is to put this into a dataframe. The
+function <code>data.frame()</code> makes this trivially easy. All we
+need to do is say what the column is going to be called (here
+<code>Biomass</code>) and what the values for the column are. The
+<code>seq()</code> function can handle what the values are, so
+specifying the column name is all we need to do - and it’s dead easy.
+The example below shows all of this done in a single line of
+<code>R</code> code.</p>
+<pre><code>new_richness &lt;- data.frame(Biomass = seq(from = min(sp$Biomass), 
+                                        to = max(sp$Biomass), 
+                                        length.out = 5))</code></pre>
+<p>Use this now to create your own “synthetic” data set to do
+predictions with.</p>
+<p>8.4. Once you have this data frame, use it to make 5 simultaneous
+predictions of how many plant species we would expect to find, on the
+response scale. Store the output in a new column of the
+<code>new_richness</code> dataset.</p>
+<p>An option available to use is, rather than doing this predictions by
+“hand”, we can use a function called <code>predict()</code>. This
+function becomes especially useful when we have more complicated models,
+where we really don’t want to have to write out the equation by hand,
+but also for when we want to make more customised figures. We’ll use
+<code>predict()</code> more tomorrow, but for now, let’s use it in this
+relatively simple example.</p>
+<p>We just need to supply <code>predict()</code> with our new
+“synthetic” dataset (i.e. <code>new_richness</code> from above) along
+with our model object (e.g. <code>sp.glm1</code>). The code to do so is
+then:</p>
+<pre><code>pred_plants &lt;- exp(predict(sp.glm1, new_biomass))</code></pre>
+<p>8.5. With both this new dataset, create a plot to show our
+prediction.</p>
+<p>For this, you can either use your “hand made” predictions, or the
+predictions using <code>predict()</code>.</p>
+<p><img src="GLM_1_Poisson_exercise_files/figure-html/Q8.5-1.png" width="672" /></p>
+<p>And with that, we have a prediction (from our model which we know has
+issues). If we stopped here, we’d conclude that biomass has a negative
+association with the number of plant species, while also reporting that
+this model has a variety of issues.</p>
+<p> </p>
+<p>8.6. (Optional): The figure we have produced looks pretty jagged. If
+we wanted a smoother line to be drawn, how would we do so?</p>
 <p> </p>
 <p> </p>
-<p>8. Looking at the model summary, make sure you understand the individual components, null hypotheses, and the mathematical and biological interpretation of the different coefficients (i.e. would you be able to reconstruct and to use the model formula to make predictions? In doubt, try it and seek assistance!).</p>
+</div>
+<div id="including-ph-in-the-model" class="section level3">
+<h3>9. Including <code>pH</code> in the model</h3>
+<p> </p>
+<p>We’ve run a Poisson GLM where <code>Species</code> is explained by
+<code>Biomass</code>, but there are two problems. The first is that our
+model diagnostics suggested we are not meating our assumptions well. The
+second is that our initial research question sought to describe the
+relationships between <code>Species</code> with both
+<code>Biomass</code> <em>and</em> <code>pH</code>. We might be able to
+address both issues with the appropriate model.</p>
+<p>Run a <span class="math inline">\(Poisson\)</span> GLM where
+<code>Species</code> is a function of <code>Biomass</code> and
+<code>pH</code>.</p>
+<p> </p>
+</div>
+<div id="re-diagnose" class="section level3">
+<h3>10. Re-diagnose</h3>
+<p> </p>
+<p>With every new model we run, we need to diagnose that model. We’ve
+already done that once, so let’s quickly do it again.</p>
+<p>For the diagnostic plots:</p>
 <ul>
-<li>How do you interpret the model terms?
+<li>Residuals vs Fitted
 <ul>
-<li>what does the <code>Intercept</code> represent, and which categories does it apply to?</li>
-<li>what does the <code>Biomass</code> effect represent, and which category does it apply to?</li>
-<li>what does the <code>pHmid</code> effect represent?</li>
-<li>what does the <code>Biomass:pHmid</code> effect represent?</li>
+<li>What kind of pattern would we expect?</li>
+</ul></li>
+<li>Q-Q Residuals
+<ul>
+<li>Are we expecting Normally distributed error with a Poisson
+distribution?</li>
+</ul></li>
+<li>Scale-Location
+<ul>
+<li>What kind of pattern would we expect?</li>
+<li>What is the maximum <span class="math inline">\(\sqrt{|Std.
+PearsonResid|}\)</span> we would be comfortable with?</li>
+</ul></li>
+<li>Residuals vs Leverage
+<ul>
+<li>Are any observations having a strong influence on the model
+fit?</li>
 </ul></li>
 </ul>
+<p><img src="GLM_1_Poisson_exercise_files/figure-html/Q10-1.png" width="672" /></p>
 <p> </p>
+</div>
+<div id="model-interpretation" class="section level3">
+<h3>11. Model interpretation</h3>
 <p> </p>
-<p>9. Any indication of overdispersion? (Hint: check residual deviance and degrees of freedom)</p>
+<p>Now that we’ve fit a model that answers our question and checked that
+we are meeting the assumptions reasonably well, let’s begin the process
+of interpreting what the results mean. For starters, given this is a
+more complex model, let’s take it slowly and make sure we understand
+what each parameter estimate means.</p>
+<p>Using <code>summary()</code>, identify what each parameter means.</p>
 <p> </p>
+</div>
+<div
+id="create-full-predictions-and-a-figure-to-visualise-your-relationship"
+class="section level3">
+<h3>12. Create full predictions and a figure to visualise your
+relationship</h3>
 <p> </p>
-<p>10. [Optional] Check for collinearity using the <code>vif()</code> function in the <code>car</code> package. What do you think?</p>
+<p>To visualise the relationship, we could use the same technique that
+we used for the model with just biomass and extend it to include the
+differing levels of pH. To do so, however, requires a few steps that we
+cover in more detail in the <span
+class="math inline">\(Binomial\)</span> GLM exercise tomorrow. For
+today, what we can do is make use of some <code>R</code> packages that
+make visualising our predictions easy.</p>
+<p>While using these packages has the benefit of making our lives
+simpler but there are costs associated with using them. The first, and
+more important for this stage of your learning, is that it obscures and
+mystifies how these predictions are actually made. The second and more
+important, for when you get to making publication quality figures, is
+that these packages lock you into someone else’s aesthetic choices.
+Sometimes, these choices are OK, but for myself I definitely prefer to
+make figures the way I like them. Regardless, these packages are useful,
+and especially early on in analysis I will often use them to get a sense
+of what the predictions look like, before then remaking them according
+to my own tastes.</p>
+<p>For this part of the exercise, we’ll use the <code>ggeffects</code>
+<code>R</code> packages to create the predictions and associated
+figures, but be aware there are alternative options that you may
+prefer.</p>
+<p>To start, we need to install the <code>ggeffects</code> package, and
+then load it. The code to do so is:</p>
+<pre><code>install.packages(&quot;ggeffects&quot;)
+library(ggeffects)</code></pre>
+<p>From there, it’s a relatively easy process to get the figures we
+want. The core function we use is called <code>ggpredict()</code>, for
+which we need to supply the model name, and then the explanatory
+variable we want to create the prediction for, and then plot it.</p>
+<p>Note that there are two nice thing that <code>ggeffects</code> does
+automatically that makes life a little easier. The first is that the
+package will backtransform our linear prediction (<span
+class="math inline">\(\lambda\)</span>) to the response scale, meaning
+the figures are easier to interpret! The second is that it calculates
+and adds in 95% confidence intervals automatically, too. We’ll cover how
+to get 95% confidence intervals in the next lecture, but for now just
+appreciate that it’s being handled for you by
+<code>ggeffects</code>.</p>
+<p>For example, assume we want a figure that shows the predicted
+relationship between Species Richness and Biomass (similar to the one we
+may by hand above), on the response scale, the corresponding code would
+be:</p>
+<pre><code>bio_pred &lt;- ggpredict(sp.glm2, terms = &quot;Biomass&quot;)
+plot(bio_pred)</code></pre>
+<p>Use <code>ggeffects</code> now to create a figure to show the
+predicted relationships for both covariates in our model.</p>
+<p><img src="GLM_1_Poisson_exercise_files/figure-html/Q12-1.png" width="672" /><img src="GLM_1_Poisson_exercise_files/figure-html/Q12-2.png" width="672" /></p>
+<p>And just like that, we have figures that can show our predicted
+relationships from our model.</p>
+</div>
+<div id="summary" class="section level3">
+<h3>Summary</h3>
+<p>At this point, we’re pretty much done. We started off with a simple
+model which we used diagnostic plots to determine that that version of
+the model had various issues. We resolved those issues by adding in an
+additional explanatory variable (but note this will not always work, and
+there are risks associated with adding variables to a model, see the
+Bernoulli lecture). We then interpreted our results and used these to
+create predictions to make our results more intuitive. All that remains
+is to write up the pre-print, paper, report, blog post, whatever, to
+share our findings with a broader audience.</p>
 <p> </p>
+</div>
+<div id="optional-exploring-model-diagnostics" class="section level3">
+<h3>13. (Optional) Exploring model diagnostics</h3>
 <p> </p>
-<p>11. Validate the model using the standard residuals diagnostic plots</p>
-<p> </p>
-<p> </p>
-<p>12. Let’s plot the model predictions over the raw data, using <code>predict()</code> with the argument <code>type= "response"</code> to obtain the fitted values on the original (response) scale. Plot a fitted line for the relationship between number of species and biomass for each level of pH. For the sake of this exercise and to better illustrate the assumptions of the model, use the whole range of biomass(0 to 10) for every pH level. Why are the lines not straight?</p>
-<p> </p>
-<p> </p>
-<p>13. Looking at the data and model fits, any idea why the expected species richness for the largest values of biomass tends to be biased high? How satisfied are you with the model? Have we learned anything from it, about species diversity in relation to pH and biomass?</p>
-<p> </p>
-<p> </p>
-<p>14. (Optional) Use <code>predict</code> again, but this time, * obtain the fitted values on the scale of the linear predictor <code>type= "link"</code> * only predict for the range of observed biomass for each pH level. Plot again and compare with the previous graph: what is happening? How would you back-transform these values predicted on the link scale to plot them on the response scale again?</p>
-<p> </p>
-<p> </p>
-<p>15. (Optional but recommended) Use <code>predict</code> again, but this time obtain the fitted values and their standard errors on the scale of the linear predictor. From these, calculate confidence intervals for the fitted values, and plot them together with the data, after back-transforming the fitted values and intervals on the response scale.</p>
-<ul>
-<li>Suggested approach:
-<ul>
-<li>plot the raw data (one colour per pH)</li>
-<li>create a <code>data.frame</code> called <code>X</code> containing the data to predict for: as sequence of increasing Biomass and the pH of your choice</li>
-<li>use <code>predict()</code> with the appropriate options <code>type= "link", se.fit= TRUE</code> to obtain the fitted values on the link scale and for being able to calculate the confidence intervals later. Store in object <code>Z</code>.</li>
-<li>plot fitted values, extracted using <code>Z$fit</code>, against the Biomass sequence. Do not forget to back-transform on the response scale.</li>
-<li>plot the upper bound of the 95% CI (fitted values + 1.96*se), extracted using <code>Z$fit</code> and <code>Z$se.fit</code>, against the Biomass sequence. Do not forget to back-transform on the response scale.</li>
-<li>plot the lower bound of the 95% CI (fitted values - 1.96*se), extracted using <code>Z$fit</code> and <code>Z$se.fit</code>, against the Biomass sequence. Do not forget to back-transform on the response scale.</li>
-<li>repeat for other pH values.</li>
-</ul></li>
-</ul>
-<p> </p>
-<p>   </p>
-<p><strong>End of the Poisson GLM - predicting species richness exercise</strong></p>
+<p>One of the most challenging aspects in learning GLMs is determining
+if there is a problem in model diagnostics. Overwhelmingly, this is
+because a lot identifying issues relies on gaining enough experience to
+know when there is a problem or not. To that end, as an optional
+exercise, we include code to simulate a <span
+class="math inline">\(Poisson\)</span> dataset, run a <span
+class="math inline">\(Poisson\)</span> GLM, and perform model
+diagnostics with the aim of giving you a flexible means to gain some
+experience. The benefit of having you simulate datasets is that you know
+what the <em>Truth</em> is - because <em>you</em> decide what it is.
+With that anchor in place, you can then: run a model with far too few
+samples; Or a model that does not include the appropriate covariates; or
+both; or neither; all with the aim of exploring what the consequences
+are on the model diagnostic plots.</p>
+<p>In general, simulating datasets and using these simulated datasets to
+test your statistical models is an excellent approach and one that is
+well worth building into your data analysis workflow (ideally before
+ever collecting real data).</p>
+<p>The code to do the simulation can be found below, but is generated
+(often called the <em>Data Generating Process</em>, or DGP, in both code
+or real data sets) as:</p>
+<p><span class="math inline">\(y_i \sim Poisson(\lambda_i)\)</span></p>
+<p><span class="math inline">\(log(\lambda_i) = \beta_0 + \beta_1 \times
+x_{1,i} + \beta_2 \times x_{2,i} + \beta_3\times x_{3,i}\)</span></p>
+<p>where you are free to decide what the values for the parameters
+(<span class="math inline">\(\beta_{0,...,3}\)</span>) are.</p>
+<p>Rerun the simulation and analysis varying the sample size
+(e.g. <code>N &lt;- 1000</code>), the effect sizes
+(e.g. <code>beta_0 &lt;- 10</code>) or the formula of the
+<code>glm()</code> (e.g. <code>y ~ x1</code>). Check what effect this
+has on dispersion and the model diagnostic plots.</p>
+<pre><code># Set your seed to have the randomness be cosnsitent each time you run the code
+# You can change this, or comment it out, if you want to embrase the randomness
+set.seed(1234)
+
+# Set your sample size
+N &lt;- 500
+
+# Create three continuous covariates
+x1 &lt;- runif(N, 0, 10)
+x2 &lt;- runif(N, 0, 10)
+x3 &lt;- runif(N, 0, 10)
+
+# Set your parameter values
+beta_0 &lt;- 2.5   # This is the intercept (on link scale)
+beta_1 &lt;- 0.2   # This is the slope for the x1 variable (on link scale)
+beta_2 &lt;- -1.3  # This is the slope for the x2 variable (on link scale)
+beta_3 &lt;- 0.4   # This is the slope for the x3 variable (on link scale)
+
+# Generate your linear predictor on the link scale (i.e. log)
+# We don&#39;t actually need to use log() here (it&#39;s already on the link scale)
+linear_predictor_link &lt;- beta_0 + beta_1 * x1 + beta_2 * x2 + beta_3 * x3
+
+# Backtransform your linear predictor to the response scale (i.e. exponentiate)
+linear_predictor_response &lt;- exp(linear_predictor_link)
+
+# Generate your response variable using a Poisson random number generator (rpois)
+y &lt;- rpois(N, lambda = linear_predictor_response)
+
+# Note that the above three lines of code are the equivalent to:
+# y ~ Poisson(lambda)
+# log(lambda) = beta_0 + beta_1 * x1 + beta_2 * x2 + beta_3 * x3
+
+# Store your data in a dataframe
+dat &lt;- data.frame(y, x1, x2, x3)
+
+# Run a Poisson GLM
+fit &lt;- glm(y ~ x1 + x2 + x3, 
+           data = dat, 
+           family = poisson)
+
+# See if the model was able to estimate your parameter values 
+# and what the dispersion is
+summary(fit)
+
+# See how well the model diagnostics perform
+par(mfrow = c(2,2))
+plot(fit)</code></pre>
+<p><strong>End of the Poisson GLM - predicting species richness
+exercise</strong></p>
+</div>
 </div>
 
 

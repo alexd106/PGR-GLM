@@ -16,25 +16,25 @@ The live sessions will be held on Blackboard Collaborate at the time indicated i
 
 \  
 
-#### Wednesday 28^th^ April 2021
+#### Monday 29^th^ April 2024
 
 \  
 
 |09:30 - 10:00 | 10:00 - 12:30 | 12:30 - 13:30 |13:30 - 17:00 |
 |:-------------|:-------------|:------------|:-------------|
-| Course introduction (live - TC)  | Introducing Generalized Linear Models, using the Poisson GLM, theory lecture (recorded) | LUNCH |Poisson GLM live practical and review session (TC)|
+| Course introduction (live - DR) | Introducing Generalized Linear Models. Poisson GLMs; theory lecture (recorded) | LUNCH | Poisson GLM - live practical (DR)|
 
 \  
 
 \  
 
-#### Thurday 29^th^ April 2021 
+#### Tuesday 30^th^ April 2024
 
 \  
 
 |09:30 - 12:30     | 12:30 - 13:30 |13:30 - 17:00    | 
 |:-----------------|:-------------|:---------------|
-|GLM for binary (0/1) data, theory lecture (recorded)|LUNCH|GLM for binary (0/1) data live practical (TC)|
+| Binomial GLMs; theory lecture (recorded) | LUNCH | Binomial GLM - live practical (DR)|
 
 \  
 
@@ -44,9 +44,9 @@ The live sessions will be held on Blackboard Collaborate at the time indicated i
 
 \  
 
-|09:30 - 11:30               | 11:30 - 12:30     | 12:30 - 13:30 |13:30 - 16:00    | 16:10 - 17:00      |
-|:--------------------------|:-----------------|:-------------|:---------------|:------------------|
-|Introducing binomial GLMs for estimating proportions, theory lecture (recorded)| GLM for binary (0/1) data - live review session (TC) | LUNCH |Binomial GLM for proportions - live practical and review session (TC)| Question and answer session on LM and GLM (AD & TC)|
+|09:30 - 12:30               | 12:30 - 13:30 |13:30 - 16:30 | 16:30 - 17:00 |
+|:---------------------------|:-------------|:---------------|:------------------|
+|Bernoulli GLMs; theory lecture (recorded) | LUNCH | Bernoulli GLM for proportions - live practical (DR)| Question and answer session on LM and GLM (AD & DR)|
 
 \  
 

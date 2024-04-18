@@ -13,8 +13,8 @@
 
 <title>Introduction to Generalised Linear Modelling using R</title>
 
-<script src="site_libs/header-attrs-2.8/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.25/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -30,8 +30,8 @@
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -41,6 +41,7 @@
   div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
   ul.task-list{list-style: none;}
     </style>
+
 
 
 
@@ -70,6 +71,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -127,11 +131,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -160,8 +168,8 @@ $(document).ready(function () {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -169,16 +177,9 @@ $(document).ready(function () {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -222,7 +223,7 @@ $(document).ready(function () {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -233,21 +234,21 @@ $(document).ready(function () {
       <ul class="nav navbar-nav">
         <li>
   <a href="index.html">
-    <span class="fas fa-home"></span>
+    <span class="fa fa-home"></span>
      
     Home
   </a>
 </li>
 <li>
   <a href="setup.html">
-    <span class="fas fa-cog"></span>
+    <span class="fa fa-cog"></span>
      
     Setup
   </a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    <span class="fas fa-book"></span>
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-book"></span>
      
     R Book
      
@@ -256,7 +257,7 @@ $(document).ready(function () {
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="https://intro2r.com">
-        <span class="fas fa-firefox"></span>
+        <span class="fa fa-firefox"></span>
          
         Web book
       </a>
@@ -264,7 +265,7 @@ $(document).ready(function () {
     <li class="divider"></li>
     <li>
       <a href="https://github.com/alexd106/Rbook/raw/master/docs/Rbook.pdf">
-        <span class="fas fa-file-pdf"></span>
+        <span class="fa fa-file-pdf"></span>
          
         PDF book
       </a>
@@ -272,8 +273,8 @@ $(document).ready(function () {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    <span class="fas fa-book"></span>
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-book"></span>
      
     Exercises
      
@@ -282,7 +283,7 @@ $(document).ready(function () {
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="exercises.html">
-        <span class="fas fa-book"></span>
+        <span class="fa fa-book"></span>
          
         Exercises
       </a>
@@ -290,7 +291,7 @@ $(document).ready(function () {
     <li class="divider"></li>
     <li>
       <a href="exercise_solutions.html">
-        <span class="fas fa-book"></span>
+        <span class="fa fa-book"></span>
          
         Exercise Solutions
       </a>
@@ -299,14 +300,14 @@ $(document).ready(function () {
 </li>
 <li>
   <a href="data.html">
-    <span class="fas fa-download"></span>
+    <span class="fa fa-download"></span>
      
     Data
   </a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    <span class="fas fa-question-circle"></span>
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-question-circle"></span>
      
     Info
      
@@ -315,14 +316,14 @@ $(document).ready(function () {
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="syllabus.html">
-        <span class="fas fa-graduation-cap"></span>
+        <span class="fa fa-graduation-cap"></span>
          
         Syllabus
       </a>
     </li>
     <li>
       <a href="People.html">
-        <span class="fas fa-user-friends"></span>
+        <span class="fa fa-user-friends"></span>
          
         People
       </a>
@@ -330,7 +331,7 @@ $(document).ready(function () {
     <li class="divider"></li>
     <li>
       <a href="resources.html">
-        <span class="fas fa-book"></span>
+        <span class="fa fa-book"></span>
          
         Resources
       </a>
@@ -338,7 +339,7 @@ $(document).ready(function () {
     <li class="dropdown-header">Feedback</li>
     <li>
       <a href="People.html">
-        <span class="fas fa-envelope fa-lg"></span>
+        <span class="fa fa-envelope fa-lg"></span>
          
         Contact
       </a>
@@ -346,7 +347,7 @@ $(document).ready(function () {
     <li class="divider"></li>
     <li>
       <a href="https://github.com/alexd106/PGR-GLM">
-        <span class="fas fa-github fa-lg"></span>
+        <span class="fa fa-github fa-lg"></span>
          
         Source code
       </a>
@@ -365,22 +366,63 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Introduction to Generalised Linear Modelling using R</h1>
+<h1 class="title toc-ignore">Introduction to Generalised Linear
+Modelling using R</h1>
 
 </div>
 
 
 <p> </p>
-<p>Hello and welcome to your PGR statistics course! This website complements the <a href="https://abdn.blackboard.com/ultra/">MyAberdeen</a> course website and is mainly used to host exercises and associated exercise solutions and data files. You can find all other material for this statistics course on the MyAberdeen course site.</p>
+<p>Hello and welcome to your PGR statistics course! This website
+complements the <a
+href="https://abdn.blackboard.com/ultra/">MyAberdeen</a> course website
+and is mainly used to host exercises and associated exercise solutions
+and data files. You can find all other material for this statistics
+course on the MyAberdeen course site.</p>
 <p> </p>
 <div id="how-to-use-this-website" class="section level4">
 <h4>How to use this website</h4>
 <p> </p>
-<p>The first thing you will need to do is check that you have both R and RStudio installed on your computer. Most of you should already have these installed from when you attended the previous Introduction to R course. If you didn’t attend the Introduction to R course and haven’t used R and RStudio in a while (☹️) then it’s probably a good idea to update both to the latest versions. If for some reason you don’t have R and RStudio installed then take a look at the <strong><a href="setup.html"><i class="fa fa-cog" aria-hidden="true"></i> Setup</a></strong> link in the navbar above for further instructions on how to set up your computer.</p>
-<p>This course will be delivered entirely online this year and will comprise a mixture of pre-recorded video lectures covering statistical theory and a series of live practical exercises and review sessions during which you will be able to ask questions and receive one-to-one help from the instructors. The recorded lectures will be hosted on our Virtual Learning Environment <a href="https://abdn.blackboard.com/ultra/">MyAberdeen</a> and the live practical and review sessions with be delivered via Blackboard Collaborate. Full instructions on how to access Blackboard Collaborate will be provided before the course starts.</p>
-<p>This website mainly hosts the exercises you will complete each day and also the solutions for these exercises. You can access both by clicking on the <strong><i class="fa fa-book" aria-hidden="true"></i> Exercises</strong> link on the navbar above (links will also be provided on the MyAberdeen website). To complete the exercises you will also need to download some data files to your computer which you can find by clicking on the <strong><i class="fa fa-download" aria-hidden="true"></i> Data</strong> icon above and following the instructions.</p>
-<p>If you need to quickly brush up on your R skills or have forgotten how to do something (we’ve all been there!) please take a look at our new(ish) online open access Introduction to R book. There is a direct link to the book on the navbar above <strong><i class="fa fa-book" aria-hidden="true"></i> R Book</strong>. Failing that, just give us a shout in one of the Blackboard collaborate sessions.</p>
-<p>You can find links to additional resources, a suggested timetable, our contact details and a feedback form in <strong><i class="fa fa-question-circle" aria-hidden="true"></i> Info</strong> link above.  </p>
+<p>The first thing you will need to do is check that you have both R and
+RStudio installed on your computer. Most of you should already have
+these installed from when you attended the previous Introduction to R
+course. If you didn’t attend the Introduction to R course and haven’t
+used R and RStudio in a while then it’s probably a good idea to update
+both to the latest versions. If for some reason you don’t have R and
+RStudio installed then take a look at the <strong><a
+href="setup.html"><i class="fa fa-cog" aria-hidden="true"></i>
+Setup</a></strong> link in the navbar above for further instructions on
+how to set up your computer.</p>
+<p>This course will be delivered entirely online this year and will
+comprise a mixture of pre-recorded video lectures covering statistical
+theory and a series of live practical exercises and review sessions
+during which you will be able to ask questions and receive one-to-one
+help from the instructors. The recorded lectures will be hosted on our
+Virtual Learning Environment <a
+href="https://abdn.blackboard.com/ultra/">MyAberdeen</a> and the live
+practical and review sessions with be delivered via Blackboard
+Collaborate. Full instructions on how to access Blackboard Collaborate
+will be provided before the course starts.</p>
+<p>This website mainly hosts the exercises you will complete each day
+and also the solutions for these exercises. You can access both by
+clicking on the <strong><i class="fa fa-book" aria-hidden="true"></i>
+Exercises</strong> link on the navbar above (links will also be provided
+on the MyAberdeen website). To complete the exercises you will also need
+to download some data files to your computer which you can find by
+clicking on the
+<strong><i class="fa fa-download" aria-hidden="true"></i> Data</strong>
+icon above and following the instructions.</p>
+<p>If you need to quickly brush up on your R skills or have forgotten
+how to do something (we’ve all been there!) please take a look at our
+new(ish) online open access Introduction to R book. There is a direct
+link to the book on the navbar above
+<strong><i class="fa fa-book" aria-hidden="true"></i> R Book</strong>.
+Failing that, just give us a shout in one of the Blackboard collaborate
+sessions.</p>
+<p>You can find links to additional resources, a suggested timetable,
+our contact details and a feedback form in
+<strong><i class="fa fa-question-circle" aria-hidden="true"></i>
+Info</strong> link above.  </p>
 </div>
 
 
