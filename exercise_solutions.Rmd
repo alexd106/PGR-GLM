@@ -20,7 +20,7 @@ Follow the links below for solutions to each of the exercises you have completed
 
 \  
 
-### Day 1
+### Day 2
 
 ```{r sol_GDE, results='asis', eval = isTRUE(show_text_GDE)}
 link_name <- "GLM - Poisson exercise"
@@ -31,7 +31,7 @@ cat(sep="\n\n")
 
 \  
 
-### Day 2
+### Day 3
 
 
 ```{r sol_lm2, results='asis', eval = isTRUE(show_text_lm2)}
@@ -43,7 +43,7 @@ cat(sep="\n\n")
 
 \  
 
-### Day 3
+### Day 4
 
 ```{r sol_lm1, results='asis', eval = isTRUE(show_text_lm1)}
 link_name <- "Bernoulli GLM exercise"

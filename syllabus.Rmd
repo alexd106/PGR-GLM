@@ -14,39 +14,25 @@ The live sessions will be held on Blackboard Collaborate at the time indicated i
 <!--All teaching will be held in room FN113 in the Fraser Noble building (building No. 7 on [this map](images/uoa_map.png){target="_blank"} on the old Aberdeen campus).
 -->
 
-\  
+```{r timetable, echo=FALSE}
+library(kableExtra)
 
-#### Monday 29^th^ April 2024
+# Create a new data frame with days as rows and time slots as columns
+df_new <- data.frame(
+  Day = c("**Monday**", "**Tuesday**", "**Wednesday**", "**Thursday**"),
+  `09:30 - 12:30` = c("Introducing GLMs (recorded)", 
+                      "Poisson GLMs (recorded)", 
+                      "Binomial GLMs (recorded)", 
+                      "Bernoulli GLMs (recorded)"),
+  `12:30 - 13:30` = rep("*Lunch*", 4),
+  `13:30 - 17:00` = c("_**Free**_", 
+                      "Poisson GLM - live practical", 
+                      "Binomial GLM - live practical", 
+                      "Bernoulli GLM - live practical<br>**[16:30-17:00: LM and GLM Q&A]**"),
+  check.names = FALSE
+)
 
-\  
-
-|09:30 - 10:00 | 10:00 - 12:30 | 12:30 - 13:30 |13:30 - 17:00 |
-|:-------------|:-------------|:------------|:-------------|
-| Course introduction (live - DR) | Introducing Generalized Linear Models. Poisson GLMs; theory lecture (recorded) | LUNCH | Poisson GLM - live practical (DR)|
-
-\  
-
-\  
-
-#### Tuesday 30^th^ April 2024
-
-\  
-
-|09:30 - 12:30     | 12:30 - 13:30 |13:30 - 17:00    | 
-|:-----------------|:-------------|:---------------|
-| Binomial GLMs; theory lecture (recorded) | LUNCH | Binomial GLM - live practical (DR)|
-
-\  
-
-\  
-
-#### Friday 30^th^ April 2021
-
-\  
-
-|09:30 - 12:30               | 12:30 - 13:30 |13:30 - 16:30 | 16:30 - 17:00 |
-|:---------------------------|:-------------|:---------------|:------------------|
-|Bernoulli GLMs; theory lecture (recorded) | LUNCH | Bernoulli GLM for proportions - live practical (DR)| Question and answer session on LM and GLM (AD & DR)|
-
-\  
-
+# Render the table with kableExtra. The escape = FALSE allows the Markdown/HTML formatting in the cells.
+kbl(df_new, escape = FALSE, align = "c") %>%
+  kable_styling(bootstrap_options = c("striped", "hover"), full_width = FALSE, stripe_color = "#839FBB")
+```

@@ -29,19 +29,19 @@ Have fun!
 
 \  
 
-### Day 1
+### Day 2
 
  - [Poisson GLM exercise](GLM_1_Poisson_exercise.html)
 
 \  
  
-### Day 2
+### Day 3
  
  - [Binomial GLM exercise](GLM_2_Binomial_exercise.html)
  
 \  
 
-### Day 3
+### Day 4
 
  - [Bernoulli GLM exercise](GLM_3_Bernoulli_exercise.html)
  
