@@ -21,7 +21,7 @@ These exercises will help gauge your understanding of the material covered durin
 
 Whilst working through the exercises we recommend that you create a new R script for each exercise in an RStudio project. Make sure you include plenty of comments and notes to yourself for future reference, or, perhaps even better, include your code and commentary in an R markdown document. Of course, how you want to work is entirely up to you!
 
-During each exercise you will be working in a synchronous session on Blackboard collaborate where you will be able to ask questions and get one-to-one help from the course instructors. Towards the end of each session, one of the instructors will go through each exercise with you in real time to help clear up any lingering doubts and also provide you with an opportunity to discuss analytical decisions.
+During each exercise you will be working in a synchronous session on Teams where you will be able to ask questions and get one-to-one help from the course instructors. Towards the end of each session, one of the instructors will go through each exercise with you in real time to help clear up any lingering doubts and also provide you with an opportunity to discuss analytical decisions.
 
 You can check the [solutions to the exercises](exercise_solutions.html){target="_blank"} after each of our synchronous sessions. 
 
